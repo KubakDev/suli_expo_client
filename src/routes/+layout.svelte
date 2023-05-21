@@ -3,20 +3,28 @@
 	import '../app.css';
 	import './styles.css';
 	import Headerbar from '$lib/components/Headerbar.svelte';
+	import { onMount } from 'svelte';
+	export let data;
 
-	
+	let supabase: any;
+
+	onMount(async () => {
+		supabase = data.supabase;
+	});
 </script>
 
-<div class="app">
-	<Headerbar />
-	<Navbar />
-	<main>
-		<slot />
-	</main>
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
-</div>
+{#if supabase}
+	<div class="app">
+		<Headerbar />
+		<Navbar />
+		<main>
+			<slot />
+		</main>
+		<footer>
+			<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		</footer>
+	</div>
+{/if}
 
 <style>
 	.app {

@@ -31,6 +31,7 @@
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.29.13",
 		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.0.26",
+		"suli": "file:../suliExpo/flowbite-svelte/dist",
 		"pino": "^8.14.1",
 		"postcss": "^8.4.23",
 		"prettier": "^2.8.8",

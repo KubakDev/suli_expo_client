@@ -4,15 +4,13 @@
 	import News from '$lib/components/News.svelte';
 
 	export let data;
-	let supabase: any;
 
-	newsSectionStore.subscribe((data) => {
-		console.log('data', data);
-	});
+	// newsSectionStore.subscribe((data) => {
+	// 	console.log('data', data);
+	// });
 
 	onMount(async () => {
-		supabase = data.supabase;
-		newsSectionStore.get(supabase);
+		newsSectionStore.get(data.supabase);
 	});
 </script>
 
@@ -23,6 +21,6 @@
 
 {#if $newsSectionStore}
 	<div class="my-4">
-		<News news={$newsSectionStore} {supabase} />
+		<News news={$newsSectionStore} supabase={data.supabase} />
 	</div>
 {/if}
