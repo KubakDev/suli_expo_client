@@ -21,6 +21,8 @@
 
 {#if $newsSectionStore}
 	<div class="my-4">
-		<News news={$newsSectionStore} supabase={data.supabase} />
+		<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
+			<News news={$newsSectionStore} supabase={data.supabase} />
+		</div>
 	</div>
 {/if}

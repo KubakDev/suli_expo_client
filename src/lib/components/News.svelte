@@ -25,24 +25,22 @@
 		<TitleUi text="News " />
 	</div>
 
-	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
-		<div class="grid justify-around grid-cols-1 sm:grid-cols-3 gap-8">
-			{#each news as n, i}
-				{#if CardComponent}
-					<svelte:component
-						this={CardComponent}
-						data={{
-							title: n.title,
-							thumbnail: n.thumbnail,
-							imgSource: ImgSourceEnum.remote,
-							short_description: n.short_description
-						}}
-						colors={$newsUiStore.color_palette}
-					/>
-				{:else}
-					<div />
-				{/if}
-			{/each}
-		</div>
+	<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		{#each news as n, i}
+			{#if CardComponent}
+				<svelte:component
+					this={CardComponent}
+					data={{
+						title: n.title,
+						thumbnail: n.thumbnail,
+						imgSource: ImgSourceEnum.remote,
+						short_description: n.short_description
+					}}
+					colors={$newsUiStore.color_palette}
+				/>
+			{:else}
+				<div />
+			{/if}
+		{/each}
 	</div>
 </section>
