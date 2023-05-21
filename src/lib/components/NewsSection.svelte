@@ -3,9 +3,10 @@
 	import { ImgSourceEnum } from '../../models/imgSourceEnum';
 	import { onMount } from 'svelte';
 	import newsUiStore, { getNewsUi } from '../../stores/ui/newsUi';
-	import logger from '../../utils/logger';
 	import TitleUi from './TitleUi.svelte';
 	import { Button } from 'flowbite-svelte';
+	// import { MainCard } from 'suli/suliexpo-cards/MainCard.svelte';
+	import logger from '../../utils/logger';
 
 	export let news: NewsModel[];
 	export let supabase: any;
