@@ -1,7 +1,21 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	import HomeSwiper from '$lib/components/HomeSwiper.svelte';
+	import { onMount } from 'svelte';
+	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
+	import SeatReservation from '$lib/components/SeatReservation.svelte';
+	import { newsSectionStore } from '../stores/newsSectionStore';
+	import NewsSection from '$lib/components/NewsSection.svelte';
+	import { getNewsUi } from '../stores/ui/newsUi';
+
+	export let data;
+	let seatLayout: SeatLayoutModel | undefined | null;
+
+	let supabase: any;
+	onMount(async () => {
+		supabase = data.supabase;
+		seatLayout = await seatStore.get(supabase);
+		newsSectionStore.get(supabase);
+	});
 </script>
 
 <svelte:head>
@@ -9,51 +23,22 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+<!-- <picture>
+			<source srcset="/images/suliexpo.jpg" type="image/webp" />
+			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
+		</picture> -->
+<HomeSwiper />
 
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<div class="px-20 dark:bg-slate-900">
+	{#if $newsSectionStore}
+		<div class="my-4">
+			<NewsSection news={$newsSectionStore} {supabase} />
+		</div>
+	{/if}
+	{#if seatLayout}
+		<SeatReservation {seatLayout} />
+	{/if}
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
 </style>

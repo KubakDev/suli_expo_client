@@ -1,15 +1,18 @@
-<script>
-	import Header from './Header.svelte';
+<script lang="ts">
+	import Navbar from '../lib/components/Navbar.svelte';
+	import '../app.css';
 	import './styles.css';
+	import Headerbar from '$lib/components/Headerbar.svelte';
+
+	
 </script>
 
 <div class="app">
-	<Header />
-
+	<Headerbar />
+	<Navbar />
 	<main>
 		<slot />
 	</main>
-
 	<footer>
 		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
 	</footer>
@@ -26,9 +29,7 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
 		width: 100%;
-		max-width: 64rem;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
