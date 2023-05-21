@@ -14,7 +14,7 @@
 	onMount(async () => {
 		supabase = data.supabase;
 		seatLayout = await seatStore.get(supabase);
-		newsSectionStore.get(supabase);
+		newsSectionStore.get(supabase, 3);
 	});
 </script>
 

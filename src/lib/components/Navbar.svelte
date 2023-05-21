@@ -34,6 +34,7 @@
 		{hidden}
 	>
 		<NavLi class="mx-2 cursor-pointer" href="/" active={true}>Home</NavLi>
+		<NavLi class="mx-2 cursor-pointer" href="/news" active={true}>News</NavLi>
 		<NavLi class="mx-2 cursor-pointer" href="/exhibition">Exhibition</NavLi>
 		<NavLi class="mx-2 cursor-pointer" href="/pricing">Pricing</NavLi>
 		<NavLi class="mx-2 cursor-pointer" href="/contact">Contact</NavLi>

@@ -12,15 +12,15 @@ const createNewsSectionStore = () => {
 		set: (seatLayout: NewsModel[]) => {
 			set(seatLayout);
 		},
-		get: async (supabase: SupabaseClient) => {
+		get: async (supabase: SupabaseClient ,limit?:number| undefined) => {
 			logger.info('get news');
 
 			const result = await supabase
 				.from('news')
 				.select('*,news_languages(*)')
-				.eq('news_languages.language', 'ckb')
-				.limit(3);
-			console.log(result.data);
+				.eq('news_languages.language', 'en')
+				.limit(limit??9);
+			// console.log(result.data);
 			if (result.error) {
 				logger.error(result.error);
 				return null;
