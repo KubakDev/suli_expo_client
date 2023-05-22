@@ -10,7 +10,7 @@ export interface NewsModel {
 export function convertToNewsModel(data: any) {
 	let newsModel = {
 		id: data.id,
-		title: data.news_languages[0].title,
+		title: data.news_languages[0] ? data.news_languages[0].title : '',
 		thumbnail: data.thumbnail,
 		images: data.images
 			.split(',')
@@ -18,8 +18,8 @@ export function convertToNewsModel(data: any) {
 				(e: string) =>
 					'https://egnwlzzlqqwrpvnvvwrr.supabase.co/storage/v1/object/public/image/' + e
 			),
-		long_description: data.news_languages[0].long_description,
-		short_description: data.news_languages[0].short_description
+		long_description: data.news_languages[0] ? data.news_languages[0].long_description : '',
+		short_description: data.news_languages[0] ? data.news_languages[0].short_description : ''
 	};
 
 	return newsModel;
