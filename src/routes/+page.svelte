@@ -4,13 +4,12 @@
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { newsSectionStore } from '../stores/newsSectionStore';
-	import { MainCard, Card } from 'suli';
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
 
 	onMount(async () => {
 		seatLayout = await seatStore.get(data.supabase);
-		newsSectionStore.get(data.supabase);
+		newsSectionStore.get(data.supabase, 3);
 	});
 </script>
 
@@ -19,10 +18,6 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 <div class="px-32">
-	<MainCard />
-	<Card>
-		<h1>HI</h1>
-	</Card>
 	<div class="m-10 p-10 bg-black rounded-3xl" />
 </div>
 
