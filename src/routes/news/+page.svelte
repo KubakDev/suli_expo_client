@@ -20,7 +20,7 @@
 </svelte:head>
 
 {#if $newsSectionStore}
-	<div class="my-4">
+	<div class="dark:bg-slate-900">
 		<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
 			<News news={$newsSectionStore} supabase={data.supabase} />
 		</div>

@@ -30,12 +30,11 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.29.13",
-		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.0.26",
-		"suli": "file:../suliExpo/flowbite-svelte/dist",
 		"pino": "^8.14.1",
 		"postcss": "^8.4.23",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.0",
+		"suli": "file:../suliExpo/flowbite-svelte/dist",
 		"svelte": "^3.59.1",
 		"svelte-check": "^3.3.2",
 		"swiper": "^9.3.1",
@@ -44,5 +43,10 @@
 		"typescript": "^5.0.4",
 		"vite": "^4.3.5"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@tailwindcss/forms": "^0.5.3",
+		"kubak-svelte-component": "file:../kubak_svelte_component",
+		"svelte-routing": "^1.8.9"
+	}
 }

@@ -3,21 +3,25 @@
 	import { ImgSourceEnum } from '../../models/imgSourceEnum';
 	import { onMount } from 'svelte';
 	import newsUiStore, { getNewsUi } from '../../stores/ui/newsUi';
-	import logger from '../../utils/logger';
 	import TitleUi from './TitleUi.svelte';
+	import { goto } from '$app/navigation';
+
 	export let news: NewsModel[];
 	export let supabase: any;
 	let CardComponent: any;
 
 	onMount(async () => {
-		console.log(supabase);
+		// console.log(supabase);
 		await getNewsUi(supabase);
 		let card = $newsUiStore?.component?.title;
-		logger.info(news);
 		const module = await import('kubak-svelte-component');
-		console.log(card);
 		CardComponent = module[card as keyof typeof module];
 	});
+
+	function DetailsPage(itemId) {
+		goto(`/newsDetail/${itemId}`);
+		console.log('news :', itemId);
+	}
 </script>
 
 <section class="py-10">
@@ -26,18 +30,21 @@
 	</div>
 
 	<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-		{#each news as n, i}
+		{#each news as item, i}
 			{#if CardComponent}
-				<svelte:component
-					this={CardComponent}
-					data={{
-						title: n.title,
-						thumbnail: n.thumbnail,
-						imgSource: ImgSourceEnum.remote,
-						short_description: n.short_description
-					}}
-					colors={$newsUiStore.color_palette}
-				/>
+				<button on:click={() => DetailsPage(item.id)}>
+					<svelte:component
+						this={CardComponent}
+						data={{
+							title: item.title,
+							thumbnail: item.thumbnail,
+							imgSource: ImgSourceEnum.remote,
+							short_description: item.short_description
+						}}
+						imageData={{ thumbnail: item.thumbnail, imgSource: ImgSourceEnum.remote }}
+						colors={$newsUiStore.color_palette}
+					/>
+				</button>
 			{:else}
 				<div />
 			{/if}
