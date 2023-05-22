@@ -5,7 +5,6 @@
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { newsSectionStore } from '../stores/newsSectionStore';
 	import NewsSection from '$lib/components/NewsSection.svelte';
-
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
 

@@ -12,7 +12,7 @@ const createNewsSectionStore = () => {
 		set: (seatLayout: NewsModel[]) => {
 			set(seatLayout);
 		},
-		get: async (supabase: SupabaseClient ,limit?:number| undefined) => {
+		get: async (supabase: SupabaseClient, limit?: number | undefined) => {
 			logger.info('get news');
 
 			const result = await supabase
