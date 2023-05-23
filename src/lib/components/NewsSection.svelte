@@ -7,6 +7,7 @@
 	import { Button } from 'flowbite-svelte';
 	// import { MainCard } from 'suli/suliexpo-cards/MainCard.svelte';
 	import logger from '../../utils/logger';
+	import { goto } from '$app/navigation';
 
 	export let news: NewsModel[];
 	export let supabase: any;
@@ -14,11 +15,13 @@
 	onMount(async () => {
 		await getNewsUi(supabase);
 		let card = $newsUiStore?.component?.title;
-		logger.info(news);
 		const module = await import('kubak-svelte-component');
 		console.log(card);
 		CardComponent = module[card as keyof typeof module];
 	});
+	function openNews() {
+		goto('/news');
+	}
 </script>
 
 <section class="py-10">
@@ -27,9 +30,11 @@
 		<div class="">
 			<TitleUi text="News " />
 		</div>
-		<Button color="primary" class="w-32 rounded-md bg-primary text-black">See all</Button>
+		<Button on:click={openNews} color="primary" class="w-32 rounded-md bg-primary text-black"
+			>See all</Button
+		>
 	</div>
-	<div class="grid justify-around grid-cols-1 sm:grid-cols-3 gap-8">
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center">
 		{#each news as n, i}
 			{#if CardComponent}
 				<svelte:component

@@ -14,7 +14,7 @@
 </script>
 
 {#if supabase}
-	<div class="app">
+	<div class="dark:bg-slate-900 app">
 		<Headerbar />
 		<Navbar />
 		<main>

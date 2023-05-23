@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav-ul li {
+	@apply my-1;
+	@apply md:my-0;
+	@apply w-full;
+	@apply md:w-auto;
+}
+
+.swiper-slide-active .slide-text {
+	opacity: 1 !important;
+	transform: translateX(0) !important;
+}

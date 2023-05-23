@@ -22,9 +22,9 @@
 			<source srcset="/images/suliexpo.jpg" type="image/webp" />
 			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
 		</picture> -->
-<HomeSwiper />
+<HomeSwiper supabase={data.supabase} />
 
-<div class="px-20 dark:bg-slate-900">
+<div class="px-4 max-w-7xl m-auto sm:px-10">
 	{#if $newsSectionStore}
 		<div class="my-4">
 			<NewsSection news={$newsSectionStore} supabase={data.supabase} />

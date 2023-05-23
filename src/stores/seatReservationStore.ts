@@ -1,7 +1,6 @@
-import type { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
 import pino from 'pino';
-import { pie } from 'd3';
 export interface SeatDesignModel {
 	id: number | undefined;
 	width: number | undefined;

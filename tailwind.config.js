@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 const config = {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
@@ -11,10 +13,18 @@ const config = {
 
 	theme: {
 		extend: {
+			maxHeight: {
+				128: '32rem',
+				150: '37.5rem',
+				175: '43.75rem',
+				200: '50rem'
+			},
 			height: {
+				100: '30rem',
 				128: '32rem',
 				'1/2': '0.125rem'
 			},
+			width: {},
 			colors: {
 				// flowbite-svelte
 				primary: {
