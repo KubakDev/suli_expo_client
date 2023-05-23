@@ -6,18 +6,19 @@
 	import TitleUi from './TitleUi.svelte';
 	import { goto } from '$app/navigation';
 
+	//get the news data
 	export let news: NewsModel[];
 	export let supabase: any;
 	let CardComponent: any;
 
 	onMount(async () => {
-		// console.log(supabase);
 		await getNewsUi(supabase);
 		let card = $newsUiStore?.component?.title;
 		const module = await import('kubak-svelte-component');
 		CardComponent = module[card as keyof typeof module];
 	});
 
+	// Navigate to newsDetail page
 	function DetailsPage(itemId) {
 		goto(`/newsDetail/${itemId}`);
 		console.log('news :', itemId);
@@ -38,15 +39,12 @@
 						data={{
 							title: item.title,
 							thumbnail: item.thumbnail,
-							imgSource: ImgSourceEnum.remote,
-							short_description: item.short_description
+							imgSource: ImgSourceEnum.remote
 						}}
 						imageData={{ thumbnail: item.thumbnail, imgSource: ImgSourceEnum.remote }}
 						colors={$newsUiStore.color_palette}
 					/>
 				</button>
-			{:else}
-				<div />
 			{/if}
 		{/each}
 	</div>

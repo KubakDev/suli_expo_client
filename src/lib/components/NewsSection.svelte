@@ -16,7 +16,7 @@
 		let card = $newsUiStore?.component?.title;
 		logger.info(news);
 		const module = await import('kubak-svelte-component');
-		console.log(card);
+		// console.log(card);
 		CardComponent = module[card as keyof typeof module];
 	});
 </script>

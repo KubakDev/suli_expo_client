@@ -28,10 +28,13 @@
 		class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:pl-10 md:pl-4 flex flex-col md:items-start md:text-left items-center text-center"
 	>
 		<h1 class="title-font sm:text-xl text-2xl mb-2 font-medium">{newsSection?.title}</h1>
-		<p class="mb-8 leading-relaxed">
+		<p class="leading-relaxed">
 			{newsSection?.short_description}
 		</p>
 
-		<button on:click={() => DetailsPage(newsSection?.id)}>view</button>
+		<button
+			class="underline underline-offset-4 transition-all hover:text-white text-red-500"
+			on:click={() => DetailsPage(newsSection?.id)}>View</button
+		>
 	</div>
 </div>
