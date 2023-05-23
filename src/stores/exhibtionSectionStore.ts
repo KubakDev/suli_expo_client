@@ -14,16 +14,18 @@ const createExhibitionSectionStore = () => {
 		get: async (supabase: SupabaseClient) => {
 			logger.info('get exhibition');
 			const result = await supabase.from('exhibition').select('*');
-			console.log(result);
+			// console.log(result);
 			if (result.error) {
 				logger.error(result.error);
 				return [];
 			} else {
-				const news = result.data.map((e) => convertToExhibitionModel(e)) as ExhibitionModel[];
+				const exhibitions = result.data.map((e) =>
+					convertToExhibitionModel(e)
+				) as ExhibitionModel[];
 				logger.info('$$$$$$$$$$$$$$');
-				logger.info(news);
-				set(news);
-				return news;
+				logger.info(exhibitions);
+				set(exhibitions);
+				return exhibitions;
 			}
 		}
 	};
