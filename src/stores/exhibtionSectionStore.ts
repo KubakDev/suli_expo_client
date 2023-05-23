@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
 import logger from '../utils/logger';
 import { convertToExhibitionModel, type ExhibitionModel } from '../models/exhibitionModel';
+import { convertModel } from '../models/covertModel';
 
 const createExhibitionSectionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
@@ -13,19 +14,22 @@ const createExhibitionSectionStore = () => {
 		},
 		get: async (supabase: SupabaseClient) => {
 			logger.info('get exhibition');
-			const result = await supabase.from('exhibition').select('*');
+			const result = await supabase
+				.from('exhibition')
+				.select('*,languages:exhibition_languages(*)')
+				.eq('languages.language', 'en')
+				.order('created_at', { ascending: false })
+				.limit(9);
 			// console.log(result);
 			if (result.error) {
 				logger.error(result.error);
-				return [];
+				return null;
 			} else {
-				const exhibitions = result.data.map((e) =>
-					convertToExhibitionModel(e)
+				const exhibition = result.data.map((e) =>
+					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
-				logger.info('$$$$$$$$$$$$$$');
-				logger.info(exhibitions);
-				set(exhibitions);
-				return exhibitions;
+				set(exhibition);
+				return null;
 			}
 		}
 	};
