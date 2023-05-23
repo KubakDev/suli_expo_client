@@ -18,6 +18,7 @@ const createNewsSectionStore = () => {
 				.from('news')
 				.select('*,languages:news_languages(*)')
 				.eq('languages.language', 'en')
+				.order('created_at', { ascending: false })
 				.limit(limit ?? 9);
 			if (result.error) {
 				logger.error(result.error);

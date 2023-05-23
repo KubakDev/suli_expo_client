@@ -16,7 +16,7 @@
 		await getNewsUi(supabase);
 		let card = $newsUiStore?.component?.title;
 		const module = await import('kubak-svelte-component');
-		console.log(card);
+		// console.log(card);
 		CardComponent = module[card as keyof typeof module];
 	});
 	function openNews() {

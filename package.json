@@ -35,6 +35,7 @@
 		"postcss": "^8.4.23",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.0",
+		"suli": "file:../suliExpo/flowbite-svelte/dist",
 		"svelte": "^3.59.1",
 		"svelte-check": "^3.3.2",
 		"swiper": "^9.3.1",
@@ -45,6 +46,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"moment": "^2.29.4"
+		"@tailwindcss/forms": "^0.5.3",
+		"kubak-svelte-component": "file:../kubak_svelte_component",
+		"moment": "^2.29.4",
+		"svelte-i18n": "^3.6.0",
+		"svelte-routing": "^1.8.9"
 	}
 }
