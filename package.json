@@ -30,7 +30,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"flowbite": "^1.6.5",
 		"flowbite-svelte": "^0.36.5",
-		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.0.26",
+		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.0.28",
 		"pino": "^8.14.1",
 		"postcss": "^8.4.23",
 		"prettier": "^2.8.8",
