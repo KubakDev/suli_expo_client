@@ -76,6 +76,12 @@
 			active={activeUrl == '/services'}>Services</NavLi
 		>
 		<NavLi
+			on:click={() => updateActiveUrl('/about')}
+			class="mx-1 md:mx-2 cursor-pointer"
+			href="/about"
+			active={activeUrl == '/about'}>About Us</NavLi
+		>
+		<NavLi
 			on:click={() => updateActiveUrl('/contact')}
 			active={activeUrl == '/contact'}
 			class="mx-1 md:mx-2  cursor-pointer"

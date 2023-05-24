@@ -1,26 +1,36 @@
+<script lang="ts">
+	import TitleUi from '$lib/components/TitleUi.svelte';
+	import { onMount } from 'svelte';
+	import { aboutSectionStore } from '../../stores/aboutSectionStore';
+	import About from '$lib/components/+About.svelte';
+
+	export let data;
+
+	onMount(async () => {
+		await aboutSectionStore.get(data?.supabase);
+		console.log('data', $aboutSectionStore);
+	});
+</script>
+
 <svelte:head>
 	<title>About</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="text-column">
-	<h1>About this app</h1>
+<section class="py-10 dark:bg-slate-900">
+	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
+		<div class="flex justify-center items-center my-8">
+			<TitleUi text="About US" />
+		</div>
 
-	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
-		following into your command line and following the prompts:
-	</p>
-
-	<pre>npm create svelte@latest</pre>
-
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
-
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
-</div>
+		<div class="">
+			{#each $aboutSectionStore as aboutSection}
+				<div class="dark:bg-slate-900 dark:text-white">
+					<ul class="py-10">
+						<About {aboutSection} />
+					</ul>
+				</div>
+			{/each}
+		</div>
+	</div>
+</section>
