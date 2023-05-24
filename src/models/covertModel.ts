@@ -9,8 +9,10 @@ export function convertModel<T>(data: any) {
 			// @ts-ignore
 			obj[prop] = data[prop];
 			for (let prop2 in lang) {
-				// @ts-ignore
-				obj[prop2] = lang[prop2];
+				if (prop2 !== 'id') {
+					// @ts-ignore
+					obj[prop2] = lang[prop2];
+				}
 			}
 		}
 	}

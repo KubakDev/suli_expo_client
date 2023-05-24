@@ -18,6 +18,7 @@ const createNewsSectionStore = () => {
 				.from('news')
 				.select('*,languages:news_languages(*)')
 				.eq('languages.language', 'en')
+				.filter('languages.id', 'not', null)
 				.order('created_at', { ascending: false })
 				.limit(limit ?? 9);
 			if (result.error) {
@@ -25,6 +26,7 @@ const createNewsSectionStore = () => {
 				return null;
 			} else {
 				const news = result.data.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
+				logger.info(news);
 				set(news);
 				return null;
 			}
