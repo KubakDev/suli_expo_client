@@ -5,17 +5,18 @@ const langParam = 'lang';
 
 import type { LayoutServerLoad } from './$types';
 import { detectLocale } from '$lib/i18n/i18n-util';
-export const load: LayoutServerLoad = async ({ locals: { getSession }, request, url, cookies }) => {
+export const load: LayoutServerLoad = async ({ locals: { getSession }, url, cookies }) => {
 	let session = await getSession();
-	const path = new URL(request.url).pathname;
-	// Using a GET var "lang" to change locale
 
-	const newLocale = url.searchParams.get(langParam);
+	// const newLocale = url.searchParams.get(langParam);
+	const urlObj = new URL(url, 'http://localhost:3000');
+	const newLocale = urlObj.searchParams.get(langParam);
+	console.log('newLocale e ', newLocale);
 	if (newLocale) {
 		cookies.set(langParam, newLocale, { path: '/' });
-		url.searchParams.delete(langParam);
+		urlObj.searchParams.delete(langParam);
 		// Redirect to remove the GET var
-		throw redirect(303, url.toString());
+		throw redirect(303, urlObj.toString());
 	}
 
 	// Get the locale from the cookie

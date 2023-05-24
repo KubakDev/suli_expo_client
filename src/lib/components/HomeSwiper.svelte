@@ -73,22 +73,22 @@
 </script>
 
 <div dir="ltr">
-	<swiper-container
-		slides-per-view={1}
-		centered-slides={true}
-		pagination={{
-			hideOnClick: true
-		}}
-		autoplay={{
-			delay: 2000,
-			reverseDirection: locale === 'en' ? false : true
-		}}
-		on:progress={onProgress}
-		on:slidechange={onSlideChange}
-		init="false"
-		class="w-full"
-	>
-		{#if $carouselStore}
+	{#if $carouselStore}
+		<swiper-container
+			slides-per-view={1}
+			centered-slides={true}
+			pagination={{
+				hideOnClick: true
+			}}
+			autoplay={{
+				delay: 2000,
+				reverseDirection: locale === 'en' ? false : true
+			}}
+			on:progress={onProgress}
+			on:slidechange={onSlideChange}
+			init="false"
+			class="w-full"
+		>
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
 					<div class="relative max-h-200 flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
@@ -132,12 +132,10 @@
 					</div>
 				</swiper-slide>
 			{/each}
-		{:else}
-			<swiper-slide>
-				<img class="object-cover w-full h-full" src="/images/suliexpo.jpg" />
-			</swiper-slide>
-		{/if}
-	</swiper-container>
+		</swiper-container>
+	{:else}
+		<div class="animate-pulse w-full block h-200 bg-gray-500 opacity-80" />
+	{/if}
 </div>
 
 <style>

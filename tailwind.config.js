@@ -22,6 +22,7 @@ const config = {
 			height: {
 				100: '30rem',
 				128: '32rem',
+				200: '50rem',
 				'1/2': '0.125rem'
 			},
 			width: {},
