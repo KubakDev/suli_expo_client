@@ -21,7 +21,6 @@
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
-	import { get } from 'svelte/store';
 	export let data: PageData;
 	let themeMode = 'light';
 	let selectedLang =
@@ -49,7 +48,6 @@
 		var locale = detectLocale(() => [lang]);
 		await loadLocaleAsync(locale);
 		setLocale(locale);
-
 		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'Kurdish';
 		if (locale === 'ar' || locale === 'ckb') {
 			document.documentElement.setAttribute('dir', 'rtl');
