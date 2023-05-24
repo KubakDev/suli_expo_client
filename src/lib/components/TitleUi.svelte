@@ -6,7 +6,9 @@
 <div>
 	<div class="h-1/2 bg-yellow-400" />
 	<h1
-		class="{footerSize ? 'text-base font-sans' : 'text-4xl font-bold'}  text-center dark:text-white"
+		class="{footerSize
+			? 'text-base font-sans'
+			: 'text-4xl font-bold'} uppercase text-center dark:text-white"
 	>
 		{text}
 	</h1>
