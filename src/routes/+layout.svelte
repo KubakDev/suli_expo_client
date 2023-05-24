@@ -11,13 +11,18 @@
 
 	onMount(async () => {
 		supabase = data.supabase;
+		if (data.locale === 'ar' || data.locale === 'ckb') {
+			document.documentElement.setAttribute('dir', 'rtl');
+		} else {
+			document.documentElement.setAttribute('dir', 'ltr');
+		}
 	});
 </script>
 
 {#if supabase}
 	<div class="dark:bg-slate-900 app">
 		<Headerbar />
-		<Navbar />
+		<Navbar {data} />
 		<main>
 			<slot />
 		</main>

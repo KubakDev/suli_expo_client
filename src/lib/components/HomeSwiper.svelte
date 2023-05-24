@@ -4,9 +4,20 @@
 	import type { CarouselModel } from '../../models/CarouselModel';
 	import { carouselStore } from '../../stores/carouselStore';
 	import { Button } from 'flowbite-svelte';
+	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
+	import Swiper from 'swiper';
 	register();
 
 	export let supabase: any;
+	export let locale: Locale;
+	$: {
+		let a = locale;
+		// swiperjs set scroll directin write to left or left to write
+	}
+
+	function toggleDirection() {
+		// toggle swiper direction
+	}
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
@@ -25,7 +36,6 @@
 			// 		translate: ['100%', 0, 0]
 			// 	}
 			// },
-
 			a11y: {
 				prevSlideMessage: 'Previous slide',
 				nextSlideMessage: 'Next slide'
@@ -36,15 +46,14 @@
 			},
 			speed: 1000,
 			slidesPerView: 1,
-			autoplay: {
-				delay: 2000
-			},
+
 			on: {
 				init() {
 					// ...
 				}
 			}
 		};
+
 		// // now we need to assign all parameters to Swiper element
 		// @ts-ignore
 		Object.assign(swiperEl, swiperParams);
@@ -63,57 +72,73 @@
 	};
 </script>
 
-<swiper-container
-	slides-per-view={1}
-	centered-slides={true}
-	pagination={{
-		hideOnClick: true
-	}}
-	on:progress={onProgress}
-	on:slidechange={onSlideChange}
-	init="false"
-	class="w-full"
->
-	{#if $carouselStore}
-		{#each $carouselStore as c, i}
-			<swiper-slide class="h-full">
-				<div class="relative max-h-200 flex justify-start">
-					<img
-						style="height: 100%;"
-						class="object-cover w-full h-full max-h-200"
-						src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + c.image}
-					/>
-					<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
-					<div
-						class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 left-4 sm:left-10 md:left:20 lg:left-32 z-10"
-					>
+<div dir="ltr">
+	<swiper-container
+		slides-per-view={1}
+		centered-slides={true}
+		pagination={{
+			hideOnClick: true
+		}}
+		autoplay={{
+			delay: 2000,
+			reverseDirection: locale === 'en' ? false : true
+		}}
+		on:progress={onProgress}
+		on:slidechange={onSlideChange}
+		init="false"
+		class="w-full"
+	>
+		{#if $carouselStore}
+			{#each $carouselStore as c, i}
+				<swiper-slide class="h-full">
+					<div class="relative max-h-200 flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
+						<img
+							style="height: 100%;"
+							class="object-cover w-full h-full max-h-200"
+							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + c.image}
+						/>
+						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
-							class=" text-white text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 translate-x-96 delay-100"
+							class={`absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 ${
+								locale === 'en'
+									? 'left-4 sm:left-10 md:left:20 lg:left-32'
+									: 'right-4 sm:right-10 md:right:20 lg:right-32'
+							}  z-10`}
 						>
-							<p>{c.title}</p>
-						</div>
-						<div
-							class="w-full md:w-1/2 text-white text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 translate-x-96 delay-300"
-							data-swiper-parallax="-300"
-							data-swiper-parallax-duration="600"
-						>
-							<p>{c.subtitle}</p>
-						</div>
-						<div
-							class="slide-text duration-1000 ease-in-out opacity-0 translate-x-96 delay-500 mt-4"
-						>
-							<Button outline color="primary">Read More</Button>
+							<div
+								class={`text-white text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 ${
+									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
+								} delay-100`}
+							>
+								<p>{c.title}</p>
+							</div>
+							<div
+								class={`w-full md:w-1/2 text-white text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 ${
+									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
+								} delay-300`}
+								data-swiper-parallax="-300"
+								data-swiper-parallax-duration="600"
+							>
+								<p>{c.subtitle}</p>
+							</div>
+							<div
+								class={`slide-text duration-1000 ease-in-out opacity-0 ${
+									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
+								} delay-500 mt-4`}
+							>
+								<Button outline color="primary">Read More</Button>
+							</div>
 						</div>
 					</div>
-				</div>
+				</swiper-slide>
+			{/each}
+		{:else}
+			<swiper-slide>
+				<img class="object-cover w-full h-full" src="/images/suliexpo.jpg" />
 			</swiper-slide>
-		{/each}
-	{:else}
-		<swiper-slide>
-			<img class="object-cover w-full h-full" src="/images/suliexpo.jpg" />
-		</swiper-slide>
-	{/if}
-</swiper-container>
+		{/if}
+	</swiper-container>
+</div>
 
 <style>
 	.bg-gradient-black {

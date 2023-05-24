@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Cookies from 'js-cookie';
+
 	import {
 		Navbar,
 		NavBrand,
@@ -16,8 +18,14 @@
 	} from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from '../../routes/$types';
-
+	import { setLocale } from '$lib/i18n/i18n-svelte';
+	import { detectLocale } from '$lib/i18n/i18n-util';
+	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
+	import { get } from 'svelte/store';
+	export let data: PageData;
 	let themeMode = 'light';
+	let selectedLang =
+		data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'Kurdish';
 
 	// acgtive on route
 	let activeUrl: string;
@@ -33,6 +41,23 @@
 	function updateActiveUrl(url: string) {
 		activeUrl = url;
 		console.log(activeUrl);
+	}
+
+	async function langSelect(lang: string) {
+		// change language cookie
+		// change language in i18n
+		var locale = detectLocale(() => [lang]);
+		await loadLocaleAsync(locale);
+		setLocale(locale);
+
+		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'Kurdish';
+		if (locale === 'ar' || locale === 'ckb') {
+			document.documentElement.setAttribute('dir', 'rtl');
+		} else {
+			document.documentElement.setAttribute('dir', 'ltr');
+		}
+		// set cookie
+		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
 	}
 </script>
 
@@ -88,12 +113,12 @@
 			href="/contact">Contact</NavLi
 		>
 		<div class="flex-1 flex flex-col md:flex-row justify-end items-center md:right-0">
-			<Button class="mx-4" color="primary"><Chevron>Lang</Chevron></Button>
+			<Button class="mx-4" color="primary"><Chevron>{selectedLang}</Chevron></Button>
 
 			<Dropdown>
-				<DropdownItem>Kurdish</DropdownItem>
-				<DropdownItem>Arabic</DropdownItem>
-				<DropdownItem>English</DropdownItem>
+				<DropdownItem on:click={() => langSelect('ckb')}>Kurdish</DropdownItem>
+				<DropdownItem on:click={() => langSelect('ar')}>Arabic</DropdownItem>
+				<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 			</Dropdown>
 		</div>
 	</NavUl>
