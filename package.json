@@ -48,7 +48,6 @@
 	"type": "module",
 	"dependencies": {
 		"@tailwindcss/forms": "^0.5.3",
-		"kubak-svelte-component": "file:../kubak_svelte_component",
 		"moment": "^2.29.4",
 		"svelte-i18n": "^3.6.0",
 		"svelte-routing": "^1.8.9"

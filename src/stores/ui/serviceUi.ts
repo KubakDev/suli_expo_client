@@ -3,9 +3,9 @@ import { CardType } from '../../models/cardTypeEnum';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { UiModel } from '../../models/uiModel';
 
-const newsUiStore = writable<UiModel>();
+const serviceUiStore = writable<UiModel>();
 
-export async function getNewsUi(supabase: SupabaseClient) {
+export async function getServiceUi(supabase: SupabaseClient) {
 	{
 		const response: any = await supabase
 			.from('page_builder')
@@ -23,12 +23,11 @@ export async function getNewsUi(supabase: SupabaseClient) {
       )
 		`
 			)
-			.eq('page', CardType.News)
+			.eq('page', CardType.Service)
 			.single();
 		const data = response.data as UiModel;
-		newsUiStore.set(data);
-		// newsUi.set(response.data);
+		serviceUiStore.set(data);
 	}
 }
 
-export default newsUiStore;
+export default serviceUiStore;

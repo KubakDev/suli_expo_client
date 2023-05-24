@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
 import logger from '../utils/logger';
-import { convertToExhibitionModel, type ExhibitionModel } from '../models/exhibitionModel';
+import type { ExhibitionModel } from '../models/exhibitionModel';
 import { convertModel } from '../models/covertModel';
 
 const createExhibitionSectionStore = () => {
