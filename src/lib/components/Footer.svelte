@@ -4,31 +4,36 @@
 </script>
 
 <Footer footerType="socialmedia">
-	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
-		<div class=" md:flex md:justify-between">
-			<div class="mb-6 md:mb-0">
+	<div
+		class="mx-auto
+    sm:px-5 max-w-screen-2xl"
+	>
+		<div class=" lg:flex lg:justify-between">
+			<div class="pb-10 lg:pb-0">
 				<img src="/images/logo.png" class="w-full h-32 object-cover" />
 			</div>
-			<div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+			<div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 dark:text-white">
 				<div>
-					<div class="uppercase mb-6 text-xs text-gray-900 dark:text-white">
-						<TitleUi text="resource" />
+					<div
+						class="flex justify-start items-center uppercase mb-6 text-xs text-gray-900 dark:text-white"
+					>
+						<TitleUi text="resource" footerSize={true} />
 					</div>
 
-					<FooterLinkGroup>
-						<FooterLink liClass="mb-4" href="/">Tasluja,</FooterLink>
-						<FooterLink liClass="mb-4" href="/">Sulaymaniyah international fair,</FooterLink>
-						<FooterLink liClass="mb-4" href="/">KRG</FooterLink>
-					</FooterLinkGroup>
+					<ul>
+						<li class="mb-4">Tasluja,</li>
+						<li class="mb-4">Sulaymaniyah international fair,</li>
+						<li class="mb-4">KRG</li>
+					</ul>
 				</div>
 				<div>
-					<h2 class="uppercase mb-6 text-sm font-semibold text-gray-900 dark:text-white">
-						contact
-					</h2>
-					<FooterLinkGroup>
-						<FooterLink liClass="mb-4" href="/">Relations : +9647701234567</FooterLink>
-						<FooterLink liClass="mb-4" href="/">Marketing: +9647501234567</FooterLink>
-					</FooterLinkGroup>
+					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
+						<TitleUi text="contact" footerSize={true} />
+					</div>
+					<ul>
+						<li class="mb-4">Relations : +9647701234567</li>
+						<li class="mb-4">Marketing : +9647501234567</li>
+					</ul>
 				</div>
 			</div>
 		</div>
