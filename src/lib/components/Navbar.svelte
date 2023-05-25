@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Cookies from 'js-cookie';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	import {
 		Navbar,
@@ -23,8 +24,8 @@
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
 	export let data: PageData;
 	let themeMode = 'light';
-	let selectedLang =
-		data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'Kurdish';
+	let dropdownOpen = false;
+	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کورد';
 
 	// acgtive on route
 	let activeUrl: string;
@@ -48,7 +49,7 @@
 		var locale = detectLocale(() => [lang]);
 		await loadLocaleAsync(locale);
 		setLocale(locale);
-		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'Kurdish';
+		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کورد';
 		if (locale === 'ar' || locale === 'ckb') {
 			document.documentElement.setAttribute('dir', 'rtl');
 		} else {
@@ -56,6 +57,7 @@
 		}
 		// set cookie
 		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
+		dropdownOpen = false;
 	}
 </script>
 
@@ -78,13 +80,13 @@
 			on:click={() => updateActiveUrl('/')}
 			class="mx-1 md:mx-2 cursor-pointer"
 			href="/"
-			active={activeUrl == '/'}>Home</NavLi
+			active={activeUrl == '/'}>{$LL.home()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/news')}
 			class="mx-1 md:mx-2  cursor-pointer"
 			href="/news"
-			active={activeUrl == '/news'}>News</NavLi
+			active={activeUrl == '/news'}>{$LL.news()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/exhibition')}
@@ -96,26 +98,26 @@
 			on:click={() => updateActiveUrl('/services')}
 			class="mx-1 md:mx-2 cursor-pointer"
 			href="/services"
-			active={activeUrl == '/services'}>Services</NavLi
+			active={activeUrl == '/services'}>{$LL.services()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/about')}
 			class="mx-1 md:mx-2 cursor-pointer"
 			href="/about"
-			active={activeUrl == '/about'}>About Us</NavLi
+			active={activeUrl == '/about'}>{$LL.about()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/contact')}
 			active={activeUrl == '/contact'}
 			class="mx-1 md:mx-2  cursor-pointer"
-			href="/contact">Contact</NavLi
+			href="/contact">{$LL.contact()}</NavLi
 		>
 		<div class="flex-1 flex flex-col md:flex-row justify-end items-center md:right-0">
 			<Button class="mx-4 " dir="ltr" color="primary"><Chevron>{selectedLang}</Chevron></Button>
 
-			<Dropdown id="">
-				<DropdownItem on:click={() => langSelect('ckb')}>Kurdish</DropdownItem>
-				<DropdownItem on:click={() => langSelect('ar')}>Arabic</DropdownItem>
+			<Dropdown bind:open={dropdownOpen} id="">
+				<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>
+				<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
 				<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 			</Dropdown>
 		</div>

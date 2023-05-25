@@ -28,8 +28,8 @@
 		</picture> -->
 <HomeSwiper locale={$locale} supabase={data.supabase} />
 
-<div class="px-4 max-w-7xl m-auto sm:px-10">
-	{#if false}
+<div class="px-4 max-w-7xl m-auto sm:px-10 w-full">
+	{#if $newsSectionStore}
 		<div class="my-4">
 			<NewsSection news={$newsSectionStore} supabase={data.supabase} />
 		</div>

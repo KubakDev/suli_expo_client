@@ -20,6 +20,26 @@ type RootTranslation = {
 	 * @param {string} name
 	 */
 	HI: RequiredParams<'name'>
+	/**
+	 * H​o​m​e
+	 */
+	home: string
+	/**
+	 * A​b​o​u​t
+	 */
+	about: string
+	/**
+	 * C​o​n​t​a​c​t
+	 */
+	contact: string
+	/**
+	 * N​e​w​s
+	 */
+	news: string
+	/**
+	 * S​e​r​v​i​c​e​s
+	 */
+	services: string
 }
 
 export type TranslationFunctions = {
@@ -27,6 +47,26 @@ export type TranslationFunctions = {
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
 	 */
 	HI: (arg: { name: string }) => LocalizedString
+	/**
+	 * Home
+	 */
+	home: () => LocalizedString
+	/**
+	 * About
+	 */
+	about: () => LocalizedString
+	/**
+	 * Contact
+	 */
+	contact: () => LocalizedString
+	/**
+	 * News
+	 */
+	news: () => LocalizedString
+	/**
+	 * Services
+	 */
+	services: () => LocalizedString
 }
 
 export type Formatters = {}

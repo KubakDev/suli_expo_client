@@ -39,7 +39,7 @@
 		</div>
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<div class="sm:flex sm:items-center sm:justify-center">
-			<h3 class="text-white">
+			<h3 class="dark:text-white">
 				© Copyright - SulyExpo | Designed by <span class="text-[#E1B168]">Kubak</span>
 			</h3>
 		</div>
