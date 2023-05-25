@@ -32,7 +32,7 @@
 		>
 	</div>
 	<div
-		class="grid grid-cols-1 md:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
+		class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 	>
 		{#each exhibitions as exhibition, i}
 			<Exhibition {exhibition} />

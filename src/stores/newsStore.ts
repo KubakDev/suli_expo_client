@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 import type { NewsModel } from '../models/newsModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
-const createNewsSectionStore = () => {
+const createNewsStore = () => {
 	// const logger =new pino.pino({prettyPrint: true});
 	const { subscribe, set, update } = writable<NewsModel[]>();
 
@@ -20,12 +20,13 @@ const createNewsSectionStore = () => {
 				.select('*,languages:news_languages(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
-				.limit(3);
+				.limit(9);
 			if (result.error) {
 				logger.error(result.error);
 				return null;
 			} else {
 				const news = result.data.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
+				logger.info(news);
 				set(news);
 				return null;
 			}
@@ -33,4 +34,4 @@ const createNewsSectionStore = () => {
 	};
 };
 
-export const newsSectionStore = createNewsSectionStore();
+export const newsStore = createNewsStore();
