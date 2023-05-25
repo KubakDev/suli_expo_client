@@ -39,7 +39,9 @@
 	<!-- about section -->
 	<section class="body-font overflow-hidden">
 		<div class="lg:my-8">
-			<h1 class="flex item-start">Our&nbsp;<span class="text-[#e1b168]">Mission</span></h1>
+			<h1 class="flex item-start font-bold">
+				Our&nbsp;<span class="text-[#e1b168]">Mission</span>
+			</h1>
 			<div class="w-1/6 pb-2 border-t-2 border-[#D0D5DD]" />
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
@@ -88,7 +90,9 @@
 		</div>
 
 		<div class="my-8">
-			<h1 class="flex item-start">Our&nbsp;<span class="text-[#e1b168]">Commitment</span></h1>
+			<h1 class="flex item-start font-bold">
+				Our&nbsp;<span class="text-[#e1b168]">Commitment</span>
+			</h1>
 			<div class="w-1/5 pb-2 border-t-2 border-[#D0D5DD]" />
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
