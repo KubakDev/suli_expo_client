@@ -6,6 +6,7 @@
 	import { newsSectionStore } from '../stores/newsSectionStore';
 	import NewsSection from '$lib/components/NewsSection.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import NewsSectionShimmer from '$lib/components/NewsSectionShimmer.svelte';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -27,12 +28,13 @@
 		</picture> -->
 <HomeSwiper locale={$locale} supabase={data.supabase} />
 
-<h1>Hi welcome {$LL.HI({ name: 'World' })}</h1>
 <div class="px-4 max-w-7xl m-auto sm:px-10">
-	{#if $newsSectionStore}
+	{#if false}
 		<div class="my-4">
 			<NewsSection news={$newsSectionStore} supabase={data.supabase} />
 		</div>
+	{:else}
+		<NewsSectionShimmer />
 	{/if}
 	{#if seatLayout}
 		<SeatReservation {seatLayout} />

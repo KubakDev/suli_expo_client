@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { newsSectionStore } from '../../stores/newsSectionStore';
 	import News from '$lib/components/News.svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let data;
 
@@ -10,7 +11,7 @@
 	// });
 
 	onMount(async () => {
-		newsSectionStore.get(data.supabase);
+		newsSectionStore.get($locale, data.supabase);
 	});
 </script>
 

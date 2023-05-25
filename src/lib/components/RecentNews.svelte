@@ -12,7 +12,7 @@
 
 	function DetailsPage(itemId: number) {
 		// console.log(itemId);
-		goto(`/newsDetail/${itemId}`);
+		goto(`/news/${itemId}`);
 	}
 </script>
 

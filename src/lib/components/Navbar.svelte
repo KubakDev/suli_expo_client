@@ -111,9 +111,9 @@
 			href="/contact">Contact</NavLi
 		>
 		<div class="flex-1 flex flex-col md:flex-row justify-end items-center md:right-0">
-			<Button class="mx-4" color="primary"><Chevron>{selectedLang}</Chevron></Button>
+			<Button class="mx-4 " dir="ltr" color="primary"><Chevron>{selectedLang}</Chevron></Button>
 
-			<Dropdown>
+			<Dropdown id="">
 				<DropdownItem on:click={() => langSelect('ckb')}>Kurdish</DropdownItem>
 				<DropdownItem on:click={() => langSelect('ar')}>Arabic</DropdownItem>
 				<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>

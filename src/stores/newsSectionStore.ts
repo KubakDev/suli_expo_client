@@ -16,6 +16,7 @@ const createNewsSectionStore = () => {
 		get: async (locale: Locales, supabase: SupabaseClient, limit?: number | undefined) => {
 			// get current selected language
 			logger.info(locale);
+			logger.info('#############');
 			const result = await supabase
 				.from('news')
 				.select('*,languages:news_languages(*)')

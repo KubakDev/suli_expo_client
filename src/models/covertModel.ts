@@ -7,7 +7,14 @@ export function convertModel<T>(data: any) {
 		// add all properties from lang to obj
 		if (prop !== 'languages') {
 			// @ts-ignore
-			obj[prop] = data[prop];
+			if (prop === 'images') {
+				// @ts-ignore
+				obj[prop] = data[prop]?.split(',');
+			} else {
+				// @ts-ignore
+				obj[prop] = data[prop];
+			}
+
 			for (let prop2 in lang) {
 				if (prop2 !== 'id') {
 					// @ts-ignore

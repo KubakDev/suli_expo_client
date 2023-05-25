@@ -20,7 +20,7 @@
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: any) {
-		goto(`/newsDetail/${itemId}`);
+		goto(`/news/${itemId}`);
 		console.log('news :', itemId);
 	}
 </script>
