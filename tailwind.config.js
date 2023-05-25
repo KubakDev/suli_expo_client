@@ -28,6 +28,9 @@ const config = {
 			width: {},
 			colors: {
 				// flowbite-svelte
+				secondary: {
+					DEFAULT: '#292E36'
+				},
 				primary: {
 					50: '#E1B168',
 					100: '#E1B168',

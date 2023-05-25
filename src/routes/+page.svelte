@@ -7,6 +7,8 @@
 	import NewsSection from '$lib/components/NewsSection.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import NewsSectionShimmer from '$lib/components/NewsSectionShimmer.svelte';
+	import { exhibitionSectionStore } from '../stores/exhibtionSectionStore';
+	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -14,6 +16,7 @@
 	onMount(async () => {
 		seatLayout = await seatStore.get(data.supabase);
 		newsSectionStore.get($locale, data.supabase, 3);
+		exhibitionSectionStore.get(data.supabase);
 	});
 </script>
 
@@ -28,9 +31,16 @@
 		</picture> -->
 <HomeSwiper locale={$locale} supabase={data.supabase} />
 
-<div class="px-4 max-w-7xl m-auto sm:px-10 w-full">
-	{#if $newsSectionStore}
+<div class="  m-auto w-full">
+	{#if $exhibitionSectionStore}
 		<div class="my-4">
+			<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+		</div>
+	{:else}
+		<NewsSectionShimmer />
+	{/if}
+	{#if $newsSectionStore}
+		<div class="my-4 bg-secondary w-full">
 			<NewsSection news={$newsSectionStore} supabase={data.supabase} />
 		</div>
 	{:else}

@@ -22,6 +22,7 @@
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
+	import { changeLanguage } from '../../utils/language';
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
@@ -50,11 +51,7 @@
 		await loadLocaleAsync(locale);
 		setLocale(locale);
 		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کورد';
-		if (locale === 'ar' || locale === 'ckb') {
-			document.documentElement.setAttribute('dir', 'rtl');
-		} else {
-			document.documentElement.setAttribute('dir', 'ltr');
-		}
+		changeLanguage(locale);
 		// set cookie
 		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
 		dropdownOpen = false;
@@ -63,14 +60,14 @@
 
 <Navbar
 	navDivClass="  mx-auto flex flex-wrap items-center  max-w-full "
-	navClass="px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative"
+	navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative"
 	let:hidden
 	let:toggle
 >
 	<NavHamburger on:click={toggle} />
 	<NavUl
 		divClass="w-full md:block  justify-center max-w-full items-center "
-		ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm md:font-medium items-center nav-ul"
+		ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul font-bold	"
 		{hidden}
 	>
 		<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">

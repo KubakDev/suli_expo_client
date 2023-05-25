@@ -40,6 +40,10 @@ type RootTranslation = {
 	 * S​e​r​v​i​c​e​s
 	 */
 	services: string
+	/**
+	 * E​x​h​i​b​i​t​i​o​n
+	 */
+	exhibition: string
 }
 
 export type TranslationFunctions = {
@@ -67,6 +71,10 @@ export type TranslationFunctions = {
 	 * Services
 	 */
 	services: () => LocalizedString
+	/**
+	 * Exhibition
+	 */
+	exhibition: () => LocalizedString
 }
 
 export type Formatters = {}
