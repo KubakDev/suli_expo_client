@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 import type { ExhibitionModel } from '../models/exhibitionModel';
 import { convertModel } from '../models/covertModel';
 
-const createExhibitionSectionStore = () => {
+const createExhibitionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
 
 	return {
@@ -19,7 +19,7 @@ const createExhibitionSectionStore = () => {
 				.select('*,languages:exhibition_languages(*)')
 				.eq('languages.language', 'en')
 				.order('created_at', { ascending: false })
-				.limit(2);
+				.limit(9);
 			// console.log(result);
 			if (result.error) {
 				logger.error(result.error);
@@ -35,4 +35,4 @@ const createExhibitionSectionStore = () => {
 	};
 };
 
-export const exhibitionSectionStore = createExhibitionSectionStore();
+export const exhibitionStore = createExhibitionStore();

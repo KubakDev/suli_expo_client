@@ -7,7 +7,8 @@ const ar = {
 	about: 'حول',
 	contact: 'اتصل',
 	news: 'أخبار',
-	services: 'خدمات'
+	services: 'خدمات',
+	exhibition: 'معرض'
 } satisfies Translation;
 
 export default ar;

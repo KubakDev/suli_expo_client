@@ -5,22 +5,19 @@
 	import Headerbar from '$lib/components/Headerbar.svelte';
 	import { onMount } from 'svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { changeLanguage } from '../utils/language';
 	export let data;
 
 	let supabase: any;
 
 	onMount(async () => {
 		supabase = data.supabase;
-		if (data.locale === 'ar' || data.locale === 'ckb') {
-			document.documentElement.setAttribute('dir', 'rtl');
-		} else {
-			document.documentElement.setAttribute('dir', 'ltr');
-		}
+		changeLanguage(data.locale);
 	});
 </script>
 
 {#if supabase}
-	<div class="dark:bg-slate-900 app">
+	<div class="dark:bg-black bg-white app">
 		<Headerbar />
 		<Navbar {data} />
 		<main>

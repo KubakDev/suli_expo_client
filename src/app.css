@@ -13,3 +13,47 @@
 	opacity: 1 !important;
 	transform: translateX(0) !important;
 }
+
+@font-face {
+	font-family: 'EnglishFont';
+	src: url('/fonts/PlusJakartaSans_Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'KurdishFont';
+	src: url('/fonts/bahij_janna_regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'EnglishFont';
+	src: url('/fonts/PlusJakartaSans_Bold.woff2') format('woff2');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'KurdishFont';
+	src: url('/fonts/bahij_janna_bold.woff2') format('woff2');
+	font-weight: bold;
+	font-style: normal;
+}
+
+body:lang(en) {
+	font-family: 'EnglishFont', sans-serif;
+}
+
+body:lang(ckb) {
+	font-family: 'KurdishFont', sans-serif;
+}
+
+body:lang(ar) {
+	font-family: 'KurdishFont', sans-serif;
+}
+
+b,
+strong {
+	font-weight: bold;
+}

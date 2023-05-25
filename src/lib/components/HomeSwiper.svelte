@@ -99,32 +99,32 @@
 						/>
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
-							class={`absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 ${
-								locale === 'en'
-									? 'left-4 sm:left-10 md:left:20 lg:left-32'
-									: 'right-4 sm:right-10 md:right:20 lg:right-32'
-							}  z-10`}
+							class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 {locale === 'en'
+								? 'left-4 sm:left-10 md:left:20 lg:left-32'
+								: 'right-4 sm:right-10 md:right:20 lg:right-32'}  z-10"
 						>
 							<div
-								class={`text-white text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 ${
-									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
-								} delay-100`}
+								class="text-white text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								'en'
+									? 'translate-x-96'
+									: '-translate-x-96'} delay-100"
 							>
 								<p>{c.title}</p>
 							</div>
 							<div
-								class={`w-full md:w-1/2 text-white text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 ${
-									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
-								} delay-300`}
+								class="w-full md:w-1/2 text-white text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								'en'
+									? 'translate-x-96'
+									: '-translate-x-96'} delay-300"
 								data-swiper-parallax="-300"
 								data-swiper-parallax-duration="600"
 							>
 								<p>{c.subtitle}</p>
 							</div>
 							<div
-								class={`slide-text duration-1000 ease-in-out opacity-0 ${
-									locale === 'en' ? 'translate-x-96' : '-translate-x-96'
-								} delay-500 mt-4`}
+								class="slide-text duration-1000 ease-in-out opacity-0 {locale === 'en'
+									? 'translate-x-96'
+									: '-translate-x-96'} delay-500 mt-4"
 							>
 								<Button outline color="primary">Read More</Button>
 							</div>
