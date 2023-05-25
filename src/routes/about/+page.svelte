@@ -12,7 +12,7 @@
 		await aboutSectionStore.get(data?.supabase);
 		// console.log('data', $aboutSectionStore);
 		await staffSectionStore.get(data?.supabase);
-		console.log('staff data', $staffSectionStore);
+		// console.log('staff data', $staffSectionStore);
 	});
 </script>
 
