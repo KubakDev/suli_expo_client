@@ -35,9 +35,7 @@
 			<source srcset="/images/suliexpo.jpg" type="image/webp" />
 			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
 		</picture> -->
-<div class="h-200 w-full">
-	<HomeSwiper locale={$locale} supabase={data.supabase} />
-</div>
+<HomeSwiper locale={$locale} supabase={data.supabase} />
 
 <div class="  m-auto w-full">
 	<div class=" max-h-300 min-h-128 w-full block z-10">
