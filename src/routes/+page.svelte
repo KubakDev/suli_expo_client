@@ -49,13 +49,13 @@
 	>
 		<NewsSection supabase={data.supabase} />
 	</div>
-	<div data-aos="slide-left" data-aos-duration="1000" data-aos-offset="400">
+	<div data-aos="slide-left" data-aos-duration="1000" data-aos-offset="300">
 		<PromoSection supabase={data.supabase} />
 	</div>
 	<div
 		data-aos-offset="1200"
 		data-aos="slide-right"
-		data-aos-duration="1000"
+		data-aos-duration="800"
 		class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center"
 	>
 		<AboutUsSection supabase={data.supabase} />

@@ -45,7 +45,7 @@
 		<div class="px-4 sm:px-5 mx-auto max-w-screen-2xl py-10">
 			<div class="grid grid-cols-1 items-start lg:gap-8 lg:grid-cols-3">
 				<div class="col-span-2 bg-gray-50">
-					<NewsDetail long_description={news?.long_description} images={news.images} />
+					<NewsDetail {news} />
 				</div>
 				<div
 					class="col-span-1 lg:mt-0 mt-5 bg-[#3E4248] dark:bg-[#3E4248] dark:bg-opacity-20 rounded-lg border dark:border-gray-700"
