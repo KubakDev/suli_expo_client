@@ -12,6 +12,7 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { newsSectionStore } from '../../../stores/newsSectionStore';
 	import NewsSectionShimmer from './NewsSectionShimmer.svelte';
+	import SeeAllBtn from '../SeeAllBtn.svelte';
 
 	export let supabase: any;
 	let CardComponent: any;
@@ -40,15 +41,17 @@
 </script>
 
 {#if $newsSectionStore && $newsSectionStore.length > 0}
-	<section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
+	<section
+		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
 				<TitleUi textColorDark="text-white" textColorLight="text-white" text={$LL.news()} />
 			</div>
-			<Button on:click={openNews} color="primary" class="w-32 rounded-md bg-primary text-black"
-				>{$LL.seeAll()}</Button
-			>
+			<div class="flex justify-end w-32">
+				<SeeAllBtn onBtnClick={openNews} />
+			</div>
 		</div>
 		<div
 			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"

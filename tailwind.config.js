@@ -54,6 +54,7 @@ const config = {
 				300: '75rem'
 			},
 			height: {
+				'h-1/2': '1.25rem',
 				100: '30rem',
 				128: '32rem',
 				200: '50rem'

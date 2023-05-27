@@ -16,7 +16,9 @@
 </script>
 
 {#if $aboutSectionStore}
-	<section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
+	<section
+		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+	>
 		<div class="flex justify-center items-center">
 			<TitleUi text={$LL.about()} />
 		</div>

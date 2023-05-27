@@ -14,6 +14,7 @@
 	import constants from '../../utils/constants';
 	import { fly, fade } from 'svelte/transition';
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
+	import SeeAllBtn from './SeeAllBtn.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -33,7 +34,7 @@
 
 {#if $exhibitionSectionStore && $exhibitionSectionStore.length > 0}
 	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto"
+		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
 		in:fly={{ y: 400, duration: 800, delay: 200 }}
 		out:fly={{ y: 200, duration: 200, delay: 20 }}
 	>
@@ -42,9 +43,9 @@
 			<div class="">
 				<TitleUi text={$LL.exhibition()} />
 			</div>
-			<Button on:click={openNews} color="primary" class="w-32 rounded-md bg-primary text-black"
-				>{$LL.seeAll()}</Button
-			>
+			<div class="flex justify-end w-32">
+				<SeeAllBtn onBtnClick={openNews} />
+			</div>
 		</div>
 		{#if $exhibitionSectionStore}
 			<div
