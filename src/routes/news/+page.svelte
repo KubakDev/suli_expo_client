@@ -16,18 +16,14 @@
 	let CardComponent: any;
 
 	$: {
-		logger.error('news page invoke');
 		if ($locale) {
-			logger.error('news page invoke');
 			newsStore.get($locale, data.supabase);
 		}
 	}
 
 	onMount(async () => {
-		logger.error('news page invoke onMount');
 		getNewsUi(data.supabase).then(async (value) => {
 			let card = $newsUiStore?.component?.title;
-			logger.error('news page invoke', card);
 			import('kubak-svelte-component').then(
 				(module) => (CardComponent = module[card as keyof typeof module])
 			);

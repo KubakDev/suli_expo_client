@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { CardType } from '../../models/cardTypeEnum';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { UiModel } from '../../models/uiModel';
@@ -7,6 +7,12 @@ const newsUiStore = writable<UiModel>();
 
 export async function getNewsUi(supabase: SupabaseClient) {
 	{
+		// check if store already has data
+		const storeData = get(newsUiStore);
+		if (storeData) {
+			return;
+		}
+
 		const response: any = await supabase
 			.from('page_builder')
 			.select(

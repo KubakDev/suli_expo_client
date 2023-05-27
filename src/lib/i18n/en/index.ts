@@ -9,7 +9,8 @@ const en = {
 	news: 'News',
 	services: 'Services',
 	exhibition: 'Exhibition',
-	promo: 'Promo'
+	promo: 'Promo',
+	seeAll: 'See all'
 } satisfies BaseTranslation;
 
 export default en;

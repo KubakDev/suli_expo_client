@@ -9,7 +9,8 @@ const ckb = {
 	news: 'هەواڵەکان',
 	services: 'خزمەتگوزاری',
 	exhibition: 'نمایشگاه',
-	promo: 'پرۆمۆ'
+	promo: 'پرۆمۆ',
+	seeAll: 'هەموو ببینە'
 } satisfies Translation;
 
 export default ckb;
