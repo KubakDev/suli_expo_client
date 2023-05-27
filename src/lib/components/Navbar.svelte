@@ -68,6 +68,8 @@
 	<NavUl
 		divClass="w-full md:block  justify-center max-w-full items-center "
 		ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul font-bold	"
+		activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
+		nonActiveClass="text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 		{hidden}
 	>
 		<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
@@ -89,7 +91,7 @@
 			on:click={() => updateActiveUrl('/exhibition')}
 			class="mx-1 md:mx-2 cursor-pointer"
 			href="/exhibition"
-			active={activeUrl == '/exhibition'}>Exhibition</NavLi
+			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/services')}

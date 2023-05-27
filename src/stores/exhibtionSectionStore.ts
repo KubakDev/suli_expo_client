@@ -18,6 +18,7 @@ const createExhibitionSectionStore = () => {
 				.from('exhibition')
 				.select('*,languages:exhibition_languages(*)')
 				.eq('languages.language', 'en')
+
 				.order('created_at', { ascending: false })
 				.limit(2);
 			// console.log(result);

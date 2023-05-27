@@ -3,19 +3,19 @@
 	import { onMount } from 'svelte';
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import { newsSectionStore } from '../stores/newsSectionStore';
-	import NewsSection from '$lib/components/NewsSection.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import NewsSectionShimmer from '$lib/components/NewsSectionShimmer.svelte';
 	import { exhibitionSectionStore } from '../stores/exhibtionSectionStore';
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
+	import PromoSection from '$lib/components/PromoSection.svelte';
+	import NewsSectionShimmer from '$lib/components/NewsSection/NewsSectionShimmer.svelte';
+	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
 
 	onMount(async () => {
 		seatLayout = await seatStore.get(data.supabase);
-		newsSectionStore.get($locale, data.supabase, 3);
+
 		exhibitionSectionStore.get(data.supabase);
 	});
 </script>
@@ -33,19 +33,17 @@
 
 <div class="  m-auto w-full">
 	{#if $exhibitionSectionStore}
-		<div class="my-4">
+		<div class="">
 			<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 		</div>
 	{:else}
 		<NewsSectionShimmer />
 	{/if}
-	{#if $newsSectionStore}
-		<div class="my-4 bg-secondary w-full">
-			<NewsSection news={$newsSectionStore} supabase={data.supabase} />
-		</div>
-	{:else}
-		<NewsSectionShimmer />
-	{/if}
+
+	<div class=" bg-secondary w-full">
+		<NewsSection supabase={data.supabase} />
+	</div>
+	<PromoSection supabase={data.supabase} />
 	{#if seatLayout}
 		<SeatReservation {seatLayout} />
 	{/if}

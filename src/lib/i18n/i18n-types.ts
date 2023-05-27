@@ -44,6 +44,10 @@ type RootTranslation = {
 	 * E​x​h​i​b​i​t​i​o​n
 	 */
 	exhibition: string
+	/**
+	 * P​r​o​m​o
+	 */
+	promo: string
 }
 
 export type TranslationFunctions = {
@@ -75,6 +79,10 @@ export type TranslationFunctions = {
 	 * Exhibition
 	 */
 	exhibition: () => LocalizedString
+	/**
+	 * Promo
+	 */
+	promo: () => LocalizedString
 }
 
 export type Formatters = {}

@@ -36,7 +36,7 @@
 	});
 
 	onMount(async () => {
-		newsSectionStore.get($locale, data.supabase, 6);
+		newsSectionStore.get($locale, data.supabase);
 	});
 </script>
 

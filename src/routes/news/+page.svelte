@@ -1,29 +1,75 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { newsSectionStore } from '../../stores/newsSectionStore';
-	import News from '$lib/components/News.svelte';
+	import { goto } from '$app/navigation';
+	import { fly, fade } from 'svelte/transition';
+	import type { NewsModel } from '../../models/newsModel';
+	import { getNewsUi } from '../../stores/ui/newsUi';
+	import TitleUi from '$lib/components/TitleUi.svelte';
+	import { ImgSourceEnum } from '../../models/imgSourceEnum';
+	import newsUiStore from '../../stores/ui/newsUi';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-
+	import logger from '../../utils/logger';
+	import { newsStore } from '../../stores/newsStore';
+	import Constants from '../../utils/constants';
 	export let data;
+	export let news: NewsModel[];
+	let CardComponent: any;
 
-	// newsSectionStore.subscribe((data) => {
-	// 	console.log('data', data);
-	// });
+	$: {
+		logger.error('news page invoke');
+		if ($locale) {
+			logger.error('news page invoke');
+			newsStore.get($locale, data.supabase);
+		}
+	}
 
 	onMount(async () => {
-		newsSectionStore.get($locale, data.supabase);
+		logger.error('news page invoke onMount');
+		getNewsUi(data.supabase).then(async (value) => {
+			let card = $newsUiStore?.component?.title;
+			logger.error('news page invoke', card);
+			import('kubak-svelte-component').then(
+				(module) => (CardComponent = module[card as keyof typeof module])
+			);
+			// console.log(card);
+		});
 	});
+
+	// Navigate to newsDetail page
+	function DetailsPage(itemId: any) {
+		goto(`/news/${itemId}`);
+		console.log('news :', itemId);
+	}
 </script>
 
-<svelte:head>
-	<title>News</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
-
-{#if $newsSectionStore}
-	<div class="dark:bg-slate-900">
-		<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
-			<News news={$newsSectionStore} supabase={data.supabase} />
+<section class="py-10 {Constants.page_max_width} m-auto">
+	<div class="flex justify-center items-center my-8">
+		<div in:fade={{ duration: 800 }}>
+			<TitleUi text="News " />
 		</div>
 	</div>
-{/if}
+	{#if $newsStore}
+		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{#each $newsStore as item, i}
+				{#if CardComponent}
+					<div
+						on:click={() => DetailsPage(item.id)}
+						in:fly={{ y: 200, duration: 500, delay: i * 100 }}
+						out:fly={{ y: 200, duration: 200, delay: i * 20 }}
+					>
+						<svelte:component
+							this={CardComponent}
+							data={{
+								title: item.title,
+								thumbnail: item.thumbnail,
+								imgSource: ImgSourceEnum.remote
+							}}
+							imageData={{ thumbnail: item.thumbnail, imgSource: ImgSourceEnum.remote }}
+							colors={$newsUiStore.color_palette}
+						/>
+					</div>
+				{/if}
+			{/each}
+		</div>
+	{/if}
+</section>
