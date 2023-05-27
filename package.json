@@ -57,8 +57,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"aos": "^2.3.4",
+		"formik": "^2.3.2",
 		"moment": "^2.29.4",
 		"svelte-feather-icons": "^4.0.0",
-		"svelte-routing": "^1.8.9"
+		"svelte-routing": "^1.8.9",
+		"svelte-toast": "^1.0.0",
+		"svelte-yup": "^1.0.5",
+		"yup": "^1.2.0"
 	}
 }
