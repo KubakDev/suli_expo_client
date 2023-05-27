@@ -3,8 +3,8 @@
 	import { onMount } from 'svelte';
 	import { aboutSectionStore } from '../../stores/aboutSectionStore';
 	import { staffSectionStore } from '../../stores/staffSectionStore';
-	import About from '$lib/components/+About.svelte';
-	import Staff from '$lib/components/+Staff.svelte';
+	import About from '$lib/components/About.svelte';
+	import Staff from '$lib/components/Staff.svelte';
 
 	export let data;
 

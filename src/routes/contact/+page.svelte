@@ -3,6 +3,8 @@
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
+	import ContactInfo from '$lib/components/ContactInfo.svelte';
+	import Contact from '$lib/components/+Contact.svelte';
 
 	export let data;
 	$: {
@@ -19,19 +21,22 @@
 
 <section class="py-10 dark:bg-slate-900">
 	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
+		<!-- title  -->
 		<div class="flex justify-center items-center my-8">
 			<TitleUi text="Contact" />
 		</div>
 
-		<div class="grid gap-8 mt-8 sm:grid-cols-1 lg:grid-cols-2">
+		<!-- contact information section -->
+		<div
+			class="mt-32 grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:bg-slate-950 dark:text-slate-300 bg-[#eef0f2] text-slate-800 shadow"
+		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}
-					<div class="dark:bg-slate-900 dark:text-white">
-						{contactInfoSection?.location}
-					</div>
-				{/each}
+					<ContactInfo {contactInfoSection} />{/each}
 			{/if}
-			fgfg
 		</div>
+
+		<!-- Contact Form -->
+		<Contact />
 	</div>
 </section>
