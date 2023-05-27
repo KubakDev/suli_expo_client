@@ -16,7 +16,7 @@
 </script>
 
 <div>
-	<a href="#" class="block overflow-hidden group">
+	<a class="block overflow-hidden group">
 		<img
 			src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${exhibition?.images}`}
 			alt={exhibition.title}

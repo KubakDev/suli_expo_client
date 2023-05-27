@@ -17,17 +17,18 @@
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
 		"@playwright/test": "^1.33.0",
+		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.0.28",
 		"@supabase/auth-helpers-sveltekit": "^0.9.4",
 		"@supabase/supabase-js": "^2.22.0",
 		"@sveltejs/adapter-auto": "^2.0.1",
 		"@sveltejs/kit": "^1.16.3",
 		"@tailwindcss/forms": "^0.5.3",
+		"@types/aos": "^3.0.4",
 		"@types/cookie": "^0.5.1",
 		"@types/d3": "^7.4.0",
 		"@types/js-cookie": "^3.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.59.5",
 		"@typescript-eslint/parser": "^5.59.5",
-		"aos": "^2.3.4",
 		"autoprefixer": "^10.4.14",
 		"d3": "^7.8.4",
 		"esbuild": "^0.17.19",
@@ -44,6 +45,7 @@
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.0",
 		"rxjs": "^7.8.1",
+		"saos": "^1.3.1",
 		"suli": "file:../suliExpo/flowbite-svelte/dist",
 		"svelte": "^3.59.1",
 		"svelte-check": "^3.3.2",
@@ -57,9 +59,12 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"kubak-svelte-component": "file:../kubak_svelte_component",
+		"formik": "^2.3.2",
 		"moment": "^2.29.4",
 		"svelte-feather-icons": "^4.0.0",
-		"svelte-routing": "^1.8.9"
+		"svelte-routing": "^1.8.9",
+		"svelte-toast": "^1.0.0",
+		"svelte-yup": "^1.0.5",
+		"yup": "^1.2.0"
 	}
 }

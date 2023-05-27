@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { afterUpdate } from 'svelte';
+
+	afterUpdate(() => {});
 	import type { AboutModel } from '../../models/aboutModel';
 
 	export let aboutSection: AboutModel;
@@ -8,15 +11,9 @@
 	<!-- short description  -->
 	<div class="text-center lg:w-5/6 md:w-6/6 w-6/6">
 		<p
-			class="leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-white"
+			class=" leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-white"
 		>
 			{aboutSection?.short_description}
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt doloribus cumque enim? Eum esse,
-			tempore laboriosam vel incidunt consequatur suscipit voluptate culpa quod reprehenderit at temporibus,
-			ipsum quae. Temporibus, tempora.tempore laboriosam vel incidunt consequatur suscipit voluptate
-			culpa quod reprehenderit at temporibus, ipsum quae. Temporibus, tempora.ipsum quae. Temporibus,
-			tempora.tempore laboriosam vel incidunt consequatur suscipit voluptate culpa quod reprehenderit
-			at temporibus, ipsum quae. Temporibus, tempora.
 		</p>
 	</div>
 
@@ -78,7 +75,7 @@
 			</div>
 		</div>
 
-		<div class="my-8">
+		<div class="lg:my-8">
 			<h1 class="flex item-start font-bold">
 				Our&nbsp;<span class="text-[#e1b168]">Commitment</span>
 			</h1>
