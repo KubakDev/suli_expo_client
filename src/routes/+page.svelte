@@ -19,7 +19,9 @@
 	let seatLayout: SeatLayoutModel | undefined | null;
 
 	onMount(async () => {
-		AOS.init();
+		AOS.init({
+			disable: 'mobile'
+		});
 		seatLayout = await seatStore.get(data.supabase);
 	});
 </script>
@@ -55,7 +57,7 @@
 	<div
 		data-aos-offset="1200"
 		data-aos="slide-right"
-		data-aos-duration="800"
+		data-aos-duration="1000"
 		class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center"
 	>
 		<AboutUsSection supabase={data.supabase} />
