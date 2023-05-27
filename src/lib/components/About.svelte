@@ -1,18 +1,7 @@
 <script lang="ts">
-	export let aboutSection: {
-		id: number;
-		images: string;
-		title: string;
-		short_description: string;
-		unmatched_service: string;
-		specific: string;
-		experience: string;
-		technology: string;
-		ethics: string;
-		quality: string;
-		continuity: string;
-		created_at: Date;
-	};
+	import type { AboutModel } from '../../models/aboutModel';
+
+	export let aboutSection: AboutModel;
 </script>
 
 <div class=" flex items-center justify-center flex-col">

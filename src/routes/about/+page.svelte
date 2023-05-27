@@ -3,13 +3,14 @@
 	import { onMount } from 'svelte';
 	import { aboutSectionStore } from '../../stores/aboutSectionStore';
 	import { staffSectionStore } from '../../stores/staffSectionStore';
-	import About from '$lib/components/+About.svelte';
-	import Staff from '$lib/components/+Staff.svelte';
+	import About from '$lib/components/About.svelte';
+	import Staff from '$lib/components/Staff.svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let data;
 
 	onMount(async () => {
-		await aboutSectionStore.get(data?.supabase);
+		await aboutSectionStore.get($locale, data?.supabase);
 		// console.log('data', $aboutSectionStore);
 		await staffSectionStore.get(data?.supabase);
 		// console.log('staff data', $staffSectionStore);
@@ -29,13 +30,13 @@
 		</div>
 		<!-- about content -->
 		<div class="">
-			{#each $aboutSectionStore as aboutSection}
+			{#if $aboutSectionStore}
 				<div class="dark:bg-slate-900 dark:text-white">
 					<ul class="py-10">
-						<About {aboutSection} />
+						<About aboutSection={$aboutSectionStore} />
 					</ul>
 				</div>
-			{/each}
+			{/if}
 		</div>
 
 		<!-- team section -->
