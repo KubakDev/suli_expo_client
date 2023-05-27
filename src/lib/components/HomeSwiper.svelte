@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { register } from 'swiper/element/bundle';
-	import type { CarouselModel } from '../../models/CarouselModel';
 	import { carouselStore } from '../../stores/carouselStore';
 	import { Button } from 'flowbite-svelte';
 	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
-	import Swiper from 'swiper';
+	import { fade } from 'svelte/transition';
+
 	register();
 
 	export let supabase: any;
@@ -69,7 +69,7 @@
 	const onSlideChange = (e: any) => {};
 </script>
 
-<div dir="ltr">
+<div dir="ltr" in:fade={{ duration: 800 }}>
 	{#if $carouselStore}
 		<swiper-container
 			slides-per-view={1}

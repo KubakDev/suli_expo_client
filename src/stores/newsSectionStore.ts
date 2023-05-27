@@ -15,17 +15,25 @@ const createNewsSectionStore = () => {
 		},
 		get: async (locale: Locales, supabase: SupabaseClient) => {
 			// get current selected language
-			const result = await supabase
+			let result = await supabase
 				.from('news')
 				.select('*,languages:news_languages(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(3);
+			let data = result.data;
+			// filter if result language is not empty
+			if (data) {
+				data = data.filter((e) => e.languages.length > 0);
+			} else {
+				data = [];
+			}
+
 			if (result.error) {
 				logger.error(result.error);
 				return null;
 			} else {
-				const news = result.data.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
+				const news = data.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
 				set(news);
 				return null;
 			}

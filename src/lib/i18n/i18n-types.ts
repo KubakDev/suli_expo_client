@@ -48,6 +48,10 @@ type RootTranslation = {
 	 * P​r​o​m​o
 	 */
 	promo: string
+	/**
+	 * S​e​e​ ​a​l​l
+	 */
+	seeAll: string
 }
 
 export type TranslationFunctions = {
@@ -83,6 +87,10 @@ export type TranslationFunctions = {
 	 * Promo
 	 */
 	promo: () => LocalizedString
+	/**
+	 * See all
+	 */
+	seeAll: () => LocalizedString
 }
 
 export type Formatters = {}

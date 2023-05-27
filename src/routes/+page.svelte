@@ -15,8 +15,6 @@
 
 	onMount(async () => {
 		seatLayout = await seatStore.get(data.supabase);
-
-		exhibitionSectionStore.get(data.supabase);
 	});
 </script>
 
@@ -29,20 +27,19 @@
 			<source srcset="/images/suliexpo.jpg" type="image/webp" />
 			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
 		</picture> -->
-<HomeSwiper locale={$locale} supabase={data.supabase} />
+<div class="h-200 w-full">
+	<HomeSwiper locale={$locale} supabase={data.supabase} />
+</div>
 
 <div class="  m-auto w-full">
-	{#if $exhibitionSectionStore}
-		<div class="">
-			<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
-		</div>
-	{:else}
-		<NewsSectionShimmer />
-	{/if}
+	<div class=" max-h-300 min-h-128 w-full block z-10">
+		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+	</div>
 
-	<div class=" bg-secondary w-full">
+	<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
 		<NewsSection supabase={data.supabase} />
 	</div>
+
 	<PromoSection supabase={data.supabase} />
 	{#if seatLayout}
 		<SeatReservation {seatLayout} />

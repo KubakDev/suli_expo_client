@@ -31,9 +31,6 @@
 	// acgtive on route
 	let activeUrl: string;
 	$: activeUrl = $page.url.pathname;
-	onMount(() => {
-		console.log($page.url);
-	});
 
 	function onThemeModeChange() {
 		themeMode;
@@ -77,42 +74,45 @@
 		</div>
 		<NavLi
 			on:click={() => updateActiveUrl('/')}
-			class="mx-1 md:mx-2 cursor-pointer"
+			class="mx-1 md:mx-2 cursor-pointer text-xl"
 			href="/"
 			active={activeUrl == '/'}>{$LL.home()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/news')}
-			class="mx-1 md:mx-2  cursor-pointer"
+			class="mx-1 md:mx-2  cursor-pointer text-xl"
 			href="/news"
 			active={activeUrl == '/news'}>{$LL.news()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/exhibition')}
-			class="mx-1 md:mx-2 cursor-pointer"
+			class="mx-1 md:mx-2 cursor-pointer text-xl"
 			href="/exhibition"
 			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/services')}
-			class="mx-1 md:mx-2 cursor-pointer"
+			class="mx-1 md:mx-2 cursor-pointer text-xl"
 			href="/services"
 			active={activeUrl == '/services'}>{$LL.services()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/about')}
-			class="mx-1 md:mx-2 cursor-pointer"
+			class="mx-1 md:mx-2 cursor-pointer text-xl"
 			href="/about"
 			active={activeUrl == '/about'}>{$LL.about()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/contact')}
 			active={activeUrl == '/contact'}
-			class="mx-1 md:mx-2  cursor-pointer"
+			class="mx-1 md:mx-2  cursor-pointer text-xl"
 			href="/contact">{$LL.contact()}</NavLi
 		>
-		<div class="flex-1 flex flex-col md:flex-row justify-end items-center md:right-0">
-			<Button class="mx-4 " dir="ltr" color="primary"><Chevron>{selectedLang}</Chevron></Button>
+		<div
+			class="flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+			style="margin:0 ;"
+		>
+			<Button class="" dir="ltr" color="primary"><Chevron>{selectedLang}</Chevron></Button>
 
 			<Dropdown bind:open={dropdownOpen} id="">
 				<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>

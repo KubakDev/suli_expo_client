@@ -25,21 +25,13 @@
 	}
 
 	onMount(async () => {
-		if (!$newsUiStore) {
-			getNewsUi(supabase).then(async (value) => {
-				let card = $newsUiStore?.component?.title;
-				import('kubak-svelte-component').then(
-					(module) => (CardComponent = module[card as keyof typeof module])
-				);
-				// console.log(card);
-			});
-		} else {
+		getNewsUi(supabase).then(async (value) => {
 			let card = $newsUiStore?.component?.title;
-			console.log('card', card);
 			import('kubak-svelte-component').then(
 				(module) => (CardComponent = module[card as keyof typeof module])
 			);
-		}
+			// console.log(card);
+		});
 	});
 
 	function openNews() {
@@ -47,7 +39,7 @@
 	}
 </script>
 
-{#if $newsSectionStore}
+{#if $newsSectionStore && $newsSectionStore.length > 0}
 	<section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
@@ -55,7 +47,7 @@
 				<TitleUi textColorDark="text-white" textColorLight="text-white" text={$LL.news()} />
 			</div>
 			<Button on:click={openNews} color="primary" class="w-32 rounded-md bg-primary text-black"
-				>See all</Button
+				>{$LL.seeAll()}</Button
 			>
 		</div>
 		<div

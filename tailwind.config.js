@@ -13,19 +13,56 @@ const config = {
 
 	theme: {
 		extend: {
+			maxWidth: {
+				10: '2.5rem',
+				20: '5rem',
+				32: '8rem',
+				40: '10rem',
+				48: '12rem',
+				64: '16rem',
+				80: '20rem',
+				96: '24rem',
+				128: '32rem',
+				150: '37.5rem',
+				175: '43.75rem'
+			},
+			minWidth: {
+				10: '2.5rem',
+				20: '5rem',
+				32: '8rem',
+				40: '10rem',
+				48: '12rem',
+				64: '16rem',
+				80: '20rem',
+				96: '24rem',
+				128: '32rem',
+				150: '37.5rem',
+				175: '43.75rem'
+			},
 			maxHeight: {
 				128: '32rem',
 				150: '37.5rem',
 				175: '43.75rem',
-				200: '50rem'
+				200: '50rem',
+				300: '75rem'
+			},
+			minHeight: {
+				128: '32rem',
+				150: '37.5rem',
+				175: '43.75rem',
+				200: '50rem',
+				300: '75rem'
 			},
 			height: {
 				100: '30rem',
 				128: '32rem',
-				200: '50rem',
-				'1/2': '0.125rem'
+				200: '50rem'
 			},
-			width: {},
+			width: {
+				100: '30rem',
+				128: '32rem',
+				200: '50rem'
+			},
 			colors: {
 				// flowbite-svelte
 				secondary: {

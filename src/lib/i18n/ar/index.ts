@@ -9,7 +9,8 @@ const ar = {
 	news: 'أخبار',
 	services: 'خدمات',
 	exhibition: 'معرض',
-	promo: 'ترويجي'
+	promo: 'ترويجي',
+	seeAll: 'اظهار الكل'
 } satisfies Translation;
 
 export default ar;
