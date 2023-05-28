@@ -10,7 +10,14 @@ const en = {
 	services: 'Services',
 	exhibition: 'Exhibition',
 	promo: 'Promo',
-	seeAll: 'See all'
+	seeAll: 'See all',
+	marketing: 'Marketing',
+	relations: 'Relations',
+	technical: 'Technical',
+	administration: 'Administration',
+	feedback: 'Feedback',
+	send: 'Send',
+	successMessage: 'Success! Sent Message!'
 } satisfies BaseTranslation;
 
 export default en;

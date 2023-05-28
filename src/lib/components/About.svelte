@@ -1,32 +1,14 @@
 <script lang="ts">
-<<<<<<< HEAD
 	import { afterUpdate } from 'svelte';
 	import AOS from 'aos';
 	import 'aos/dist/aos.css';
+	import type { AboutModel } from '../../models/aboutModel';
 
-	export let aboutSection: {
-		id: number;
-		images: string;
-		title: string;
-		short_description: string;
-		unmatched_service: string;
-		specific: string;
-		experience: string;
-		technology: string;
-		ethics: string;
-		quality: string;
-		continuity: string;
-		created_at: Date;
-	};
+	export let aboutSection: AboutModel;
 
 	afterUpdate(() => {
 		AOS.init(); // Initialize AOS after the component is updated
 	});
-=======
-	import type { AboutModel } from '../../models/aboutModel';
-
-	export let aboutSection: AboutModel;
->>>>>>> 488e8d33ef10d9df2a4ef6548fb2fc0894d6c853
 </script>
 
 <div class=" flex items-center justify-center flex-col">

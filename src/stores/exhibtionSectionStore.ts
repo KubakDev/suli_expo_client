@@ -18,12 +18,7 @@ const createExhibitionSectionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select('*,languages:exhibition_languages(*)')
-<<<<<<< HEAD
-				.eq('languages.language', 'en')
-=======
 				.eq('languages.language', locale)
-
->>>>>>> 488e8d33ef10d9df2a4ef6548fb2fc0894d6c853
 				.order('created_at', { ascending: false })
 				.limit(2);
 

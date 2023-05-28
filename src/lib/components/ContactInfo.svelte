@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	export let contactInfoSection: {
 		id: number;
 		location: string;
@@ -40,16 +41,16 @@
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2">
 		<span>
-			Marketing: {contactInfoSection?.phoneNumber_marketing}
+			{$LL.marketing()}: {contactInfoSection?.phoneNumber_marketing}
 		</span>
 		<span>
-			Relations:{contactInfoSection?.phoneNumber_relations}
+			{$LL.relations()}:{contactInfoSection?.phoneNumber_relations}
 		</span>
 		<span>
-			Technical:{contactInfoSection?.phoneNumber_Technical}
+			{$LL.technical()}:{contactInfoSection?.phoneNumber_Technical}
 		</span>
 		<span>
-			Administration:{contactInfoSection?.phoneNumber_Administration}
+			{$LL.administration()}:{contactInfoSection?.phoneNumber_Administration}
 		</span>
 	</div>
 </div>
