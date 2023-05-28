@@ -1,6 +1,25 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
+
 	import { Footer, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
 	import TitleUi from './TitleUi.svelte';
+	import { contactInfoSectionStore } from '../../stores/contactInfo';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
+
+	export let data;
+
+	let contactInfoData;
+
+	onMount(async () => {
+		if (locale && data?.supabase) {
+			await contactInfoSectionStore.get(locale, data.supabase);
+		}
+	});
+
+	$: {
+		contactInfoData = $contactInfoSectionStore;
+		console.log(contactInfoData);
+	}
 </script>
 
 <Footer footerType="socialmedia">
@@ -20,19 +39,25 @@
 						<TitleUi text="resource" footerSize={true} />
 					</div>
 
-					<ul>
-						<li class="mb-4">Tasluja,</li>
-						<li class="mb-4">Sulaymaniyah international fair,</li>
-						<li class="mb-4">KRG</li>
+					<ul class="w-44 text-sm leading-6">
+						{#if contactInfoData}
+							{#each contactInfoData as info}
+								<li class="">{info.location}</li>
+							{/each}
+						{/if}
 					</ul>
 				</div>
 				<div>
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
 						<TitleUi text="contact" footerSize={true} />
 					</div>
-					<ul>
-						<li class="mb-4">Relations : +9647701234567</li>
-						<li class="mb-4">Marketing : +9647501234567</li>
+					<ul class="text-sm leading-6">
+						{#if contactInfoData}
+							{#each contactInfoData as info}
+								<li class="">Marketing : {info.phoneNumber_marketing}</li>
+								<li class="">Relations : {info.phoneNumber_relations}</li>
+							{/each}
+						{/if}
 					</ul>
 				</div>
 			</div>

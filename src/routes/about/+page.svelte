@@ -69,7 +69,7 @@
 <style>
 	@keyframes -global-from-bottom {
 		from {
-			transform: translateY(30%);
+			transform: translateY(20%);
 		}
 		to {
 			transform: translateY(0);
