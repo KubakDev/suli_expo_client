@@ -1,14 +1,7 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
-	import AOS from 'aos';
-	import 'aos/dist/aos.css';
 	import type { AboutModel } from '../../models/aboutModel';
-
 	export let aboutSection: AboutModel;
-
-	afterUpdate(() => {
-		AOS.init(); // Initialize AOS after the component is updated
-	});
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 </script>
 
 <div class=" flex items-center justify-center flex-col">
@@ -30,13 +23,13 @@
 	<section class="body-font overflow-hidden">
 		<div class="lg:my-8">
 			<h1 class="flex item-start font-bold">
-				Our&nbsp;<span class="text-[#e1b168]">Mission</span>
+				{$LL.our()}&nbsp;<span class="text-[#e1b168]">{$LL.mission()}</span>
 			</h1>
 			<div class="w-1/6 pb-2 border-t-2 border-[#D0D5DD]" />
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Unmatched Service</span>
+					<span class="font-semibold title-font">{$LL.unmatchedServices()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -47,7 +40,7 @@
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Specific</span>
+					<span class="font-semibold title-font">{$LL.specific()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -58,7 +51,7 @@
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Experience</span>
+					<span class="font-semibold title-font">{$LL.experience()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -69,7 +62,7 @@
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Technology</span>
+					<span class="font-semibold title-font">{$LL.technology()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -81,13 +74,13 @@
 
 		<div class="lg:my-8">
 			<h1 class="flex item-start font-bold">
-				Our&nbsp;<span class="text-[#e1b168]">Commitment</span>
+				{$LL.our()}&nbsp;<span class="text-[#e1b168]">{$LL.commitment()}</span>
 			</h1>
 			<div class="w-1/5 pb-2 border-t-2 border-[#D0D5DD]" />
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Ethics</span>
+					<span class="font-semibold title-font">{$LL.quality()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -98,7 +91,7 @@
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Quality</span>
+					<span class="font-semibold title-font">{$LL.continuity()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">
@@ -109,7 +102,7 @@
 
 			<div class="py-4 flex flex-wrap md:flex-nowrap">
 				<div class="md:w-64 md:mb-0 mb-2 flex-shrink-0 flex flex-col">
-					<span class="font-semibold title-font">Continuity</span>
+					<span class="font-semibold title-font">{$LL.specific()}</span>
 				</div>
 				<div class="md:flex-grow">
 					<p class="leading-relaxed">

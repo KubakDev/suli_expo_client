@@ -9,10 +9,16 @@
 
 	export let data;
 
+	$: {
+		if ($locale) {
+			aboutSectionStore.get($locale, data.supabase);
+			staffSectionStore.get($locale, data.supabase);
+		}
+	}
 	onMount(async () => {
 		await aboutSectionStore.get($locale, data?.supabase);
 		// console.log('data', $aboutSectionStore);
-		await staffSectionStore.get(data?.supabase);
+		await staffSectionStore.get($locale, data?.supabase);
 		// console.log('staff data', $staffSectionStore);
 	});
 </script>
@@ -43,7 +49,7 @@
 		<section>
 			<div class="text-center pb-12">
 				<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[#e1b168]">
-					Our Success Team
+					{$LL.successTeam()}
 				</h1>
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">

@@ -17,7 +17,18 @@ const ar = {
 	administration: 'الإدارة',
 	feedback: 'تعليق',
 	send: 'يرسل',
-	successMessage: 'نجاح! الرسالة المرسلة!'
+	successMessage: 'نجاح! الرسالة المرسلة!',
+	successTeam: 'فريق النجاح لدينا',
+	unmatchedServices: 'خدمة لا مثيل لها',
+	specific: 'محدد',
+	experience: 'خبرة',
+	technology: 'تكنولوجيا',
+	ethics: 'أخلاق مهنية',
+	quality: 'جودة',
+	continuity: 'استمرارية',
+	our: 'ملكنا',
+	mission: 'مهمة',
+	commitment: 'التزام'
 } satisfies Translation;
 
 export default ar;

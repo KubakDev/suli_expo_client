@@ -80,6 +80,50 @@ type RootTranslation = {
 	 * S​u​c​c​e​s​s​!​ ​S​e​n​t​ ​M​e​s​s​a​g​e​!
 	 */
 	successMessage: string
+	/**
+	 * O​u​r​ ​S​u​c​c​e​s​s​ ​T​e​a​m
+	 */
+	successTeam: string
+	/**
+	 * U​n​m​a​t​c​h​e​d​ ​S​e​r​v​i​c​e
+	 */
+	unmatchedServices: string
+	/**
+	 * S​p​e​c​i​f​i​c
+	 */
+	specific: string
+	/**
+	 * E​x​p​e​r​i​e​n​c​e
+	 */
+	experience: string
+	/**
+	 * T​e​c​h​n​o​l​o​g​y
+	 */
+	technology: string
+	/**
+	 * E​t​h​i​c​s
+	 */
+	ethics: string
+	/**
+	 * Q​u​a​l​i​t​y
+	 */
+	quality: string
+	/**
+	 * C​o​n​t​i​n​u​i​t​y
+	 */
+	continuity: string
+	/**
+	 * O​u​r
+	 */
+	our: string
+	/**
+	 * M​i​s​s​i​o​n
+	 */
+	mission: string
+	/**
+	 * C​o​m​m​i​t​m​e​n​t
+	 */
+	commitment: string
 }
 
 export type TranslationFunctions = {
@@ -147,6 +191,50 @@ export type TranslationFunctions = {
 	 * Success! Sent Message!
 	 */
 	successMessage: () => LocalizedString
+	/**
+	 * Our Success Team
+	 */
+	successTeam: () => LocalizedString
+	/**
+	 * Unmatched Service
+	 */
+	unmatchedServices: () => LocalizedString
+	/**
+	 * Specific
+	 */
+	specific: () => LocalizedString
+	/**
+	 * Experience
+	 */
+	experience: () => LocalizedString
+	/**
+	 * Technology
+	 */
+	technology: () => LocalizedString
+	/**
+	 * Ethics
+	 */
+	ethics: () => LocalizedString
+	/**
+	 * Quality
+	 */
+	quality: () => LocalizedString
+	/**
+	 * Continuity
+	 */
+	continuity: () => LocalizedString
+	/**
+	 * Our
+	 */
+	our: () => LocalizedString
+	/**
+	 * Mission
+	 */
+	mission: () => LocalizedString
+	/**
+	 * Commitment
+	 */
+	commitment: () => LocalizedString
 }
 
 export type Formatters = {}
