@@ -31,7 +31,7 @@
 		</picture> -->
 <HomeSwiper locale={$locale} supabase={data.supabase} />
 
-<div class="  m-auto w-full">
+<div class="  m-auto w-full overflow-hidden">
 	<div class=" max-h-300 min-h-128 w-full block z-10">
 		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 	</div>
