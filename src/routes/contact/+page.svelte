@@ -23,7 +23,7 @@
 	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
 		<!-- title  -->
 		<div class="flex justify-center items-center my-8">
-			<TitleUi text="Contact" />
+			<TitleUi text={$LL.contact()} />
 		</div>
 
 		<!-- contact information section -->

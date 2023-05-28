@@ -10,7 +10,14 @@ const ar = {
 	services: 'خدمات',
 	exhibition: 'معرض',
 	promo: 'ترويجي',
-	seeAll: 'اظهار الكل'
+	seeAll: 'اظهار الكل',
+	marketing: 'التسويق',
+	relations: 'العلاقات',
+	technical: 'تقني',
+	administration: 'الإدارة',
+	feedback: 'تعليق',
+	send: 'يرسل',
+	successMessage: 'نجاح! الرسالة المرسلة!'
 } satisfies Translation;
 
 export default ar;

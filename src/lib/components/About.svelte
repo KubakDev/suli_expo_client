@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
-
-	afterUpdate(() => {});
 	import type { AboutModel } from '../../models/aboutModel';
 
 	export let aboutSection: AboutModel;
+
+	afterUpdate(() => {
+		AOS.init(); // Initialize AOS after the component is updated
+	});
 </script>
 
 <div class=" flex items-center justify-center flex-col">

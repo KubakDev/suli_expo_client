@@ -52,6 +52,34 @@ type RootTranslation = {
 	 * S​e​e​ ​a​l​l
 	 */
 	seeAll: string
+	/**
+	 * M​a​r​k​e​t​i​n​g
+	 */
+	marketing: string
+	/**
+	 * R​e​l​a​t​i​o​n​s
+	 */
+	relations: string
+	/**
+	 * T​e​c​h​n​i​c​a​l
+	 */
+	technical: string
+	/**
+	 * A​d​m​i​n​i​s​t​r​a​t​i​o​n
+	 */
+	administration: string
+	/**
+	 * F​e​e​d​b​a​c​k
+	 */
+	feedback: string
+	/**
+	 * S​e​n​d
+	 */
+	send: string
+	/**
+	 * S​u​c​c​e​s​s​!​ ​S​e​n​t​ ​M​e​s​s​a​g​e​!
+	 */
+	successMessage: string
 }
 
 export type TranslationFunctions = {
@@ -91,6 +119,34 @@ export type TranslationFunctions = {
 	 * See all
 	 */
 	seeAll: () => LocalizedString
+	/**
+	 * Marketing
+	 */
+	marketing: () => LocalizedString
+	/**
+	 * Relations
+	 */
+	relations: () => LocalizedString
+	/**
+	 * Technical
+	 */
+	technical: () => LocalizedString
+	/**
+	 * Administration
+	 */
+	administration: () => LocalizedString
+	/**
+	 * Feedback
+	 */
+	feedback: () => LocalizedString
+	/**
+	 * Send
+	 */
+	send: () => LocalizedString
+	/**
+	 * Success! Sent Message!
+	 */
+	successMessage: () => LocalizedString
 }
 
 export type Formatters = {}
