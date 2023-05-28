@@ -1,4 +1,4 @@
-export function convertModel<T>(data: any) {
+export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	let lang = data.languages[0];
 	// create new object for type T
 	let obj = {} as T;
@@ -10,6 +10,18 @@ export function convertModel<T>(data: any) {
 			if (prop === 'images') {
 				// @ts-ignore
 				obj[prop] = data[prop]?.split(',');
+				// check if T is NewsModel
+				if (isNewsModel) {
+					// @ts-ignore
+					obj['imagesCarousel'] = data[prop]?.split(',').map((e: string, i: number) => {
+						return {
+							id: i,
+							name: e,
+							imgurl: import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e,
+							attribution: ''
+						};
+					});
+				}
 			} else {
 				// @ts-ignore
 				obj[prop] = data[prop];
