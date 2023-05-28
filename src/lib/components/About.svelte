@@ -1,4 +1,8 @@
 <script lang="ts">
+<<<<<<< HEAD
+=======
+	import { afterUpdate } from 'svelte';
+>>>>>>> 8b8d1dc66e3f188e3e3a3c3c6dd11afec4b40f09
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
 	import { LL, locale } from '$lib/i18n/i18n-svelte';

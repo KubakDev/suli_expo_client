@@ -4,28 +4,24 @@
 	import { page } from '$app/stores';
 	import { NewsDetail } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
-	import RecentNews from '$lib/components/RecentNews.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import type { NewsModel } from '../../../models/newsModel';
 	import { convertModel } from '../../../models/covertModel';
+	import RecentNews from '$lib/components/RecentNews.svelte';
 
 	export let data;
 	let news: NewsModel | undefined | null;
-	$: id = $page.params.newsId;
 
-	$: {
-		getNews();
-		console.log(id);
-	}
 	async function getNews() {
 		let response = await data.supabase
 			.from('news')
 			.select('*,languages:news_languages(*)')
 			.eq('languages.language', $locale)
-			.eq('id', id)
+			.eq('id', $page.params.newsId)
 			.single();
-		news = convertModel<NewsModel>(response.data) as NewsModel;
+		news = convertModel<NewsModel>(response.data, true) as NewsModel;
 		console.log(news);
+		console.log(news.images);
 	}
 
 	onMount(() => {
@@ -48,11 +44,11 @@
 					class="col-span-1 lg:mt-0 mt-5 bg-[#3E4248] dark:bg-[#3E4248] dark:bg-opacity-20 rounded-lg border dark:border-gray-700"
 				>
 					<h1 class="text-2xl py-8 font-bold">Recent News</h1>
-					<!-- <section class="body-font">
+					<section class="body-font">
 						{#each $newsSectionStore as newsSection}
 							<RecentNews {newsSection} />
 						{/each}
-					</section> -->
+					</section>
 				</div>
 			</div>
 		</div>

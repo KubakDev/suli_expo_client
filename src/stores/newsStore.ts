@@ -25,7 +25,7 @@ const createNewsStore = () => {
 				logger.error(result.error);
 				return null;
 			} else {
-				const news = result.data.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
+				const news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
 				set(news);
 				return null;
 			}
