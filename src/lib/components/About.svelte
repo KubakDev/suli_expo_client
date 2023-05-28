@@ -22,23 +22,13 @@
 	</div>
 
 	<img
-		data-aos="fade-up"
-		data-aos-offset="200"
-		data-aos-easing="ease-in-sine"
-		data-aos-duration="900"
 		class="lg:-mt-20 lg:w-4/6 w-full mb-10 lg:h-96 object-cover object-center rounded-lg"
 		alt="about image"
 		src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${aboutSection?.images}`}
 	/>
 	<!-- about section -->
 	<section class="body-font overflow-hidden">
-		<div
-			class="lg:my-8"
-			data-aos="fade-in"
-			data-aos-offset="200"
-			data-aos-easing="ease-in-sine"
-			data-aos-duration="900"
-		>
+		<div class="lg:my-8">
 			<h1 class="flex item-start font-bold">
 				Our&nbsp;<span class="text-[#e1b168]">Mission</span>
 			</h1>
@@ -89,13 +79,7 @@
 			</div>
 		</div>
 
-		<div
-			class="lg:my-8"
-			data-aos="fade-in"
-			data-aos-offset="200"
-			data-aos-easing="ease-in-sine"
-			data-aos-duration="900"
-		>
+		<div class="lg:my-8">
 			<h1 class="flex item-start font-bold">
 				Our&nbsp;<span class="text-[#e1b168]">Commitment</span>
 			</h1>

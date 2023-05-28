@@ -48,13 +48,7 @@
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
-					<div
-						data-aos="fade-in"
-						data-aos-offset="200"
-						data-aos-easing="ease-in-cubic"
-						data-aos-duration="900"
-						class="dark:bg-slate-900 dark:text-white"
-					>
+					<div class="dark:bg-slate-900 dark:text-white">
 						<Staff {staffSection} />
 					</div>
 				{/each}
