@@ -1,11 +1,7 @@
 <script lang="ts">
-	export let staffSection: {
-		id: number;
-		images: string;
-		title: string;
-		name: string;
-		created_at: Date;
-	};
+	import type { StaffModel } from '../../models/satffModel';
+
+	export let staffSection: StaffModel;
 </script>
 
 <div class="">

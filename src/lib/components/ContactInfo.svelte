@@ -1,14 +1,8 @@
 <script lang="ts">
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	export let contactInfoSection: {
-		id: number;
-		location: string;
-		email: string;
-		phoneNumber_marketing: string;
-		phoneNumber_relations: string;
-		phoneNumber_Technical: string;
-		phoneNumber_Administration: string;
-	};
+	import type { ContactInfoModel } from '../../models/contactInfo';
+
+	export let contactInfoSection: ContactInfoModel;
 </script>
 
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
@@ -41,16 +35,37 @@
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2">
 		<span>
-			{$LL.marketing()}: {contactInfoSection?.phoneNumber_marketing}
+			{$LL.marketing()} :
+			{#if $locale === 'ckb' || $locale === 'ar'}
+				964{contactInfoSection?.phoneNumber_marketing}+
+			{:else}
+				+964{contactInfoSection?.phoneNumber_marketing}
+			{/if}
+		</span>
+
+		<span>
+			{$LL.relations()} :
+			{#if $locale === 'ckb' || $locale === 'ar'}
+				964{contactInfoSection?.phoneNumber_relations}+
+			{:else}
+				+964{contactInfoSection?.phoneNumber_relations}
+			{/if}
 		</span>
 		<span>
-			{$LL.relations()}:{contactInfoSection?.phoneNumber_relations}
+			{$LL.technical()} :
+			{#if $locale === 'ckb' || $locale === 'ar'}
+				964{contactInfoSection?.phoneNumber_Technical}+
+			{:else}
+				+964{contactInfoSection?.phoneNumber_Technical}
+			{/if}
 		</span>
 		<span>
-			{$LL.technical()}:{contactInfoSection?.phoneNumber_Technical}
-		</span>
-		<span>
-			{$LL.administration()}:{contactInfoSection?.phoneNumber_Administration}
+			{$LL.administration()} :
+			{#if $locale === 'ckb' || $locale === 'ar'}
+				964{contactInfoSection?.phoneNumber_Administration}+
+			{:else}
+				+964{contactInfoSection?.phoneNumber_Administration}
+			{/if}
 		</span>
 	</div>
 </div>

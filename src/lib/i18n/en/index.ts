@@ -17,7 +17,18 @@ const en = {
 	administration: 'Administration',
 	feedback: 'Feedback',
 	send: 'Send',
-	successMessage: 'Success! Sent Message!'
+	successMessage: 'Success! Sent Message!',
+	successTeam: 'Our Success Team',
+	unmatchedServices: 'Unmatched Service',
+	specific: 'Specific',
+	experience: 'Experience',
+	technology: 'Technology',
+	ethics: 'Ethics',
+	quality: 'Quality',
+	continuity: 'Continuity',
+	our: 'Our',
+	mission: 'Mission',
+	commitment: 'Commitment'
 } satisfies BaseTranslation;
 
 export default en;

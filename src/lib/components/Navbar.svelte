@@ -64,7 +64,7 @@
 	<NavHamburger on:click={toggle} />
 	<NavUl
 		divClass="w-full md:block  justify-center max-w-full items-center "
-		ulClass="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul font-bold	"
+		ulClass="flex flex-col p-1 lg:p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
 		activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
 		nonActiveClass="text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 		{hidden}
@@ -74,45 +74,50 @@
 		</div>
 		<NavLi
 			on:click={() => updateActiveUrl('/')}
-			class="mx-1 md:mx-2 cursor-pointer text-xl"
+			class="  cursor-pointer text-base  lg:text-xl"
 			href="/"
 			active={activeUrl == '/'}>{$LL.home()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/news')}
-			class="mx-1 md:mx-2  cursor-pointer text-xl"
+			class="  cursor-pointer text-base  lg:text-xl"
 			href="/news"
 			active={activeUrl == '/news'}>{$LL.news()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/exhibition')}
-			class="mx-1 md:mx-2 cursor-pointer text-xl"
+			class="  cursor-pointer text-base  lg:text-xl"
 			href="/exhibition"
 			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/services')}
-			class="mx-1 md:mx-2 cursor-pointer text-xl"
+			class="  cursor-pointer text-base  lg:text-xl"
 			href="/services"
 			active={activeUrl == '/services'}>{$LL.services()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/about')}
-			class="mx-1 md:mx-2 cursor-pointer text-xl"
+			class=" cursor-pointer text-base  lg:text-xl"
 			href="/about"
 			active={activeUrl == '/about'}>{$LL.about()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/contact')}
 			active={activeUrl == '/contact'}
-			class="mx-1 md:mx-2  cursor-pointer text-xl"
+			class="   cursor-pointer text-base  lg:text-xl"
 			href="/contact">{$LL.contact()}</NavLi
 		>
 		<div
-			class="flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+			class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
 			style="margin:0 ;"
 		>
-			<Button class="" dir="ltr" color="primary"><Chevron>{selectedLang}</Chevron></Button>
+			<Button
+				class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
+				dir="ltr"
+				pill
+				color="primary"><Chevron>{selectedLang}</Chevron></Button
+			>
 
 			<Dropdown bind:open={dropdownOpen} id="">
 				<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>

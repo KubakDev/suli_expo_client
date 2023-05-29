@@ -17,7 +17,18 @@ const ckb = {
 	administration: 'ئیدارە',
 	feedback: 'پێشنیار',
 	send: 'ناردن',
-	successMessage: 'سەرکەوتوبوو! پەیامی نێردراوە!'
+	successMessage: 'سەرکەوتوبوو! پەیامی نێردراوە!',
+	successTeam: 'تیمی سەرکەوتنمان',
+	unmatchedServices: 'خزمەتگوزاری بێ هاوتا',
+	specific: 'تایبەت',
+	experience: 'ئەزموون',
+	technology: 'تەکنەلۆجیا',
+	ethics: 'ئێتیک',
+	quality: 'کواڵیتی',
+	continuity: 'بەردەوامی',
+	our: 'ئێمە',
+	mission: 'ئەرکی',
+	commitment: 'پابەند بوونی'
 } satisfies Translation;
 
 export default ckb;
