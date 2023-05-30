@@ -6,12 +6,12 @@
 	import ContactInfo from '$lib/components/ContactInfo.svelte';
 	import Contact from '$lib/components/Contact.svelte';
 
-	export let data;
-	$: {
-		if ($locale && data.supabase) {
-			contactInfoSectionStore.get($locale, data.supabase);
-		}
-	}
+	// export let data;
+	// $: {
+	// 	if ($locale && data.supabase) {
+	// 		contactInfoSectionStore.get($locale, data.supabase);
+	// 	}
+	// }
 </script>
 
 <svelte:head>

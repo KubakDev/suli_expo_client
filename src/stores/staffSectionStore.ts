@@ -23,7 +23,7 @@ const createStaffSectionStore = () => {
 
 			let data = result.data;
 			// filter if result language is not empty
-			logger.info('get staff ', data);
+			// logger.info('get staff ', data);
 			if (data) {
 				data = data.filter((e) => e.languages.length > 0);
 			} else {

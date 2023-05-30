@@ -124,6 +124,10 @@ type RootTranslation = {
 	 * C​o​m​m​i​t​m​e​n​t
 	 */
 	commitment: string
+	/**
+	 * A​d​d​r​e​s​s
+	 */
+	address: string
 }
 
 export type TranslationFunctions = {
@@ -235,6 +239,10 @@ export type TranslationFunctions = {
 	 * Commitment
 	 */
 	commitment: () => LocalizedString
+	/**
+	 * Address
+	 */
+	address: () => LocalizedString
 }
 
 export type Formatters = {}

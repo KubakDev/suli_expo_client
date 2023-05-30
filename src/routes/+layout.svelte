@@ -5,10 +5,15 @@
 	import Headerbar from '$lib/components/Headerbar.svelte';
 	import { onMount } from 'svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { changeLanguage } from '../utils/language';
+	import { contactInfoSectionStore } from '../stores/contactInfo';
 	export let data;
 
 	let supabase: any;
+	if ($locale && data.supabase) {
+		contactInfoSectionStore.get($locale, data.supabase);
+	}
 
 	onMount(async () => {
 		supabase = data.supabase;

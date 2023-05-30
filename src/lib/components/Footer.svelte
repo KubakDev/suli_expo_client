@@ -5,21 +5,25 @@
 	import TitleUi from './TitleUi.svelte';
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import logger from '../../utils/logger';
 
 	export let data;
 
 	let contactInfoData;
 
-	onMount(async () => {
-		if (locale && data?.supabase) {
-			await contactInfoSectionStore.get(locale, data.supabase);
-		}
-	});
-
 	$: {
-		contactInfoData = $contactInfoSectionStore;
-		console.log(contactInfoData);
+		logger.info('locale changed %%%%%%%%%%%%%%%%%%');
+		if ($locale) {
+			contactInfoData = $contactInfoSectionStore;
+			console.log('contactInfoData', contactInfoData);
+		}
 	}
+
+	// onMount(async () => {
+	// 	if (locale) {
+	// 		await contactInfoSectionStore.get(locale, data.supabase);
+	// 	}
+	// });
 </script>
 
 <Footer footerType="socialmedia">
@@ -36,7 +40,7 @@
 					<div
 						class="flex justify-start items-center uppercase mb-6 text-xs text-gray-900 dark:text-white"
 					>
-						<TitleUi text="resource" footerSize={true} />
+						<TitleUi text={$LL.address()} footerSize={true} />
 					</div>
 
 					<ul class="w-44 text-sm leading-6">
@@ -49,13 +53,13 @@
 				</div>
 				<div>
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
-						<TitleUi text="contact" footerSize={true} />
+						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
 					<ul class="text-sm leading-6">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li class="">Marketing : {info.phoneNumber_marketing}</li>
-								<li class="">Relations : {info.phoneNumber_relations}</li>
+								<li class="">{$LL.marketing()} : {info.phoneNumber_marketing}</li>
+								<li class="">{$LL.relations()} : {info.phoneNumber_relations}</li>
 							{/each}
 						{/if}
 					</ul>
