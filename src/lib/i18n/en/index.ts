@@ -28,7 +28,8 @@ const en = {
 	continuity: 'Continuity',
 	our: 'Our',
 	mission: 'Mission',
-	commitment: 'Commitment'
+	commitment: 'Commitment',
+	resentNews: 'Recent News'
 } satisfies BaseTranslation;
 
 export default en;

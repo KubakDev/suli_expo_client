@@ -51,6 +51,7 @@
 		"svelte-feather-icons": "^4.0.0",
 		"svelte-routing": "^1.8.9",
 		"svelte-toast": "^1.0.0",
+		"svelte-youtube-embed": "^0.1.20",
 		"svelte-yup": "^1.0.5",
 		"swiper": "^9.3.1",
 		"tailwindcss": "^3.3.2",

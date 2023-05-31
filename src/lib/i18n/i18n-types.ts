@@ -124,6 +124,10 @@ type RootTranslation = {
 	 * C​o​m​m​i​t​m​e​n​t
 	 */
 	commitment: string
+	/**
+	 * R​e​c​e​n​t​ ​N​e​w​s
+	 */
+	resentNews: string
 }
 
 export type TranslationFunctions = {
@@ -235,6 +239,10 @@ export type TranslationFunctions = {
 	 * Commitment
 	 */
 	commitment: () => LocalizedString
+	/**
+	 * Recent News
+	 */
+	resentNews: () => LocalizedString
 }
 
 export type Formatters = {}

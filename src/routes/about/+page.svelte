@@ -7,6 +7,7 @@
 	import Staff from '$lib/components/Staff.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Saos from 'saos';
+	import Constants from '../../utils/constants';
 
 	export let data;
 
@@ -29,17 +30,17 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<section class="py-10 dark:bg-slate-900">
-	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
+<section class="py-12 dark:bg-slate-900">
+	<div class="mx-auto {Constants.page_max_width}">
 		<!-- title -->
-		<div class="flex justify-center items-center my-8">
+		<div class="flex justify-center items-center mb-12">
 			<TitleUi text={$LL.about()} />
 		</div>
 		<!-- about content -->
 		<div class="">
 			{#if $aboutSectionStore}
 				<div class="dark:bg-slate-900 dark:text-white">
-					<ul class="py-10">
+					<ul class="">
 						<About aboutSection={$aboutSectionStore} />
 					</ul>
 				</div>

@@ -3,6 +3,8 @@
 	import Exhibition from '$lib/components/Exhibition.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { exhibitionStore } from '../../stores/exhibtionStore.js';
+	import Constants from '../../utils/constants.js';
+	import { fly, fade } from 'svelte/transition';
 
 	export let data;
 
@@ -17,15 +19,23 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section class="py-10 dark:bg-slate-900">
-	<div class="mx-auto px-4 sm:px-5 max-w-screen-2xl">
-		<div class="flex justify-center items-center my-8">
+<section class="py-12 {Constants.page_max_width} m-auto">
+	<div class="">
+		<div
+			in:fade={{ duration: 800 }}
+			out:fade={{ duration: 400 }}
+			class="flex justify-center items-center mb-12"
+		>
 			<TitleUi text="Exhibition" />
 		</div>
 
 		<div class="grid gap-8 mt-8 sm:grid-cols-1 lg:grid-cols-2">
-			{#each $exhibitionStore as exhibition}
-				<div class="dark:bg-slate-900">
+			{#each $exhibitionStore as exhibition, i}
+				<div
+					class="dark:bg-slate-900"
+					in:fly={{ y: 200, duration: 600, delay: i * 100 }}
+					out:fly={{ y: 200, duration: 200, delay: i * 20 }}
+				>
 					<ul>
 						<Exhibition {exhibition} />
 					</ul>

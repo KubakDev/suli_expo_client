@@ -9,7 +9,7 @@
 
 <div class=" flex items-center justify-center flex-col">
 	<!-- short description  -->
-	<div class="text-center lg:w-5/6 md:w-6/6 w-6/6">
+	<div class="text-center">
 		<p
 			class=" leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-white"
 		>

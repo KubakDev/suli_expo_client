@@ -8,6 +8,7 @@
 	import type { NewsModel } from '../../../models/newsModel';
 	import { convertModel } from '../../../models/covertModel';
 	import RecentNews from '$lib/components/RecentNews.svelte';
+	import Constants from '../../../utils/constants';
 
 	export let data;
 	let news: NewsModel | undefined | null;
@@ -35,21 +36,22 @@
 
 <section class="dark:bg-slate-900 dark:text-white text-slate-950">
 	{#if news}
-		<div class="px-4 sm:px-5 mx-auto max-w-screen-2xl py-10">
-			<div class="grid grid-cols-1 items-start lg:gap-8 lg:grid-cols-3">
-				<div class="col-span-2 bg-gray-50">
-					<NewsDetail {news} />
-				</div>
-				<div
-					class="col-span-1 lg:mt-0 mt-5 bg-[#3E4248] dark:bg-[#3E4248] dark:bg-opacity-20 rounded-lg border dark:border-gray-700"
-				>
-					<h1 class="text-2xl py-8 font-bold">Recent News</h1>
+		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
+			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
+			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
+				<NewsDetail {news} />
+			</div>
+			<div
+				class="flex flex-col justify-start m-auto mb-10 lg:mt-10 mt-5 rounded-lg w-full 3xl:w-96 4xl:w-142"
+			>
+				<h1 class="text-2xl py-8 font-bold text-start">{$LL.resentNews()}</h1>
+				{#if $newsSectionStore}
 					<section class="body-font">
 						{#each $newsSectionStore as newsSection}
 							<RecentNews {newsSection} />
 						{/each}
 					</section>
-				</div>
+				{/if}
 			</div>
 		</div>
 	{/if}

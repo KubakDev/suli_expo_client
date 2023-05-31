@@ -28,7 +28,8 @@ const ckb = {
 	continuity: 'بەردەوامی',
 	our: 'ئێمە',
 	mission: 'ئەرکی',
-	commitment: 'پابەند بوونی'
+	commitment: 'پابەند بوونی',
+	resentNews: 'هەواڵەکانی نوێ'
 } satisfies Translation;
 
 export default ckb;

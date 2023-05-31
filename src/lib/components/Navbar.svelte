@@ -23,6 +23,7 @@
 	import { detectLocale } from '$lib/i18n/i18n-util';
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
 	import { changeLanguage } from '../../utils/language';
+	import Constants from '../../utils/constants';
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
@@ -64,7 +65,7 @@
 	<NavHamburger on:click={toggle} />
 	<NavUl
 		divClass="w-full md:block  justify-center max-w-full items-center "
-		ulClass="flex flex-col p-1 lg:p-4 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
+		ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
 		activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
 		nonActiveClass="text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 		{hidden}

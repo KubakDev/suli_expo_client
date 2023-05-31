@@ -2,6 +2,8 @@
 	import 'vidstack/styles/defaults.css';
 
 	import { defineCustomElements } from 'vidstack/elements';
+	import Youtube from 'svelte-youtube-embed';
+
 	import { onMount } from 'svelte';
 	export let videoUrl: string;
 	export let thumbnailUrl: string;
@@ -20,8 +22,10 @@
 	});
 </script>
 
+<Youtube id="2PmmGwDv17c" altThumb={true} />
+
 <!-- remove `controls` attribute if you're designing a custom UI -->
-<media-player
+<!-- <media-player
 	class="relative w-full h-full"
 	src={videoUrl}
 	poster={thumbnailUrl}
@@ -41,4 +45,4 @@
 		</media-menu-items>
 	</media-menu>
 	<media-outlet />
-</media-player>
+</media-player> -->

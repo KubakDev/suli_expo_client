@@ -28,7 +28,8 @@ const ar = {
 	continuity: 'استمرارية',
 	our: 'ملكنا',
 	mission: 'مهمة',
-	commitment: 'التزام'
+	commitment: 'التزام',
+	resentNews: 'أخبار حديثة'
 } satisfies Translation;
 
 export default ar;

@@ -38,9 +38,9 @@
 	}
 </script>
 
-<section class="py-10 {Constants.page_max_width} m-auto">
-	<div class="flex justify-center items-center my-8">
-		<div in:fade={{ duration: 800 }}>
+<section class="py-12 {Constants.page_max_width} m-auto">
+	<div class="flex justify-center items-center mb-12">
+		<div in:fade={{ duration: 800 }} out:fade={{ duration: 400 }}>
 			<TitleUi text="News " />
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 				{#if CardComponent}
 					<div
 						on:click={() => DetailsPage(item.id)}
-						in:fly={{ y: 200, duration: 500, delay: i * 100 }}
+						in:fly={{ y: 200, duration: 600, delay: i * 100 }}
 						out:fly={{ y: 200, duration: 200, delay: i * 20 }}
 					>
 						<svelte:component

@@ -18,7 +18,7 @@
 	<div class="flex justify-center items-center">
 		<TitleUi text={$LL.promo()} />
 	</div>
-	<div class="w-full {constants.section_margin_top}">
+	<div class="w-full">
 		{#if $videoSectionStore}
 			<VideoPlayer
 				videoUrl={$videoSectionStore.video}

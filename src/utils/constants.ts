@@ -1,5 +1,5 @@
 class Constants {
-	static page_max_width = 'max-w-7xl';
+	static page_max_width = ' xl:max-w-4xl 2xl:max-w-5xl 4xl:max-w-6xl';
 
 	static section_padding_y = 'py-12';
 

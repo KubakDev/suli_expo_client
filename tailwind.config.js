@@ -13,6 +13,10 @@ const config = {
 
 	theme: {
 		extend: {
+			screens: {
+				'3xl': '1920px',
+				'4xl': '2560px'
+			},
 			maxWidth: {
 				10: '2.5rem',
 				20: '5rem',
@@ -60,9 +64,14 @@ const config = {
 				200: '50rem'
 			},
 			width: {
+				80: '20rem',
 				100: '30rem',
 				128: '32rem',
-				200: '50rem'
+				142: '35.5rem',
+				150: '37.5rem',
+				200: '50rem',
+				300: '75rem',
+				350: '80rem'
 			},
 			colors: {
 				// flowbite-svelte

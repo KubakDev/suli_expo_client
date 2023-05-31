@@ -57,3 +57,9 @@ b,
 strong {
 	font-weight: bold;
 }
+
+.you__tube {
+	width: 100%;
+	padding-left: 20px;
+	padding-right: 20px;
+}
