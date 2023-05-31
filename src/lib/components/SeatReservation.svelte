@@ -7,7 +7,7 @@
 	let selectedAreaSize: number | undefined;
 	let svg: any;
 	onMount(async () => {
-		// console.log(seatLayout);
+		//  //(seatLayout);
 		if (seatLayout) {
 			showSelectedDesign(seatLayout!);
 		}
@@ -20,12 +20,12 @@
 		const container = d3.select('#container');
 		// get contianer width and height
 		const htmlElemtn = container.node() as HTMLElement;
-		// console.log('htmlElemtn', htmlElemtn);
+		//  //('htmlElemtn', htmlElemtn);
 
 		const containerWidth = htmlElemtn.clientWidth;
 		const containerHeight = htmlElemtn.clientHeight;
-		// console.log('containerHeight', containerHeight);
-		// console.log('containerWidth', containerWidth);
+		//  //('containerHeight', containerHeight);
+		//  //('containerWidth', containerWidth);
 		let seats = [];
 		for (let i = 0; i < design.seats.length; i++) {
 			const seat = design.seats[i];

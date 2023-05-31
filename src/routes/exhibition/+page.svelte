@@ -10,7 +10,7 @@
 
 	onMount(async () => {
 		await exhibitionStore.get(data?.supabase);
-		// console.log('data', $exhibitionSectionStore);
+		//  //('data', $exhibitionSectionStore);
 	});
 </script>
 

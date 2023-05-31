@@ -21,21 +21,8 @@
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
-
 		const swiperEl = document.querySelector('swiper-container');
 		const swiperParams = {
-			// effect: 'creative',
-
-			// creativeEffect: {
-			// 	prev: {
-			// 		// will set `translateZ(-400px)` on previous slides
-			// 		translate: [0, 0, -400]
-			// 	},
-			// 	next: {
-			// 		// will set `translateX(100%)` on next slides
-			// 		translate: ['100%', 0, 0]
-			// 	}
-			// },
 			a11y: {
 				prevSlideMessage: 'Previous slide',
 				nextSlideMessage: 'Next slide'
@@ -53,7 +40,6 @@
 				}
 			}
 		};
-
 		// // now we need to assign all parameters to Swiper element
 		// @ts-ignore
 		Object.assign(swiperEl, swiperParams);
@@ -78,8 +64,7 @@
 				hideOnClick: true
 			}}
 			autoplay={{
-				delay: 2000,
-				reverseDirection: locale === 'en' ? false : true
+				delay: 2000
 			}}
 			on:progress={onProgress}
 			on:slidechange={onSlideChange}

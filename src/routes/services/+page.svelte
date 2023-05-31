@@ -10,7 +10,7 @@
 
 	onMount(async () => {
 		await serviceSectionStore.get(data?.supabase);
-		console.log('data', $serviceSectionStore);
+		//('data', $serviceSectionStore);
 	});
 </script>
 
@@ -34,7 +34,7 @@
 					in:fly={{ y: 200, duration: 600, delay: i * 100 }}
 					out:fly={{ y: 200, duration: 200, delay: i * 20 }}
 				>
-					<Card />
+					<Card title={item.title} description={item.short_description} image={item.thumbnail} />
 				</div>
 			{/each}
 		</div>

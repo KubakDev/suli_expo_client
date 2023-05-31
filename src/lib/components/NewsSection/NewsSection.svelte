@@ -31,7 +31,7 @@
 			import('kubak-svelte-component').then(
 				(module) => (CardComponent = module[card as keyof typeof module])
 			);
-			// console.log(card);
+			//  //(card);
 		});
 	});
 

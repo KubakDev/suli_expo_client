@@ -35,7 +35,7 @@
 			<img
 				class="lg:-mt-20 lg:w-4/6 w-full mb-10 lg:h-96 object-cover object-center rounded-lg"
 				alt="about image"
-				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${$aboutSectionStore?.images}`}
+				src={`${$aboutSectionStore?.images}`}
 			/>
 		</div>
 	</section>

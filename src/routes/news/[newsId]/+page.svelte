@@ -21,8 +21,8 @@
 			.eq('id', $page.params.newsId)
 			.single();
 		news = convertModel<NewsModel>(response.data, true) as NewsModel;
-		console.log(news);
-		console.log(news.images);
+		//(news);
+		//(news.images);
 	}
 
 	onMount(() => {

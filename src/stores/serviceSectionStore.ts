@@ -23,7 +23,9 @@ const createServiceSectionStore = () => {
 				logger.error(result.error);
 				return null;
 			} else {
+				//('result', result);
 				const services = result.data.map((e) => convertModel<ServiceModel>(e)) as ServiceModel[];
+				//('services', services);
 				set(services);
 				return null;
 			}

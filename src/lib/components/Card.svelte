@@ -1,6 +1,10 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	let isHovering = false;
+
+	export let title: string = 'Title';
+	export let description: string = 'Description';
+	export let image: string = 'images/suliexpo.jpg';
 
 	const handleMouseOver = () => {
 		isHovering = true;
@@ -12,13 +16,10 @@
 </script>
 
 <div class="card cursor-pointer" on:mouseover={handleMouseOver} on:mouseout={handleMouseOut}>
-	<img class="card-img" src="images/suliexpo.jpg" alt="Image" />
+	<img class="card-img" src={image} alt="Image" />
 	<div class="card-content">
-		<h3 class="card-title">{isHovering ? 'New Title' : 'Original Title'}</h3>
-		<p class="card-description">
-			Some description about the image Some description about the image Some description about the
-			image Some description about the image...
-		</p>
+		<h3 class="card-title font-bold">{title}</h3>
+		<p class="card-description">{description}</p>
 	</div>
 </div>
 
@@ -46,19 +47,16 @@
 		width: 100%;
 		position: absolute;
 		bottom: 0;
-		background: linear-gradient(
-			to top,
-			rgba(255, 255, 255, 1) 10%,
-			rgba(255, 255, 255, 0)
-		); /* Fade gradient */
+		background: linear-gradient(to top, rgb(0, 0, 0) 0%, rgba(15, 15, 15, 0)); /* Fade gradient */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		color: white;
 		transition: all 0.5s ease-in-out;
 		overflow: hidden;
 		padding: 20px;
-		border-radius: 25px;
+		border-radius: 0px;
 	}
 
 	.card-title {

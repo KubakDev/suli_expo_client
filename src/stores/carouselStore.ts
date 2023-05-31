@@ -24,12 +24,13 @@ const createCarouselStore = () => {
 				logger.error(result.error);
 				return null;
 			} else {
+				logger.error(result.data);
 				const carousel = result.data.map((e) => convertModel<CarouselModel>(e)) as CarouselModel[];
 				logger.info('$$$$$$$$$$$$$$');
 				logger.info(carousel);
 				// // add to store
 				set(carousel);
-				return null;
+				return carousel;
 			}
 		}
 	};

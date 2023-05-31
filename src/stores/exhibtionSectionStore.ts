@@ -30,7 +30,7 @@ const createExhibitionSectionStore = () => {
 			} else {
 				data = [];
 			}
-			// console.log(result);
+			//  //(result);
 			if (result.error) {
 				logger.error(result.error);
 				return null;

@@ -15,7 +15,7 @@
 		logger.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
 			contactInfoData = $contactInfoSectionStore;
-			console.log('contactInfoData', contactInfoData);
+			//('contactInfoData', contactInfoData);
 		}
 	}
 

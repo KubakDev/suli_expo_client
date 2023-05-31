@@ -21,7 +21,7 @@ const createAboutSectionStore = () => {
 				.eq('languages.language', locale)
 				.single();
 
-			// console.log(result.data);
+			//  //(result.data);
 			if (result.error) {
 				logger.error(result.error);
 				return null;

@@ -27,14 +27,14 @@
 			import('kubak-svelte-component').then(
 				(module) => (CardComponent = module[card as keyof typeof module])
 			);
-			// console.log(card);
+			//  //(card);
 		});
 	});
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: any) {
 		goto(`/news/${itemId}`);
-		console.log('news :', itemId);
+		//('news :', itemId);
 	}
 </script>
 

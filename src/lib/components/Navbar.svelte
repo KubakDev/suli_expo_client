@@ -39,7 +39,7 @@
 
 	function updateActiveUrl(url: string) {
 		activeUrl = url;
-		console.log(activeUrl);
+		//(activeUrl);
 	}
 
 	async function langSelect(lang: string) {
@@ -91,6 +91,14 @@
 			href="/exhibition"
 			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 		>
+		<NavLi id="media" class="cursor-pointer text-base  lg:text-xl"
+			><Chevron aligned>{$LL.media()}</Chevron></NavLi
+		>
+		<Dropdown triggeredBy="#media" class="w-44 z-20">
+			<DropdownItem>Dashboard</DropdownItem>
+			<DropdownItem>Settings</DropdownItem>
+			<DropdownItem>Earnings</DropdownItem>
+		</Dropdown>
 		<NavLi
 			on:click={() => updateActiveUrl('/services')}
 			class="  cursor-pointer text-base  lg:text-xl"

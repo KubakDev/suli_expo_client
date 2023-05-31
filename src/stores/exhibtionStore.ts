@@ -20,7 +20,7 @@ const createExhibitionStore = () => {
 				.eq('languages.language', 'en')
 				.order('created_at', { ascending: false })
 				.limit(9);
-			// console.log(result);
+			//  //(result);
 			if (result.error) {
 				logger.error(result.error);
 				return null;

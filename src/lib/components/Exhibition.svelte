@@ -12,13 +12,13 @@
 		});
 	};
 
-	// console.log('test ', exhibitionSection);
+	//  //('test ', exhibitionSection);
 </script>
 
 <div>
 	<a class="block overflow-hidden group">
 		<img
-			src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${exhibition?.images}`}
+			src={`${exhibition?.images}`}
 			alt={exhibition.title}
 			class="bg-red-400 h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
 		/>
