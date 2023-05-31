@@ -29,7 +29,8 @@ const ckb = {
 	our: 'ئێمە',
 	mission: 'ئەرکی',
 	commitment: 'پابەند بوونی',
-	resentNews: 'هەواڵەکانی نوێ'
+	resentNews: 'هەواڵەکانی نوێ',
+	address: 'ناونیشان'
 } satisfies Translation;
 
 export default ckb;

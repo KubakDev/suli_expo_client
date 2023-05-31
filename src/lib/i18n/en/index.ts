@@ -29,7 +29,8 @@ const en = {
 	our: 'Our',
 	mission: 'Mission',
 	commitment: 'Commitment',
-	resentNews: 'Recent News'
+	resentNews: 'Recent News',
+	address: 'Address'
 } satisfies BaseTranslation;
 
 export default en;

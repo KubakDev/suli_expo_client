@@ -7,12 +7,12 @@
 	import Contact from '$lib/components/Contact.svelte';
 	import Constants from '../../utils/constants';
 
-	export let data;
-	$: {
-		if ($locale && data.supabase) {
-			contactInfoSectionStore.get($locale, data.supabase);
-		}
-	}
+	// export let data;
+	// $: {
+	// 	if ($locale && data.supabase) {
+	// 		contactInfoSectionStore.get($locale, data.supabase);
+	// 	}
+	// }
 </script>
 
 <svelte:head>

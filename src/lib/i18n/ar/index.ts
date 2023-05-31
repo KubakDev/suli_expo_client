@@ -12,7 +12,7 @@ const ar = {
 	promo: 'ترويجي',
 	seeAll: 'اظهار الكل',
 	marketing: 'التسويق',
-	relations: 'العلاقات',
+	relations: 'الاتصال',
 	technical: 'تقني',
 	administration: 'الإدارة',
 	feedback: 'تعليق',
@@ -29,7 +29,8 @@ const ar = {
 	our: 'ملكنا',
 	mission: 'مهمة',
 	commitment: 'التزام',
-	resentNews: 'أخبار حديثة'
+	resentNews: 'أخبار حديثة',
+	address: 'عنوان'
 } satisfies Translation;
 
 export default ar;
