@@ -1,22 +1,22 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import type { NewsModel } from '../models/newsModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
-const createNewsStore = () => {
+import type { MagazineModel } from '../models/magazineModel';
+const createMagazineStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set, update } = writable<NewsModel[]>();
+	const { subscribe, set } = writable<MagazineModel[]>();
 
 	return {
 		subscribe,
-		set: (seatLayout: NewsModel[]) => {
+		set: (seatLayout: MagazineModel[]) => {
 			set(seatLayout);
 		},
 		get: async (locale: Locales, supabase: SupabaseClient) => {
 			// get current selected language
 			const result = await supabase
-				.from('news')
-				.select('*,languages:news_languages(*)')
+				.from('magazine')
+				.select('*,languages:magazine_languages(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -24,16 +24,18 @@ const createNewsStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
-				set(news);
+				const magazines = result.data.map((e) =>
+					convertModel<MagazineModel>(e, true)
+				) as MagazineModel[];
+				set(magazines);
 				return null;
 			}
 		},
 		getSingle: async (locale: Locales, supabase: SupabaseClient, id: string) => {
 			// get current selected language
 			const result = await supabase
-				.from('news')
-				.select('*,languages:news_languages(*)')
+				.from('magazine')
+				.select('*,languages:magazine_languages(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();
@@ -41,11 +43,11 @@ const createNewsStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const news = convertModel<NewsModel>(result.data, true) as NewsModel;
-				return news;
+				const magazine = convertModel<MagazineModel>(result.data, true) as MagazineModel;
+				return magazine;
 			}
 		}
 	};
 };
 
-export const newsStore = createNewsStore();
+export const magazineStore = createMagazineStore();

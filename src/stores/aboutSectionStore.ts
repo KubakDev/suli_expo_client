@@ -1,6 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import logger from '../utils/logger';
 import type { AboutModel } from '../models/aboutModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
@@ -14,7 +13,7 @@ const createAboutSectionStore = () => {
 			set(seatLayout);
 		},
 		get: async (locale: Locales, supabase: SupabaseClient) => {
-			logger.info('get about');
+			//.info('get about');
 			const result = await supabase
 				.from('about')
 				.select('*,languages:about_languages(*)')
@@ -23,10 +22,11 @@ const createAboutSectionStore = () => {
 
 			//  //(result.data);
 			if (result.error) {
-				logger.error(result.error);
+				//.error(result.error);
 				return null;
 			} else {
 				const aboutUs = convertModel<AboutModel>(result.data) as AboutModel;
+				console.log(aboutUs);
 				set(aboutUs);
 				return null;
 			}

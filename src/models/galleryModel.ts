@@ -1,4 +1,4 @@
-export interface NewsModel {
+export interface GalleryModel {
 	id?: number;
 	title: string;
 	thumbnail: string;

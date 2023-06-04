@@ -11,7 +11,7 @@
 		<div>
 			<img
 				class="object-center object-cover h-[200px] w-[200px] rounded-full"
-				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${staffSection?.images}`}
+				src={`${staffSection?.image}`}
 				alt="photo"
 			/>
 		</div>

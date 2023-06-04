@@ -74,11 +74,7 @@
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
 					<div class="relative max-h-200 flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
-						<img
-							style="height: 100%;"
-							class="object-cover w-full h-full max-h-200"
-							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + c.image}
-						/>
+						<img style="height: 100%;" class="object-cover w-full h-full max-h-200" src={c.image} />
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
 							class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 {locale === 'en'

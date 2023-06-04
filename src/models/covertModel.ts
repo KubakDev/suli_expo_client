@@ -10,16 +10,13 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 			// @ts-ignore
 			if (prop === 'images') {
 				// @ts-ignore
-				obj[prop] = data[prop]
-					?.split(',')
-					.map(
-						(e: string, i: number) => import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e
-					);
-
+				obj[prop] = data[prop].map(
+					(e: string, i: number) => import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e
+				);
 				// check if T is NewsModel
 				if (isNewsModel) {
 					// @ts-ignore
-					obj['imagesCarousel'] = data[prop]?.split(',').map((e: string, i: number) => {
+					obj['imagesCarousel'] = data[prop]?.map((e: string, i: number) => {
 						return {
 							id: i,
 							name: e,
@@ -29,7 +26,7 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 					});
 				}
 			} else {
-				if (prop === 'thumbnail') {
+				if (prop === 'thumbnail' || prop === 'image') {
 					// @ts-ignore
 					obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 				} else {
@@ -48,4 +45,24 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	}
 	//('obj', obj);
 	return obj;
+}
+
+export interface ItemModel {
+	id: number;
+	title: string;
+	thumbnail: string;
+	short_description?: string;
+}
+
+export function modelToItemModel<T>(data: T): ItemModel {
+	let newModel: ItemModel = {} as ItemModel;
+	// convert T to ItemModel
+
+	for (let prop in data) {
+		if (prop === 'title' || prop === 'short_description' || prop === 'id' || prop === 'thumbnail') {
+			// @ts-ignore
+			newModel[prop] = data[prop];
+		}
+	}
+	return newModel;
 }

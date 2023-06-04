@@ -1,5 +1,8 @@
 export interface VideoModel {
-	id: number;
+	id?: number;
+	title: string;
+	link: string;
 	thumbnail: string;
-	video: string;
+	long_description?: string;
+	short_description?: string;
 }

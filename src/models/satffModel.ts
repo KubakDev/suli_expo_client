@@ -2,6 +2,6 @@ export interface StaffModel {
 	id?: number;
 	created_at?: Date;
 	name?: string;
-	images?: string[];
+	image?: string[];
 	title?: string;
 }

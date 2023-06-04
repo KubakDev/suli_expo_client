@@ -1,4 +1,4 @@
-export interface NewsModel {
+export interface PublishingModel {
 	id?: number;
 	title: string;
 	thumbnail: string;

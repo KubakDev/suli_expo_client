@@ -1,6 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import pino from 'pino';
 export interface SeatDesignModel {
 	id: number | undefined;
 	width: number | undefined;
@@ -27,7 +26,6 @@ export interface SeatLayoutModel {
 }
 
 const seatReservationStore = () => {
-	// const logger =new pino.pino({prettyPrint: true});
 	const { subscribe, set, update } = writable<SeatLayoutModel>();
 
 	return {
@@ -39,17 +37,13 @@ const seatReservationStore = () => {
 			update((seatLayout) => seatLayout);
 		},
 		get: async (supabase: SupabaseClient) => {
-			const logger = pino();
-
-			logger.info('hello world');
-
 			const result = await supabase.from('seat_layout').select('*,seats(*)').eq('id', 73).single();
 			if (result.error) {
-				logger.error(result.error);
+				//.error(result.error);
 				return null;
 			} else {
 				const seatLayout = result.data as SeatLayoutModel;
-				logger.info(seatLayout);
+				//.info(seatLayout);
 				return seatLayout;
 			}
 		}

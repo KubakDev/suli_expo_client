@@ -31,7 +31,13 @@ const ar = {
 	commitment: 'التزام',
 	resentNews: 'أخبار حديثة',
 	address: 'عنوان',
-	media: 'وسائل الإعلام'
+	media: 'وسائل الإعلام',
+	publishing: 'نشر',
+	magazine: 'مجلة',
+	gallery: 'صالة عرض',
+	videos: 'مقاطع الفيديو',
+	MoreInGallery: 'المزيد في المعرض',
+	moreVideos: 'المزيد من مقاطع الفيديو'
 } satisfies Translation;
 
 export default ar;

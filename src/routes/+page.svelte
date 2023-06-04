@@ -51,7 +51,7 @@
 		</div>
 	</Saos>
 	{#if seatLayout}
-		<SeatReservation {seatLayout} />
+		<!-- <SeatReservation {seatLayout} /> -->
 	{/if}
 </div>
 

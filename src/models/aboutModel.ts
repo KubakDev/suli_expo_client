@@ -1,6 +1,6 @@
 export interface AboutModel {
 	id?: number;
-	images?: string[];
+	image?: string;
 	title?: string;
 	short_description?: string;
 	unmatched_service?: string;

@@ -4,38 +4,40 @@
 	import { DetailPage } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import type { NewsModel } from '../../../models/newsModel';
-	import { modelToItemModel } from '../../../models/covertModel';
 	import Constants from '../../../utils/constants';
 	import RecentItems from '$lib/components/RecentItems.svelte';
-	import { newsStore } from '../../../stores/newsStore';
+	import type { PublishingModel } from '../../../models/publishingModel';
+	import { publishingStore } from '../../../stores/publishingStore';
+	import { modelToItemModel } from '../../../models/covertModel';
 
 	export let data;
-	let news: NewsModel | undefined | null;
+	let publishing: PublishingModel | undefined | null;
 
-	async function getNews() {
-		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
-		console.log(news);
-		newsStore.get($locale, data.supabase);
+	async function getPublishing() {
+		publishing = await publishingStore.getSingle($locale, data.supabase, $page.params.publishingId);
+		publishingStore.get($locale, data.supabase);
 	}
 
 	onMount(() => {
-		getNews();
+		getPublishing();
 	});
 </script>
 
 <section class="dark:bg-slate-900 dark:text-white text-slate-950">
-	{#if news}
+	{#if publishing}
 		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
 			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
 			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
-				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
+				<DetailPage
+					long_description={publishing.long_description}
+					imagesCarousel={publishing.imagesCarousel}
+				/>
 			</div>
-			{#if $newsStore}
+			{#if $publishingStore}
 				<RecentItems
-					title={$LL.news()}
-					items={$newsStore.map((news) => modelToItemModel(news))}
-					pageType={'news'}
+					title={$LL.publishing()}
+					items={$publishingStore.map((publishing) => modelToItemModel(publishing))}
+					pageType={'publishing'}
 				/>
 			{/if}
 		</div>

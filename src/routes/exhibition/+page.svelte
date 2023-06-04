@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Exhibition from '$lib/components/Exhibition.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { exhibitionStore } from '../../stores/exhibtionStore.js';
 	import Constants from '../../utils/constants.js';
 	import { fly, fade } from 'svelte/transition';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 
 	export let data;
 
 	onMount(async () => {
 		await exhibitionStore.get(data?.supabase);
-		//  //('data', $exhibitionSectionStore);
 	});
 </script>
 
@@ -32,13 +31,15 @@
 		<div class="grid gap-8 mt-8 sm:grid-cols-1 lg:grid-cols-2">
 			{#each $exhibitionStore as exhibition, i}
 				<div
-					class="dark:bg-slate-900"
 					in:fly={{ y: 200, duration: 600, delay: i * 100 }}
 					out:fly={{ y: 200, duration: 200, delay: i * 20 }}
 				>
-					<ul>
-						<Exhibition {exhibition} />
-					</ul>
+					<ExpoCard
+						title={exhibition.title}
+						thumbnail={exhibition.images[0]}
+						cardType={CardType.Square}
+						primaryColor={'bg-primary'}
+					/>
 				</div>
 			{/each}
 		</div>

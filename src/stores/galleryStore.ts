@@ -1,22 +1,22 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import type { NewsModel } from '../models/newsModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
-const createNewsStore = () => {
+import type { GalleryModel } from '../models/galleryModel';
+const createGalleryStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set, update } = writable<NewsModel[]>();
+	const { subscribe, set, update } = writable<GalleryModel[]>();
 
 	return {
 		subscribe,
-		set: (seatLayout: NewsModel[]) => {
+		set: (seatLayout: GalleryModel[]) => {
 			set(seatLayout);
 		},
 		get: async (locale: Locales, supabase: SupabaseClient) => {
 			// get current selected language
 			const result = await supabase
-				.from('news')
-				.select('*,languages:news_languages(*)')
+				.from('gallery')
+				.select('*,languages:gallery_languages(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -24,16 +24,18 @@ const createNewsStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
-				set(news);
+				const gallery = result.data.map((e) =>
+					convertModel<GalleryModel>(e, true)
+				) as GalleryModel[];
+				set(gallery);
 				return null;
 			}
 		},
 		getSingle: async (locale: Locales, supabase: SupabaseClient, id: string) => {
 			// get current selected language
 			const result = await supabase
-				.from('news')
-				.select('*,languages:news_languages(*)')
+				.from('gallery')
+				.select('*,languages:gallery_languages(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();
@@ -41,11 +43,11 @@ const createNewsStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const news = convertModel<NewsModel>(result.data, true) as NewsModel;
-				return news;
+				const gallery = convertModel<GalleryModel>(result.data, true) as GalleryModel;
+				return gallery;
 			}
 		}
 	};
 };
 
-export const newsStore = createNewsStore();
+export const galleryStore = createGalleryStore();

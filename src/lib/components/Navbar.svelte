@@ -14,16 +14,15 @@
 		Chevron,
 		DropdownDivider,
 		Button,
-		Toggle,
 		DarkMode
 	} from 'flowbite-svelte';
-	import { onMount } from 'svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
 	import { changeLanguage } from '../../utils/language';
 	import Constants from '../../utils/constants';
+	import { goto } from '$app/navigation';
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
@@ -39,6 +38,7 @@
 
 	function updateActiveUrl(url: string) {
 		activeUrl = url;
+		goto(url);
 		//(activeUrl);
 	}
 
@@ -76,46 +76,49 @@
 		<NavLi
 			on:click={() => updateActiveUrl('/')}
 			class="  cursor-pointer text-base  lg:text-xl"
-			href="/"
 			active={activeUrl == '/'}>{$LL.home()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/news')}
 			class="  cursor-pointer text-base  lg:text-xl"
-			href="/news"
 			active={activeUrl == '/news'}>{$LL.news()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/exhibition')}
 			class="  cursor-pointer text-base  lg:text-xl"
-			href="/exhibition"
 			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 		>
 		<NavLi id="media" class="cursor-pointer text-base  lg:text-xl"
 			><Chevron aligned>{$LL.media()}</Chevron></NavLi
 		>
 		<Dropdown triggeredBy="#media" class="w-44 z-20">
-			<DropdownItem>Dashboard</DropdownItem>
-			<DropdownItem>Settings</DropdownItem>
-			<DropdownItem>Earnings</DropdownItem>
+			<DropdownItem href="/gallery" on:click={() => updateActiveUrl('/gallery')}
+				>{$LL.gallery()}</DropdownItem
+			>
+			<DropdownItem href="/magazine" on:click={() => updateActiveUrl('/magazine')}
+				>{$LL.magazine()}</DropdownItem
+			>
+			<DropdownItem href="/publishing" on:click={() => updateActiveUrl('/publishing')}
+				>{$LL.publishing()}</DropdownItem
+			>
+			<DropdownItem href="/videos" on:click={() => updateActiveUrl('/videos')}
+				>{$LL.videos()}</DropdownItem
+			>
 		</Dropdown>
 		<NavLi
 			on:click={() => updateActiveUrl('/services')}
 			class="  cursor-pointer text-base  lg:text-xl"
-			href="/services"
 			active={activeUrl == '/services'}>{$LL.services()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/about')}
 			class=" cursor-pointer text-base  lg:text-xl"
-			href="/about"
 			active={activeUrl == '/about'}>{$LL.about()}</NavLi
 		>
 		<NavLi
 			on:click={() => updateActiveUrl('/contact')}
 			active={activeUrl == '/contact'}
-			class="   cursor-pointer text-base  lg:text-xl"
-			href="/contact">{$LL.contact()}</NavLi
+			class="   cursor-pointer text-base  lg:text-xl">{$LL.contact()}</NavLi
 		>
 		<div
 			class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"

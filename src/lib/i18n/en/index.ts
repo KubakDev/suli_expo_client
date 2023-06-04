@@ -31,7 +31,13 @@ const en = {
 	commitment: 'Commitment',
 	resentNews: 'Recent News',
 	address: 'Address',
-	media: 'Media'
+	media: 'Media',
+	publishing: 'Publishing',
+	magazine: 'Magazine',
+	gallery: 'Gallery',
+	videos: 'Videos',
+	MoreInGallery: 'More in Gallery',
+	moreVideos: 'More Videos'
 } satisfies BaseTranslation;
 
 export default en;

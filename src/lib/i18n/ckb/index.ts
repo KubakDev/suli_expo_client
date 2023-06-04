@@ -31,7 +31,13 @@ const ckb = {
 	commitment: 'پابەند بوونی',
 	resentNews: 'هەواڵەکانی نوێ',
 	address: 'ناونیشان',
-	media: 'میدیا'
+	media: 'میدیا',
+	publishing: 'چاپکردن',
+	magazine: 'ماڵپەڕ',
+	gallery: 'گەلەری',
+	videos: 'ڤیدیۆکان',
+	MoreInGallery: 'زیاتر لە گەلەری',
+	moreVideos: 'زیاتر لە ڤیدیۆکان'
 } satisfies Translation;
 
 export default ckb;

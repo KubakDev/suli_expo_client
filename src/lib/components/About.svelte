@@ -20,7 +20,7 @@
 				<img
 					class="image_section object-cover w-full h-full object-center rounded-lg"
 					alt="about image"
-					src={`${aboutSection?.images}`}
+					src={`${aboutSection?.image}`}
 				/>
 			</div>
 		</Saos>

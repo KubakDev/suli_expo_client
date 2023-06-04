@@ -1,13 +1,6 @@
 <script lang="ts">
-	import type { NewsModel } from '../../models/newsModel';
-	import { ImgSourceEnum } from '../../models/imgSourceEnum';
-	import { onMount } from 'svelte';
-	import newsUiStore, { getNewsUi } from '../../stores/ui/newsUi';
 	import TitleUi from './TitleUi.svelte';
 	import { Button } from 'flowbite-svelte';
-	import Exhibition from './Exhibition.svelte';
-	// import { MainCard } from 'suli/suliexpo-cards/MainCard.svelte';
-	import logger from '../../utils/logger';
 	import { goto } from '$app/navigation';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
@@ -15,14 +8,15 @@
 	import { fly, fade } from 'svelte/transition';
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
 
 	$: {
-		logger.info('locale changed %%%%%%%%%%%%%%%%%%');
+		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
-			logger.info('locale changed #########', $locale);
+			//.info('locale changed #########', $locale);
 			exhibitionSectionStore.get($locale, supabase);
 		}
 	}
@@ -53,14 +47,21 @@
 			>
 				{#each exhibitions as exhibition, i}
 					<div>
-						<Exhibition {exhibition} />
+						<ExpoCard
+							title={exhibition.title}
+							thumbnail={exhibition.images[0]}
+							cardType={CardType.Square}
+							primaryColor={'bg-primary'}
+						/>
 					</div>
 				{/each}
 			</div>
 		{/if}
 	</section>
 {:else}
-	<section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
+	<section
+		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
