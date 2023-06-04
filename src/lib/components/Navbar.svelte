@@ -56,86 +56,107 @@
 	}
 </script>
 
-<Navbar
-	navDivClass="  mx-auto flex flex-wrap items-center  max-w-full "
-	navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative"
-	let:hidden
-	let:toggle
->
-	<NavHamburger on:click={toggle} />
-	<NavUl
-		divClass="w-full md:block  justify-center max-w-full items-center "
-		ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
-		activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
-		nonActiveClass="text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-		{hidden}
-	>
-		<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
-			<DarkMode class=" right-10" />
-		</div>
-		<NavLi
-			on:click={() => updateActiveUrl('/')}
-			class="  cursor-pointer text-base  lg:text-xl"
-			active={activeUrl == '/'}>{$LL.home()}</NavLi
-		>
-		<NavLi
-			on:click={() => updateActiveUrl('/news')}
-			class="  cursor-pointer text-base  lg:text-xl"
-			active={activeUrl == '/news'}>{$LL.news()}</NavLi
-		>
-		<NavLi
-			on:click={() => updateActiveUrl('/exhibition')}
-			class="  cursor-pointer text-base  lg:text-xl"
-			active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
-		>
-		<NavLi id="media" class="cursor-pointer text-base  lg:text-xl"
-			><Chevron aligned>{$LL.media()}</Chevron></NavLi
-		>
-		<Dropdown triggeredBy="#media" class="w-44 z-20">
-			<DropdownItem href="/gallery" on:click={() => updateActiveUrl('/gallery')}
-				>{$LL.gallery()}</DropdownItem
-			>
-			<DropdownItem href="/magazine" on:click={() => updateActiveUrl('/magazine')}
-				>{$LL.magazine()}</DropdownItem
-			>
-			<DropdownItem href="/publishing" on:click={() => updateActiveUrl('/publishing')}
-				>{$LL.publishing()}</DropdownItem
-			>
-			<DropdownItem href="/videos" on:click={() => updateActiveUrl('/videos')}
-				>{$LL.videos()}</DropdownItem
-			>
-		</Dropdown>
-		<NavLi
-			on:click={() => updateActiveUrl('/services')}
-			class="  cursor-pointer text-base  lg:text-xl"
-			active={activeUrl == '/services'}>{$LL.services()}</NavLi
-		>
-		<NavLi
-			on:click={() => updateActiveUrl('/about')}
-			class=" cursor-pointer text-base  lg:text-xl"
-			active={activeUrl == '/about'}>{$LL.about()}</NavLi
-		>
-		<NavLi
-			on:click={() => updateActiveUrl('/contact')}
-			active={activeUrl == '/contact'}
-			class="   cursor-pointer text-base  lg:text-xl">{$LL.contact()}</NavLi
-		>
-		<div
-			class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
-			style="margin:0 ;"
-		>
-			<Button
-				class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
-				dir="ltr"
-				pill
-				color="primary"><Chevron>{selectedLang}</Chevron></Button
-			>
+<div class=" w-full">
+	<div class="flex flex-row justify-center items-center dark:bg-secondary bg-white h-20">
+		<img src="/images/logo.png" class=" h-full" />
+	</div>
 
-			<Dropdown bind:open={dropdownOpen} id="">
-				<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>
-				<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
-				<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
+	<Navbar
+		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full dark:bg-secondary bg-white "
+		navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
+		let:hidden
+		let:toggle
+	>
+		<NavHamburger on:click={toggle} />
+		<NavUl
+			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
+			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
+			activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
+			nonActiveClass="text-white hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+			{hidden}
+		>
+			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
+				<DarkMode class=" right-10" />
+			</div>
+			<NavLi
+				on:click={() => updateActiveUrl('/')}
+				class="  cursor-pointer text-base  lg:text-lg"
+				active={activeUrl == '/'}>{$LL.home()}</NavLi
+			>
+			<NavLi
+				on:click={() => updateActiveUrl('/news')}
+				class="  cursor-pointer text-base  lg:text-lg "
+				active={activeUrl == '/news'}>{$LL.news()}</NavLi
+			>
+			<NavLi
+				on:click={() => updateActiveUrl('/exhibition')}
+				class="  cursor-pointer text-base  lg:text-lg"
+				active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
+			>
+			<NavLi id="media" class="cursor-pointer text-base  lg:text-lg"
+				><Chevron aligned>{$LL.media()}</Chevron></NavLi
+			>
+			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
+				<DropdownItem
+					defaultClass="text-white mb-1 text-base"
+					href="/gallery"
+					on:click={() => updateActiveUrl('/gallery')}>{$LL.gallery()}</DropdownItem
+				>
+				<DropdownItem
+					defaultClass="text-white mb-1 text-base"
+					href="/magazine"
+					on:click={() => updateActiveUrl('/magazine')}>{$LL.magazine()}</DropdownItem
+				>
+				<DropdownItem
+					defaultClass="text-white mb-1 text-base"
+					href="/publishing"
+					on:click={() => updateActiveUrl('/publishing')}>{$LL.publishing()}</DropdownItem
+				>
+				<DropdownItem
+					defaultClass="text-white mb-1 text-base"
+					href="/videos"
+					on:click={() => updateActiveUrl('/videos')}>{$LL.videos()}</DropdownItem
+				>
 			</Dropdown>
-		</div>
-	</NavUl>
-</Navbar>
+			<NavLi
+				on:click={() => updateActiveUrl('/services')}
+				class="  cursor-pointer text-base  lg:text-lg"
+				active={activeUrl == '/services'}>{$LL.services()}</NavLi
+			>
+			<NavLi
+				on:click={() => updateActiveUrl('/about')}
+				class=" cursor-pointer text-base  lg:text-lg"
+				active={activeUrl == '/about'}>{$LL.about()}</NavLi
+			>
+			<NavLi
+				on:click={() => updateActiveUrl('/contact')}
+				active={activeUrl == '/contact'}
+				class="   cursor-pointer text-base  lg:text-lg">{$LL.contact()}</NavLi
+			>
+			<div
+				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+				style="margin:0 ;"
+			>
+				<Button
+					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 "
+					dir="ltr"
+					pill
+					outline
+					color="primary"><Chevron>{selectedLang}</Chevron></Button
+				>
+
+				<Dropdown bind:open={dropdownOpen} id="">
+					<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>
+					<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
+					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
+				</Dropdown>
+			</div>
+		</NavUl>
+	</Navbar>
+</div>
+
+<style>
+	.nav-bar {
+		background: linear-gradient(to bottom, #ff7f00, #ff5500);
+	}
+</style>
