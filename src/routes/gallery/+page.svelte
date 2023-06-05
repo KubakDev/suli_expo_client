@@ -35,7 +35,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto">
 	<div class="flex justify-center items-start mb-12">
 		<div>
-			<TitleUi text="Gallery" />
+			<TitleUi text="Gallery" customClass=" dark:text-white text-secondary " />
 		</div>
 	</div>
 	{#if $galleryStore}

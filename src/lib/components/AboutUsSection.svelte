@@ -19,7 +19,7 @@
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
 	>
 		<div class="flex justify-center items-center">
-			<TitleUi text={$LL.about()} />
+			<TitleUi text={$LL.about()} customClass=" text-white dark:text-white " />
 		</div>
 		<div class=" flex items-center justify-center flex-col w-full {constants.section_margin_top}">
 			<!-- short description  -->

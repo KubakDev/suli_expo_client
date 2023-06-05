@@ -16,7 +16,7 @@
 
 <section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
 	<div class="flex justify-center items-center">
-		<TitleUi text={$LL.promo()} />
+		<TitleUi text={$LL.promo()} customClass=" dark:text-white text-secondary " />
 	</div>
 	<div class="w-full">
 		{#if $videoSectionStore}

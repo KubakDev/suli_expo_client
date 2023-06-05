@@ -25,7 +25,7 @@
 			out:fade={{ duration: 400 }}
 			class="flex justify-center items-center mb-12"
 		>
-			<TitleUi text="Exhibition" />
+			<TitleUi text="Exhibition" customClass=" dark:text-white text-secondary " />
 		</div>
 
 		<div class="grid gap-8 mt-8 sm:grid-cols-1 lg:grid-cols-2">

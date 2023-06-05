@@ -65,7 +65,7 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi text={$LL.exhibition()} />
+				<TitleUi text={$LL.exhibition()} customClass=" dark:text-white text-secondary " />
 			</div>
 			<Button color="primary" class="w-32 rounded-md bg-primary text-black">See all</Button>
 		</div>

@@ -68,3 +68,6 @@ nav {
 	padding: 0 !important;
 	border: none !important;
 }
+nav li {
+	margin: 0 !important;
+}
