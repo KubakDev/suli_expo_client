@@ -69,5 +69,6 @@ nav {
 	border: none !important;
 }
 nav li {
-	margin: 0 !important;
+	margin-right: 2px !important;
+	margin-left: 2px !important;
 }
