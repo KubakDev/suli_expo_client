@@ -18,7 +18,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section class="py-12 {Constants.page_max_width} m-auto">
+<section class="py-12 {Constants.page_max_width} mx-auto">
 	<div class="">
 		<div
 			in:fade={{ duration: 800 }}
@@ -36,7 +36,7 @@
 				>
 					<ExpoCard
 						title={exhibition.title}
-						thumbnail={exhibition.images[0]}
+						thumbnail={exhibition.image}
 						cardType={CardType.Square}
 						primaryColor={'bg-primary'}
 					/>

@@ -49,7 +49,7 @@
 					<div>
 						<ExpoCard
 							title={exhibition.title}
-							thumbnail={exhibition.images[0]}
+							thumbnail={exhibition.image}
 							cardType={CardType.Square}
 							primaryColor={'bg-primary'}
 						/>

@@ -1,7 +1,7 @@
 export interface ExhibitionModel {
 	id?: number;
 	title: string;
-	images: string[];
+	image: string;
 	description?: string;
 	created_at?: Date;
 }
