@@ -5,6 +5,7 @@
 	import Constants from '../../utils/constants.js';
 	import { fly, fade } from 'svelte/transition';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import constants from '../../utils/constants.js';
 
 	export let data;
 
@@ -18,30 +19,20 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section class="py-12 {Constants.page_max_width} mx-auto">
-	<div class="">
-		<div
-			in:fade={{ duration: 800 }}
-			out:fade={{ duration: 400 }}
-			class="flex justify-center items-center mb-12"
-		>
-			<TitleUi text="Exhibition" customClass=" dark:text-white text-secondary " />
-		</div>
+<section class="py-12 {Constants.page_max_width} mx-auto w-full">
+	<div
+		in:fade={{ duration: 800 }}
+		out:fade={{ duration: 400 }}
+		class="flex justify-center items-center mb-12"
+	>
+		<TitleUi text="Exhibition" customClass=" dark:text-white text-secondary " />
+	</div>
 
-		<div class="grid gap-8 mt-8 sm:grid-cols-1 lg:grid-cols-2">
-			{#each $exhibitionStore as exhibition, i}
-				<div
-					in:fly={{ y: 200, duration: 600, delay: i * 100 }}
-					out:fly={{ y: 200, duration: 200, delay: i * 20 }}
-				>
-					<ExpoCard
-						title={exhibition.title}
-						thumbnail={exhibition.image}
-						cardType={CardType.Square}
-						primaryColor={'bg-primary'}
-					/>
-				</div>
-			{/each}
-		</div>
+	<div
+		class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
+	>
+		{#each $exhibitionStore as exhibition, i}
+			<ExpoCard title={exhibition.title} thumbnail={exhibition.image} cardType={CardType.Square} />
+		{/each}
 	</div>
 </section>

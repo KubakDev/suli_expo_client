@@ -9,6 +9,7 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import Saos from 'saos';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -46,13 +47,16 @@
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each exhibitions as exhibition, i}
-					<div>
-						<ExpoCard
-							title={exhibition.title}
-							thumbnail={exhibition.image}
-							cardType={CardType.Square}
-							primaryColor={'bg-primary'}
-						/>
+					<div class="w-full">
+						<Saos
+							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+						>
+							<ExpoCard
+								title={exhibition.title}
+								thumbnail={exhibition.image}
+								cardType={CardType.Square}
+							/>
+						</Saos>
 					</div>
 				{/each}
 			</div>
@@ -82,3 +86,27 @@
 		</div>
 	</section>
 {/if}
+
+<style>
+	@keyframes -global-from-bottom {
+		0% {
+			transform: rotateY(10deg) translateY(10vw);
+			opacity: 1;
+		}
+		100% {
+			transform: rotateY(0deg) translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes -global-from-right {
+		0% {
+			transform: rotateY(50deg) translateX(200vw);
+			opacity: 1;
+		}
+		100% {
+			transform: rotateX(0deg) translateX(0);
+			opacity: 1;
+		}
+	}
+</style>

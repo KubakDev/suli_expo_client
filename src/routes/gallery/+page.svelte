@@ -43,12 +43,7 @@
 			{#each $galleryStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard
-							cardType={CardType.Main}
-							title={item.title}
-							thumbnail={item.thumbnail}
-							primaryColor="bg-primary"
-						/>
+						<ExpoCard cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

@@ -50,7 +50,7 @@
 							title={item.title}
 							short_description={item.short_description}
 							thumbnail={item.thumbnail}
-							primaryColor="bg-primary"
+							primaryColor={CardComponent.primaryColor}
 						/>
 					</div>
 				{/if}

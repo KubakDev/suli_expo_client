@@ -37,7 +37,7 @@
 			>
 				<h1 class="title-font text-base mb-2 font-medium text-start">{item.title}</h1>
 				<p class="leading-relaxed">
-					{item.short_description}
+					{item.short_description?.slice(0, 80)}
 				</p>
 			</div>
 		</div>
