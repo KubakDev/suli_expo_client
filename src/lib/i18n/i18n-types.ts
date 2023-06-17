@@ -132,6 +132,34 @@ type RootTranslation = {
 	 * A​d​d​r​e​s​s
 	 */
 	address: string
+	/**
+	 * M​e​d​i​a
+	 */
+	media: string
+	/**
+	 * P​u​b​l​i​s​h​i​n​g
+	 */
+	publishing: string
+	/**
+	 * M​a​g​a​z​i​n​e
+	 */
+	magazine: string
+	/**
+	 * G​a​l​l​e​r​y
+	 */
+	gallery: string
+	/**
+	 * V​i​d​e​o​s
+	 */
+	videos: string
+	/**
+	 * M​o​r​e​ ​i​n​ ​G​a​l​l​e​r​y
+	 */
+	MoreInGallery: string
+	/**
+	 * M​o​r​e​ ​V​i​d​e​o​s
+	 */
+	moreVideos: string
 }
 
 export type TranslationFunctions = {
@@ -251,6 +279,34 @@ export type TranslationFunctions = {
 	 * Address
 	 */
 	address: () => LocalizedString
+	/**
+	 * Media
+	 */
+	media: () => LocalizedString
+	/**
+	 * Publishing
+	 */
+	publishing: () => LocalizedString
+	/**
+	 * Magazine
+	 */
+	magazine: () => LocalizedString
+	/**
+	 * Gallery
+	 */
+	gallery: () => LocalizedString
+	/**
+	 * Videos
+	 */
+	videos: () => LocalizedString
+	/**
+	 * More in Gallery
+	 */
+	MoreInGallery: () => LocalizedString
+	/**
+	 * More Videos
+	 */
+	moreVideos: () => LocalizedString
 }
 
 export type Formatters = {}

@@ -30,7 +30,14 @@ const ar = {
 	mission: 'مهمة',
 	commitment: 'التزام',
 	resentNews: 'أخبار حديثة',
-	address: 'عنوان'
+	address: 'عنوان',
+	media: 'وسائل الإعلام',
+	publishing: 'نشر',
+	magazine: 'مجلة',
+	gallery: 'صالة عرض',
+	videos: 'مقاطع الفيديو',
+	MoreInGallery: 'المزيد في المعرض',
+	moreVideos: 'المزيد من مقاطع الفيديو'
 } satisfies Translation;
 
 export default ar;

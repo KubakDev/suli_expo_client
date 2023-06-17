@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async ({ locals: { getSession }, url, cook
 	// const newLocale = url.searchParams.get(langParam);
 	const urlObj = new URL(url, 'http://localhost:3000');
 	const newLocale = urlObj.searchParams.get(langParam);
-	console.log('newLocale e ', newLocale);
+	//('newLocale e ', newLocale);
 	if (newLocale) {
 		cookies.set(langParam, newLocale, { path: '/' });
 		urlObj.searchParams.delete(langParam);
@@ -21,7 +21,7 @@ export const load: LayoutServerLoad = async ({ locals: { getSession }, url, cook
 
 	// Get the locale from the cookie
 	const locale = detectLocale(() => [cookies.get(langParam) ?? '']);
-	console.log('locale', locale);
+	//('locale', locale);
 	return {
 		session: session,
 		locale: locale

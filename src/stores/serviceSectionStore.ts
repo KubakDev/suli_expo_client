@@ -1,6 +1,5 @@
 import type { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import logger from '../utils/logger';
 import type { ServiceModel } from '../models/serviceModel';
 import { convertModel } from '../models/covertModel';
 
@@ -20,10 +19,12 @@ const createServiceSectionStore = () => {
 				.order('created_at', { ascending: false })
 				.limit(9);
 			if (result.error) {
-				logger.error(result.error);
+				//.error(result.error);
 				return null;
 			} else {
+				//('result', result);
 				const services = result.data.map((e) => convertModel<ServiceModel>(e)) as ServiceModel[];
+				//('services', services);
 				set(services);
 				return null;
 			}

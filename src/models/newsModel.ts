@@ -1,7 +1,7 @@
 export interface NewsModel {
 	id?: number;
-	title?: string;
-	thumbnail?: string;
+	title: string;
+	thumbnail: string;
 	images: string[];
 	imagesCarousel: CarouselImage[];
 	long_description?: string;

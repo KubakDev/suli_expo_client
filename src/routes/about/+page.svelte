@@ -19,9 +19,6 @@
 	}
 	onMount(async () => {
 		await aboutSectionStore.get($locale, data?.supabase);
-		// console.log('data', $aboutSectionStore);
-		await staffSectionStore.get($locale, data?.supabase);
-		// console.log('staff data', $staffSectionStore);
 	});
 </script>
 

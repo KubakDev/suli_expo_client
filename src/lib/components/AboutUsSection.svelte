@@ -1,5 +1,4 @@
 <script lang="ts">
-	import logger from '../../utils/logger';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { aboutSectionStore } from '../../stores/aboutSectionStore';
 	import TitleUi from './TitleUi.svelte';
@@ -7,9 +6,9 @@
 	export let supabase: any;
 
 	$: {
-		logger.info('locale changed %%%%%%%%%%%%%%%%%%');
+		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
-			logger.info('locale changed #########', $locale);
+			//.info('locale changed #########', $locale);
 			aboutSectionStore.get($locale, supabase);
 		}
 	}
@@ -35,7 +34,7 @@
 			<img
 				class="lg:-mt-20 lg:w-4/6 w-full mb-10 lg:h-96 object-cover object-center rounded-lg"
 				alt="about image"
-				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${$aboutSectionStore?.images}`}
+				src={`${$aboutSectionStore?.image}`}
 			/>
 		</div>
 	</section>

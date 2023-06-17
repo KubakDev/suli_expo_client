@@ -1,4 +1,4 @@
-export const enum CardType {
+export const enum CardPageType {
 	Home = 'home',
 	News = 'news',
 	Service = 'service'

@@ -1,7 +1,7 @@
 export interface ServiceModel {
 	id?: number;
 	title?: string;
-	thumbnail?: string[];
+	thumbnail?: string;
 	short_description?: string;
 	primaryColor?: string;
 	onPrimaryColor?: string;

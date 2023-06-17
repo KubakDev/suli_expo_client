@@ -1,6 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import logger from '../utils/logger';
 import type { ExhibitionModel } from '../models/exhibitionModel';
 import { convertModel } from '../models/covertModel';
 
@@ -13,16 +12,16 @@ const createExhibitionStore = () => {
 			set(exhibitionModels);
 		},
 		get: async (supabase: SupabaseClient) => {
-			logger.info('get exhibition');
+			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
 				.select('*,languages:exhibition_languages(*)')
 				.eq('languages.language', 'en')
 				.order('created_at', { ascending: false })
 				.limit(9);
-			// console.log(result);
+			//  //(result);
 			if (result.error) {
-				logger.error(result.error);
+				//.error(result.error);
 				return null;
 			} else {
 				const exhibition = result.data.map((e) =>
