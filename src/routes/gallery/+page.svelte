@@ -35,7 +35,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto">
 	<div class="flex justify-center items-start mb-12">
 		<div>
-			<TitleUi text="Gallery" />
+			<TitleUi text="Gallery" customClass=" dark:text-white text-secondary " />
 		</div>
 	</div>
 	{#if $galleryStore}
@@ -43,12 +43,7 @@
 			{#each $galleryStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard
-							cardType={CardType.Main}
-							title={item.title}
-							thumbnail={item.thumbnail}
-							primaryColor="bg-primary"
-						/>
+						<ExpoCard cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

@@ -71,8 +71,8 @@
 		<NavUl
 			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul 	"
-			activeClass="text-white bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
-			nonActiveClass="text-white hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+			activeClass="dark:text-white text-secondary bg-primary md:bg-transparent md:text-primary md:dark:text-primary dark:bg-primary md:dark:bg-transparent"
+			nonActiveClass="dark:text-white text-secondary hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
 			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
@@ -80,58 +80,58 @@
 			</div>
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
-				class="  cursor-pointer text-base  lg:text-lg"
+				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/news')}
-				class="  cursor-pointer text-base  lg:text-lg "
+				class="  cursor-pointer text-sm  lg:text-lg "
 				active={activeUrl == '/news'}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibition')}
-				class="  cursor-pointer text-base  lg:text-lg"
+				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 			>
-			<NavLi id="media" class="cursor-pointer text-base  lg:text-lg"
+			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi
 			>
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
 				<DropdownItem
-					defaultClass="text-white mb-1 text-base"
+					defaultClass="dark:text-white text-secondary mb-1 text-base"
 					href="/gallery"
 					on:click={() => updateActiveUrl('/gallery')}>{$LL.gallery()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-white mb-1 text-base"
+					defaultClass="dark:text-white text-secondary mb-1 text-base"
 					href="/magazine"
 					on:click={() => updateActiveUrl('/magazine')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-white mb-1 text-base"
+					defaultClass="dark:text-white text-secondary mb-1 text-base"
 					href="/publishing"
 					on:click={() => updateActiveUrl('/publishing')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-white mb-1 text-base"
+					defaultClass="dark:text-white text-secondary mb-1 text-base"
 					href="/videos"
 					on:click={() => updateActiveUrl('/videos')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
 			<NavLi
 				on:click={() => updateActiveUrl('/services')}
-				class="  cursor-pointer text-base  lg:text-lg"
+				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/services'}>{$LL.services()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/about')}
-				class=" cursor-pointer text-base  lg:text-lg"
+				class=" cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/about'}>{$LL.about()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/contact')}
 				active={activeUrl == '/contact'}
-				class="   cursor-pointer text-base  lg:text-lg">{$LL.contact()}</NavLi
+				class="   cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 			>
 			<div
 				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"

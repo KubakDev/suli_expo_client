@@ -24,17 +24,17 @@ const createExhibitionSectionStore = () => {
 			let data = result.data;
 			// filter if result language is not empty
 			//.info('get exhibition ', data);
-			if (data) {
-				data = data.filter((e) => e.languages.length > 0);
-			} else {
-				data = [];
-			}
+			// if (data) {
+			// 	data = data.filter((e) => e.languages.length > 0);
+			// } else {
+			// data = [];
+			// }
 			//  //(result);
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				const exhibition = data.map((e) => convertModel<ExhibitionModel>(e)) as ExhibitionModel[];
+				const exhibition = data!.map((e) => convertModel<ExhibitionModel>(e)) as ExhibitionModel[];
 				set(exhibition);
 				return null;
 			}

@@ -23,12 +23,12 @@
 	<div class="mx-auto px-4 {Constants.page_max_width}">
 		<!-- title  -->
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.contact()} />
+			<TitleUi text={$LL.contact()} customClass=" dark:text-white text-secondary " />
 		</div>
 
 		<!-- contact information section -->
 		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:bg-slate-950 dark:text-slate-300 bg-[#eef0f2] text-slate-800 shadow"
+			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-secondary text-slate-800 shadow"
 		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}

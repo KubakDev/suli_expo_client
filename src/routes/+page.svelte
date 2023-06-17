@@ -35,21 +35,21 @@
 	<div class=" max-h-300 min-h-128 w-full block z-10">
 		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 	</div>
-	<Saos animation={'from-left 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>
-		<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
-			<NewsSection supabase={data.supabase} />
-		</div>
-	</Saos>
+
+	<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
+		<NewsSection supabase={data.supabase} />
+	</div>
+
 	<Saos animation={'from-right 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>
 		<div>
 			<PromoSection supabase={data.supabase} />
 		</div>
 	</Saos>
-	<Saos animation={'from-left 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>
-		<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
-			<AboutUsSection supabase={data.supabase} />
-		</div>
-	</Saos>
+
+	<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
+		<AboutUsSection supabase={data.supabase} />
+	</div>
+
 	{#if seatLayout}
 		<!-- <SeatReservation {seatLayout} /> -->
 	{/if}

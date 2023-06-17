@@ -10,6 +10,7 @@
 	import SeeAllBtn from '../SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
+	import Saos from 'saos';
 
 	export let supabase: any;
 	let CardComponent: any;
@@ -46,7 +47,7 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi textColorDark="text-white" textColorLight="text-white" text={$LL.news()} />
+				<TitleUi customClass=" text-white dark:text-white " text={$LL.news()} />
 			</div>
 			<div class="flex justify-end w-32">
 				<SeeAllBtn onBtnClick={openNews} />
@@ -57,15 +58,18 @@
 		>
 			{#each $newsSectionStore as n, i}
 				{#if CardComponent && $newsUiStore}
-					<div on:click={() => DetailsPage(n.id)}>
-						<ExpoCard
-							cardType={CardType.Main}
-							title={n.title}
-							thumbnail={n.thumbnail}
-							short_description={n.short_description}
-							primaryColor={'bg-primary'}
-						/>
-					</div>
+					<Saos
+						animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+					>
+						<div on:click={() => DetailsPage(n.id)}>
+							<ExpoCard
+								cardType={CardType.Main}
+								title={n.title}
+								thumbnail={n.thumbnail}
+								short_description={n.short_description}
+							/>
+						</div>
+					</Saos>
 				{:else}
 					<div />
 				{/if}
@@ -75,3 +79,27 @@
 {:else}
 	<NewsSectionShimmer />
 {/if}
+
+<style>
+	@keyframes -global-from-bottom {
+		0% {
+			transform: rotateY(10deg) translateY(10vw);
+			opacity: 1;
+		}
+		100% {
+			transform: rotateY(0deg) translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes -global-from-right {
+		0% {
+			transform: rotateY(50deg) translateX(200vw);
+			opacity: 1;
+		}
+		100% {
+			transform: rotateX(0deg) translateX(0);
+			opacity: 1;
+		}
+	}
+</style>

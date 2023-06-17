@@ -31,7 +31,7 @@
 	<div class="mx-auto {Constants.page_max_width}">
 		<!-- title -->
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.about()} />
+			<TitleUi text={$LL.about()} customClass=" dark:text-white text-secondary " />
 		</div>
 		<!-- about content -->
 		<div class="">
