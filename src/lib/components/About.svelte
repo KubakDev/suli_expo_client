@@ -2,7 +2,7 @@
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import Saos from 'saos';
+	import Saos from '$lib/saos/Saos.svelte';
 
 	//  //('locale', $locale);
 </script>

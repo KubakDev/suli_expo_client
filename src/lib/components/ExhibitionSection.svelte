@@ -9,7 +9,7 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import Saos from 'saos';
+	import Saos from '$lib/saos/Saos.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -90,22 +90,11 @@
 <style>
 	@keyframes -global-from-bottom {
 		0% {
-			transform: rotateY(10deg) translateY(10vw);
+			transform: translateY(10vw);
 			opacity: 1;
 		}
 		100% {
-			transform: rotateY(0deg) translateY(0);
-			opacity: 1;
-		}
-	}
-
-	@keyframes -global-from-right {
-		0% {
-			transform: rotateY(50deg) translateX(200vw);
-			opacity: 1;
-		}
-		100% {
-			transform: rotateX(0deg) translateX(0);
+			transform: translateY(0);
 			opacity: 1;
 		}
 	}

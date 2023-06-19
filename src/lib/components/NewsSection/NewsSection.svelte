@@ -10,7 +10,7 @@
 	import SeeAllBtn from '../SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
-	import Saos from 'saos';
+	import Saos from '$lib/saos/Saos.svelte';
 
 	export let supabase: any;
 	let CardComponent: any;
@@ -58,18 +58,18 @@
 		>
 			{#each $newsSectionStore as n, i}
 				{#if CardComponent && $newsUiStore}
-					<Saos
-						animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-					>
-						<div on:click={() => DetailsPage(n.id)}>
+					<div on:click={() => DetailsPage(n.id)} class="w-full">
+						<Saos
+							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+						>
 							<ExpoCard
 								cardType={CardType.Main}
 								title={n.title}
 								thumbnail={n.thumbnail}
 								short_description={n.short_description}
 							/>
-						</div>
-					</Saos>
+						</Saos>
+					</div>
 				{:else}
 					<div />
 				{/if}
@@ -83,22 +83,11 @@
 <style>
 	@keyframes -global-from-bottom {
 		0% {
-			transform: rotateY(10deg) translateY(10vw);
-			opacity: 1;
+			transform: translateY(10vw);
+			opacity: 0;
 		}
 		100% {
-			transform: rotateY(0deg) translateY(0);
-			opacity: 1;
-		}
-	}
-
-	@keyframes -global-from-right {
-		0% {
-			transform: rotateY(50deg) translateX(200vw);
-			opacity: 1;
-		}
-		100% {
-			transform: rotateX(0deg) translateX(0);
+			transform: translateY(0);
 			opacity: 1;
 		}
 	}
