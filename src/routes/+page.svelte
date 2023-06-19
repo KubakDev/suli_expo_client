@@ -2,13 +2,8 @@
 	import HomeSwiper from '$lib/components/HomeSwiper.svelte';
 	import { onMount } from 'svelte';
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
-	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import { exhibitionSectionStore } from '../stores/exhibtionSectionStore';
-	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
+	import { locale } from '$lib/i18n/i18n-svelte';
 	import PromoSection from '$lib/components/PromoSection.svelte';
-	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
-	import Saos from '$lib/saos/Saos.svelte';
 
 	import AboutUsSection from '$lib/components/AboutUsSection.svelte';
 
