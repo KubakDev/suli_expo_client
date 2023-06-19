@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
-	import Saos from '$lib/saos/Saos.svelte';
+	import Saos from '$lib/animate/Saos.svelte';
 
 	//  //('locale', $locale);
 </script>

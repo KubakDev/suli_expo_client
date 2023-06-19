@@ -3,7 +3,7 @@
 	import { aboutSectionStore } from '../../stores/aboutSectionStore';
 	import TitleUi from './TitleUi.svelte';
 	import constants from '../../utils/constants';
-	import Saos from '$lib/saos/Saos.svelte';
+	import Saos from '$lib/animate/Saos.svelte';
 	export let supabase: any;
 
 	$: {

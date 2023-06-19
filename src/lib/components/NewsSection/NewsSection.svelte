@@ -10,7 +10,7 @@
 	import SeeAllBtn from '../SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
-	import Saos from '$lib/saos/Saos.svelte';
+	import Saos from '$lib/animate/Saos.svelte';
 
 	export let supabase: any;
 	let CardComponent: any;

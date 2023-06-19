@@ -9,7 +9,7 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import Saos from '$lib/saos/Saos.svelte';
+	import Saos from '$lib/animate/Saos.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
