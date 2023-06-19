@@ -15,8 +15,9 @@
 
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
-		console.log(news);
+
 		newsStore.get($locale, data.supabase);
+		console.log('////test', news);
 	}
 
 	onMount(() => {

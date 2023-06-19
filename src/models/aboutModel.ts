@@ -1,14 +1,7 @@
 export interface AboutModel {
 	id?: number;
-	image?: string;
-	title?: string;
-	short_description?: string;
-	unmatched_service?: string;
-	specific?: string;
-	experience?: string;
-	technology?: string;
-	ethics?: string;
-	quality?: string;
-	continuity?: string;
+	image: string;
+	short_description: string;
+	long_description: string;
 	created_at?: Date;
 }
