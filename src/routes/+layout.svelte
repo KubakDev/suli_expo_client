@@ -10,6 +10,8 @@
 	import { contactInfoSectionStore } from '../stores/contactInfo';
 	import { easeCubicIn, transition } from 'd3';
 	import { fly } from 'svelte/transition';
+	import { previousPageStore } from '../stores/navigationStore';
+
 	export let data;
 
 	let supabase: any;
@@ -42,6 +44,34 @@
 			`
 		};
 	}
+
+	const pageTransitions: any = {
+		'/news': ['/'],
+		'/exhibitions': ['/news', '/'],
+		'/services': ['/exhibitions', '/news', '/'],
+		'/about': ['/services', '/exhibitions', '/news', '/'],
+		'/contact': ['/about', '/services', '/exhibitions', '/news', '/'],
+		'/gallery': ['/exhibitions', '/news', '/'],
+		'/magazine': ['/exhibitions', '/news', '/'],
+		'/publishing': ['/exhibitions', '/news', '/'],
+		'/videos': ['/exhibitions', '/news', '/']
+	};
+
+	// function for nowing which page go to which page
+	function inLeft() {
+		console.log(data.url);
+		console.log('&&&&&&&&&&&&&&&&&&');
+		console.log($previousPageStore);
+		if (
+			$locale === 'en'
+				? !pageTransitions[$previousPageStore]?.includes(data.url.pathname)
+				: pageTransitions[$previousPageStore]?.includes(data.url.pathname)
+		) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 </script>
 
 {#if supabase}
@@ -49,8 +79,11 @@
 		<Headerbar />
 		<Navbar {data} />
 		<main>
-			{#key data.url}
-				<div in:fly={{ x: -200, duration: 500 }} out:fly={{ x: 200, duration: 300 }}>
+			{#key data.url.pathname}
+				<div
+					in:fly={{ x: inLeft() ? -300 : 300, duration: 1000 }}
+					out:fly={{ x: inLeft() ? 200 : -200, duration: 500 }}
+				>
 					<slot />
 				</div>
 			{/key}

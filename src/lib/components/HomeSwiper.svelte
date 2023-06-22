@@ -15,9 +15,16 @@
 		// swiperjs set scroll directin write to left or left to write
 	}
 
-	function toggleDirection() {
-		// toggle swiper direction
-	}
+	// function toggleDirection() {
+	// 	const swiperEl = document.querySelector('swiper-container');
+	// 	if (swiperEl) {
+	// 		if (locale === 'en') {
+	// 			swiperEl!.setAttribute('dir', 'ltr');
+	// 		} else {
+	// 			swiperEl!.setAttribute('dir', 'rtl');
+	// 		}
+	// 	}
+	// }
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
@@ -64,7 +71,8 @@
 				hideOnClick: true
 			}}
 			autoplay={{
-				delay: 2000
+				delay: 2000,
+				reverseDirection: locale === 'en' ? false : true
 			}}
 			on:progress={onProgress}
 			on:slidechange={onSlideChange}

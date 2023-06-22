@@ -23,6 +23,8 @@
 	import { changeLanguage } from '../../utils/language';
 	import Constants from '../../utils/constants';
 	import { goto } from '$app/navigation';
+	import { previousPageStore } from '../../stores/navigationStore';
+
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
@@ -38,6 +40,8 @@
 
 	function updateActiveUrl(url: string) {
 		activeUrl = url;
+		previousPageStore.set($page.url.pathname);
+
 		goto(url);
 		//(activeUrl);
 	}
