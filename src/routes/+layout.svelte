@@ -50,7 +50,7 @@
 		<Navbar {data} />
 		<main>
 			{#key data.url}
-				<div in:fly={{ x: -200, duration: 1000 }} out:fly={{ x: 200, duration: 300 }}>
+				<div in:fly={{ x: -200, duration: 500 }} out:fly={{ x: 200, duration: 300 }}>
 					<slot />
 				</div>
 			{/key}
