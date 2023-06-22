@@ -81,7 +81,7 @@
 		<main>
 			{#key data.url.pathname}
 				<div
-					in:fly={{ x: inLeft() ? -300 : 300, duration: 1000 }}
+					in:fly={{ x: inLeft() ? -300 : 300, duration: 800 }}
 					out:fly={{ x: inLeft() ? 200 : -200, duration: 500 }}
 				>
 					<slot />

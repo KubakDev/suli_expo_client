@@ -42,8 +42,7 @@
 		activeUrl = url;
 		previousPageStore.set($page.url.pathname);
 
-		goto(url);
-		//(activeUrl);
+		// navigate to other page using href
 	}
 
 	async function langSelect(lang: string) {
@@ -84,16 +83,19 @@
 			</div>
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
+				href="/"
 				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/news')}
+				href="/news"
 				class="  cursor-pointer text-sm  lg:text-lg "
 				active={activeUrl == '/news'}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibitions')}
+				href="/exhibitions"
 				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/exhibitions'}>{$LL.exhibition()}</NavLi
 			>
@@ -125,16 +127,19 @@
 			<NavLi
 				on:click={() => updateActiveUrl('/services')}
 				class="  cursor-pointer text-sm  lg:text-lg"
+				href="/services"
 				active={activeUrl == '/services'}>{$LL.services()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/about')}
 				class=" cursor-pointer text-sm  lg:text-lg"
+				href="/about"
 				active={activeUrl == '/about'}>{$LL.about()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/contact')}
 				active={activeUrl == '/contact'}
+				href="/contact"
 				class="   cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 			>
 			<div
