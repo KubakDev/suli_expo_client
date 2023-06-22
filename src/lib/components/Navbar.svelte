@@ -89,9 +89,9 @@
 				active={activeUrl == '/news'}>{$LL.news()}</NavLi
 			>
 			<NavLi
-				on:click={() => updateActiveUrl('/exhibition')}
+				on:click={() => updateActiveUrl('/exhibitions')}
 				class="  cursor-pointer text-sm  lg:text-lg"
-				active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
+				active={activeUrl == '/exhibitions'}>{$LL.exhibition()}</NavLi
 			>
 			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi

@@ -69,7 +69,7 @@
 			on:progress={onProgress}
 			on:slidechange={onSlideChange}
 			init="false"
-			class="w-full"
+			class="w-full h-200"
 		>
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">

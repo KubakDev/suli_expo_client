@@ -8,6 +8,8 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { changeLanguage } from '../utils/language';
 	import { contactInfoSectionStore } from '../stores/contactInfo';
+	import { easeCubicIn, transition } from 'd3';
+	import { fly } from 'svelte/transition';
 	export let data;
 
 	let supabase: any;
@@ -19,6 +21,27 @@
 		supabase = data.supabase;
 		changeLanguage(data.locale);
 	});
+
+	function scale(
+		node: Element,
+		{ delay = 0, duration = 300, easing = easeCubicIn },
+		{ direction = 'both' } = {}
+	) {
+		const origin = {
+			in: 'bottom left',
+			out: 'bottom right',
+			both: 'center center'
+		};
+		return {
+			delay,
+			duration,
+			easing,
+			css: (t: any) => `
+				scale: ${t};
+				transform-origin: ${origin[direction]};
+			`
+		};
+	}
 </script>
 
 {#if supabase}
@@ -26,7 +49,11 @@
 		<Headerbar />
 		<Navbar {data} />
 		<main>
-			<slot />
+			{#key data.url}
+				<div in:fly={{ x: -200, duration: 1000 }} out:fly={{ x: 200, duration: 300 }}>
+					<slot />
+				</div>
+			{/key}
 		</main>
 		<div>
 			<Footer />

@@ -4,8 +4,10 @@
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
 	import { locale } from '$lib/i18n/i18n-svelte';
 	import PromoSection from '$lib/components/PromoSection.svelte';
-
+	import { exhibitionSectionStore } from '../stores/exhibtionSectionStore';
 	import AboutUsSection from '$lib/components/AboutUsSection.svelte';
+	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
+	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -27,13 +29,9 @@
 <HomeSwiper locale={$locale} supabase={data.supabase} />
 
 <div class="  m-auto w-full overflow-hidden">
-	<!-- <div class=" max-h-300 min-h-128 w-full block z-10">
-		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
-	</div>
+	<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 
-	<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
-		<NewsSection supabase={data.supabase} />
-	</div> -->
+	<NewsSection supabase={data.supabase} />
 
 	<div>
 		<PromoSection supabase={data.supabase} />
