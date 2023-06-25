@@ -24,6 +24,7 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
+				console.log('exhibition data ', result.data);
 				const exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 				console.log('exhibition', exhibition);
 				return exhibition;
@@ -33,7 +34,7 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages(*)')
+				.select('*,languages:exhibition_languages!inner(*)')
 				.eq('languages.language', 'en')
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -42,9 +43,11 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
+				console.log('exhibition data ', result.data);
 				const exhibition = result.data.map((e) =>
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
+				console.log('exhibition', exhibition);
 				set(exhibition);
 				return null;
 			}

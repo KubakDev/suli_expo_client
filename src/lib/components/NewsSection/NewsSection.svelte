@@ -83,7 +83,7 @@
 <style>
 	@keyframes -global-from-bottom {
 		0% {
-			transform: translateY(10vw);
+			transform: translateY(100px);
 			opacity: 0;
 		}
 		100% {

@@ -1,31 +1,40 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import type { NewsModel } from '../models/newsModel';
+import type { NewsModel, NewsPaginatedModel } from '../models/newsModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
 const createNewsStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set, update } = writable<NewsModel[]>();
+	const { subscribe, set, update } = writable<NewsPaginatedModel>();
 
 	return {
 		subscribe,
-		set: (seatLayout: NewsModel[]) => {
+		set: (seatLayout: NewsPaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient) => {
+		get: async (locale: Locales, supabase: SupabaseClient, page: string) => {
 			// get current selected language
 			const result = await supabase
 				.from('news')
-				.select('*,languages:news_languages(*)')
+				.select('*,languages:news_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
+				.range((parseInt(page) - 1) * 9, parseInt(page) * 9 - 1)
 				.limit(9);
+
+			console.log(result);
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
+				console.log(result.data);
 				const news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
-				set(news);
+				const newsPaginated = {
+					data: news,
+					page: parseInt(page),
+					count: result.count
+				} as NewsPaginatedModel;
+				set(newsPaginated);
 				return null;
 			}
 		},
@@ -33,7 +42,7 @@ const createNewsStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('news')
-				.select('*,languages:news_languages(*)')
+				.select('*,languages:news_languages!inner(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();

@@ -16,7 +16,7 @@ const createVideoStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('media_video')
-				.select('*,languages:media_video_languages(*)')
+				.select('*,languages:media_video_languages!inner(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -34,7 +34,7 @@ const createVideoStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('media_video')
-				.select('*,languages:media_video_languages(*)')
+				.select('*,languages:media_video_languages!inner(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();

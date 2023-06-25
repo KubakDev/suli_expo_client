@@ -32,7 +32,7 @@
 	}
 </script>
 
-<section class="py-12 {Constants.page_max_width} mx-auto">
+<section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-start mb-12">
 		<div>
 			<TitleUi text="Gallery" customClass=" dark:text-white text-secondary " />

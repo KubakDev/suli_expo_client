@@ -4,11 +4,12 @@
 	import { DetailPage } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import type { NewsModel } from '../../../models/newsModel';
-	import { modelToItemModel } from '../../../models/covertModel';
-	import Constants from '../../../utils/constants';
+	import type { NewsModel } from '../../../../models/newsModel';
+	import { modelToItemModel } from '../../../../models/covertModel';
+	import Constants from '../../../../utils/constants';
 	import RecentItems from '$lib/components/RecentItems.svelte';
-	import { newsStore } from '../../../stores/newsStore';
+	import { newsStore } from '../../../../stores/newsStore';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data;
 	let news: NewsModel | undefined | null;
@@ -16,7 +17,7 @@
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
 
-		newsStore.get($locale, data.supabase);
+		newsStore.get($locale, data.supabase, '1');
 		console.log('////test', news);
 	}
 
@@ -25,20 +26,24 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
 	{#if news}
 		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
 			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
 			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
 				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>
-			{#if $newsStore}
+			{#if $newsStore && $newsStore.data.length > 0}
 				<RecentItems
 					title={$LL.news()}
-					items={$newsStore.map((news) => modelToItemModel(news))}
+					items={$newsStore.data.map((news) => modelToItemModel(news))}
 					pageType={'news'}
 				/>
 			{/if}
+		</div>
+	{:else}
+		<div class="w-full h-full flex flex-1 justify-center items-center absolute">
+			<Spinner />
 		</div>
 	{/if}
 </section>

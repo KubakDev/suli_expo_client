@@ -64,8 +64,12 @@
 		console.log($previousPageStore);
 		if (
 			$locale === 'en'
-				? !pageTransitions[$previousPageStore]?.includes(data.url.pathname)
-				: pageTransitions[$previousPageStore]?.includes(data.url.pathname)
+				? !pageTransitions[
+						$previousPageStore.startsWith('/news') ? '/news' : $previousPageStore
+				  ]?.includes(data.url.pathname)
+				: pageTransitions[
+						$previousPageStore.startsWith('/news') ? '/news' : $previousPageStore
+				  ]?.includes(data.url.pathname)
 		) {
 			return false;
 		} else {
@@ -78,11 +82,12 @@
 	<div class="dark:bg-black bg-white app">
 		<Headerbar />
 		<Navbar {data} />
-		<main>
+		<main class="h-full flex">
 			{#key data.url.pathname}
 				<div
-					in:fly={{ x: inLeft() ? -300 : 300, duration: 800 }}
-					out:fly={{ x: inLeft() ? 200 : -200, duration: 500 }}
+					class="h-full block flex-1 flex"
+					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 500 }}
+					out:fly={{ x: inLeft() ? 300 : -300, duration: 300 }}
 				>
 					<slot />
 				</div>

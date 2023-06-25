@@ -88,10 +88,10 @@
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
-				on:click={() => updateActiveUrl('/news')}
-				href="/news"
+				on:click={() => updateActiveUrl('/news/1')}
+				href="/news/1"
 				class="  cursor-pointer text-sm  lg:text-lg "
-				active={activeUrl == '/news'}>{$LL.news()}</NavLi
+				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibitions')}

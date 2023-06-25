@@ -19,7 +19,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section class="py-12 dark:bg-slate-900">
+<section class="py-12 dark:bg-slate-900 flex-1">
 	<div class="mx-auto px-4 {Constants.page_max_width}">
 		<!-- title  -->
 		<div class="flex justify-center items-center mb-12">

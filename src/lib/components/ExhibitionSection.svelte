@@ -9,7 +9,6 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import Saos from '$lib/animate/Saos.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -30,8 +29,6 @@
 {#if $exhibitionSectionStore && $exhibitionSectionStore.length > 0}
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
-		in:fly={{ y: 400, duration: 800, delay: 200 }}
-		out:fly={{ y: 200, duration: 200, delay: 20 }}
 	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
@@ -48,21 +45,21 @@
 			>
 				{#each exhibitions as exhibition, i}
 					<div class="w-full">
-						<Saos
+						<!-- <Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-						>
-							<ExpoCard
-								title={exhibition.title}
-								thumbnail={exhibition.image}
-								cardType={CardType.Square}
-							/>
-						</Saos>
+						> -->
+						<ExpoCard
+							title={exhibition.title}
+							thumbnail={exhibition.image}
+							cardType={CardType.Square}
+						/>
+						<!-- </Saos> -->
 					</div>
 				{/each}
 			</div>
 		{/if}
 	</section>
-{:else}
+	<!-- {:else}
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
 	>
@@ -84,7 +81,7 @@
 				</div>
 			{/each}
 		</div>
-	</section>
+	</section> -->
 {/if}
 
 <style>

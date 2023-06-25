@@ -16,7 +16,7 @@ const createGalleryStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('gallery')
-				.select('*,languages:gallery_languages(*)')
+				.select('*,languages:gallery_languages!inner(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -35,7 +35,7 @@ const createGalleryStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('gallery')
-				.select('*,languages:gallery_languages(*)')
+				.select('*,languages:gallery_languages!inner(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();

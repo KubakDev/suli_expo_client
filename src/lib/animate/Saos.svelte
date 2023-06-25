@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let animation = 'none';
@@ -10,64 +10,45 @@
 	export let css_observer = '';
 	export let css_animation = '';
 
-	// cute litle reactive dispatch to get if is observing :3
+	let animClass = '';
+	let observer: any;
+
+	$: {
+		animClass = observing ? 'anim-in' : 'anim-out';
+	}
+
 	const dispatch = createEventDispatcher();
 	$: dispatch('update', { observing: observing });
-
-	// be aware... he's looking...
 	let observing = true;
+	let countainer: any;
 
-	// for some reason the 'bind:this={box}' on div stops working after npm run build... so... workaround time >:|
-	const countainer = `__saos-${Math.random()}__`;
-
-	/// current in experimental support, no support for IE (only Edge)
-	/// see more in: https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver
-	function intersection_verify(box: any) {
-		// bottom left top right
-		const rootMargin = `${-bottom}px 0px ${-top}px 0px`;
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				console.log('entries ', entries);
-				observing = entries[0].isIntersecting;
+	onMount(() => {
+		observer = new IntersectionObserver(
+			([entry]) => {
+				observing = entry.isIntersecting;
+				console.log(observing);
 				if (observing && once) {
-					observer.unobserve(box);
+					observer.unobserve(countainer);
 				}
 			},
 			{
-				rootMargin
+				rootMargin: `${-bottom}px 0px ${-top}px 0px`
 			}
 		);
 
-		observer.observe(box);
-		return () => observer.unobserve(box);
-	}
+		observer.observe(countainer);
+	});
 
-	/// Fallback in case the browser not have the IntersectionObserver
-	function bounding_verify(box: any) {
-		const c = box.getBoundingClientRect();
-		observing = c.top + top < window.innerHeight && c.bottom - bottom > 0;
-
-		if (observing && once) {
-			window.removeEventListener('scroll', verify);
-		}
-
-		window.addEventListener('scroll', bounding_verify);
-		return () => window.removeEventListener('scroll', bounding_verify);
-	}
-
-	onMount(() => {
-		// for some reason the 'bind:this={box}' on div stops working after npm run build... so... workaround time >:|
-		const box = document.getElementById(countainer);
-		// if (IntersectionObserver) {
-		return intersection_verify(box);
-		// } else {
-		// 	return bounding_verify(box);
-		// }
+	onDestroy(() => {
+		observer.unobserve(countainer);
 	});
 </script>
 
-<div class="your-element" id={countainer} style={css_observer}>
+<div
+	bind:this={countainer}
+	class="your-element {animClass}"
+	style={`--animation-in: ${animation}; --animation-out: ${animation_out}; ${css_observer}; ${css_animation}`}
+>
 	{#if observing}
 		<div class="your-element" style="animation: {animation}; {css_animation}">
 			<slot />
@@ -80,6 +61,14 @@
 </div>
 
 <style>
+	.anim-in {
+		animation: var(--animation-in);
+	}
+
+	.anim-out {
+		animation: var(--animation-out);
+	}
+
 	.your-element {
 		will-change: transform, opacity;
 	}

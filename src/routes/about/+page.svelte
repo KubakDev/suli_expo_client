@@ -27,7 +27,7 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<section class="py-12 dark:bg-slate-900">
+<section class="py-12 dark:bg-slate-900 flex-1">
 	<div class="mx-auto {Constants.page_max_width}">
 		<div class="flex justify-center items-center mb-12">
 			<TitleUi text={$LL.about()} customClass=" dark:text-white text-secondary " />

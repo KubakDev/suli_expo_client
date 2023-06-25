@@ -26,24 +26,26 @@
 			<source srcset="/images/suliexpo.jpg" type="image/webp" />
 			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
 		</picture> -->
-<HomeSwiper locale={$locale} supabase={data.supabase} />
+<div class="flex-1 w-full h-full">
+	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-<div class="  m-auto w-full overflow-hidden">
-	<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+	<div class="  m-auto w-full overflow-hidden">
+		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 
-	<NewsSection supabase={data.supabase} />
+		<NewsSection supabase={data.supabase} />
 
-	<div>
-		<PromoSection supabase={data.supabase} />
+		<div>
+			<PromoSection supabase={data.supabase} />
+		</div>
+
+		<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
+			<AboutUsSection supabase={data.supabase} />
+		</div>
+
+		{#if seatLayout}
+			<!-- <SeatReservation {seatLayout} /> -->
+		{/if}
 	</div>
-
-	<div class=" bg-secondary w-full max-h-300 min-h-128 flex justify-center">
-		<AboutUsSection supabase={data.supabase} />
-	</div>
-
-	{#if seatLayout}
-		<!-- <SeatReservation {seatLayout} /> -->
-	{/if}
 </div>
 
 <style>

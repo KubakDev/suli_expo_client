@@ -16,7 +16,7 @@ const createMagazineStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('magazine')
-				.select('*,languages:magazine_languages(*)')
+				.select('*,languages:magazine_languages!inner(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
@@ -35,7 +35,7 @@ const createMagazineStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('magazine')
-				.select('*,languages:magazine_languages(*)')
+				.select('*,languages:magazine_languages!inner(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();

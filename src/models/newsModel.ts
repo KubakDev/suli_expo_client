@@ -14,3 +14,9 @@ interface CarouselImage {
 	imgurl: string;
 	attribution: string;
 }
+
+export interface NewsPaginatedModel {
+	data: NewsModel[];
+	page: number;
+	count: number;
+}
