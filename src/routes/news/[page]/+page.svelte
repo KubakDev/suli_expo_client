@@ -53,12 +53,13 @@
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
 				{#if CardComponent}
-					<a href="/news/detail/{item.id}">
+					<a href="/news/detail/{item.id}" class="a-tag">
 						<ExpoCard
 							cardType={CardType.Main}
 							title={item.title}
 							short_description={item.short_description}
 							thumbnail={item.thumbnail}
+							date={item.created_at}
 							primaryColor={CardComponent.primaryColor}
 						/>
 					</a>

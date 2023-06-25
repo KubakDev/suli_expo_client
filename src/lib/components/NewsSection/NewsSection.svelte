@@ -66,6 +66,7 @@
 								cardType={CardType.Main}
 								title={n.title}
 								thumbnail={n.thumbnail}
+								date={n.created_at}
 								short_description={n.short_description}
 							/>
 						</Saos>

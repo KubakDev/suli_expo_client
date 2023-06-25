@@ -32,10 +32,11 @@
 		class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 	>
 		{#each $exhibitionStore as exhibition, i}
-			<a href="/exhibitions/{exhibition.id}" class="w-full">
+			<a href="/exhibitions/{exhibition.id}" class="w-full a-tag">
 				<ExpoCard
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
+					date={exhibition.exhibition_date}
 					cardType={CardType.Square}
 				/>
 			</a>

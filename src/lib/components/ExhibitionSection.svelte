@@ -49,8 +49,9 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						> -->
 						<ExpoCard
+							date={exhibition.exhibition_date}
 							title={exhibition.title}
-							thumbnail={exhibition.image}
+							thumbnail={exhibition.thumbnail}
 							cardType={CardType.Square}
 						/>
 						<!-- </Saos> -->

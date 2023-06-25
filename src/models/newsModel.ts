@@ -3,6 +3,7 @@ export interface NewsModel {
 	title: string;
 	thumbnail: string;
 	images: string[];
+	created_at: Date;
 	imagesCarousel: CarouselImage[];
 	long_description?: string;
 	short_description?: string;

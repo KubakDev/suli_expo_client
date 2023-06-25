@@ -86,8 +86,8 @@
 			{#key data.url.pathname}
 				<div
 					class="h-full block flex-1 flex"
-					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 500 }}
-					out:fly={{ x: inLeft() ? 300 : -300, duration: 300 }}
+					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
+					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>
 					<slot />
 				</div>
