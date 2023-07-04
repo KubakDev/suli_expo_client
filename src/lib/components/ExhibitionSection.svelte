@@ -1,11 +1,9 @@
 <script lang="ts">
 	import TitleUi from './TitleUi.svelte';
-	import { Button } from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import constants from '../../utils/constants';
-	import { fly, fade } from 'svelte/transition';
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';

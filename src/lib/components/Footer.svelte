@@ -22,7 +22,7 @@
 	// });
 </script>
 
-<Footer footerType="socialmedia">
+<div class="py-10 border-t border-b-neutral-800">
 	<div
 		class="mx-auto
     sm:px-5 max-w-screen-2xl"
@@ -69,4 +69,4 @@
 			</h3>
 		</div>
 	</div>
-</Footer>
+</div>

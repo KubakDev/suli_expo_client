@@ -59,13 +59,13 @@
 	}
 </script>
 
-<div class=" w-full">
-	<div class="flex flex-row justify-center items-center dark:bg-secondary bg-white h-20">
+<div class=" w-full border-b border-b-neutral-800">
+	<!-- <div class="flex flex-row justify-center items-center dark:bg-black bg-white h-20">
 		<img src="/images/logo.png" class=" h-full" />
-	</div>
+	</div> -->
 
 	<Navbar
-		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full dark:bg-secondary bg-white "
+		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full dark:bg-black bg-white "
 		navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
 		let:hidden
 		let:toggle

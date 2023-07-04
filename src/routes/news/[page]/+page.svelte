@@ -24,7 +24,7 @@
 	$: {
 		if ($locale) {
 			const currentPage = $page.params.page;
-			newsStore.get($locale, data.supabase, currentPage);
+			newsStore.get($locale, data.supabase, currentPage, 9);
 		}
 	}
 	let selected;

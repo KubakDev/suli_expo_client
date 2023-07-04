@@ -1,33 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import newsUiStore, { getNewsUi } from '../../../stores/ui/newsUi';
-	import TitleUi from '../TitleUi.svelte';
 	import { goto } from '$app/navigation';
-	import constants from '../../../utils/constants';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import { newsSectionStore } from '../../../stores/newsSectionStore';
-	import NewsSectionShimmer from './NewsSectionShimmer.svelte';
-	import SeeAllBtn from '../SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import { stringToEnum } from '../../../utils/enumToString';
 	import Saos from '$lib/animate/Saos.svelte';
+	import { videoExhibitionStore } from '../../stores/videoExhibitionStore';
+	import constants from '../../utils/constants';
+	import TitleUi from './TitleUi.svelte';
+	import SeeAllBtn from './SeeAllBtn.svelte';
 
 	export let supabase: any;
-	let CardComponent: any;
 
 	$: {
 		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
 			//.info('locale changed #########', $locale);
-			newsSectionStore.get($locale, supabase);
+			videoExhibitionStore.get($locale, supabase);
 		}
 	}
 
 	onMount(async () => {
-		getNewsUi(supabase).then(async (value) => {
-			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
-			//(card);
-		});
+		videoExhibitionStore.get($locale, supabase);
 	});
 
 	function openNews() {
@@ -40,7 +33,7 @@
 	}
 </script>
 
-{#if $newsSectionStore && $newsSectionStore.length > 0}
+{#if $videoExhibitionStore && $videoExhibitionStore.length > 0}
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
 	>
@@ -56,29 +49,22 @@
 		<div
 			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
 		>
-			{#each $newsSectionStore as n, i}
-				{#if CardComponent && $newsUiStore}
-					<a href="news/detail/{n.id}" class="w-full a-tag">
-						<Saos
-							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-						>
-							<ExpoCard
-								cardType={CardType.Main}
-								title={n.title}
-								thumbnail={n.thumbnail}
-								date={n.created_at}
-								short_description={n.short_description}
-							/>
-						</Saos>
-					</a>
-				{:else}
-					<div />
-				{/if}
+			{#each $videoExhibitionStore as n, i}
+				<a href="news/detail/{n.id}" class="w-full a-tag">
+					<Saos
+						animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+					>
+						<ExpoCard
+							cardType={CardType.Main}
+							title={n.title}
+							thumbnail={n.thumbnail}
+							short_description={n.short_description}
+						/>
+					</Saos>
+				</a>
 			{/each}
 		</div>
 	</section>
-{:else}
-	<NewsSectionShimmer />
 {/if}
 
 <style>

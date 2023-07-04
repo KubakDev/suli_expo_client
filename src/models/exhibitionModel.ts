@@ -9,4 +9,5 @@ export interface ExhibitionModel {
 	description?: string;
 	created_at?: Date;
 	sections: ExhibitionSectionTypeModel[];
+	video_youtube_id?: string;
 }

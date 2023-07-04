@@ -6,7 +6,7 @@
 
 	import { onMount } from 'svelte';
 	export let videoUrl: string;
-	export let thumbnailUrl: string;
+	// export let thumbnailUrl: string;
 	defineCustomElements();
 
 	onMount(async () => {

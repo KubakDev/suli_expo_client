@@ -5,9 +5,7 @@
 	import { Button } from 'flowbite-svelte';
 	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
 	import { fade } from 'svelte/transition';
-
-	register();
-
+	import type { SwiperOptions } from 'swiper/types';
 	export let supabase: any;
 	export let locale: Locale;
 	$: {
@@ -28,8 +26,10 @@
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
-		const swiperEl = document.querySelector('swiper-container');
-		const swiperParams = {
+		console.log($carouselStore);
+		const swiperEl = document.querySelector('#swiper-container1');
+		console.log(swiperEl);
+		const swiperParams: SwiperOptions = {
 			a11y: {
 				prevSlideMessage: 'Previous slide',
 				nextSlideMessage: 'Next slide'
@@ -38,9 +38,13 @@
 			controller: {
 				inverse: true
 			},
+			autoplay: {
+				delay: 1000,
+				reverseDirection: locale === 'en' ? false : true
+			},
 			speed: 1000,
 			slidesPerView: 1,
-
+			centeredSlides: true,
 			on: {
 				init() {
 					// ...
@@ -63,22 +67,14 @@
 </script>
 
 <div dir="ltr" in:fade={{ duration: 800 }}>
-	{#if $carouselStore}
-		<swiper-container
-			slides-per-view={1}
-			centered-slides={true}
-			pagination={{
-				hideOnClick: true
-			}}
-			autoplay={{
-				delay: 2000,
-				reverseDirection: locale === 'en' ? false : true
-			}}
-			on:progress={onProgress}
-			on:slidechange={onSlideChange}
-			init="false"
-			class="w-full h-200"
-		>
+	<swiper-container
+		id="swiper-container1"
+		on:progress={onProgress}
+		on:slidechange={onSlideChange}
+		init="false"
+		class="w-full h-200"
+	>
+		{#if $carouselStore}
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
 					<div class="relative max-h-200 flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
@@ -118,10 +114,10 @@
 					</div>
 				</swiper-slide>
 			{/each}
-		</swiper-container>
-	{:else}
-		<div class="animate-pulse w-full block h-200 bg-gray-500 opacity-80" />
-	{/if}
+		{:else}
+			<div class="animate-pulse w-full block h-200 bg-gray-500 opacity-80" />
+		{/if}
+	</swiper-container>
 </div>
 
 <style>
