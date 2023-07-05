@@ -58,8 +58,8 @@
 		'/videos': ['/exhibitions', '/news', '/']
 	};
 
-	// function for nowing which page go to which page
-	function inLeft() {
+	// function for knowing which page go to which page
+	export function inLeft() {
 		console.log(data.url);
 		console.log('&&&&&&&&&&&&&&&&&&');
 		console.log($previousPageStore);
