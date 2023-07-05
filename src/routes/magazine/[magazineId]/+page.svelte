@@ -9,6 +9,8 @@
 	import type { MagazineModel } from '../../../models/magazineModel';
 	import RecentItems from '$lib/components/RecentItems.svelte';
 	import { modelToItemModel } from '../../../models/covertModel';
+	import { Button, Chevron, Dropdown, DropdownItem, GradientButton } from 'flowbite-svelte';
+	import { FilePdfSolid } from 'flowbite-svelte-icons';
 
 	export let data;
 	let magazine: MagazineModel | undefined | null;
@@ -23,15 +25,23 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 w-full">
 	{#if magazine}
 		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
-			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
-			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
+			<div class=" bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
 				<DetailPage
+				class="object-contain"
 					long_description={magazine.long_description}
 					imagesCarousel={magazine.imagesCarousel}
 				/>
+				<div class="absolute justify-center mt-8">
+					<Button><Chevron>PDF Files</Chevron></Button>
+			{#each magazine.pdf_files as pdf}	
+			<Dropdown>
+				<DropdownItem href="{pdf}" class="flex flex-row justify-between items-center text-white"><FilePdfSolid size="30" class="dark:text-red-500"/>{magazine.title}</DropdownItem>
+			  </Dropdown>
+			{/each}
+				</div>
 			</div>
 			{#if $magazineStore}
 				<RecentItems
@@ -41,5 +51,6 @@
 				/>
 			{/if}
 		</div>
+
 	{/if}
 </section>

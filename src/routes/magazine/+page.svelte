@@ -21,6 +21,9 @@
 		getNewsUi(data.supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 		});
+
+		console.log('magazineStore', $magazineStore);
+		
 	});
 
 	// Navigate to newsDetail page
