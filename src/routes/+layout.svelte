@@ -30,7 +30,7 @@
 		{ delay = 0, duration = 300, easing = easeCubicIn },
 		{ direction = 'both' } = {}
 	) {
-		const origin = {
+		const origin:any = {
 			in: 'bottom left',
 			out: 'bottom right',
 			both: 'center center'
