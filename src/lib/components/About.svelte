@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from "saos";
+	import { fly } from 'svelte/transition';
 
 	//  //('locale', $locale);
 </script>
@@ -18,8 +19,8 @@
 			<div class="lg:-mt-20 lg:w-5/6 mx-auto w-full mb-10 lg:h-96">
 				<img
 					class="image_section object-cover w-full h-full object-center rounded-lg"
-					alt="about image"
-					src={`${aboutSection?.image}`}
+					alt="About Image"
+					src={aboutSection?.image}
 				/>
 			</div>
 		</Saos>
@@ -28,7 +29,7 @@
 	<!-- about section -->
 	<section class="body-font overflow-hidden">
 		<Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>
-			<div class="lg:py-20 py-10">
+			<div class="lg:py-20 py-10 px-5" dir="ltr" >
 				{@html aboutSection?.long_description}
 			</div>
 		</Saos>

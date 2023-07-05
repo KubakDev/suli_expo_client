@@ -43,7 +43,7 @@
 		</div>
 
 		<!-- team section -->
-		<Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>
+		<!-- <Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}> -->
 			<section>
 				<div class="text-center pb-12">
 					<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[#e1b168]">
@@ -58,7 +58,7 @@
 					{/each}
 				</div>
 			</section>
-		</Saos>
+		<!-- </Saos> -->
 	</div>
 </section>
 
