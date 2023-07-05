@@ -25,7 +25,7 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
 	{#if gallery}
 		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
 			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />

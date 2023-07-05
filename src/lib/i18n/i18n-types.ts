@@ -37,6 +37,10 @@ type RootTranslation = {
 	 */
 	news: string
 	/**
+	 * N​o​ ​n​e​w​s​ ​y​e​t
+	 */
+	no_news: string
+	/**
 	 * S​e​r​v​i​c​e​s
 	 */
 	services: string
@@ -183,6 +187,10 @@ export type TranslationFunctions = {
 	 * News
 	 */
 	news: () => LocalizedString
+	/**
+	 * No news yet
+	 */
+	no_news: () => LocalizedString
 	/**
 	 * Services
 	 */

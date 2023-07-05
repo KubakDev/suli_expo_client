@@ -8,6 +8,7 @@
 	import AboutUsSection from '$lib/components/AboutUsSection.svelte';
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
+	import SeatReservation from '$lib/components/SeatReservation.svelte';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -43,7 +44,7 @@
 		</div>
 
 		{#if seatLayout}
-			<!-- <SeatReservation {seatLayout} /> -->
+			<SeatReservation {seatLayout} />
 		{/if}
 	</div>
 </div>

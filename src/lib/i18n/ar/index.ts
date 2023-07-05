@@ -7,6 +7,7 @@ const ar = {
 	about: 'حول',
 	contact: 'اتصل',
 	news: 'أخبار',
+	no_news: 'لا توجد أخبار حتى الآن',
 	services: 'خدمات',
 	exhibition: 'معرض',
 	promo: 'ترويجي',

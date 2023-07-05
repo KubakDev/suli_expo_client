@@ -7,6 +7,7 @@ const en = {
 	about: 'About',
 	contact: 'Contact',
 	news: 'News',
+	no_news: 'No news yet',
 	services: 'Services',
 	exhibition: 'Exhibition',
 	promo: 'Promo',

@@ -94,7 +94,7 @@
 				<div class="w-full h-10" />
 				<div class="grid grid-cols-2">
 					<div class="  h-100 w-full relative">
-						<img class="object-cover w-full h-100" src={exhibition?.thumbnail} />
+						<img class="object-cover w-full h-100" src={exhibition?.thumbnail} alt="{exhibition?.title}" />
 						<div
 							class="flex justify-center items-center absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent"
 						>
@@ -128,8 +128,9 @@
 			English. Many desktop publishing packages.
 		</div>
 	</div>
-	<div class="w-full h-10" />
+	<div class="{Constants.page_max_width} mx-auto">
 	{#if exhibition && exhibition.video_youtube_id}
-		<VideoPlayer videoUrl={exhibition.video_youtube_id} />
+		<VideoPlayer  videoUrl={exhibition.video_youtube_id} />
 	{/if}
+	</div>
 </section>

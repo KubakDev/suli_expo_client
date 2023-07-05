@@ -28,6 +28,8 @@
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 			//(card);
 		});
+		console.log('newsSectionStore', $newsSectionStore);
+		
 	});
 
 	function openNews() {
@@ -53,9 +55,16 @@
 				<SeeAllBtn onBtnClick={openNews} />
 			</div>
 		</div>
-		<div
+		{#if $newsSectionStore.length === 0}
+			<div class="flex justify-center items-center">
+				<p class="text-white dark:text-white text-center">
+					{$LL.no_news()}
+				</p>
+			</div>
+			{:else}
+			<div
 			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
-		>
+			>
 			{#each $newsSectionStore as n, i}
 				{#if CardComponent && $newsUiStore}
 					<a href="news/detail/{n.id}" class="w-full a-tag">
@@ -71,12 +80,13 @@
 							/>
 						</Saos>
 					</a>
-				{:else}
+					{:else}
 					<div />
+					{/if}
+					{/each}
+				</div>
 				{/if}
-			{/each}
-		</div>
-	</section>
+			</section>
 {:else}
 	<NewsSectionShimmer />
 {/if}
