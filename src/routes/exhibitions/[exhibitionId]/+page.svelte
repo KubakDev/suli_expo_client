@@ -14,6 +14,7 @@
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import PdfViewer from 'svelte-pdf';
+	import { goto } from '$app/navigation';
 
 	export let data;
 
@@ -137,13 +138,25 @@
 		</div>
 	</div>
 	{#if exhibition?.pdf_files.length || [].length > 0}
-	<div class="w-full max-h-[50vh] flex flex-col justify-start items-center py-2">
+	<div class="w-full max-h-[50vh] flex flex-col justify-start items-center py-5">
 		<TitleUi text="Exhibition PDF's" customClass=" dark:text-white text-secondary " />
 		<div class="flex flex-row justify-around overflow-x-auto overflow-y">
 			{#each exhibition?.pdf_files || [] as pdf}
-			<div class="pb-5 hover:dark:bg-slate-700 bg-opacity-20 rounded-lg m-2 transition-all w-full">
-				<PdfViewer url={pdf} showButtons={["download"]} scale={0.55} data={""} downloadFileName="{exhibition?.title}"  />
-			</div>
+			<div class="p-2 hover:dark:bg-slate-700 bg-opacity-20 rounded-lg m-2 transition-all w-full">
+				<button on:click={()=>{window.open(pdf, '_blank')}}>
+					<div class="h-100 w-full relative">
+						<img class="object-cover w-[30vh] h-100 rounded-lg" src={exhibition?.thumbnail} alt="{exhibition?.title}" />
+						<div
+							class="flex justify-center items-center absolute bottom-0 left-0 w-full h-full "
+						>
+							<a href="{pdf}" target="_blank" class="text-4xl font-bold text-white bg-black opacity-75 w-full text-center">
+								<!--  format date to yyyy-mm-dd -->
+								{exhibition?.title}
+							</a>
+						</div>
+					</div>
+				</button>
+			  </div>
 			{/each}
 		</div>
 	</div>
