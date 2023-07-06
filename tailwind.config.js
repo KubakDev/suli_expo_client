@@ -9,7 +9,8 @@ const config = {
 
 	plugins: [
 		require('flowbite/plugin'),
-	require('tailwind-scrollbar')],
+	require('tailwind-scrollbar')({ nocompatible: true })
+],
 
 	darkMode: 'class',
 

@@ -12,6 +12,7 @@
 	import { fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
+	import Constants from '../utils/constants';
 	register();
 	export let data;
 
@@ -80,13 +81,13 @@
 </script>
 
 {#if supabase}
-	<div class="dark:bg-black bg-white app">
+	<div class="dark:bg-black bg-white app overflow-hidden">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">
 			{#key data.url.pathname}
 				<div
-					class="h-full block flex-1 flex"
+					class="h-full block flex-1 flex "
 					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
 					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>

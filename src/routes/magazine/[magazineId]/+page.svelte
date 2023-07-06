@@ -35,8 +35,8 @@
 					imagesCarousel={magazine.imagesCarousel}
 				/>
 				<div class="flex justify-start mt-4 mx-2">
-					<Button><Chevron>{$LL.pdf_file()}</Chevron></Button>
-					<Dropdown class="overflow-y-auto h-32 w-48">
+					<Button class="w-[12vh] dark:text-white text-gray-800"><Chevron>{$LL.pdf_file()}</Chevron></Button>
+					<Dropdown class="overflow-y-auto h-32 w-[20vh] {Constants.scrollbar_layout}">
 			{#each magazine.pdf_files as pdf}	
 				<DropdownItem href="{pdf}" target="_blank" class="flex flex-row justify-between items-center text-white"><FilePdfSolid size="30" class="dark:text-red-500"/>{magazine.title}</DropdownItem>
 				<DropdownDivider/>
