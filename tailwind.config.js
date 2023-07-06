@@ -7,7 +7,9 @@ const config = {
 		'./node_modules/kubak-svelte-component/**/*.{html,js,svelte}'
 	],
 
-	plugins: [require('flowbite/plugin')],
+	plugins: [
+		require('flowbite/plugin'),
+	require('tailwind-scrollbar')],
 
 	darkMode: 'class',
 

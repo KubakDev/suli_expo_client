@@ -41,6 +41,10 @@ type RootTranslation = {
 	 */
 	no_news: string
 	/**
+	 * P​D​F​ ​F​i​l​e
+	 */
+	pdf_file: string
+	/**
 	 * S​e​r​v​i​c​e​s
 	 */
 	services: string
@@ -48,6 +52,34 @@ type RootTranslation = {
 	 * E​x​h​i​b​i​t​i​o​n
 	 */
 	exhibition: string
+	exhibition_mini_data: {
+		Reservation: {
+			/**
+			 * R​e​s​e​r​v​a​t​i​o​n
+			 */
+			title: string
+			/**
+			 * I​r​a​q​ ​-​ ​S​u​l​a​y​m​a​n​i​y​a​h
+			 */
+			place: string
+		}
+		/**
+		 * C​o​m​p​a​n​i​e​s
+		 */
+		Companies: string
+		/**
+		 * C​o​u​n​t​r​i​e​s
+		 */
+		Countries: string
+		/**
+		 * S​t​o​r​y
+		 */
+		Story: string
+		/**
+		 * S​u​l​a​y​m​a​n​i​y​a​h​ ​I​n​t​e​r​n​a​t​i​o​n​a​l​ ​F​a​i​r
+		 */
+		Fair: string
+	}
 	/**
 	 * P​r​o​m​o
 	 */
@@ -192,6 +224,10 @@ export type TranslationFunctions = {
 	 */
 	no_news: () => LocalizedString
 	/**
+	 * PDF File
+	 */
+	pdf_file: () => LocalizedString
+	/**
 	 * Services
 	 */
 	services: () => LocalizedString
@@ -199,6 +235,34 @@ export type TranslationFunctions = {
 	 * Exhibition
 	 */
 	exhibition: () => LocalizedString
+	exhibition_mini_data: {
+		Reservation: {
+			/**
+			 * Reservation
+			 */
+			title: () => LocalizedString
+			/**
+			 * Iraq - Sulaymaniyah
+			 */
+			place: () => LocalizedString
+		}
+		/**
+		 * Companies
+		 */
+		Companies: () => LocalizedString
+		/**
+		 * Countries
+		 */
+		Countries: () => LocalizedString
+		/**
+		 * Story
+		 */
+		Story: () => LocalizedString
+		/**
+		 * Sulaymaniyah International Fair
+		 */
+		Fair: () => LocalizedString
+	}
 	/**
 	 * Promo
 	 */

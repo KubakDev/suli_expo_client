@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
-	import { locale } from '$lib/i18n/i18n-svelte';
+	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import { exhibitionStore } from '../../../stores/exhibtionStore';
 	import type { ExhibitionModel } from '../../../models/exhibitionModel';
 	import Constants from '../../../utils/constants';
@@ -65,7 +65,7 @@
 							<h2 class="text-2xl font-bold">
 								<NumberAnimationIncrement value={5000} duration={3000} />
 							</h2>
-							<p class="text-lg">Countries</p>
+							<p class="text-lg">{$LL.exhibition_mini_data.Countries()}</p>
 						</div>
 					</div>
 					<div class="flex h-20 items-center">
@@ -77,7 +77,7 @@
 							<h2 class="text-2xl font-bold">
 								<NumberAnimationIncrement value={100} duration={1000} />
 							</h2>
-							<p class="text-lg">Companies</p>
+							<p class="text-lg">{$LL.exhibition_mini_data.Companies()}</p>
 						</div>
 					</div>
 					<div class="flex h-20 items-center">
@@ -86,8 +86,8 @@
 						</div>
 						<div class="h-full w-4" />
 						<div class="flex flex-col dark:text-white">
-							<h2 class="text-2xl font-bold">Reservation</h2>
-							<p class="text-lg">Iraq,</p>
+							<h2 class="text-2xl font-bold">{$LL.exhibition_mini_data.Reservation.title()}</h2>
+							<p class="text-lg">{$LL.exhibition_mini_data.Reservation.place()}</p>
 						</div>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 					</div>
 					<div class="p-8 flex justify-between flex-col items-start">
 						<div class="flex flex-col items-start">
-							<h1 class="text-4xl font-bold dark:text-white">The Story</h1>
+							<h1 class="text-4xl font-bold dark:text-white">{$LL.exhibition_mini_data.Story()}</h1>
 							<p class="text-lg dark:text-white">
 								Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed
 								to using 'Content here, content gfshere', makinlook like readable English. Many
@@ -121,7 +121,7 @@
 		</div>
 	</div>
 	<div class="w-full h-48 bg-white flex flex-col justify-around items-center py-10">
-		<div class="text-3xl">SULIMANIYAH INTERNATIONAL FAIR</div>
+		<div class="text-3xl uppercase">{$LL.exhibition_mini_data.Fair()}</div>
 
 		<div class="text-xl">
 			distribution of letters, as opposed to using 'Content here, content, makinlook like readable

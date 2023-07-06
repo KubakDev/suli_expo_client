@@ -1,4 +1,5 @@
 import type { Translation } from '../i18n-types';
+import { exhibition } from '../../../../../suli_expo_panel/src/stores/exhibitionStore';
 
 const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want
@@ -8,8 +9,19 @@ const ckb = {
 	contact: 'پەیوەندی',
 	news: 'هەواڵەکان',
 	no_news: 'هیچ هەواڵێک نییە لە ئێستا',
+	pdf_file: 'پەڕگەی PDF',
 	services: 'خزمەتگوزاری',
 	exhibition: 'نمایشگا',
+	exhibition_mini_data:{
+		Reservation:{
+			title:"حیجزکردن",
+			place:"عێراق - سلێمانی",
+	},
+		Companies:"کۆمپانیاکان" ,
+		Countries:"وڵاتەکان" ,
+		Story:"ڕوونکردنەوە" ,
+		Fair:"پێشانگای نێودەوڵەتی سلێمانی",
+	},
 	promo: 'پرۆمۆ',
 	seeAll: 'هەموو ببینە',
 	marketing: 'بازاڕکردن',
