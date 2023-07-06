@@ -12,18 +12,16 @@
 	import moment from 'moment';
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
+	import TitleUi from '$lib/components/TitleUi.svelte';
+	import PdfViewer from 'svelte-pdf';
 
 	export let data;
 
-	let CountryData:number | undefined;
-	let CompanyData:number | undefined;
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
 		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
 		console.log("Exibition Data",exhibition);
 		exhibitionStore.get(data.supabase);
-
-		console.log("CountryData",CountryData);
 		
 	}
 
@@ -138,6 +136,18 @@
 			English. Many desktop publishing packages.
 		</div>
 	</div>
+	{#if exhibition?.pdf_files.length || [].length > 0}
+	<div class="w-full max-h-[50vh] flex flex-col justify-start items-center py-2">
+		<TitleUi text="Exhibition PDF's" customClass=" dark:text-white text-secondary " />
+		<div class="flex flex-row justify-around overflow-x-auto overflow-y">
+			{#each exhibition?.pdf_files || [] as pdf}
+			<div class="pb-5 hover:dark:bg-slate-700 bg-opacity-20 rounded-lg m-2 transition-all w-full">
+				<PdfViewer url={pdf} showButtons={["download"]} scale={0.55} data={""} downloadFileName="{exhibition?.title}"  />
+			</div>
+			{/each}
+		</div>
+	</div>
+	{/if}
 	<div class="{Constants.page_max_width} mx-auto">
 	{#if exhibition && exhibition.video_youtube_id}
 		<VideoPlayer  videoUrl={exhibition.video_youtube_id} />

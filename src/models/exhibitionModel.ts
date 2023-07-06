@@ -12,4 +12,5 @@ export interface ExhibitionModel {
 	video_youtube_id?: string;
 	country_number: number;
 	company_number: number;
+	pdf_files: string[];
 }
