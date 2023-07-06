@@ -33,11 +33,11 @@
 	});
 
 	function openNews() {
-		goto('/news');
+		goto('/news/1');
 	}
 
 	function DetailsPage(itemId: any) {
-		goto(`/news/${itemId}`);
+		goto(`/news/detail/${itemId}`);
 		//('news :', itemId);
 	}
 </script>
@@ -67,7 +67,7 @@
 			>
 			{#each $newsSectionStore as n, i}
 				{#if CardComponent && $newsUiStore}
-					<a href="news/detail/{n.id}" class="w-full a-tag">
+					<button on:click={()=>DetailsPage(n.id)}  class="w-full a-tag">
 						<Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
@@ -79,7 +79,7 @@
 								short_description={n.short_description}
 							/>
 						</Saos>
-					</a>
+					</button>
 					{:else}
 					<div />
 					{/if}
