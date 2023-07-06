@@ -26,10 +26,9 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative p-2">
 	{#if news}
-		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
-			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
+		<div class="items-start flex flex-col 3xl:flex-row justify-around">
 			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
 				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>

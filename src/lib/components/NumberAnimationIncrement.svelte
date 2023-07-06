@@ -9,22 +9,20 @@
 
 	onMount(() => {
 		console.log('value', value);
-		console.log('duration', duration);
 		const amountToIncrement = (value / duration) * 50;
-		console.log('amountToIncrement', amountToIncrement);
 		const interval = setInterval(() => {
 			// increment value from 0 to the value passed in the component with the duration passed in the component
 
-			result = Math.floor(result + amountToIncrement);
+			result  =result + amountToIncrement;
 
 			if (result >= value) {
 				result = value;
 				clearInterval(interval);
 			}
 
-			console.log('result', result);
+			// console.log('result', result);
 			// log current time in ms
-			console.log('Date.now()', Date.now());
+			// console.log('Date.now()', Date.now());
 		}, 50);
 	});
 
@@ -36,5 +34,5 @@
 </script>
 
 <div class={className}>
-	{result}
+	{result.toFixed(0)}
 </div>

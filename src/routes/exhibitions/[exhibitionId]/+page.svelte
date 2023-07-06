@@ -14,11 +14,17 @@
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 
 	export let data;
+
+	let CountryData:number | undefined;
+	let CompanyData:number | undefined;
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
 		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
-		console.log(exhibition);
+		console.log("Exibition Data",exhibition);
 		exhibitionStore.get(data.supabase);
+
+		console.log("CountryData",CountryData);
+		
 	}
 
 	let currentImageIndex = 0;
@@ -62,9 +68,11 @@
 						</div>
 						<div class="h-full w-4" />
 						<div class="flex flex-col w-40 dark:text-white">
-							<h2 class="text-2xl font-bold">
-								<NumberAnimationIncrement value={5000} duration={3000} />
-							</h2>
+							{#if exhibition}
+								<h2 class="text-2xl font-bold">
+									<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
+								</h2>
+							{/if}
 							<p class="text-lg">{$LL.exhibition_mini_data.Countries()}</p>
 						</div>
 					</div>
@@ -75,7 +83,9 @@
 						<div class="h-full w-4" />
 						<div class="flex flex-col dark:text-white">
 							<h2 class="text-2xl font-bold">
-								<NumberAnimationIncrement value={100} duration={1000} />
+								{#if exhibition}
+								<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
+								{/if}
 							</h2>
 							<p class="text-lg">{$LL.exhibition_mini_data.Companies()}</p>
 						</div>

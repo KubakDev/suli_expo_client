@@ -25,18 +25,17 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full">
 	{#if magazine}
-		<div class="items-start grid xl:grid-cols-3 lg:grid-cols-2 ">
+		<div class="items-start grid xl:grid-cols-3 lg:grid-cols-2 mx-4 my-2 rounded-lg">
 			<div class="  {Constants.page_max_width} m-auto flex-1 my-10 mt-auto col-span-2 w-full">
 				<DetailPage
-				class="object-contain"
 					long_description={magazine.long_description}
 					imagesCarousel={magazine.imagesCarousel}
 				/>
 				<div class="flex justify-start mt-4 mx-2">
 					<Button class="w-[12vh] dark:text-white text-gray-800"><Chevron>{$LL.pdf_file()}</Chevron></Button>
-					<Dropdown class="overflow-y-auto h-32 w-[20vh] {Constants.scrollbar_layout}">
+					<Dropdown class="overflow-y-auto h-24 w-[20vh] {Constants.scrollbar_layout}">
 			{#each magazine.pdf_files as pdf}	
 				<DropdownItem href="{pdf}" target="_blank" class="flex flex-row justify-between items-center text-white"><FilePdfSolid size="30" class="dark:text-red-500"/>{magazine.title}</DropdownItem>
 				<DropdownDivider/>
@@ -45,7 +44,7 @@
 				</div>
 			</div>
 			{#if $magazineStore}
-			<div class="col-span-1 w-full m-2">
+			<div class="col-span-1 w-full dark:bg-slate-700 bg-opacity-40 p-2 ml-1">
 				<RecentItems
 					title={$LL.magazine()}
 					items={$magazineStore.map((magazine) => modelToItemModel(magazine))}
