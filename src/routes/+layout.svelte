@@ -81,7 +81,7 @@
 </script>
 
 {#if supabase}
-	<div class="dark:bg-black bg-white app overflow-hidden">
+	<div class="dark:bg-black bg-white app">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">
