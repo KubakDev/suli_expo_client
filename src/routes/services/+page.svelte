@@ -9,7 +9,7 @@
 
 	onMount(async () => {
 		await serviceSectionStore.get(data?.supabase);
-		//('data', $serviceSectionStore);
+		console.log('serviceSectionStore', $serviceSectionStore);
 	});
 </script>
 
@@ -25,8 +25,8 @@
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $serviceSectionStore as item, i}
-				<div>
-					<Card title={item.title} description={item.short_description} image={item.thumbnail} />
+				<div class=" bg-white rounded-3xl">
+					<Card title={item.title} description={item.short_description} image={item.thumbnail} service_color={{title:item.onPrimaryColor || "#000000",description:item.primaryColor || "#000000"}} />
 				</div>
 			{/each}
 		</div>

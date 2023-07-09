@@ -5,6 +5,10 @@
 	export let title: string = 'Title';
 	export let description: string = 'Description';
 	export let image: string = 'images/suliexpo.jpg';
+	export let service_color: {
+		title: string;
+		description: string;
+	} = {title:'#000000', description:'#000000'};
 
 	const handleMouseOver = () => {
 		isHovering = true;
@@ -15,11 +19,13 @@
 	};
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="card cursor-pointer" on:mouseover={handleMouseOver} on:mouseout={handleMouseOut}>
 	<img class="card-img" src={image} alt="Image" />
 	<div class="card-content">
-		<h3 class="card-title font-bold">{title}</h3>
-		<p class="card-description">{description}</p>
+		<h3 class="card-title font-bold" style="color: {service_color.title};">{title}</h3>
+		<p class="card-description" style="color: {service_color.title};">{description}</p>
 	</div>
 </div>
 
