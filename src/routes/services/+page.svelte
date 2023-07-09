@@ -9,7 +9,7 @@
 
 	onMount(async () => {
 		await serviceSectionStore.get(data?.supabase);
-		console.log('serviceSectionStore', $serviceSectionStore);
+		// console.log('serviceSectionStore', $serviceSectionStore);
 	});
 </script>
 
