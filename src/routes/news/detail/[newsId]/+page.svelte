@@ -26,9 +26,31 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative p-2">
+<!-- <section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative p-2">
 	{#if news}
 		<div class="items-start flex flex-col 3xl:flex-row justify-around">
+			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
+				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
+			</div>
+			{#if $newsStore && $newsStore.data.length > 0}
+				<RecentItems
+					title={$LL.news()}
+					items={$newsStore.data.map((news) => modelToItemModel(news))}
+					pageType={'news'}
+				/>
+			{/if}
+		</div>
+	{:else}
+		<div class="w-full h-full flex flex-1 justify-center items-center absolute">
+			<Spinner />
+		</div>
+	{/if}
+</section> -->
+
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
+	{#if news}
+		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
+			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
 			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
 				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>

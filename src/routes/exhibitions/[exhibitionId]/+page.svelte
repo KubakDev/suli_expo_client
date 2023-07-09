@@ -7,13 +7,13 @@
 	import Constants from '../../../utils/constants';
 	import { fade } from 'svelte/transition'; // import the fade transition
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
-	import { AcademicCap, MapPin, Plus } from 'svelte-heros-v2';
-	import VideoSection from '$lib/components/VideoSection.svelte';
+	import { MapPin } from 'svelte-heros-v2';
 	import moment from 'moment';
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import PdfViewer from 'svelte-pdf';
+	import { Button, Card, CarouselTransition, Chevron, Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte';
+	import { FilePdfOutline, FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import { goto } from '$app/navigation';
 
 	export let data;
@@ -38,6 +38,10 @@
 			() => clearInterval(interval); // clear interval on component unmount
 		}
 	});
+
+	function pdf_page(pdf_url:string) {
+		window.open(pdf_url, '_blank');
+	}
 </script>
 
 <section class="w-full flex-1">
@@ -137,33 +141,34 @@
 			English. Many desktop publishing packages.
 		</div>
 	</div>
-	{#if exhibition?.pdf_files.length || [].length > 0}
-	<div class="w-full max-h-[50vh] flex flex-col justify-start items-center py-5">
-		<TitleUi text="Exhibition PDF's" customClass=" dark:text-white text-secondary " />
-		<div class="flex flex-row justify-around overflow-x-auto overflow-y">
-			{#each exhibition?.pdf_files || [] as pdf}
-			<div class="p-2 hover:dark:bg-slate-700 bg-opacity-20 rounded-lg m-2 transition-all w-full">
-				<button on:click={()=>{window.open(pdf, '_blank')}}>
-					<div class="h-100 w-full relative">
-						<img class="object-cover w-[30vh] h-100 rounded-lg" src={exhibition?.thumbnail} alt="{exhibition?.title}" />
-						<div
-							class="flex justify-center items-center absolute bottom-0 left-0 w-full h-full "
-						>
-							<a href="{pdf}" target="_blank" class="text-4xl font-bold text-white bg-black opacity-75 w-full text-center">
-								<!--  format date to yyyy-mm-dd -->
-								{exhibition?.title}
-							</a>
-						</div>
-					</div>
-				</button>
-			  </div>
-			{/each}
+	<div class="flex flex-col w-full">
+		{#if exhibition?.pdf_files.length || [].length > 0}
+		<div class="flex justify-center w-full pt-12">
+			<TitleUi text="Exhibition PDF's" customClass=" dark:text-white text-secondary text-center" />
 		</div>
+			<div class="flex flex-col items-center py-5">
+				<div class="w-[45vh] flex flex-col justify-center mt-1 items-center overflow-x-hidden overflow-y-auto max-h-[26vh] {Constants.scrollbar_layout}">
+					{#each exhibition?.pdf_files || [] as pdf }	
+					<Card horizontal class="my-1 w-full">
+						<div class="w-full h-full">
+							<button class="flex justify-between flex-row items-center w-full h-full" on:click={()=>{
+								pdf_page(pdf);
+							}}>
+								<FilePdfSolid size="30" class="dark:text-red-500 mx-2"/>
+								<h5 class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end">{exhibition?.title}</h5>
+								<OpenBookSolid class="dark:text-blue-500 dark:hover:text-blue-700 transition-all dark:hover:animate-pulse" size="30"/>
+							</button>
+						</div>
+					  </Card>
+					{/each}
+				</div>
+			</div>
+			{/if}
 	</div>
-	{/if}
-	<div class="{Constants.page_max_width} mx-auto">
-	{#if exhibition && exhibition.video_youtube_id}
-		<VideoPlayer  videoUrl={exhibition.video_youtube_id} />
-	{/if}
-	</div>
+		<div class="{Constants.page_max_width} mx-auto ">
+		{#if exhibition && exhibition.video_youtube_id}
+			<VideoPlayer  videoUrl={exhibition.video_youtube_id} />
+		{/if}
+		</div>
+		
 </section>

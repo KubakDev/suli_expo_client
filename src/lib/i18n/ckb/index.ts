@@ -1,5 +1,4 @@
 import type { Translation } from '../i18n-types';
-import { exhibition } from '../../../../../suli_expo_panel/src/stores/exhibitionStore';
 
 const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want

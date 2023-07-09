@@ -7,7 +7,7 @@ class Constants {
 
 	static horizontal_padding = 'px-4 sm:px-0';
 
-	static scrollbar_layout = "scrollbar-thumb-blue-600 scrollbar-track-gray-100 scrollbar-thin scrollbar-thumb-rounded-3xl scrollbar-track-rounded-3xl bg-slate-100 dark:bg-gray-950"
+	static scrollbar_layout = "scrollbar-thumb-blue-600 scrollbar-track-gray-100 scrollbar-thin scrollbar-thumb-rounded-3xl scrollbar-track-rounded-3xl"
 }
 
 export default Constants;
