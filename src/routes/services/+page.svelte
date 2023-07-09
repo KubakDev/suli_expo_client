@@ -4,11 +4,18 @@
 	import Card from '$lib/components/Card.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import Constants from '../../utils/constants';
+	import { locale } from '$lib/i18n/i18n-svelte';
 
 	export let data;
 
+	$: {
+		if ($locale) {
+			serviceSectionStore.get($locale, data.supabase);
+		}
+	}
+
 	onMount(async () => {
-		await serviceSectionStore.get(data?.supabase);
+		await serviceSectionStore.get($locale,data?.supabase);
 		// console.log('serviceSectionStore', $serviceSectionStore);
 	});
 </script>

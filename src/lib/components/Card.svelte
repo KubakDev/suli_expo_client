@@ -10,6 +10,8 @@
 		description: string;
 	} = {title:'#000000', description:'#000000'};
 
+	let gradientColor:any;
+
 	const handleMouseOver = () => {
 		isHovering = true;
 	};
@@ -17,14 +19,19 @@
 	const handleMouseOut = () => {
 		isHovering = false;
 	};
+
+	onMount(() => {
+		console.log(service_color);
+		gradientColor = `background: linear-gradient(to top, ${service_color.description} 0%, rgba(15, 15, 15, 0)); Fade gradient`;
+	});
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="card cursor-pointer" on:mouseover={handleMouseOver} on:mouseout={handleMouseOut}>
 	<img class="card-img" src={image} alt="Image" />
-	<div class="card-content">
-		<h3 class="card-title font-bold" style="color: {service_color.title};">{title}</h3>
+<div class="card-content" style="{gradientColor}">
+		<h3 class="card-title font-bold " style="color: {service_color.title};">{title}</h3>
 		<p class="card-description" style="color: {service_color.title};">{description}</p>
 	</div>
 </div>
@@ -53,7 +60,7 @@
 		width: 100%;
 		position: absolute;
 		bottom: 0;
-		background: linear-gradient(to top, rgb(0, 0, 0) 0%, rgba(15, 15, 15, 0)); /* Fade gradient */
+		/* background: linear-gradient(to top, rgb(0, 0, 0) 0%, rgba(15, 15, 15, 0)); Fade gradient */
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
