@@ -154,9 +154,9 @@
 							<button class="flex justify-between flex-row items-center w-full h-full" on:click={()=>{
 								pdf_page(pdf);
 							}}>
-								<FilePdfSolid size="30" class="dark:text-red-500 mx-2"/>
+								<FilePdfSolid  class="dark:text-red-500 mx-2"/>
 								<h5 class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end">{exhibition?.title}</h5>
-								<OpenBookSolid class="dark:text-blue-500 transition-all dark:hover:animate-pulse" size="30"/>
+								<OpenBookSolid class="dark:text-blue-500 transition-all dark:hover:animate-pulse"/>
 							</button>
 						</div>
 					  </Card>

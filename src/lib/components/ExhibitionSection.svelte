@@ -19,8 +19,13 @@
 		}
 	}
 
-	function openNews() {
+	function openAllExibition() {
 		goto('/exhibitions');
+	}
+
+	function openExhibition(id: number) {
+		console.log('openExhibition', id);
+		goto(`/exhibitions/${id}`);
 	}
 </script>
 
@@ -34,7 +39,7 @@
 				<TitleUi text={$LL.exhibition()} />
 			</div>
 			<div class="flex justify-end w-32">
-				<SeeAllBtn onBtnClick={openNews} />
+				<SeeAllBtn onBtnClick={openAllExibition} />
 			</div>
 		</div>
 		{#if $exhibitionSectionStore}
@@ -42,7 +47,9 @@
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each exhibitions as exhibition, i}
-					<div class="w-full">
+				<button class="w-full" on:click={()=>{
+					openExhibition(exhibition.id || 0);
+				}}>
 						<!-- <Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						> -->
@@ -53,7 +60,7 @@
 							cardType={CardType.Square}
 						/>
 						<!-- </Saos> -->
-					</div>
+				</button>
 				{/each}
 			</div>
 		{/if}
