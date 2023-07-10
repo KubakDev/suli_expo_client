@@ -22,12 +22,12 @@ const createNewsStore = () => {
 				.range((parseInt(page) - 1) * limit, parseInt(page) * limit - 1)
 				.limit(limit);
 
-			console.log(result);
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				console.log(result.data);
+
 				const news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
 				const newsPaginated = {
 					data: news,

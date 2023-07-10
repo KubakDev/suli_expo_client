@@ -21,13 +21,13 @@ const createVideoExhibitionSectionStore = () => {
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(3);
-			console.log(result);
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
 				const videos = result.data.map((e) => convertModel<VideoModel>(e, true)) as VideoModel[];
-				console.log(videos);
+
 				set(videos);
 				return null;
 			}
