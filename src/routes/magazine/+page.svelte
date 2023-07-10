@@ -28,7 +28,7 @@
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: any) {
-		goto(`/magazine/${itemId}`);
+		goto(`/magazine/detail/${itemId}`);
 		//('news :', itemId);
 	}
 </script>
@@ -44,7 +44,7 @@
 			{#each $magazineStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard cardType={CardType.Main} title={item.title} short_description={item.short_description} date={item.created_at} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

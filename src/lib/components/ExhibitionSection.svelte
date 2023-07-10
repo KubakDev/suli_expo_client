@@ -7,6 +7,7 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import Saos from '$lib/animate/Saos.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -24,7 +25,6 @@
 	}
 
 	function openExhibition(id: number) {
-		console.log('openExhibition', id);
 		goto(`/exhibitions/${id}`);
 	}
 </script>
@@ -47,20 +47,24 @@
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each exhibitions as exhibition, i}
-				<button class="w-full" on:click={()=>{
-					openExhibition(exhibition.id || 0);
-				}}>
-						<!-- <Saos
+					<button
+						class="w-full"
+						on:click={() => {
+							openExhibition(exhibition.id || 0);
+						}}
+					>
+						<Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-						> -->
-						<ExpoCard
-							date={exhibition.exhibition_date}
-							title={exhibition.title}
-							thumbnail={exhibition.thumbnail}
-							cardType={CardType.Square}
-						/>
-						<!-- </Saos> -->
-				</button>
+						>
+							<ExpoCard
+								date={exhibition.exhibition_date}
+								title={exhibition.title}
+								short_description={exhibition.description}
+								thumbnail={exhibition.thumbnail}
+								cardType={CardType.Main}
+							/>
+						</Saos>
+					</button>
 				{/each}
 			</div>
 		{/if}
