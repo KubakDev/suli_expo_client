@@ -212,48 +212,4 @@
 				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
 			{/if}
 		</div>
-		<div class="flex flex-col w-full">
-			{#if exhibition?.pdf_files.length || [].length > 0}
-				<div class="flex justify-center w-full pt-12">
-					<TitleUi
-						text="Exhibition PDF's"
-						customClass=" dark:text-white text-secondary text-center"
-					/>
-				</div>
-				<div class="flex flex-col items-center py-5">
-					<div
-						class="w-[45vh] flex flex-col justify-center mt-1 items-center overflow-x-hidden overflow-y-auto max-h-[26vh] {Constants.scrollbar_layout}"
-					>
-						{#each exhibition?.pdf_files || [] as pdf}
-							<Card horizontal class="my-1 w-full">
-								<div class="w-full h-full">
-									<button
-										class="flex justify-between flex-row items-center w-full h-full"
-										on:click={() => {
-											pdf_page(pdf);
-										}}
-									>
-										<FilePdfSolid  class="dark:text-red-500 mx-2" />
-										<h5
-											class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end"
-										>
-											{exhibition?.title}
-										</h5>
-										<OpenBookSolid
-											class="dark:text-blue-500 dark:hover:text-blue-700 transition-all dark:hover:animate-pulse"
-										/>
-									</button>
-								</div>
-							</Card>
-						{/each}
-					</div>
-				</div>
-			{/if}
-		</div>
-		<div class="{Constants.page_max_width} mx-auto">
-			{#if exhibition && exhibition.video_youtube_id}
-				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
-			{/if}
-		</div>
-	</div>
 </section>
