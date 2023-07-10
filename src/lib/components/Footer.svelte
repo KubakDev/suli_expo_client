@@ -5,7 +5,7 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	export let data;
 
-	let contactInfoData;
+	let contactInfoData: any;
 
 	$: {
 		//.info('locale changed %%%%%%%%%%%%%%%%%%');
@@ -54,8 +54,17 @@
 					<ul class="text-sm leading-6">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li class="">{$LL.marketing()} : {info.phoneNumber_marketing}</li>
-								<li class="">{$LL.relations()} : {info.phoneNumber_relations}</li>
+								{#if $locale === 'ckb' || $locale === 'ar'}
+								<div class="">
+									<li class="">{$LL.marketing()} : {info.phoneNumber_marketing}+</li>
+									<li class="">{$LL.relations()} : {info.phoneNumber_relations}+</li>
+								</div>
+								{:else}
+								<div class="">
+									<li class="">{$LL.marketing()} : +{info.phoneNumber_marketing}</li>
+									<li class="">{$LL.relations()} : +{info.phoneNumber_relations}</li>
+								</div>
+								{/if}
 							{/each}
 						{/if}
 					</ul>

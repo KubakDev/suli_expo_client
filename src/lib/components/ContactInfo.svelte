@@ -33,38 +33,46 @@
 			stroke-miterlimit="10"
 		/>
 	</svg>
-	<div class="flex flex-col justify-center items-center gap-2">
-		<span>
-			{$LL.marketing()} :
+	<div class="flex flex-col justify-center items-center gap-2 w-full">
+		<span class="flex justify-evenly w-full">
+			<div class="flex justify-end">
+				{$LL.marketing()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_marketing}+
+				{contactInfoSection?.phoneNumber_marketing}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_marketing}
+				+{contactInfoSection?.phoneNumber_marketing}
 			{/if}
 		</span>
 
-		<span>
-			{$LL.relations()} :
+		<span class="flex justify-evenly w-full">
+			<div class="flex justify-end">
+				{$LL.relations()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_relations}+
+				{contactInfoSection?.phoneNumber_relations}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_relations}
+				+{contactInfoSection?.phoneNumber_relations}
 			{/if}
 		</span>
-		<span>
-			{$LL.technical()} :
+		<span class="flex justify-evenly w-full">
+			<div class="flex justify-end">
+				{$LL.technical()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_Technical}+
+				{contactInfoSection?.phoneNumber_Technical}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_Technical}
+				+{contactInfoSection?.phoneNumber_Technical}
 			{/if}
 		</span>
-		<span>
-			{$LL.administration()} :
+		<span class="flex justify-evenly w-full">
+			<div class="flex justify-end">
+				{$LL.administration()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_Administration}+
+				{contactInfoSection?.phoneNumber_Administration}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_Administration}
+				+{contactInfoSection?.phoneNumber_Administration}
 			{/if}
 		</span>
 	</div>
