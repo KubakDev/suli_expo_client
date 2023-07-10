@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { Footer, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
 	import TitleUi from './TitleUi.svelte';
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	export let data;
 
 	let contactInfoData: any;
 
