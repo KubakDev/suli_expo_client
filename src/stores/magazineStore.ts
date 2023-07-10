@@ -21,8 +21,8 @@ const createMagazineStore = () => {
 				.order('created_at', { ascending: false })
 				.limit(9);
 
-				console.log("Magazine ",result);
-				
+
+
 			if (result.error) {
 				// .error(result.error);
 				return null;
@@ -48,8 +48,8 @@ const createMagazineStore = () => {
 			} else {
 				const magazine = convertModel<MagazineModel>(result.data, true) as MagazineModel;
 
-				console.log("Magazine In Store",magazine);
-				
+
+
 				return magazine;
 			}
 		}

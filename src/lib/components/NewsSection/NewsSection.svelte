@@ -28,8 +28,6 @@
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 			//(card);
 		});
-		console.log('newsSectionStore', $newsSectionStore);
-		
 	});
 
 	function openNews() {
@@ -61,32 +59,32 @@
 					{$LL.no_news()}
 				</p>
 			</div>
-			{:else}
+		{:else}
 			<div
-			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
+				class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
-			{#each $newsSectionStore as n, i}
-				{#if CardComponent && $newsUiStore}
-					<button on:click={()=>DetailsPage(n.id)}  class="w-full a-tag">
-						<Saos
-							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-						>
-							<ExpoCard
-								cardType={CardType.Main}
-								title={n.title}
-								thumbnail={n.thumbnail}
-								date={n.created_at}
-								short_description={n.short_description}
-							/>
-						</Saos>
-					</button>
+				{#each $newsSectionStore as n, i}
+					{#if CardComponent && $newsUiStore}
+						<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">
+							<Saos
+								animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+							>
+								<ExpoCard
+									cardType={CardType.Main}
+									title={n.title}
+									thumbnail={n.thumbnail}
+									date={n.created_at}
+									short_description={n.short_description}
+								/>
+							</Saos>
+						</button>
 					{:else}
-					<div />
+						<div />
 					{/if}
-					{/each}
-				</div>
-				{/if}
-			</section>
+				{/each}
+			</div>
+		{/if}
+	</section>
 {:else}
 	<NewsSectionShimmer />
 {/if}

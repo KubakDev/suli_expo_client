@@ -26,9 +26,7 @@
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
-		console.log($carouselStore);
 		const swiperEl = document.querySelector('#swiper-container1');
-		console.log(swiperEl);
 		const swiperParams: SwiperOptions = {
 			a11y: {
 				prevSlideMessage: 'Previous slide',
