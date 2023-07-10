@@ -11,22 +11,22 @@
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import Saos from '$lib/animate/Saos.svelte';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
-	export let supabase: any;
+	export let supabase: SupabaseClient;
 	let CardComponent: any;
 
 	$: {
-		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
-			//.info('locale changed #########', $locale);
 			newsSectionStore.get($locale, supabase);
 		}
 	}
 
 	onMount(async () => {
+		newsSectionStore.get($locale, supabase);
+
 		getNewsUi(supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
-			//(card);
 		});
 	});
 
@@ -36,7 +36,6 @@
 
 	function DetailsPage(itemId: any) {
 		goto(`/news/detail/${itemId}`);
-		//('news :', itemId);
 	}
 </script>
 
@@ -64,7 +63,7 @@
 				class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each $newsSectionStore as n, i}
-					{#if CardComponent && $newsUiStore}
+					<!-- {#if CardComponent && $newsUiStore} -->
 						<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">
 							<Saos
 								animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
@@ -78,9 +77,9 @@
 								/>
 							</Saos>
 						</button>
-					{:else}
+					<!-- {:else}
 						<div />
-					{/if}
+					{/if} -->
 				{/each}
 			</div>
 		{/if}

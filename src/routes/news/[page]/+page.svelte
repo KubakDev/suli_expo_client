@@ -1,22 +1,17 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { fly, fade } from 'svelte/transition';
-	import type { NewsModel } from '../../../models/newsModel';
 	import { getNewsUi } from '../../../stores/ui/newsUi';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import { ImgSourceEnum } from '../../../models/imgSourceEnum';
 	import newsUiStore from '../../../stores/ui/newsUi';
-	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import { newsStore } from '../../../stores/newsStore';
+	import { locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	let date = new Date();
-
 	import { page } from '$app/stores';
 	import DateRangePicker from '$lib/components/dateRangePicker.svelte';
+	import { newsStore } from '../../../stores/newsStore';
 
 	export let data;
 	let CardComponent: any;
@@ -27,7 +22,6 @@
 			newsStore.get($locale, data.supabase, currentPage, 9);
 		}
 	}
-	let selected;
 
 	onMount(async () => {
 		getNewsUi(data.supabase).then(async (value) => {
@@ -52,7 +46,7 @@
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
-				{#if CardComponent}
+				<!-- {#if CardComponent} -->
 					<a href="/news/detail/{item.id}" class="a-tag">
 						<ExpoCard
 							cardType={CardType.Main}
@@ -60,10 +54,9 @@
 							short_description={item.short_description}
 							thumbnail={item.thumbnail}
 							date={item.news_date}
-							primaryColor={CardComponent.primaryColor}
 						/>
 					</a>
-				{/if}
+				<!-- {/if} -->
 			{/each}
 		</div>
 

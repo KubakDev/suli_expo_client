@@ -21,8 +21,7 @@ const createNewsStore = () => {
 				.order('created_at', { ascending: false })
 				.range((parseInt(page) - 1) * limit, parseInt(page) * limit - 1)
 				.limit(limit);
-
-
+			
 			if (result.error) {
 				//.error(result.error);
 				return null;
@@ -34,6 +33,7 @@ const createNewsStore = () => {
 					page: parseInt(page),
 					count: result.count
 				} as NewsPaginatedModel;
+				
 				set(newsPaginated);
 				return null;
 			}
@@ -45,7 +45,7 @@ const createNewsStore = () => {
 				.select('*,languages:news_languages!inner(*)')
 				.eq('languages.language', locale)
 				.eq('id', id)
-				.single();
+				.maybeSingle();
 			if (result.error) {
 				//.error(result.error);
 				return null;

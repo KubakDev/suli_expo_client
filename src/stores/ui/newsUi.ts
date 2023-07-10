@@ -32,6 +32,7 @@ export async function getNewsUi(supabase: SupabaseClient) {
 			)
 			.eq('page', CardPageType.News)
 			.single();
+			console.log(response);
 		const data = response.data as UiModel;
 		newsUiStore.set(data);
 	}
