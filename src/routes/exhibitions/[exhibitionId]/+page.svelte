@@ -22,7 +22,7 @@
 	async function getExhibition() {
 		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
 		console.log("Exibition Data",exhibition);
-		exhibitionStore.get(data.supabase);
+		exhibitionStore.get($locale,data.supabase);
 		
 	}
 

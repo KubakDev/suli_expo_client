@@ -6,11 +6,18 @@
 	import { fly, fade } from 'svelte/transition';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import constants from '../../utils/constants.js';
+	import { locale } from '$lib/i18n/i18n-svelte.js';
 
 	export let data;
 
+	$: {
+		if ($locale) {
+			exhibitionStore.get($locale, data?.supabase);
+		}
+	}
+
 	onMount(async () => {
-		await exhibitionStore.get(data?.supabase);
+		console.log('exhibitionStore', $exhibitionStore);
 	});
 </script>
 
@@ -36,8 +43,9 @@
 				<ExpoCard
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
+					short_description={exhibition.description}
 					date={exhibition.exhibition_date}
-					cardType={CardType.Square}
+					cardType={CardType.Main}
 				/>
 			</a>
 		{/each}
