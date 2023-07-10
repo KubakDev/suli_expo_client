@@ -33,7 +33,6 @@
 		getNewsUi(data.supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 		});
-		
 	});
 
 	function changePage(page: number) {
