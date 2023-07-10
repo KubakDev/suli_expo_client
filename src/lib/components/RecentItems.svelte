@@ -38,7 +38,7 @@
 				class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start"
 			>
 				<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start ">{item.title}</h1>
-				<p class="leading-relaxed">
+				<p class="leading-relaxed text-justify text-sm">
 					{item.short_description?.slice(0, 80)}
 				</p>
 			</div>
