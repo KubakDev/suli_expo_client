@@ -4,12 +4,19 @@
 	import Card from '$lib/components/Card.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import Constants from '../../utils/constants';
+	import { locale } from '$lib/i18n/i18n-svelte';
 
 	export let data;
 
+	$: {
+		if ($locale) {
+			serviceSectionStore.get($locale, data.supabase);
+		}
+	}
+
 	onMount(async () => {
-		await serviceSectionStore.get(data?.supabase);
-		//('data', $serviceSectionStore);
+		await serviceSectionStore.get($locale,data?.supabase);
+		// console.log('serviceSectionStore', $serviceSectionStore);
 	});
 </script>
 
@@ -25,8 +32,8 @@
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $serviceSectionStore as item, i}
-				<div>
-					<Card title={item.title} description={item.short_description} image={item.thumbnail} />
+				<div class=" bg-white rounded-3xl">
+					<Card title={item.title} description={item.short_description} image={item.thumbnail} service_color={{title:item.onPrimaryColor || "#000000",description:item.primaryColor || "#000000"}} />
 				</div>
 			{/each}
 		</div>

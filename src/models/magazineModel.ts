@@ -5,6 +5,7 @@ export interface MagazineModel {
 	images: string[];
 	imagesCarousel: CarouselImage[];
 	pdf_files: string[];
+	created_at?: Date;
 	long_description?: string;
 	short_description?: string;
 }

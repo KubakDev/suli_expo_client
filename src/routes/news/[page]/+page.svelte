@@ -33,6 +33,7 @@
 		getNewsUi(data.supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 		});
+		
 	});
 
 	function changePage(page: number) {
@@ -59,7 +60,7 @@
 							title={item.title}
 							short_description={item.short_description}
 							thumbnail={item.thumbnail}
-							date={item.created_at}
+							date={item.news_date}
 							primaryColor={CardComponent.primaryColor}
 						/>
 					</a>
@@ -68,11 +69,13 @@
 		</div>
 
 		<div dir="ltr" class="flex justify-center my-10">
+			{#if $newsStore.count > 9}
 			<PaginationComponent
 				total={$newsStore.count}
 				page={parseInt($page.params.page)}
 				on:changePage={(value) => changePage(value.detail.page)}
 			/>
+			{/if}
 		</div>
 	{/if}
 </section>

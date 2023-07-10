@@ -24,6 +24,8 @@
 	onMount(async () => {
 		supabase = data.supabase;
 		changeLanguage(data.locale);
+		console.log('contactInfoSectionStore', $contactInfoSectionStore);
+		
 	});
 
 	function scale(

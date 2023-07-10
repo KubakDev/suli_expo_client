@@ -30,8 +30,8 @@
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
 		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
-
-		exhibitionStore.get(data.supabase);
+		console.log('Exibition Data', exhibition);
+		exhibitionStore.get($locale, data.supabase);
 	}
 
 	let currentImageIndex = 0;
@@ -157,6 +157,60 @@
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
+		</div>
+		{#if exhibition?.pdf_files.length || [].length > 0}
+			<div class="flex justify-center w-full pt-12">
+				<TitleUi
+					text="Exhibition PDF's"
+					customClass=" dark:text-white text-secondary text-center"
+				/>
+			</div>
+			<div class="flex xl:flex-row flex-col pt-8 {Constants.page_max_width} mx-auto">
+				<div class="flex flex-col items-end py-5 w-full">
+					<div
+						class="xl:w-[45vh] w-full flex flex-col justify-center mt-1 items-center overflow-x-hidden overflow-y-auto max-h-[26vh] {Constants.scrollbar_layout}"
+					>
+						{#each exhibition?.pdf_files || [] as pdf}
+							<Card horizontal class="my-1 w-full p-2 ">
+								<div class="w-full h-full">
+									<button
+										class="flex justify-between flex-row items-center w-full h-full"
+										on:click={() => {
+											pdf_page(pdf);
+										}}
+									>
+										<FilePdfSolid class="dark:text-red-500 mx-2" />
+										<h5
+											class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end"
+										>
+											{exhibition?.title}
+										</h5>
+										<OpenBookSolid
+											class="dark:text-blue-500 transition-all dark:hover:animate-pulse"
+										/>
+									</button>
+								</div>
+							</Card>
+						{/each}
+					</div>
+				</div>
+				<div class="flex flex-col justify-center items-center px-2 h-full">
+					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Hello There Adventure</h1>
+					<span class="dark:text-slate-200 px-4 text-center">
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore maiores nam
+						perspiciatis recusandae labore dolorem eligendi iste laboriosam corporis aliquam ipsum
+						porro et, eius iusto quo est molestias accusamus cumque. Lorem ipsum dolor sit amet
+						consectetur adipisicing elit. Natus aliquid a fugit minus, cum repellendus eligendi
+						saepe maiores voluptates reprehenderit esse quis. Temporibus maxime ipsam, accusamus
+						rerum laboriosam odit cumque.
+					</span>
+				</div>
+			</div>
+		{/if}
+		<div class="{Constants.page_max_width} mx-auto">
+			{#if exhibition && exhibition.video_youtube_id}
+				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
+			{/if}
 		</div>
 		<div class="flex flex-col w-full">
 			{#if exhibition?.pdf_files.length || [].length > 0}

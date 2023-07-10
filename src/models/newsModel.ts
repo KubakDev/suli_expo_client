@@ -7,6 +7,7 @@ export interface NewsModel {
 	imagesCarousel: CarouselImage[];
 	long_description?: string;
 	short_description?: string;
+	news_date: Date;
 }
 
 interface CarouselImage {

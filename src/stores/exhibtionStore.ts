@@ -17,7 +17,7 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select('*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)')
-				// .eq('languages.language', locale)
+				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();
 			if (result.error) {
@@ -30,12 +30,12 @@ const createExhibitionStore = () => {
 				return exhibition;
 			}
 		},
-		get: async (supabase: SupabaseClient) => {
+		get: async (locale: Locales, supabase: SupabaseClient) => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
 				.select('*,languages:exhibition_languages!inner(*)')
-				.eq('languages.language', 'en')
+				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
 			//  //(result);

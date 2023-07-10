@@ -3,14 +3,14 @@
 	import { DetailPage } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import Constants from '../../../utils/constants';
-	import { magazineStore } from '../../../stores/magazineStore';
 	import { page } from '$app/stores';
-	import type { MagazineModel } from '../../../models/magazineModel';
 	import RecentItems from '$lib/components/RecentItems.svelte';
-	import { modelToItemModel } from '../../../models/covertModel';
 	import { Button, Chevron, Dropdown, DropdownDivider, DropdownItem, GradientButton } from 'flowbite-svelte';
 	import { FilePdfSolid } from 'flowbite-svelte-icons';
+	import type { MagazineModel } from '../../../../models/magazineModel.js';
+	import { magazineStore } from '../../../../stores/magazineStore.js';
+	import Constants from '../../../../utils/constants.js';
+	import { modelToItemModel } from '../../../../models/covertModel.js';
 
 	export let data;
 	let magazine: MagazineModel | undefined | null;
@@ -35,9 +35,9 @@
 				/>
 				<div class="flex justify-start mt-4 mx-2">
 					<Button class="w-[12vh] dark:text-white text-gray-800"><Chevron>{$LL.pdf_file()}</Chevron></Button>
-					<Dropdown class="overflow-y-auto h-24 w-[20vh] {Constants.scrollbar_layout}">
+					<Dropdown class="overflow-y-auto max-h-[20vh] w-[20vh] {Constants.scrollbar_layout}">
 			{#each magazine.pdf_files as pdf}	
-				<DropdownItem href="{pdf}" target="_blank" class="flex flex-row justify-between items-center text-white"><FilePdfSolid size="30" class="dark:text-red-500"/>{magazine.title}</DropdownItem>
+				<DropdownItem href="{pdf}" target="_blank" class="flex flex-row justify-between items-center text-white"><FilePdfSolid class="dark:text-red-500 mr-1"/>{magazine.title}</DropdownItem>
 				<DropdownDivider/>
 				{/each}
 			</Dropdown>

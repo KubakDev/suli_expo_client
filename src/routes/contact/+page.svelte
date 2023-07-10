@@ -5,6 +5,7 @@
 	import ContactInfo from '$lib/components/ContactInfo.svelte';
 	import Contact from '$lib/components/Contact.svelte';
 	import Constants from '../../utils/constants';
+	import { onMount } from 'svelte';
 
 	// export let data;
 	// $: {
@@ -12,6 +13,10 @@
 	// 		contactInfoSectionStore.get($locale, data.supabase);
 	// 	}
 	// }
+
+	onMount(async () => {
+		console.log('contactInfoSectionStore', $contactInfoSectionStore);
+	});
 </script>
 
 <svelte:head>

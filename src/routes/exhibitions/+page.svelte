@@ -6,12 +6,24 @@
 	import { fly, fade } from 'svelte/transition';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import constants from '../../utils/constants.js';
+	import { locale } from '$lib/i18n/i18n-svelte.js';
+	import { goto } from '$app/navigation';
 
 	export let data;
 
+	$: {
+		if ($locale) {
+			exhibitionStore.get($locale, data?.supabase);
+		}
+	}
+
 	onMount(async () => {
-		await exhibitionStore.get(data?.supabase);
+		console.log('exhibitionStore', $exhibitionStore);
 	});
+
+	function openExhibition(id: number) {
+		goto(`/exhibitions/${id}`);
+	}
 </script>
 
 <svelte:head>
@@ -32,14 +44,20 @@
 		class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 	>
 		{#each $exhibitionStore as exhibition, i}
-			<a href="/exhibitions/{exhibition.id}" class="w-full a-tag">
+			<button
+						class="w-full"
+						on:click={() => {
+							openExhibition(exhibition.id || 0);
+						}}
+					>
 				<ExpoCard
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
+					short_description={exhibition.description}
 					date={exhibition.exhibition_date}
-					cardType={CardType.Square}
+					cardType={CardType.Main}
 				/>
-			</a>
+					</button>
 		{/each}
 	</div>
 </section>

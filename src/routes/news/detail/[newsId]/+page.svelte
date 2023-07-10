@@ -46,19 +46,20 @@
 	{/if}
 </section> -->
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
+<section class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full">
 	{#if news}
-		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
-			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
-			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
+		<div class="items-start grid xl:grid-cols-3 lg:grid-cols-2 mx-4 my-2 rounded-lg">
+			<div class=" {Constants.page_max_width} m-auto flex-1 my-10 mt-auto col-span-2 w-full">
 				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}
+			<div class="col-span-1 w-full dark:bg-slate-700 bg-opacity-40 p-2 ml-1">
 				<RecentItems
 					title={$LL.news()}
 					items={$newsStore.data.map((news) => modelToItemModel(news))}
 					pageType={'news'}
 				/>
+			</div>
 			{/if}
 		</div>
 	{:else}
