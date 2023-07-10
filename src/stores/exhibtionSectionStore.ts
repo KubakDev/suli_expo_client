@@ -34,9 +34,9 @@ const createExhibitionSectionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				console.log('exhibition data ', data);
+
 				const exhibition = data!.map((e) => convertModel<ExhibitionModel>(e)) as ExhibitionModel[];
-				console.log('exhibition', exhibition);
+
 				set(exhibition);
 				return null;
 			}

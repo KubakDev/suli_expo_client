@@ -31,7 +31,7 @@
 		{ delay = 0, duration = 300, easing = easeCubicIn },
 		{ direction = 'both' } = {}
 	) {
-		const origin:any = {
+		const origin: any = {
 			in: 'bottom left',
 			out: 'bottom right',
 			both: 'center center'
@@ -61,9 +61,6 @@
 
 	// function for knowing which page go to which page
 	export function inLeft() {
-		console.log(data.url);
-		console.log('&&&&&&&&&&&&&&&&&&');
-		console.log($previousPageStore);
 		if (
 			$locale === 'en'
 				? !pageTransitions[
@@ -87,7 +84,7 @@
 		<main class="h-full flex">
 			{#key data.url.pathname}
 				<div
-					class="h-full block flex-1 flex "
+					class="h-full block flex-1 flex"
 					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
 					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>
