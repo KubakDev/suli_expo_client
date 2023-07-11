@@ -67,19 +67,6 @@
 		{/if}
 	</div>
 	<div>
-		<!-- {#if exhibition?.seat_layout.length > 0} -->
-		<div class="{Constants.page_max_width} mx-auto">
-			<div class="flex justify-center w-full py-12">
-				<TitleUi
-					text="{$LL.exhibition_mini_data.Exhibition_Seats()}"
-					customClass=" dark:text-white text-secondary text-center"
-				/>
-			</div>
-			<div class="border-solid border-y-2 rounded-3xl">
-				<ReservationComponent data={exhibition?.seat_layout} />
-			</div>
-		</div>
-		<!-- {/if} -->
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
 				<NewsSection supabase={data.supabase} />
@@ -175,13 +162,13 @@
 					customClass=" dark:text-white text-secondary text-center"
 				/>
 			</div>
-			<div class="flex xl:flex-row flex-col pt-8 {Constants.page_max_width} mx-auto">
+			<div class="flex xl:flex-row flex-col py-12 {Constants.page_max_width} mx-auto">
 				<div class="flex flex-col items-end py-5 w-full">
 					<div
-						class="xl:w-[45vh] w-full flex flex-col justify-center mt-1 items-center overflow-x-hidden overflow-y-auto max-h-[26vh] {Constants.scrollbar_layout}"
+						class="xl:w-[45vh] w-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-auto max-h-[26rem] {Constants.scrollbar_layout}"
 					>
 						{#each exhibition?.pdf_files || [] as pdf}
-							<Card horizontal class="my-1 w-full p-2 ">
+							<Card horizontal class="my-2 w-full">
 								<div class="w-full h-full">
 									<button
 										class="flex justify-between flex-row items-center w-full h-full"
@@ -206,7 +193,7 @@
 				</div>
 				<div class="flex flex-col justify-center items-center px-2 h-full">
 					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Hello There Adventure</h1>
-					<span class="dark:text-slate-200 px-4 text-center">
+					<span class="dark:text-slate-200 px-4 text-justify">
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore maiores nam
 						perspiciatis recusandae labore dolorem eligendi iste laboriosam corporis aliquam ipsum
 						porro et, eius iusto quo est molestias accusamus cumque. Lorem ipsum dolor sit amet
@@ -222,4 +209,18 @@
 				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
 			{/if}
 		</div>
+
+			<!-- {#if exhibition?.seat_layout.length > 0} -->
+			<div class="{Constants.page_max_width} mx-auto py-8">
+				<div class="flex justify-center w-full py-12">
+					<TitleUi
+						text="{$LL.exhibition_mini_data.Exhibition_Seats()}"
+						customClass=" dark:text-white text-secondary text-center"
+					/>
+				</div>
+				<div class="border-solid border-t-2 rounded-3xl">
+					<ReservationComponent data={exhibition?.seat_layout} />
+				</div>
+			</div>
+			<!-- {/if} -->
 </section>
