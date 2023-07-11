@@ -24,7 +24,7 @@
 </script>
 
 <div
-	class="flex flex-col justify-start mb-10 lg:mt-10 mt-5 rounded-lg {Constants.page_max_width} mx-auto max-h-[46.55vh] overflow-auto {Constants.scrollbar_layout} "
+	class="flex flex-col justify-start mb-10 lg:mt-10 mt-5 rounded-lg {Constants.page_max_width} mx-auto "
 >
 	<h1 class="text-2xl py-8 font-bold text-start">{title}</h1>
 	{#each items as item}

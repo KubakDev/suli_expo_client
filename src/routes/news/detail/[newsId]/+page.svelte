@@ -1,7 +1,5 @@
-<!-- import {(derived, get)} from 'svelte/store'; -->
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { DetailPage } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import type { NewsModel } from '../../../../models/newsModel';
@@ -10,6 +8,7 @@
 	import RecentItems from '$lib/components/RecentItems.svelte';
 	import { newsStore } from '../../../../stores/newsStore';
 	import { Spinner } from 'flowbite-svelte';
+	import { DetailPage } from 'kubak-svelte-component';
 
 	export let data;
 	let news: NewsModel | undefined | null;
@@ -55,12 +54,12 @@
 
 <section class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full">
 	{#if news}
-		<div class="items-start grid xl:grid-cols-3 lg:grid-cols-2 mx-4 my-2 rounded-lg">
-			<div class=" {Constants.page_max_width} m-auto flex-1 my-10 mt-auto col-span-2 w-full">
-				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
+		<div class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center">
+			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
+				<DetailPage customClass="bg-none "  imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}
-			<div class="col-span-1 w-full dark:bg-slate-700 bg-opacity-40 p-2 ml-1">
+			<div class="col-span-1 p-2 ml-1">
 				<RecentItems
 					title={$LL.news()}
 					items={$newsStore.data.map((news) => modelToItemModel(news))}
