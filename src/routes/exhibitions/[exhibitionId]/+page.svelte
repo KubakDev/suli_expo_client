@@ -67,6 +67,7 @@
 		{/if}
 	</div>
 	<div>
+		<!-- {#if exhibition?.seat_layout.length > 0} -->
 		<div class="{Constants.page_max_width} mx-auto">
 			<div class="flex justify-center w-full py-12">
 				<TitleUi
@@ -78,6 +79,7 @@
 				<ReservationComponent data={exhibition?.seat_layout} />
 			</div>
 		</div>
+		<!-- {/if} -->
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
 				<NewsSection supabase={data.supabase} />
