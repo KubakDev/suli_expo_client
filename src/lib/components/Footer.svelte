@@ -27,7 +27,7 @@
 	>
 		<div class=" lg:flex lg:justify-between">
 			<div class="pb-10 lg:pb-0">
-				<img src="/images/logo.png" class="w-full h-32 object-cover" />
+				<img src="/images/logo.jpg" class="w-full h-32 object-cover p-2" />
 			</div>
 			<div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 dark:text-white">
 				<div>
@@ -72,7 +72,7 @@
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<div class="sm:flex sm:items-center sm:justify-center">
 			<h3 class="dark:text-white">
-				© Copyright - SulyExpo | Designed by <span class="text-[#E1B168]">Kubak</span>
+				Copyright - SulyExpo © 
 			</h3>
 		</div>
 	</div>

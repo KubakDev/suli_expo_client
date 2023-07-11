@@ -7,12 +7,12 @@
 	import Constants from '../../utils/constants';
 	import { onMount } from 'svelte';
 
-	// export let data;
-	// $: {
-	// 	if ($locale && data.supabase) {
-	// 		contactInfoSectionStore.get($locale, data.supabase);
-	// 	}
-	// }
+	export let data;
+	$: {
+		if ($locale && data.supabase) {
+			contactInfoSectionStore.get($locale, data.supabase);
+		}
+	}
 
 	onMount(async () => {
 		console.log('contactInfoSectionStore', $contactInfoSectionStore);
