@@ -14,6 +14,13 @@
 	export let data;
 	let news: NewsModel | undefined | null;
 
+	$: {
+		if ($locale) {
+			getNews();			
+		}
+	}
+
+
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
 
