@@ -20,6 +20,8 @@ const en = {
 		Countries:"Countries" ,
 		Story:"Story" ,
 		Fair:"Sulaymaniyah International Fair" ,
+		Exhibition_Seats:"Exhibition Seats",
+		Exhibition_PDF:"Exhibition PDF'S"
 	},
 	promo: 'Promo',
 	seeAll: 'See all',

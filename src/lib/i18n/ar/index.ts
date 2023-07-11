@@ -12,7 +12,6 @@ const ar = {
 	services: 'خدمات',
 	exhibition: 'معرض',
 	exhibition_mini_data:{
-		Reservation:"حجز",
 		Reservation:{
 			title:"حجز",
 			place:"العراق - السليمانية",
@@ -21,6 +20,8 @@ const ar = {
 		Countries:"بلدان" ,
 		Story:"قصة" ,
 		Fair:"معرض السليمانية الدولي" ,
+		Exhibition_Seats:"مقاعد المعرض",
+		Exhibition_PDF:"فایل المعرض (PDF)"
 	},
 	promo: 'ترويجي',
 	seeAll: 'اظهار الكل',

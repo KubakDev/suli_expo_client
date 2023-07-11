@@ -38,21 +38,24 @@
 
 	const loadSeats = async () => {
 		const canvasElement: any = document.getElementById('canvas');
-		canvas = new fabric.Canvas(canvasElement, {
-			hoverCursor: 'default',
-			selection: false
-		});
-		await canvas.loadFromJSON(data[0].design, () => {
-			canvas.forEachObject((obj: any) => {
-				obj.set('selectable', false);
-				obj.set('lockMovementX', true);
-				obj.set('lockMovementY', true);
+		if(fabric){
+			canvas = new fabric.Canvas(canvasElement, {
+				hoverCursor: 'default',
+				selection: false
 			});
-			canvas.on('mouse:down', handleMouseDown);
-			canvas.on('mouse:over', handleMouseOver);
-			canvas.on('mouse:out', handleMouseOut);
-			canvas.renderAll();
-		});
+			await canvas.loadFromJSON(data[0].design, () => {
+				canvas.forEachObject((obj: any) => {
+					obj.set('selectable', false);
+					obj.set('lockMovementX', true);
+					obj.set('lockMovementY', true);
+				});
+				canvas.on('mouse:down', handleMouseDown);
+				canvas.on('mouse:over', handleMouseOver);
+				canvas.on('mouse:out', handleMouseOut);
+				canvas.renderAll();
+			});
+		}
+		
 	};
 
 	const handleMouseDown = (event: any) => {
@@ -82,7 +85,7 @@
 		canvas.renderAll();
 	};
 	function addServicesToAnObject(service: any) {
-		let index = selectableObjectServices.findIndex((item) => item.id === service.id);
+		let index = selectableObjectServices.findIndex((item: any) => item.id === service.id);
 		if (index === -1) {
 			selectableObjectServices.push(service);
 		} else {
@@ -94,7 +97,8 @@
 	}
 </script>
 
-<div bind:this={container} class="h-[900px] w-full col-span-4 relative overflow-hidden">
+{#if fabric}
+<div bind:this={container} class="h-[900px] w-full col-span-4 relative overflow-hidden rounded-3xl">
 	<canvas
 		id="canvas"
 		class="h-full w-full"
@@ -134,6 +138,7 @@
 	{/if}
 	<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 </div>
+{/if}
 
 <style>
 	canvas {

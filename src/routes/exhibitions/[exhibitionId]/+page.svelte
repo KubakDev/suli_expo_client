@@ -67,8 +67,16 @@
 		{/if}
 	</div>
 	<div>
-		<div class=" w-8/12 mx-auto my-3">
-			<ReservationComponent data={exhibition?.seat_layout} />
+		<div class="{Constants.page_max_width} mx-auto">
+			<div class="flex justify-center w-full py-12">
+				<TitleUi
+					text="{$LL.exhibition_mini_data.Exhibition_Seats()}"
+					customClass=" dark:text-white text-secondary text-center"
+				/>
+			</div>
+			<div class="border-solid border-y-2 rounded-3xl">
+				<ReservationComponent data={exhibition?.seat_layout} />
+			</div>
 		</div>
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
@@ -161,7 +169,7 @@
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi
-					text="Exhibition PDF's"
+					text="{$LL.exhibition_mini_data.Exhibition_PDF()}"
 					customClass=" dark:text-white text-secondary text-center"
 				/>
 			</div>

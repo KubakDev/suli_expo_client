@@ -79,6 +79,14 @@ type RootTranslation = {
 		 * S​u​l​a​y​m​a​n​i​y​a​h​ ​I​n​t​e​r​n​a​t​i​o​n​a​l​ ​F​a​i​r
 		 */
 		Fair: string
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
+		 */
+		Exhibition_Seats: string
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​P​D​F​'​S
+		 */
+		Exhibition_PDF: string
 	}
 	/**
 	 * P​r​o​m​o
@@ -262,6 +270,14 @@ export type TranslationFunctions = {
 		 * Sulaymaniyah International Fair
 		 */
 		Fair: () => LocalizedString
+		/**
+		 * Exhibition Seats
+		 */
+		Exhibition_Seats: () => LocalizedString
+		/**
+		 * Exhibition PDF'S
+		 */
+		Exhibition_PDF: () => LocalizedString
 	}
 	/**
 	 * Promo
