@@ -34,7 +34,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
 		<div>
-			<TitleUi text="Publishing" customClass=" dark:text-white text-secondary " />
+			<TitleUi text="{$LL.publishing()}" customClass=" dark:text-white text-secondary " />
 		</div>
 	</div>
 	{#if $publishingStore}

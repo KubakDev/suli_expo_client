@@ -26,8 +26,12 @@
 		duration?: number;
 		className?: string;
 	}
+
+	function formatResult(value: number): string {
+		return value.toFixed(0).padStart(2, '0');
+	}
 </script>
 
 <div class={className}>
-	{result.toFixed(0)}
+	{formatResult(result)}
 </div>

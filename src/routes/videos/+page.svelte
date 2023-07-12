@@ -35,7 +35,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
 		<div>
-			<TitleUi text="Videos" />
+			<TitleUi text="{$LL.videos()}" />
 		</div>
 	</div>
 	{#if $videoStore}

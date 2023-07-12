@@ -10,7 +10,7 @@ const ckb = {
 	no_news: 'هیچ هەواڵێک نییە لە ئێستا',
 	pdf_file: 'پەڕگەی PDF',
 	services: 'خزمەتگوزاری',
-	exhibition: 'نمایشگا',
+	exhibition: 'پێشانگاکان',
 	exhibition_mini_data:{
 		Reservation:{
 			title:"حیجزکردن",
@@ -21,7 +21,7 @@ const ckb = {
 		Story:"ڕوونکردنەوە" ,
 		Fair:"پێشانگای نێودەوڵەتی سلێمانی",
 		Exhibition_Seats:"کورسی پێشانگە",
-		Exhibition_PDF:"فایلی نمایشگا (PDF)"
+		Exhibition_PDF:"فایلی پێشانگا (PDF)"
 	},
 	promo: 'پرۆمۆ',
 	seeAll: 'هەموو ببینە',

@@ -6,7 +6,7 @@
 	import { fly, fade } from 'svelte/transition';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import constants from '../../utils/constants.js';
-	import { locale } from '$lib/i18n/i18n-svelte.js';
+	import LL, { locale } from '$lib/i18n/i18n-svelte.js';
 	import { goto } from '$app/navigation';
 
 	export let data;
@@ -37,7 +37,7 @@
 		out:fade={{ duration: 400 }}
 		class="flex justify-center items-center mb-12"
 	>
-		<TitleUi text="Exhibition" customClass=" dark:text-white text-secondary " />
+		<TitleUi text="{$LL.exhibition()}" customClass=" dark:text-white text-secondary " />
 	</div>
 
 	<div

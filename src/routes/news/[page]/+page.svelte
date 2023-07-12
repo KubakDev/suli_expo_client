@@ -4,7 +4,7 @@
 	import { getNewsUi } from '../../../stores/ui/newsUi';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import newsUiStore from '../../../stores/ui/newsUi';
-	import { locale } from '$lib/i18n/i18n-svelte';
+	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
@@ -40,7 +40,7 @@
 			<DateRangePicker />
 
 			<div>
-				<TitleUi text="News " customClass=" dark:text-white text-secondary " />
+				<TitleUi text="{$LL.news()}" customClass=" dark:text-white text-secondary " />
 			</div>
 		</div>
 
@@ -49,9 +49,8 @@
 				<!-- {#if CardComponent} -->
 					<a href="/news/detail/{item.id}" class="a-tag">
 						<ExpoCard
-							cardType={CardType.Main}
+							cardType={CardType.Square}
 							title={item.title}
-							short_description={item.short_description}
 							thumbnail={item.thumbnail}
 							date={item.news_date}
 						/>

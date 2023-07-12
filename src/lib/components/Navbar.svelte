@@ -28,7 +28,7 @@
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
-	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کورد';
+	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 
 	// acgtive on route
 	let activeUrl: string;
@@ -51,7 +51,7 @@
 		var locale = detectLocale(() => [lang]);
 		await loadLocaleAsync(locale);
 		setLocale(locale);
-		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کورد';
+		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
 		changeLanguage(locale);
 		// set cookie
 		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
@@ -155,7 +155,7 @@
 				>
 
 				<Dropdown bind:open={dropdownOpen} id="">
-					<DropdownItem on:click={() => langSelect('ckb')}>کورد</DropdownItem>
+					<DropdownItem on:click={() => langSelect('ckb')}>کوردی</DropdownItem>
 					<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
 					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 				</Dropdown>
