@@ -38,54 +38,47 @@
 		/>
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2 w-full">
-		<span class="flex justify-evenly w-full">
-			<div class="flex justify-between w-full">
+		<span class="flex justify-evenly ">
+			<div class="flex pr-2">
 				{$LL.marketing()} :
 			</div>
-			<div class="w-full">
+
 				{#if $locale === 'ckb' || $locale === 'ar'}
-				{formatPhoneNumber((contactInfoSection?.phoneNumber_marketing || "").replace('964', '0'))}
+				{contactInfoSection?.phoneNumber_marketing}+
 				{:else}
-				{formatPhoneNumber((contactInfoSection?.phoneNumber_marketing || "").replace('964', '0'))}
+				+{contactInfoSection?.phoneNumber_marketing}
 				{/if}
-			</div>
 		</span>
 
-		<span class="flex justify-evenly w-full">
-			<div class="flex justify-between w-full">
+		<span class="flex">
+			<div class="flex pr-2">
 				{$LL.relations()} :
 			</div>
-			<div class="w-full">
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				{(contactInfoSection?.phoneNumber_relations || "").replace('964','0')}
+				{contactInfoSection?.phoneNumber_relations}+
 			{:else}
-			{(contactInfoSection?.phoneNumber_relations || "").replace('964','0')}
+			+{contactInfoSection?.phoneNumber_relations}
 			{/if}
-				</div>
 		</span>
-		<span class="flex justify-evenly w-full">
-			<div class="flex justify-between w-full">
+		<span class="flex justify-evenly ">
+			<div class="flex pr-2">
 				{$LL.technical()} :
 			</div>
-			<div class="w-full">
 				{#if $locale === 'ckb' || $locale === 'ar'}
 					{contactInfoSection?.phoneNumber_Technical}+
 				{:else}
 					+{contactInfoSection?.phoneNumber_Technical}
 				{/if}
-			</div>
 		</span>
-		<span class="flex justify-evenly w-full">
-			<div class="flex justify-between w-full">
+		<span class="flex justify-evenly">
+			<div class="flex pr-2">
 				{$LL.administration()} :
 			</div>
-			<div class="w-full">
 			{#if $locale === 'ckb' || $locale === 'ar'}
 				{contactInfoSection?.phoneNumber_Administration}+
 			{:else}
 				+{contactInfoSection?.phoneNumber_Administration}
 			{/if}
-		</div>
 		</span>
 	</div>
 </div>

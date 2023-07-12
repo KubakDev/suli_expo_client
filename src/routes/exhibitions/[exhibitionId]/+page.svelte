@@ -209,8 +209,8 @@
 				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
 			{/if}
 		</div>
-
-			<!-- {#if exhibition?.seat_layout.length > 0} -->
+		
+			{#if exhibition?.seat_layout.length > 0}
 			<div class="{Constants.page_max_width} mx-auto py-8">
 				<div class="flex justify-center w-full py-12">
 					<TitleUi
@@ -218,9 +218,10 @@
 						customClass=" dark:text-white text-secondary text-center"
 					/>
 				</div>
-				<div class="border-solid border-t-2 rounded-3xl">
+				<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
 					<ReservationComponent data={exhibition?.seat_layout} />
 				</div>
 			</div>
-			<!-- {/if} -->
+			{/if}
+
 </section>

@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { fabric } from 'fabric';
 	import { Button, Checkbox } from 'flowbite-svelte';
+	import { onMount, tick } from 'svelte';
+	import { fabric } from 'fabric';
+	import type { Canvas } from 'fabric/fabric-impl';
 
 	export let data: any;
-	let canvas: any;
+	let canvas: Canvas;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
@@ -14,19 +15,15 @@
 		top: 0,
 		left: 0
 	};
-	$: {
-		if (data) {
-			loadSeats();
-			adjustCanvasSize();
-		}
-	}
-	onMount(() => {
+
+	onMount(async () => {
 		console.log(data);
 		if (data) {
 			adjustCanvasSize();
-			loadSeats();
+			await loadSeats();
 		}
 	});
+
 	const adjustCanvasSize = () => {
 		if (canvas) {
 			canvas.setDimensions({
@@ -38,12 +35,12 @@
 
 	const loadSeats = async () => {
 		const canvasElement: any = document.getElementById('canvas');
-		if(fabric){
+		if (fabric) {
 			canvas = new fabric.Canvas(canvasElement, {
 				hoverCursor: 'default',
 				selection: false
 			});
-			await canvas.loadFromJSON(data[0].design, () => {
+			await canvas.loadFromJSON(data[0].design, async () => {
 				canvas.forEachObject((obj: any) => {
 					obj.set('selectable', false);
 					obj.set('lockMovementX', true);
@@ -52,10 +49,10 @@
 				canvas.on('mouse:down', handleMouseDown);
 				canvas.on('mouse:over', handleMouseOver);
 				canvas.on('mouse:out', handleMouseOut);
+				await tick(); // wait for the next update cycle
 				canvas.renderAll();
 			});
 		}
-		
 	};
 
 	const handleMouseDown = (event: any) => {
@@ -98,46 +95,49 @@
 </script>
 
 {#if fabric}
-<div bind:this={container} class="h-[900px] w-full col-span-4 relative overflow-hidden rounded-3xl">
-	<canvas
-		id="canvas"
-		class="h-full w-full"
-		style={selectedObject ? `background-color: #1c274c60` : ''}
-	/>
-	{#if selectedObject}
-		<div
-			class="popup min-h-[300px] min-w-[400px] bg-white absolute rounded-md border-2 border-black flex flex-col justify-center items-center"
-			style="
+	<div
+		bind:this={container}
+		class="h-[900px] w-full col-span-4 relative overflow-hidden rounded-3xl"
+	>
+		<canvas
+			id="canvas"
+			class="h-full w-full"
+			style={selectedObject ? `background-color: #1c274c60` : ''}
+		/>
+		{#if selectedObject}
+			<div
+				class="popup min-h-[300px] min-w-[400px] bg-white absolute rounded-md border-2 border-black flex flex-col justify-center items-center"
+				style="
 		top: {popupPosition.top}px;
 		left: {popupPosition.left}px;
 	"
-		>
-			<h3>seat Price = {selectedObject.price}</h3>
-			<h3>total Price = {selectableObjectTotalPrice}</h3>
-			<div class="my-4">
-				<h2>services for this seat</h2>
-				{#each selectedObject.services as service}
-					<div class="flex justify-around items-center my-2">
-						<div class="flex items-center">
-							<Checkbox
-								{checked}
-								on:change={(e) => {
-									console.log(service);
-									addServicesToAnObject(service);
-								}}
-							/>
+			>
+				<h3>seat Price = {selectedObject.price}</h3>
+				<h3>total Price = {selectableObjectTotalPrice}</h3>
+				<div class="my-4">
+					<h2>services for this seat</h2>
+					{#each selectedObject.services as service}
+						<div class="flex justify-around items-center my-2">
+							<div class="flex items-center">
+								<Checkbox
+									{checked}
+									on:change={(e) => {
+										console.log(service);
+										addServicesToAnObject(service);
+									}}
+								/>
 
-							<h2>{service.seat_services_languages[0].title}</h2>
+								<h2>{service.seat_services_languages[0].title}</h2>
+							</div>
+							<h2 class="font-bold">{service.price ?? 'Free'}</h2>
 						</div>
-						<h2 class="font-bold">{service.price ?? 'Free'}</h2>
-					</div>
-				{/each}
+					{/each}
+				</div>
+				<Button>Reserve this Seat</Button>
 			</div>
-			<Button>Reserve this Seat</Button>
-		</div>
-	{/if}
-	<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
-</div>
+		{/if}
+		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
+	</div>
 {/if}
 
 <style>
