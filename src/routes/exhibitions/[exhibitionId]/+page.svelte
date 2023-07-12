@@ -210,7 +210,7 @@
 			{/if}
 		</div>
 		
-			{#if exhibition?.seat_layout.length > 0}
+			<!-- {#if exhibition?.seat_layout.length > 0} -->
 			<div class="{Constants.page_max_width} mx-auto py-8">
 				<div class="flex justify-center w-full py-12">
 					<TitleUi
@@ -222,6 +222,6 @@
 					<ReservationComponent data={exhibition?.seat_layout} />
 				</div>
 			</div>
-			{/if}
+			<!-- {/if} -->
 
 </section>
