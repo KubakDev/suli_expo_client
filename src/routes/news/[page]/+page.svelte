@@ -20,10 +20,6 @@
 		if ($locale) {
 			const currentPage = $page.params.page;
 			newsStore.get($locale, data.supabase, currentPage, 9);
-
-
-			console.log("Test News ",$newsStore);
-			
 		}
 	}
 
