@@ -59,9 +59,6 @@
 							thumbnail={item.thumbnail}
 							date={item.news_date || "01-01-2000"}
 						/>
-						<div class="text-white">
-							{item.news_date}
-						</div>
 					</a>
 				<!-- {/if} -->
 			{/each}
