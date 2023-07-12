@@ -31,7 +31,7 @@
 <div class="flex-1 w-full h-full ">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-	<div class="  m-auto w-full overflow-hidden">
+	<div class=" m-auto w-full overflow-hidden">
 		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 
 		<NewsSection supabase={data.supabase} />

@@ -41,7 +41,7 @@
 			{#each $magazineStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard cardType={CardType.Main} title={item.title} short_description={item.short_description} date={item.created_at} thumbnail={item.thumbnail} />
+						<ExpoCard imageClass="rounded-t-3xl object-cover" cardType={CardType.Main} title={item.title} short_description={item.short_description} date={item.created_at} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

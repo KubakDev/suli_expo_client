@@ -43,7 +43,7 @@
 			{#each $videoStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard cardType={CardType.Video} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard imageClass="rounded-t-3xl object-cover" cardType={CardType.Video} title={item.title} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

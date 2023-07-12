@@ -31,7 +31,7 @@
 
 {#if $exhibitionSectionStore && $exhibitionSectionStore.length > 0}
 	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+		class="{constants.section_padding_y} {constants.page_max_width} mx-auto {constants.horizontal_padding}"
 	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
@@ -57,11 +57,12 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
+							imageClass="rounded-t-3xl object-cover"
 								date={exhibition.exhibition_date}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}
-								cardType={CardType.Main}
+								cardType={CardType.Square}
 							/>
 						</Saos>
 					</button>

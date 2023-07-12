@@ -51,6 +51,7 @@
 						}}
 					>
 				<ExpoCard
+				imageClass="rounded-t-3xl object-cover"
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}
