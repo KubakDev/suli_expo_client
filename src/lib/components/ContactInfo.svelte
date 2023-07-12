@@ -3,6 +3,10 @@
 	import type { ContactInfoModel } from '../../models/contactInfo';
 
 	export let contactInfoSection: ContactInfoModel;
+
+	function formatPhoneNumber(phoneNumber: string): string {
+  return phoneNumber.slice(0, 4) + '-' + phoneNumber.slice(4, 7) + '-' + phoneNumber.slice(7);
+}
 </script>
 
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
@@ -35,45 +39,53 @@
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2 w-full">
 		<span class="flex justify-evenly w-full">
-			<div class="flex justify-end">
+			<div class="flex justify-between w-full">
 				{$LL.marketing()} :
 			</div>
-			{#if $locale === 'ckb' || $locale === 'ar'}
-				{contactInfoSection?.phoneNumber_marketing}+
-			{:else}
-				+{contactInfoSection?.phoneNumber_marketing}
-			{/if}
+			<div class="w-full">
+				{#if $locale === 'ckb' || $locale === 'ar'}
+				{formatPhoneNumber((contactInfoSection?.phoneNumber_marketing || "").replace('964', '0'))}
+				{:else}
+				{formatPhoneNumber((contactInfoSection?.phoneNumber_marketing || "").replace('964', '0'))}
+				{/if}
+			</div>
 		</span>
 
 		<span class="flex justify-evenly w-full">
-			<div class="flex justify-end">
+			<div class="flex justify-between w-full">
 				{$LL.relations()} :
 			</div>
+			<div class="w-full">
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				{contactInfoSection?.phoneNumber_relations}+
+				{(contactInfoSection?.phoneNumber_relations || "").replace('964','0')}
 			{:else}
-				+{contactInfoSection?.phoneNumber_relations}
+			{(contactInfoSection?.phoneNumber_relations || "").replace('964','0')}
 			{/if}
+				</div>
 		</span>
 		<span class="flex justify-evenly w-full">
-			<div class="flex justify-end">
+			<div class="flex justify-between w-full">
 				{$LL.technical()} :
 			</div>
-			{#if $locale === 'ckb' || $locale === 'ar'}
-				{contactInfoSection?.phoneNumber_Technical}+
-			{:else}
-				+{contactInfoSection?.phoneNumber_Technical}
-			{/if}
+			<div class="w-full">
+				{#if $locale === 'ckb' || $locale === 'ar'}
+					{contactInfoSection?.phoneNumber_Technical}+
+				{:else}
+					+{contactInfoSection?.phoneNumber_Technical}
+				{/if}
+			</div>
 		</span>
 		<span class="flex justify-evenly w-full">
-			<div class="flex justify-end">
+			<div class="flex justify-between w-full">
 				{$LL.administration()} :
 			</div>
+			<div class="w-full">
 			{#if $locale === 'ckb' || $locale === 'ar'}
 				{contactInfoSection?.phoneNumber_Administration}+
 			{:else}
 				+{contactInfoSection?.phoneNumber_Administration}
 			{/if}
+		</div>
 		</span>
 	</div>
 </div>
