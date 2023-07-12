@@ -39,7 +39,7 @@
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2 w-full">
 		<span class="flex justify-evenly ">
-			<div class="flex pr-2">
+			<div class="flex px-2">
 				{$LL.marketing()} :
 			</div>
 
@@ -51,7 +51,7 @@
 		</span>
 
 		<span class="flex">
-			<div class="flex pr-2">
+			<div class="flex px-2">
 				{$LL.relations()} :
 			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
@@ -61,7 +61,7 @@
 			{/if}
 		</span>
 		<span class="flex justify-evenly ">
-			<div class="flex pr-2">
+			<div class="flex px-2">
 				{$LL.technical()} :
 			</div>
 				{#if $locale === 'ckb' || $locale === 'ar'}
@@ -71,7 +71,7 @@
 				{/if}
 		</span>
 		<span class="flex justify-evenly">
-			<div class="flex pr-2">
+			<div class="flex px-2">
 				{$LL.administration()} :
 			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
