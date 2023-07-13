@@ -12,6 +12,8 @@
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
+	//@ts-ignore
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import {
 		Button,
 		Card,
@@ -158,7 +160,7 @@
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi
-					text="{$LL.exhibition_mini_data.Exhibition_PDF()}"
+					text={$LL.exhibition_mini_data.Exhibition_PDF()}
 					customClass=" dark:text-white text-secondary text-center"
 				/>
 			</div>
@@ -193,13 +195,22 @@
 				</div>
 				<div class="flex flex-col justify-center items-center px-2 h-full">
 					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Hello There Adventure</h1>
-					<span class="dark:text-slate-200 px-4 text-justify">
+					<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore maiores nam
 						perspiciatis recusandae labore dolorem eligendi iste laboriosam corporis aliquam ipsum
 						porro et, eius iusto quo est molestias accusamus cumque. Lorem ipsum dolor sit amet
 						consectetur adipisicing elit. Natus aliquid a fugit minus, cum repellendus eligendi
 						saepe maiores voluptates reprehenderit esse quis. Temporibus maxime ipsam, accusamus
 						rerum laboriosam odit cumque.
+						<div class="absolute right-80">
+							<LottiePlayer
+								src="../../../../lottie/PDF lottie Jason Done.json"
+								autoplay={true}
+								loop={true}
+								height="{400}"
+								width="{400}"
+							/>
+						</div>
 					</span>
 				</div>
 			</div>
@@ -209,19 +220,19 @@
 				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
 			{/if}
 		</div>
-		
-			<!-- {#if exhibition?.seat_layout.length > 0} -->
-			<div class="{Constants.page_max_width} mx-auto py-8">
-				<div class="flex justify-center w-full py-12">
-					<TitleUi
-						text="{$LL.exhibition_mini_data.Exhibition_Seats()}"
-						customClass=" dark:text-white text-secondary text-center"
-					/>
-				</div>
-				<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
-					<ReservationComponent data={exhibition?.seat_layout} />
-				</div>
-			</div>
-			<!-- {/if} -->
 
+		<!-- {#if exhibition?.seat_layout.length > 0} -->
+		<div class="{Constants.page_max_width} mx-auto py-8">
+			<div class="flex justify-center w-full py-12">
+				<TitleUi
+					text={$LL.exhibition_mini_data.Exhibition_Seats()}
+					customClass=" dark:text-white text-secondary text-center"
+				/>
+			</div>
+			<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
+				<ReservationComponent data={exhibition?.seat_layout} />
+			</div>
+		</div>
+		<!-- {/if} -->
+	</div>
 </section>
