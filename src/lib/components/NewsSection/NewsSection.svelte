@@ -47,7 +47,7 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi customClass=" text-white dark:text-white " text={$LL.news()} />
+				<TitleUi customClass=" text-black dark:text-white " text={$LL.news()} />
 			</div>
 			<div class="flex justify-end w-32">
 				<SeeAllBtn onBtnClick={openNews} />

@@ -61,7 +61,7 @@
 				</div>
 			</div>
 			{#if $magazineStore}
-				<div class="col-span-1 w-full p-2 ml-1">
+				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full">
 					<RecentItems
 						title={$LL.magazine()}
 						items={$magazineStore.map((magazine) => modelToItemModel(magazine))}
