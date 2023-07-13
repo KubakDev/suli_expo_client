@@ -86,10 +86,13 @@
 		<main class="h-full flex">
 			{#key data.url.pathname}
 				<div
-					class="h-full block flex-1 flex"
+					class=" flex-1 sm:flex hidden"
 					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
 					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>
+					<slot />
+				</div>
+				<div class="sm:hidden flex flex-1">
 					<slot />
 				</div>
 			{/key}

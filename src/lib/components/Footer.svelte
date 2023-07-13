@@ -20,10 +20,10 @@
 	// });
 </script>
 
-<div class="py-10 border-t border-b-neutral-800">
+<div class="py-10 px-10 border-t border-b-neutral-800">
 	<div
 		class="mx-auto
-    sm:px-5 max-w-screen-2xl"
+    sm:px-2 md:px-5 lg:px-7 max-w-screen-2xl"
 	>
 		<div class=" lg:flex lg:justify-between">
 			<div class="pb-10 lg:pb-0">

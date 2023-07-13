@@ -56,7 +56,7 @@
 >
 	{#if news}
 		<div
-			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
+			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center w-full"
 		>
 			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
 				<DetailPage
@@ -66,7 +66,7 @@
 				/>
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}
-				<div class="col-span-1 p-2 ml-1">
+				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full">
 					<RecentItems
 						title={$LL.news()}
 						items={$newsStore.data.map((news) => modelToItemModel(news))}

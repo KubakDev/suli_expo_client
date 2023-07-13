@@ -12,6 +12,8 @@
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
+	//@ts-ignore
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import {
 		Button,
 		Card,
@@ -72,8 +74,8 @@
 				<NewsSection supabase={data.supabase} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
-					<div class="grid grid-cols-3 justify-between w-full">
-						<div class="flex h-20 items-center">
+					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
+						<div class="flex h-20 items-center my-1">
 							<div class="flex bg-white rounded-full justify-center items-center h-20 w-20 bloc">
 								<img src="/icons/earth.png" alt="" class="w-10 h-10" />
 							</div>
@@ -87,7 +89,7 @@
 								<p class="text-lg">{$LL.exhibition_mini_data.Countries()}</p>
 							</div>
 						</div>
-						<div class="flex h-20 items-center">
+						<div class="flex h-20 items-center my-1">
 							<div class="flex bg-white rounded-full h-20 w-20 justify-center items-center bloc">
 								<img src="/icons/company.png" alt="" class="w-10 h-10" />
 							</div>
@@ -101,7 +103,7 @@
 								<p class="text-lg">{$LL.exhibition_mini_data.Companies()}</p>
 							</div>
 						</div>
-						<div class="flex h-20 items-center">
+						<div class="flex h-20 items-center my-1">
 							<div class="flex bg-white rounded-full h-20 w-20 justify-center items-center bloc">
 								<MapPin size="50" color="black" />
 							</div>
@@ -113,7 +115,7 @@
 						</div>
 					</div>
 					<div class="w-full h-10" />
-					<div class="grid grid-cols-2">
+					<div class="grid md:grid-cols-2">
 						<div class="  h-100 w-full relative">
 							<img
 								class="object-cover w-full h-100"
@@ -135,9 +137,7 @@
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 								<p class="text-lg dark:text-white">
-									Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-									opposed to using 'Content here, content gfshere', makinlook like readable English.
-									Many desktop publishing packages.
+									{$LL.exhibition_mini_data.Exhibition_Story()}
 								</p>
 							</div>
 						</div>
@@ -158,7 +158,7 @@
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi
-					text="{$LL.exhibition_mini_data.Exhibition_PDF()}"
+					text={$LL.exhibition_mini_data.Exhibition_PDF()}
 					customClass=" dark:text-white text-secondary text-center"
 				/>
 			</div>
@@ -192,14 +192,24 @@
 					</div>
 				</div>
 				<div class="flex flex-col justify-center items-center px-2 h-full">
-					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Hello There Adventure</h1>
-					<span class="dark:text-slate-200 px-4 text-justify">
+					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Exhibition Story</h1>
+					<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore maiores nam
 						perspiciatis recusandae labore dolorem eligendi iste laboriosam corporis aliquam ipsum
 						porro et, eius iusto quo est molestias accusamus cumque. Lorem ipsum dolor sit amet
 						consectetur adipisicing elit. Natus aliquid a fugit minus, cum repellendus eligendi
 						saepe maiores voluptates reprehenderit esse quis. Temporibus maxime ipsam, accusamus
 						rerum laboriosam odit cumque.
+						<!-- <div class="relative w-0 h-0">
+							<LottiePlayer
+							class="absolute left-0"
+								src="../../../../lottie/PDF lottie Jason Done.json"
+								autoplay={true}
+								loop={true}
+								height="{400}"
+								width="{400}"
+							/>
+						</div> -->
 					</span>
 				</div>
 			</div>
@@ -209,19 +219,19 @@
 				<VideoPlayer videoUrl={exhibition.video_youtube_id} />
 			{/if}
 		</div>
-		
-			<!-- {#if exhibition?.seat_layout.length > 0} -->
-			<div class="{Constants.page_max_width} mx-auto py-8">
-				<div class="flex justify-center w-full py-12">
-					<TitleUi
-						text="{$LL.exhibition_mini_data.Exhibition_Seats()}"
-						customClass=" dark:text-white text-secondary text-center"
-					/>
-				</div>
-				<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
-					<ReservationComponent data={exhibition?.seat_layout} />
-				</div>
-			</div>
-			<!-- {/if} -->
 
+		<!-- {#if exhibition?.seat_layout.length > 0} -->
+		<!-- <div class="{Constants.page_max_width} mx-auto py-8">
+			<div class="flex justify-center w-full py-12">
+				<TitleUi
+					text={$LL.exhibition_mini_data.Exhibition_Seats()}
+					customClass=" dark:text-white text-secondary text-center"
+				/>
+			</div>
+			<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
+				<ReservationComponent data={exhibition?.seat_layout} />
+			</div>
+		</div> -->
+		<!-- {/if} -->
+	</div>
 </section>

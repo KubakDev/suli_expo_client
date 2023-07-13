@@ -26,7 +26,7 @@
 			fill="#E1B168"
 		/>
 	</svg>
-	<span>{contactInfoSection.email}</span>
+	<span class="text-slate-300 ">{contactInfoSection.email}</span>
 </div>
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
 	<svg width="44" height="44" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@
 		/>
 	</svg>
 	<div class="flex flex-col justify-center items-center gap-2 w-full">
-		<span class="flex justify-evenly ">
+		<span class="flex justify-evenly text-slate-300">
 			<div class="flex px-2">
 				{$LL.marketing()} :
 			</div>
