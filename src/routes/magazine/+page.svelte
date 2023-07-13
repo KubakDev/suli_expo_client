@@ -37,13 +37,15 @@
 		</div>
 	</div>
 	{#if $magazineStore}
-		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<div class="grid justify-around grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
 			{#each $magazineStore as item, i}
-				{#if CardComponent}
+				<!-- {#if CardComponent} -->
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard imageClass="rounded-t-3xl object-cover" cardType={CardType.Main} title={item.title} short_description={item.short_description} date={item.created_at} thumbnail={item.thumbnail} />
+						<ExpoCard imageClass="{Constants.image_card_layout}" cardType={CardType.Square} title={item.title} date={item.created_at} thumbnail={item.thumbnail} />
 					</div>
-				{/if}
+				<!-- {/if} -->
 			{/each}
 		</div>
 	{/if}

@@ -8,6 +8,7 @@
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import Saos from '$lib/animate/Saos.svelte';
+	import Constants from '../../utils/constants';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -57,12 +58,12 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
-							imageClass="rounded-t-3xl object-cover"
+							imageClass="{Constants.image_card_layout}"
 								date={exhibition.exhibition_date}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}
-								cardType={CardType.Square}
+								cardType={CardType.Main}
 							/>
 						</Saos>
 					</button>

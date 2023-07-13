@@ -50,7 +50,7 @@
 				<!-- {#if CardComponent} -->
 					<a href="/news/detail/{item.id}" class="a-tag">
 						<ExpoCard
-						imageClass="rounded-t-3xl object-cover"
+						imageClass="{Constants.image_card_layout}"
 							cardType={CardType.Square}
 							title={item.title}
 							thumbnail={item.thumbnail}

@@ -15,10 +15,9 @@
 
 	$: {
 		if ($locale) {
-			getNews();			
+			getNews();
 		}
 	}
-
 
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
@@ -52,20 +51,28 @@
 	{/if}
 </section> -->
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full">
+<section
+	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+>
 	{#if news}
-		<div class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center">
+		<div
+			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
+		>
 			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
-				<DetailPage customClass="bg-none "  imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
-			</div>
-			{#if $newsStore && $newsStore.data.length > 0}
-			<div class="col-span-1 p-2 ml-1">
-				<RecentItems
-					title={$LL.news()}
-					items={$newsStore.data.map((news) => modelToItemModel(news))}
-					pageType={'news'}
+				<DetailPage
+					customClass="bg-none "
+					imagesCarousel={news.imagesCarousel}
+					long_description={news.long_description}
 				/>
 			</div>
+			{#if $newsStore && $newsStore.data.length > 0}
+				<div class="col-span-1 p-2 ml-1">
+					<RecentItems
+						title={$LL.news()}
+						items={$newsStore.data.map((news) => modelToItemModel(news))}
+						pageType={'news'}
+					/>
+				</div>
 			{/if}
 		</div>
 	{:else}
