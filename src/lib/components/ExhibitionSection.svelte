@@ -7,6 +7,8 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import Saos from '$lib/animate/Saos.svelte';
+	import Constants from '../../utils/constants';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -19,14 +21,18 @@
 		}
 	}
 
-	function openNews() {
+	function openAllExibition() {
 		goto('/exhibitions');
+	}
+
+	function openExhibition(id: number) {
+		goto(`/exhibitions/${id}`);
 	}
 </script>
 
 {#if $exhibitionSectionStore && $exhibitionSectionStore.length > 0}
 	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+		class="{constants.section_padding_y} {constants.page_max_width} mx-auto {constants.horizontal_padding}"
 	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
@@ -34,7 +40,7 @@
 				<TitleUi text={$LL.exhibition()} />
 			</div>
 			<div class="flex justify-end w-32">
-				<SeeAllBtn onBtnClick={openNews} />
+				<SeeAllBtn onBtnClick={openAllExibition} />
 			</div>
 		</div>
 		{#if $exhibitionSectionStore}
@@ -42,18 +48,25 @@
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each exhibitions as exhibition, i}
-					<div class="w-full">
-						<!-- <Saos
+					<button
+						class="w-full"
+						on:click={() => {
+							openExhibition(exhibition.id || 0);
+						}}
+					>
+						<Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-						> -->
-						<ExpoCard
-							date={exhibition.exhibition_date}
-							title={exhibition.title}
-							thumbnail={exhibition.thumbnail}
-							cardType={CardType.Square}
-						/>
-						<!-- </Saos> -->
-					</div>
+						>
+							<ExpoCard
+							imageClass="{Constants.image_card_layout}"
+								date={exhibition.exhibition_date}
+								title={exhibition.title}
+								short_description={exhibition.description}
+								thumbnail={exhibition.thumbnail}
+								cardType={CardType.Main}
+							/>
+						</Saos>
+					</button>
 				{/each}
 			</div>
 		{/if}

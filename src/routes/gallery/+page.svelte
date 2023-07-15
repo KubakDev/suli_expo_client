@@ -35,15 +35,17 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-start mb-12">
 		<div>
-			<TitleUi text="Gallery" customClass=" dark:text-white text-secondary " />
+			<TitleUi text="{$LL.gallery()}" customClass=" dark:text-white text-secondary " />
 		</div>
 	</div>
 	{#if $galleryStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $galleryStore as item, i}
 				{#if CardComponent}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard imageClass="{Constants.image_card_layout}" cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
 					</div>
 				{/if}
 			{/each}

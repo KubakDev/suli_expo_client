@@ -3,6 +3,10 @@
 	import type { ContactInfoModel } from '../../models/contactInfo';
 
 	export let contactInfoSection: ContactInfoModel;
+
+	function formatPhoneNumber(phoneNumber: string): string {
+  return phoneNumber.slice(0, 4) + '-' + phoneNumber.slice(4, 7) + '-' + phoneNumber.slice(7);
+}
 </script>
 
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
@@ -22,7 +26,7 @@
 			fill="#E1B168"
 		/>
 	</svg>
-	<span>{contactInfoSection.email}</span>
+	<span class="text-slate-300 ">{contactInfoSection.email}</span>
 </div>
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
 	<svg width="44" height="44" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,38 +37,47 @@
 			stroke-miterlimit="10"
 		/>
 	</svg>
-	<div class="flex flex-col justify-center items-center gap-2">
-		<span>
-			{$LL.marketing()} :
-			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_marketing}+
-			{:else}
-				+964{contactInfoSection?.phoneNumber_marketing}
-			{/if}
+	<div class="flex flex-col justify-center items-center gap-2 w-full">
+		<span class="flex justify-evenly text-slate-300">
+			<div class="flex px-2">
+				{$LL.marketing()} :
+			</div>
+
+				{#if $locale === 'ckb' || $locale === 'ar'}
+				{contactInfoSection?.phoneNumber_marketing}+
+				{:else}
+				+{contactInfoSection?.phoneNumber_marketing}
+				{/if}
 		</span>
 
-		<span>
-			{$LL.relations()} :
+		<span class="flex">
+			<div class="flex px-2">
+				{$LL.relations()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_relations}+
+				{contactInfoSection?.phoneNumber_relations}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_relations}
+			+{contactInfoSection?.phoneNumber_relations}
 			{/if}
 		</span>
-		<span>
-			{$LL.technical()} :
-			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_Technical}+
-			{:else}
-				+964{contactInfoSection?.phoneNumber_Technical}
-			{/if}
+		<span class="flex justify-evenly ">
+			<div class="flex px-2">
+				{$LL.technical()} :
+			</div>
+				{#if $locale === 'ckb' || $locale === 'ar'}
+					{contactInfoSection?.phoneNumber_Technical}+
+				{:else}
+					+{contactInfoSection?.phoneNumber_Technical}
+				{/if}
 		</span>
-		<span>
-			{$LL.administration()} :
+		<span class="flex justify-evenly">
+			<div class="flex px-2">
+				{$LL.administration()} :
+			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
-				964{contactInfoSection?.phoneNumber_Administration}+
+				{contactInfoSection?.phoneNumber_Administration}+
 			{:else}
-				+964{contactInfoSection?.phoneNumber_Administration}
+				+{contactInfoSection?.phoneNumber_Administration}
 			{/if}
 		</span>
 	</div>

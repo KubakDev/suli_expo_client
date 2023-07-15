@@ -9,6 +9,7 @@
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
+	import Constants from '../utils/constants';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -27,10 +28,10 @@
 			<source srcset="/images/suliexpo.jpg" type="image/webp" />
 			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
 		</picture> -->
-<div class="flex-1 w-full h-full">
+<div class="flex-1 w-full h-full ">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-	<div class="  m-auto w-full overflow-hidden">
+	<div class=" m-auto w-full overflow-hidden px-2">
 		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 
 		<NewsSection supabase={data.supabase} />

@@ -2,6 +2,7 @@ import type { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase
 import { writable } from 'svelte/store';
 import type { ServiceModel } from '../models/serviceModel';
 import { convertModel } from '../models/covertModel';
+import type { Locales } from '$lib/i18n/i18n-types';
 
 const createServiceSectionStore = () => {
 	const { subscribe, set, update } = writable<ServiceModel[]>();
@@ -11,11 +12,11 @@ const createServiceSectionStore = () => {
 		set: (seatLayout: ServiceModel[]) => {
 			set(seatLayout);
 		},
-		get: async (supabase: SupabaseClient, limit?: number | undefined) => {
+		get: async (locale: Locales,supabase: SupabaseClient, limit?: number | undefined) => {
 			const result = await supabase
 				.from('service')
 				.select('*,languages:service_languages(*)')
-				.eq('languages.language', 'en')
+				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
 			if (result.error) {

@@ -26,7 +26,7 @@ const createAboutSectionStore = () => {
 				return null;
 			} else {
 				const aboutUs = convertModel<AboutModel>(result.data) as AboutModel;
-				console.log(aboutUs);
+
 				set(aboutUs);
 				return null;
 			}

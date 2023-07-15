@@ -20,8 +20,11 @@ const createMagazineStore = () => {
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
+
+
+
 			if (result.error) {
-				//.error(result.error);
+				// .error(result.error);
 				return null;
 			} else {
 				const magazines = result.data.map((e) =>
@@ -44,6 +47,9 @@ const createMagazineStore = () => {
 				return null;
 			} else {
 				const magazine = convertModel<MagazineModel>(result.data, true) as MagazineModel;
+
+
+
 				return magazine;
 			}
 		}

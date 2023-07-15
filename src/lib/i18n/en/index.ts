@@ -8,8 +8,23 @@ const en = {
 	contact: 'Contact',
 	news: 'News',
 	no_news: 'No news yet',
+	pdf_file: 'PDF File',
 	services: 'Services',
 	exhibition: 'Exhibition',
+	exhibition_mini_data: {
+		Reservation: {
+			title: 'Reservation',
+			place: 'Iraq - Sulaymaniyah'
+		},
+		Companies: 'Companies',
+		Countries: 'Countries',
+		Story: 'Story',
+		Exhibition_Story:
+			'A Journey Through Literary History Embark on a chronological expedition through the annals of literary history. Traverse ancient manuscripts, illuminations, and scrolls that capture the essence of civilizations past. Witness the evolution of the written word, from the early writings of ancient civilizations to the medieval manuscripts painstakingly crafted by scribes. Marvel at the masterpieces that have shaped our understanding of the world, as each exhibit unveils a unique chapter of human expression.',
+		Fair: 'Sulaymaniyah International Fair',
+		Exhibition_Seats: 'Exhibition Seats',
+		Exhibition_PDF: "Exhibition PDF'S"
+	},
 	promo: 'Promo',
 	seeAll: 'See all',
 	marketing: 'Marketing',

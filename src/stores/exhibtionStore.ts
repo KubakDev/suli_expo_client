@@ -16,26 +16,30 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages(*),sections:exhibition_sections(*)')
-				// .eq('languages.language', locale)
+				.select(
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)'
+				)
+				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				// console.log('exhibition data ', result.data);
 				const exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
-				// console.log('exhibition', exhibition);
+
 				return exhibition;
 			}
 		},
-		get: async (supabase: SupabaseClient) => {
+		get: async (locale: Locales, supabase: SupabaseClient) => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
+				// languages is just a name we put to use it later
 				.select('*,languages:exhibition_languages!inner(*)')
-				.eq('languages.language', 'en')
+				// And The inner it's for the inner join and be allowed to use the language and apply rules on it
+				// like in this equallity we are saying that we want to get the exhibition that has the language we want
+				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
 			//  //(result);
@@ -43,11 +47,10 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				// console.log('exhibition data ', result.data);
 				const exhibition = result.data.map((e) =>
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
-				// console.log('exhibition', exhibition);
+
 				set(exhibition);
 				return null;
 			}

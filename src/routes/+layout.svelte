@@ -12,6 +12,7 @@
 	import { fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
+	import Constants from '../utils/constants';
 	register();
 	export let data;
 
@@ -23,6 +24,8 @@
 	onMount(async () => {
 		supabase = data.supabase;
 		changeLanguage(data.locale);
+		console.log('contactInfoSectionStore', $contactInfoSectionStore);
+		
 	});
 
 	function scale(
@@ -30,7 +33,7 @@
 		{ delay = 0, duration = 300, easing = easeCubicIn },
 		{ direction = 'both' } = {}
 	) {
-		const origin:any = {
+		const origin: any = {
 			in: 'bottom left',
 			out: 'bottom right',
 			both: 'center center'
@@ -60,9 +63,6 @@
 
 	// function for knowing which page go to which page
 	export function inLeft() {
-		console.log(data.url);
-		console.log('&&&&&&&&&&&&&&&&&&');
-		console.log($previousPageStore);
 		if (
 			$locale === 'en'
 				? !pageTransitions[
@@ -86,10 +86,13 @@
 		<main class="h-full flex">
 			{#key data.url.pathname}
 				<div
-					class="h-full block flex-1 flex"
+					class=" flex-1 sm:flex hidden"
 					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
 					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>
+					<slot />
+				</div>
+				<div class="sm:hidden flex flex-1">
 					<slot />
 				</div>
 			{/key}

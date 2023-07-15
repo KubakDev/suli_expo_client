@@ -10,7 +10,7 @@
 	>
 		<div>
 			<img
-				class="object-center object-contain h-[200px] w-[200px] rounded-full"
+				class="object-center object-cover h-[200px] w-[200px] rounded-full"
 				src={`${staffSection?.image}`}
 				alt="photo"
 			/>

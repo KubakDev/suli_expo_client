@@ -26,9 +26,7 @@
 
 	onMount(async () => {
 		await carouselStore.get(supabase);
-		console.log($carouselStore);
 		const swiperEl = document.querySelector('#swiper-container1');
-		console.log(swiperEl);
 		const swiperParams: SwiperOptions = {
 			a11y: {
 				prevSlideMessage: 'Previous slide',
@@ -66,19 +64,19 @@
 	const onSlideChange = (e: any) => {};
 </script>
 
-<div dir="ltr" in:fade={{ duration: 800 }}>
+<div dir="ltr" class="min-h-[200px]" in:fade={{ duration: 800 }}>
 	<swiper-container
 		id="swiper-container1"
 		on:progress={onProgress}
 		on:slidechange={onSlideChange}
 		init="false"
-		class="w-full h-200"
+		class="w-full "
 	>
 		{#if $carouselStore}
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
-					<div class="relative max-h-200 flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
-						<img style="height: 100%;" class="object-cover w-full h-full max-h-200" src={c.image} />
+					<div class="relative flex justify-start " dir={locale === 'en' ? 'ltr' : 'rtl'}>
+						<img  class="object-cover w-full h-full" src={c.image}  alt="Carasoul Image" />
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
 							class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 {locale === 'en'

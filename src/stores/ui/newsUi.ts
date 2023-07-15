@@ -7,10 +7,10 @@ const newsUiStore = writable<UiModel | undefined>();
 
 export async function getNewsUi(supabase: SupabaseClient) {
 	{
-		console.log('newsUiStore is empty, fetching data');
+
 		// check if store already has data
 		if (get(newsUiStore)) {
-			console.log('newsUiStore already has data');
+
 			return null;
 		}
 
@@ -32,6 +32,7 @@ export async function getNewsUi(supabase: SupabaseClient) {
 			)
 			.eq('page', CardPageType.News)
 			.single();
+			console.log(response);
 		const data = response.data as UiModel;
 		newsUiStore.set(data);
 	}

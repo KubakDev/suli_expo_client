@@ -8,7 +8,6 @@
 
 	const dispatch = createEventDispatcher();
 	function handleClick(page: number) {
-		console.log(page);
 		if (page < 1 || page > total) return;
 		dispatch('changePage', { page: page });
 	}

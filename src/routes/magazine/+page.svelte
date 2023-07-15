@@ -4,7 +4,7 @@
 	import { getNewsUi } from '../../stores/ui/newsUi';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import newsUiStore from '../../stores/ui/newsUi';
-	import { locale } from '$lib/i18n/i18n-svelte';
+	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../utils/constants';
 	import { stringToEnum } from '../../utils/enumToString';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
@@ -25,7 +25,7 @@
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: any) {
-		goto(`/magazine/${itemId}`);
+		goto(`/magazine/detail/${itemId}`);
 		//('news :', itemId);
 	}
 </script>
@@ -33,17 +33,19 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
 		<div>
-			<TitleUi text="Magazine" customClass=" dark:text-white text-secondary " />
+			<TitleUi text="{$LL.magazine()}" customClass=" dark:text-white text-secondary " />
 		</div>
 	</div>
 	{#if $magazineStore}
-		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<div class="grid justify-around grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
 			{#each $magazineStore as item, i}
-				{#if CardComponent}
+				<!-- {#if CardComponent} -->
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard imageClass="{Constants.image_card_layout}" cardType={CardType.Square} title={item.title} date={item.created_at} thumbnail={item.thumbnail} />
 					</div>
-				{/if}
+				<!-- {/if} -->
 			{/each}
 		</div>
 	{/if}

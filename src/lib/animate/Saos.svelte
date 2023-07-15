@@ -26,7 +26,6 @@
 		observer = new IntersectionObserver(
 			([entry]) => {
 				observing = entry.isIntersecting;
-				console.log(observing);
 				if (observing && once) {
 					observer.unobserve(countainer);
 				}

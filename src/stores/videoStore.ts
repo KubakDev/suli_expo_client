@@ -25,7 +25,7 @@ const createVideoStore = () => {
 				return null;
 			} else {
 				const videos = result.data.map((e) => convertModel<VideoModel>(e, true)) as VideoModel[];
-				console.log(videos);
+
 				set(videos);
 				return null;
 			}
