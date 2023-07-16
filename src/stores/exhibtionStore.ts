@@ -16,7 +16,9 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)')
+				.select(
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)'
+				)
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();
@@ -24,7 +26,6 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-
 				const exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
 				return exhibition;
@@ -46,7 +47,6 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-
 				const exhibition = result.data.map((e) =>
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
