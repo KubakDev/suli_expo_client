@@ -34,7 +34,7 @@
 		</div>
 		<div class="">
 			{#if $aboutSectionStore}
-				<div class="dark:bg-slate-900 dark:text-white rounded-xl">
+				<div class=" dark:text-white rounded-xl">
 					<ul class="">
 						<About aboutSection={$aboutSectionStore} />
 					</ul>
@@ -52,7 +52,7 @@
 				</div>
 				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 					{#each $staffSectionStore as staffSection}
-						<div class="dark:bg-slate-900 dark:text-white rounded-lg p-2">
+						<div class=" dark:text-white rounded-lg p-2">
 							<Staff {staffSection} />
 						</div>
 					{/each}
