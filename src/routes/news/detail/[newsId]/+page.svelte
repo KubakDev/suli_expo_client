@@ -66,7 +66,7 @@
 				/>
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}
-				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full">
+				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full h-full">
 					<RecentItems
 						title={$LL.news()}
 						items={$newsStore.data.map((news) => modelToItemModel(news))}

@@ -17,7 +17,7 @@
 		/>
 	</svg>
 
-	<span class="w-44 text-center leading-8">{contactInfoSection.location}</span>
+	<span class="w-44 text-center leading-8 text-slate-300">{contactInfoSection.location}</span>
 </div>
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
 	<svg width="44" height="44" viewBox="0 0 448 352" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,8 +50,8 @@
 				{/if}
 		</span>
 
-		<span class="flex">
-			<div class="flex px-2">
+		<span class="flex text-slate-300">
+			<div class="flex px-2 ">
 				{$LL.relations()} :
 			</div>
 			{#if $locale === 'ckb' || $locale === 'ar'}
@@ -60,7 +60,7 @@
 			+{contactInfoSection?.phoneNumber_relations}
 			{/if}
 		</span>
-		<span class="flex justify-evenly ">
+		<span class="flex justify-evenly text-slate-300">
 			<div class="flex px-2">
 				{$LL.technical()} :
 			</div>
@@ -70,7 +70,7 @@
 					+{contactInfoSection?.phoneNumber_Technical}
 				{/if}
 		</span>
-		<span class="flex justify-evenly">
+		<span class="flex justify-evenly text-slate-300">
 			<div class="flex px-2">
 				{$LL.administration()} :
 			</div>

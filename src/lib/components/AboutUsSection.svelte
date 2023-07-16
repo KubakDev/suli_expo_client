@@ -51,9 +51,9 @@
 {/if}
 
 <style>
-	.about_section {
+	/* .about_section {
 		background: linear-gradient(90deg, #e1b168 0%, #bd7200 100%);
-	}
+	} */
 	.aboutTitle {
 		will-change: transform, opacity;
 	}
