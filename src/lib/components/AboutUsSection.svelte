@@ -41,7 +41,7 @@
 						<img
 							class=" w-full rounded-lg"
 							alt="about image"
-							src={`https://images.unsplash.com/photo-1689214102127-b83f0fc9d16b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=928&q=80`}
+							src="{$aboutSectionStore.image}"
 						/>
 					</Saos>
 				</div>
