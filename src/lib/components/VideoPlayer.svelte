@@ -6,7 +6,7 @@
 
 	import { onMount } from 'svelte';
 	export let videoUrl: string;
-	// export let thumbnailUrl: string;
+	export let thumbnailUrl: string;
 	defineCustomElements();
 
 	onMount(async () => {
@@ -19,10 +19,13 @@
 				}
 			});
 		}
+
+		console.log("video", videoUrl);
+		
 	});
 </script>
 
-<Youtube id="2PmmGwDv17c" altThumb={true} />
+<Youtube id="EE8cHyjCNLE" altThumb={true} />
 
 <!-- remove `controls` attribute if you're designing a custom UI -->
 <!-- <media-player
