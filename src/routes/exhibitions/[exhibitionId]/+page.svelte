@@ -216,7 +216,7 @@
 		{/if}
 		<div class="{Constants.page_max_width} mx-auto">
 			{#if exhibition && exhibition.video_youtube_link}
-				<VideoPlayer videoUrl={exhibition.video_youtube_link} />
+				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={"Exhibition Video"} />
 			{/if}
 		</div>
 

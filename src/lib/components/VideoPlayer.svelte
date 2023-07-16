@@ -7,6 +7,11 @@
 	import { onMount } from 'svelte';
 	export let videoUrl: string;
 	export let thumbnailUrl: string;
+
+	// YouTube video ID regex
+	const youtubeRegex =
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
 	defineCustomElements();
 
 	onMount(async () => {
@@ -20,12 +25,20 @@
 			});
 		}
 
-		console.log("video", videoUrl);
-		
+		console.log('video', videoUrl);
 	});
+
+	// get the YouTube ID from the URL
+	function getYouTubeId(): string | null {
+		const match = youtubeRegex.exec(videoUrl);
+
+		console.log('match', match);
+
+		return match ? match[1] : null;
+	}
 </script>
 
-<Youtube id="EE8cHyjCNLE" altThumb={true} />
+<Youtube id={getYouTubeId()} altThumb={true} />
 
 <!-- remove `controls` attribute if you're designing a custom UI -->
 <!-- <media-player
