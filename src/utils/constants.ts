@@ -9,7 +9,7 @@ class Constants {
 
 	static scrollbar_layout = "scrollbar-thumb-blue-600 scrollbar-track-gray-100 scrollbar-thin scrollbar-thumb-rounded-3xl scrollbar-track-rounded-3xl"
 
-	static image_card_layout = "rounded-t-2xl shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-103 object-cover w-full h-full"
+	static image_card_layout = "rounded-t-2xl shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-103 object-cover"
 }
 
 export default Constants;

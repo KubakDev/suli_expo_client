@@ -52,11 +52,11 @@
 </section> -->
 
 <section
-	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full "
 >
 	{#if news}
 		<div
-			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center w-full"
+			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
 		>
 			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
 				<DetailPage
