@@ -23,9 +23,8 @@
 		DropdownDivider,
 		DropdownItem
 	} from 'flowbite-svelte';
-	import { FilePdfOutline, FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
-	import { goto } from '$app/navigation';
-	import ReservationComponent from '$lib/components/ReservationComponent.svelte';
+	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
+	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
 
 	export let data;
 
@@ -71,6 +70,14 @@
 	<div>
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
+				<div class="flex flex-col w-full h-full bg-gradient-to-r from-green-500 via-red-500 to-pink-500 my-2 py-2 px-4 rounded-3xl border-solid border-4 dark:border-slate-200">
+					{#if exhibition}
+						<ExhibitionDate
+							start_date={exhibition?.start_date || new Date()}
+							end_date={exhibition?.end_date || new Date()}
+						/>
+					{/if}
+				</div>
 				<NewsSection supabase={data.supabase} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
@@ -137,7 +144,11 @@
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 								<p class="text-lg dark:text-white">
-									{$LL.exhibition_mini_data.Exhibition_Story()}
+									{#if exhibition?.story?.length || [].length > 200}
+										{exhibition?.story?.slice(0, 200) || 'No Story Available'}
+									{:else}
+										{exhibition?.story || 'No Story Available'}
+									{/if}
 								</p>
 							</div>
 						</div>
@@ -147,14 +158,14 @@
 				<div class="w-full h-10" />
 			</div>
 		</div>
-		<div class="w-full h-48 bg-white flex flex-col justify-around items-center py-10">
+		<!-- <div class="w-full h-48 bg-white flex flex-col justify-around items-center py-10">
 			<div class="text-3xl uppercase">{$LL.exhibition_mini_data.Fair()}</div>
 
 			<div class="text-xl">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
-		</div>
+		</div> -->
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi
@@ -216,7 +227,7 @@
 		{/if}
 		<div class="{Constants.page_max_width} mx-auto">
 			{#if exhibition && exhibition.video_youtube_link}
-				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={"Exhibition Video"} />
+				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={'Exhibition Video'} />
 			{/if}
 		</div>
 
