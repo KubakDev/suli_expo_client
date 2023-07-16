@@ -52,7 +52,7 @@
 </section> -->
 
 <section
-	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full "
 >
 	{#if news}
 		<div
