@@ -5,27 +5,33 @@
 	import { videoSectionStore } from '../../stores/videoSectionStore';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import VideoPlayer from './VideoPlayer.svelte';
+	import { promoStore } from '../../stores/promoStore';
+	import type { PromoModel } from '../../models/promoModel';
 
 	export let supabase: any;
 	$: {
 		if ($locale) {
-			videoSectionStore.get($locale, supabase);
+		 promoStore.get(supabase, $locale);
 		}
 	}
+
+	onMount(async () => {
+		await promoStore.get(supabase, $locale);
+	});
 </script>
 
-<section class="{constants.section_padding_y} {constants.page_max_width} m-auto">
-	<div class="flex justify-center items-center">
-		<TitleUi text={$LL.promo()} customClass=" dark:text-white text-secondary " />
-	</div>
-	<div class="w-full">
-		{#if $videoSectionStore}
+{#if $promoStore && $promoStore.video.length > 0}
+	<section class="{constants.section_padding_y} {constants.page_max_width} mx-auto">
+		<div class="flex justify-center items-center pb-8">
+			<TitleUi text={$LL.promo()} customClass=" dark:text-white text-secondary py-2" />
+		</div>
+		<div class="w-full">
 			<VideoPlayer
-				videoUrl={$videoSectionStore.video}
-				thumbnailUrl={$videoSectionStore.thumbnail}
+				videoUrl={$promoStore.video[0].video_link || ''}
+				thumbnailUrl={$promoStore.thumbnail || ''}
 			/>
-		{:else}
-			<div />
-		{/if}
-	</div>
-</section>
+		</div>
+	</section>
+{:else}
+	<div />
+{/if}

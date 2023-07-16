@@ -35,13 +35,13 @@
 				{$aboutSectionStore.short_description}
 			</p>
 			<!-- </Saos> -->
-			<div class="w-full justify-center items-center flex absolute -bottom-80">
+			<div class="w-full justify-center items-center flex py-2 lg:-mt-20">
 				<div class=" lg:w-4/6 w-full h-96 object-cover object-center rounded-lg">
 					<Saos animation="from-bottom 1.8s cubic-bezier(0.500, 0.5, 0.1, 1) both">
 						<img
 							class=" w-full rounded-lg"
 							alt="about image"
-							src={`${$aboutSectionStore?.image}`}
+							src={`https://images.unsplash.com/photo-1689214102127-b83f0fc9d16b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=928&q=80`}
 						/>
 					</Saos>
 				</div>

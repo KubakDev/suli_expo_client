@@ -70,12 +70,12 @@
 		on:progress={onProgress}
 		on:slidechange={onSlideChange}
 		init="false"
-		class="w-full "
+		class="w-full h-full"
 	>
 		{#if $carouselStore}
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
-					<div class="relative flex justify-start " dir={locale === 'en' ? 'ltr' : 'rtl'}>
+					<div class="relative flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
 						<img  class="object-cover w-full h-full" src={c.image}  alt="Carasoul Image" />
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div

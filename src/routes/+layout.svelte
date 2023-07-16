@@ -92,7 +92,7 @@
 				>
 					<slot />
 				</div>
-				<div class="sm:hidden flex flex-1">
+				<div class="flex flex-1">
 					<slot />
 				</div>
 			{/key}

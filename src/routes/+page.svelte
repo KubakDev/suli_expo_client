@@ -9,7 +9,7 @@
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import Constants from '../utils/constants';
+	import { promoStore } from '../stores/promoStore';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
