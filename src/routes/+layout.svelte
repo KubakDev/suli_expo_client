@@ -13,6 +13,7 @@
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
 	import Constants from '../utils/constants';
+	import { activeThemeStore } from '../stores/ui/theme';
 	register();
 	export let data;
 
@@ -23,9 +24,9 @@
 
 	onMount(async () => {
 		supabase = data.supabase;
+		console.log('supabase', supabase);
+		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
-		console.log('contactInfoSectionStore', $contactInfoSectionStore);
-		
 	});
 
 	function scale(
@@ -80,7 +81,7 @@
 </script>
 
 {#if supabase}
-	<div class="dark:bg-black bg-white app">
+	<div class=" app" style="background-color: var(--backgroundColor);">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">

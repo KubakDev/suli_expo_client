@@ -14,9 +14,7 @@
 	export let supabase: any;
 
 	$: {
-		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
-			//.info('locale changed #########', $locale);
 			exhibitionSectionStore.get($locale, supabase);
 		}
 	}
@@ -58,7 +56,7 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
-							imageClass="{Constants.image_card_layout}"
+								imageClass={Constants.image_card_layout}
 								date={exhibition.exhibition_date}
 								title={exhibition.title}
 								short_description={exhibition.description}

@@ -5,7 +5,7 @@
 </script>
 
 <div>
-	<div class="h-[1px] bg-yellow-400" />
+	<div class="h-[1px] bg-[var(--primaryColor)]" />
 	<h1
 		class="{footerSize
 			? 'text-base font-sans'
@@ -13,5 +13,5 @@
 	>
 		{text}
 	</h1>
-	<div class="h-[1px] bg-yellow-400" />
+	<div class="h-[1px] bg-[var(--primaryColor)]" />
 </div>

@@ -23,12 +23,7 @@
 	<title>Home</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
-
-<!-- <picture>
-			<source srcset="/images/suliexpo.jpg" type="image/webp" />
-			<img class="object-cover" src="/images/suliexpo.jpg" alt="Welcome" />
-		</picture> -->
-<div class="flex-1 w-full h-full ">
+<div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
 	<div class=" m-auto w-full overflow-hidden px-2">
