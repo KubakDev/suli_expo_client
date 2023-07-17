@@ -49,7 +49,7 @@
 	<span class="flex flex-col justify-center">
 		<p class="text-center text-lg font-bold uppercase">End Date</p>
 		<p class="text-slate-800 font-bold text-lg">
-            {moment(start_date).format('DD MMMM YYYY, h:mm:ss')}
+            {moment(end_date).format('DD MMMM YYYY, h:mm:ss')}
         </p>
         </span
 	>

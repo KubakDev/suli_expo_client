@@ -70,7 +70,7 @@
 	<div>
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
-				<div class="flex flex-col w-full h-full bg-gradient-to-r from-green-500 via-red-500 to-pink-500 my-2 py-2 px-4 rounded-3xl border-solid border-4 dark:border-slate-200">
+				<div class="flex flex-col w-full h-full bg-gradient-to-r from-rose-500  to-blue-300 my-2 py-2 px-4 rounded-3xl border-solid border-2 dark:border-slate-200 shadow-md hover:shadow-xl shadow-blue-500/50 hover:shadow-red-500/50 opacity-80 hover:opacity-100 transition-all">
 					{#if exhibition}
 						<ExhibitionDate
 							start_date={exhibition?.start_date || new Date()}
