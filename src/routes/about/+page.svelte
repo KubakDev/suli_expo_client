@@ -30,11 +30,12 @@
 <section class="py-12 flex-1">
 	<div class="mx-auto {Constants.page_max_width}">
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.about()} customClass=" dark:text-white text-secondary " />
+			<TitleUi text={$LL.about()} />
 		</div>
 		<div class="">
 			{#if $aboutSectionStore}
-				<div class=" dark:text-white rounded-xl">
+				<div class=" rounded-xl">
+
 					<ul class="">
 						<About aboutSection={$aboutSectionStore} />
 					</ul>
@@ -44,20 +45,24 @@
 
 		<!-- team section -->
 		<!-- <Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}> -->
-			<section>
-				<div class="text-center pb-12">
-					<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[#e1b168]">
-						{$LL.successTeam()}
-					</h1>
-				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
-					{#each $staffSectionStore as staffSection}
-						<div class=" dark:text-white rounded-lg p-2">
-							<Staff {staffSection} />
-						</div>
-					{/each}
-				</div>
-			</section>
+
+		<section>
+			<div class="text-center pb-12">
+				<h1
+					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[var(--primaryColor)]"
+				>
+					{$LL.successTeam()}
+				</h1>
+			</div>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
+				{#each $staffSectionStore as staffSection}
+					<div class=" text-[var(--onBackgroundColor)] rounded-lg p-2">
+						<Staff {staffSection} />
+					</div>
+				{/each}
+			</div>
+		</section>
+
 		<!-- </Saos> -->
 	</div>
 </section>

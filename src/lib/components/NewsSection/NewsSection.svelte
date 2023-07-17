@@ -47,7 +47,7 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi customClass=" text-black dark:text-white " text={$LL.news()} />
+				<TitleUi text={$LL.news()} />
 			</div>
 			<div class="flex justify-end w-32">
 				<SeeAllBtn onBtnClick={openNews} />
@@ -65,19 +65,18 @@
 			>
 				{#each $newsSectionStore as n, i}
 					<!-- {#if CardComponent && $newsUiStore} -->
-						<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">
-							<Saos
-								animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
-							>
-								<ExpoCard
-								imageClass="{Constants.image_card_layout}"
-									cardType={CardType.Square}
-									title={n.title}
-									thumbnail={n.thumbnail}
-									date={n.created_at}
-								/>
-							</Saos>
-						</button>
+					<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">
+						<Saos
+							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+						>
+							<ExpoCard
+								cardType={CardType.Square}
+								title={n.title}
+								thumbnail={n.thumbnail}
+								date={n.created_at}
+							/>
+						</Saos>
+					</button>
 					<!-- {:else}
 						<div />
 					{/if} -->

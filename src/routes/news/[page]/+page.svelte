@@ -27,7 +27,6 @@
 		getNewsUi(data.supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 		});
-		
 	});
 
 	function changePage(page: number) {
@@ -41,33 +40,31 @@
 			<DateRangePicker />
 
 			<div>
-				<TitleUi text="{$LL.news()}" customClass=" dark:text-white text-secondary " />
+				<TitleUi text={$LL.news()} />
 			</div>
 		</div>
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
-				<!-- {#if CardComponent} -->
-					<a href="/news/detail/{item.id}" class="a-tag">
-						<ExpoCard
-						imageClass="{Constants.image_card_layout}"
-							cardType={CardType.Square}
-							title={item.title}
-							thumbnail={item.thumbnail}
-							date={item.created_at}
-						/>
-					</a>
-				<!-- {/if} -->
+				<a href="/news/detail/{item.id}" class="a-tag">
+					<ExpoCard
+						cardType={CardType.Square}
+						title={item.title}
+						thumbnail={item.thumbnail}
+						date={item.news_date || '01-01-2000'}
+					/>
+				</a>
+
 			{/each}
 		</div>
 
 		<div dir="ltr" class="flex justify-center my-10">
 			{#if $newsStore.count > 9}
-			<PaginationComponent
-				total={$newsStore.count}
-				page={parseInt($page.params.page)}
-				on:changePage={(value) => changePage(value.detail.page)}
-			/>
+				<PaginationComponent
+					total={$newsStore.count}
+					page={parseInt($page.params.page)}
+					on:changePage={(value) => changePage(value.detail.page)}
+				/>
 			{/if}
 		</div>
 	{/if}
