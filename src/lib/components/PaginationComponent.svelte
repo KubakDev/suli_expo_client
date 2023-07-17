@@ -14,7 +14,11 @@
 </script>
 
 <nav aria-label="Page navigation example">
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<ul class="inline-flex items-center -space-x-px h-8">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-missing-attribute -->
+		<!-- svelte-ignore a11y-missing-attribute -->
 		<li on:click={() => handleClick(page - 1)} class="h-full">
 			<a
 				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -35,7 +39,10 @@
 			</a>
 		</li>
 		{#each Array.from({ length: total > 3 ? 3 : total }, (_, i) => i + (page - 1)) as pageNumber}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			{#if pageNumber > 0 && pageNumber <= total}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<li on:click={() => handleClick(pageNumber)} class="h-full">
 					<a
 						href="#"
@@ -49,6 +56,9 @@
 			{/if}
 		{/each}
 
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-missing-attribute -->
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<li on:click={() => handleClick(page + 1)} class="h-full">
 			<a
 				class="flex justify-center items-center h-full block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
