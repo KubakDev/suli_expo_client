@@ -54,7 +54,7 @@
 							cardType={CardType.Square}
 							title={item.title}
 							thumbnail={item.thumbnail}
-							startDate={item.created_at}
+							date={item.created_at}
 						/>
 					</a>
 				<!-- {/if} -->
