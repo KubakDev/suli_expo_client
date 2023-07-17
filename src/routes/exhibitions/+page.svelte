@@ -55,7 +55,8 @@
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}
-					date={exhibition.exhibition_date}
+					startDate={exhibition.start_date}
+					endDate={exhibition.end_date}
 					cardType={CardType.Main}
 				/>
 					</button>

@@ -43,7 +43,7 @@
 				<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start ">{item.title}</h1>
 				{/if}
 
-				{#if item.short_description?.length > 79}
+				{#if (item.short_description ?? '').length > 79}
 				<p class="leading-relaxed text-justify text-sm">
 					{item.short_description?.slice(0, 80)}...
 				</p>

@@ -54,7 +54,7 @@
 							cardType={CardType.Square}
 							title={item.title}
 							thumbnail={item.thumbnail}
-							date={item.news_date || "01-01-2000"}
+							startDate={item.created_at}
 						/>
 					</a>
 				<!-- {/if} -->
