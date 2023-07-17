@@ -18,7 +18,7 @@
 	}
 
 	onMount(async () => {
-		console.log('exhibitionStore', $exhibitionStore);
+	
 	});
 
 	function openExhibition(id: number) {
