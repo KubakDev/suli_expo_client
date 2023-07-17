@@ -8,5 +8,6 @@
 <Button
 	on:click={onBtnClick}
 	color="primary"
-	class=" sm:w-32 rounded-md bg-primary text-black w-20 px-[0px] sm:px-4">{$LL.seeAll()}</Button
+	class=" sm:w-32 rounded-md  w-20 px-[0px] sm:px-4 bg-[var(--primaryColor)] text-[var(--onPrimaryColor)] hover:text-[var(--primaryColor)] hover:bg-transparent hover:border-2 border-[var(--primaryColor)]"
+	>{$LL.seeAll()}</Button
 >

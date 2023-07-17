@@ -11,7 +11,7 @@
 	export let supabase: any;
 	$: {
 		if ($locale) {
-		 promoStore.get(supabase, $locale);
+			promoStore.get(supabase, $locale);
 		}
 	}
 
@@ -23,13 +23,10 @@
 {#if $promoStore && $promoStore.video.length > 0}
 	<section class="{constants.section_padding_y} {constants.page_max_width} mx-auto">
 		<div class="flex justify-center items-center pb-8">
-			<TitleUi text={$LL.promo()} customClass=" dark:text-white text-secondary py-2" />
+			<TitleUi text={$LL.promo()} />
 		</div>
 		<div class="w-full">
-			<VideoPlayer
-				videoUrl={$promoStore.video[0].video_link || ''}
-				thumbnailUrl={$promoStore.thumbnail || ''}
-			/>
+			<VideoPlayer videoUrl={$promoStore.video[0].video_link || ''} />
 		</div>
 	</section>
 {:else}

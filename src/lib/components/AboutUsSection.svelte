@@ -21,7 +21,7 @@
 	>
 		<!-- <Saos animation="from-bottom 1s cubic-bezier(0.500, 0.5, 0.1, 1) both"> -->
 		<div class="flex justify-center items-center aboutTitle">
-			<TitleUi text={$LL.about()} customClass=" text-white dark:text-white " />
+			<TitleUi text={$LL.about()} />
 		</div>
 		<!-- </Saos> -->
 		<div
@@ -38,6 +38,7 @@
 			<div class="w-full justify-center items-center flex py-2 lg:-mt-20">
 				<div class=" lg:w-4/6 w-full h-96 object-cover object-center rounded-lg">
 					<Saos animation="from-bottom 1.8s cubic-bezier(0.500, 0.5, 0.1, 1) both">
+						<!-- svelte-ignore a11y-img-redundant-alt -->
 						<img
 							class=" w-full rounded-lg"
 							alt="about image"

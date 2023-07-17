@@ -6,6 +6,8 @@
 	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
 	import { fade } from 'svelte/transition';
 	import type { SwiperOptions } from 'swiper/types';
+	import SulyButton from './sulyButton.svelte';
+
 	export let supabase: any;
 	export let locale: Locale;
 	$: {
@@ -76,7 +78,7 @@
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
 					<div class="relative flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
-						<img  class="object-cover w-full h-full" src={c.image}  alt="Carasoul Image" />
+						<img class="object-cover w-full h-full" src={c.image} alt="Carasoul Image" />
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
 							class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 {locale === 'en'
@@ -84,7 +86,7 @@
 								: 'right-4 sm:right-10 md:right:20 lg:right-32'}  z-10"
 						>
 							<div
-								class="text-white text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="text-[var(--onPrimaryColor)] text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-100"
@@ -92,7 +94,7 @@
 								<p>{c.title}</p>
 							</div>
 							<div
-								class="w-full md:w-1/2 text-white text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="w-full md:w-1/2 text-[var(--onPrimaryColor)] text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-300"
@@ -106,7 +108,7 @@
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-500 mt-4"
 							>
-								<Button outline color="primary">Read More</Button>
+								<SulyButton>ReadMore</SulyButton>
 							</div>
 						</div>
 					</div>

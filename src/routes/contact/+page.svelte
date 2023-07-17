@@ -33,7 +33,7 @@
 
 		<!-- contact information section -->
 		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-secondary text-slate-800 shadow"
+			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-[var(--secondaryColor)] text-[var(--onSecondaryColor)] shadow"
 		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}

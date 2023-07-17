@@ -30,17 +30,17 @@
 	});
 </script>
 
-<section class=" dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full">
+
+<section
+	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+>
+
 	{#if news}
 		<div
 			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
 		>
 			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
-				<DetailPage
-					customClass="bg-none "
-					imagesCarousel={news.imagesCarousel}
-					long_description={news.long_description}
-				/>
+				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}
 				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full h-full">
