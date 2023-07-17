@@ -86,16 +86,14 @@
 		<Navbar {data} />
 		<main class="h-full flex">
 			{#key data.url.pathname}
-				<div
-					class=" flex-1 sm:flex hidden"
+				<!-- <div
+					class=" flex-1 flex "
 					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
 					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
 				>
 					<slot />
-				</div>
-				<!-- <div class="flex flex-1">
-					<slot />
-				</div> -->
+
+				
 			{/key}
 		</main>
 		<div>

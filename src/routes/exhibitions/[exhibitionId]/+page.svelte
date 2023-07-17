@@ -23,9 +23,8 @@
 		DropdownDivider,
 		DropdownItem
 	} from 'flowbite-svelte';
-	import { FilePdfOutline, FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
-	import { goto } from '$app/navigation';
-	import ReservationComponent from '$lib/components/ReservationComponent.svelte';
+	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
+	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
 
 	export let data;
 
@@ -71,6 +70,14 @@
 	<div>
 		<div class=" {Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
+				<!-- <div class="flex flex-col w-full h-full bg-gradient-to-r from-rose-500  to-blue-300 my-2 py-2 px-4 rounded-3xl border-solid border-2 dark:border-slate-200 shadow-md hover:shadow-xl shadow-blue-500/50 hover:shadow-red-500/50 opacity-80 hover:opacity-100 transition-all">
+					{#if exhibition}
+						<ExhibitionDate
+							start_date={exhibition?.start_date || new Date()}
+							end_date={exhibition?.end_date || new Date()}
+						/>
+					{/if}
+				</div> -->
 				<NewsSection supabase={data.supabase} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
@@ -150,8 +157,13 @@
 								<h1 class="text-4xl font-bold text-[var(--onBackgroundColor)]e">
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
-								<p class="text-lg text-[var(--onBackgroundColor)]">
-									{$LL.exhibition_mini_data.Exhibition_Story()}
+
+								<p class="text-lg text-[var(--onBackgroundColor)]e">
+									{#if exhibition?.story?.length || [].length > 200}
+										{exhibition?.story?.slice(0, 200) || 'No Story Available'}
+									{:else}
+										{exhibition?.story || 'No Story Available'}
+									{/if}
 								</p>
 							</div>
 						</div>
@@ -168,11 +180,12 @@
 				{$LL.exhibition_mini_data.Fair()}
 			</div>
 
+
 			<div class="text-xl text-[var(--onSecondaryColor)]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
-		</div>
+		</div> -->
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi

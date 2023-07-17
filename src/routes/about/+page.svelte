@@ -35,6 +35,7 @@
 		<div class="">
 			{#if $aboutSectionStore}
 				<div class=" rounded-xl">
+
 					<ul class="">
 						<About aboutSection={$aboutSectionStore} />
 					</ul>
@@ -44,6 +45,7 @@
 
 		<!-- team section -->
 		<!-- <Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}> -->
+
 		<section>
 			<div class="text-center pb-12">
 				<h1
@@ -60,6 +62,7 @@
 				{/each}
 			</div>
 		</section>
+
 		<!-- </Saos> -->
 	</div>
 </section>

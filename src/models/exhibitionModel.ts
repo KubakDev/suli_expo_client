@@ -18,4 +18,5 @@ export interface ExhibitionModel {
 	pdf_files: string[];
 	start_date?: Date;
 	end_date?: Date;
+	story?: string;
 }

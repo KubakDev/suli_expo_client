@@ -54,6 +54,7 @@
 						date={item.news_date || '01-01-2000'}
 					/>
 				</a>
+
 			{/each}
 		</div>
 
