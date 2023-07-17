@@ -9,6 +9,7 @@
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
+	import SulyButton from './sulyButton.svelte';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
@@ -56,7 +57,6 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
-								imageClass={Constants.image_card_layout}
 								date={exhibition.exhibition_date}
 								title={exhibition.title}
 								short_description={exhibition.description}

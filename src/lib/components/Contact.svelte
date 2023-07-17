@@ -2,6 +2,7 @@
 	import * as yup from 'yup';
 	import { Form, Message } from 'svelte-yup';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import SulyButton from './sulyButton.svelte';
 
 	let schema = yup.object().shape({
 		name: yup.string().required().max(30).label('Name'),
@@ -52,7 +53,7 @@
 	</div>
 	<div class="container px-5 py-24 mx-auto flex">
 		<div
-			class="lg:w-1/3 md:w-1/2 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
+			class="lg:w-1/3 md:w-1/2 bg-[var(--backgroundColor)] rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
 		>
 			<h2 class="text-gray-900 text-lg mb-1 font-medium title-font py-5">{$LL.feedback()}</h2>
 			<!-- <p class="leading-relaxed mb-5 text-gray-600">write any text</p> -->
@@ -87,13 +88,16 @@
 						class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
 					/><Message name="message" />
 				</div>
-				<button
+				<!-- <button
 					on:click|preventDefault={formSubmit}
 					type="submit"
 					class="bg-primary-50 text-[#E4E5D6] font-semibold py-2 px-6 focus:outline-none hover:bg-slate-50 hover:text-primary-50 rounded text-lg transition-all border"
 				>
 					{$LL.send()}</button
-				>
+				> -->
+				<SulyButton onBtnClick={formSubmit}>
+					{$LL.send()}
+				</SulyButton>
 			</Form>
 		</div>
 	</div>

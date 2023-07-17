@@ -24,7 +24,7 @@
 	import Constants from '../../utils/constants';
 	import { goto } from '$app/navigation';
 	import { previousPageStore } from '../../stores/navigationStore';
-	import SulyButton from './suliButton.svelte';
+	import SulyButton from './sulyButton.svelte';
 
 	export let data: PageData;
 	let themeMode = 'light';

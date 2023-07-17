@@ -19,6 +19,8 @@ const themeStore = () => {
         if (color === 'active' || color === 'id' || color === 'name') continue;
         root.style.setProperty(`--${color}`, data[color]);
       }
+      root.style.setProperty('--transparentSecondaryColor', data.secondaryColor + '80');
+
       root.style.setProperty('--primaryColor', data.primaryColor);
       set(data)
     }

@@ -18,6 +18,7 @@
 	import { magazineStore } from '../../../../stores/magazineStore.js';
 	import Constants from '../../../../utils/constants.js';
 	import { modelToItemModel } from '../../../../models/covertModel.js';
+	import SulyButton from '$lib/components/sulyButton.svelte';
 
 	export let data;
 	let magazine: MagazineModel | undefined | null;
@@ -36,7 +37,9 @@
 	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
 >
 	{#if magazine}
-		<div class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center">
+		<div
+			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
+		>
 			<div class=" flex-1 my-10 mt-auto col-span-2 w-full h-full">
 				<DetailPage
 					customClass="bg-none"
@@ -44,9 +47,7 @@
 					imagesCarousel={magazine.imagesCarousel}
 				/>
 				<div class="flex justify-start mt-4 mx-2">
-					<Button class="w-[12vh] dark:text-white text-gray-800"
-						><Chevron>{$LL.pdf_file()}</Chevron></Button
-					>
+					<Button class="w-[12vh]  text-red-500"><Chevron>{$LL.pdf_file()}</Chevron></Button>
 					<Dropdown class="overflow-y-auto max-h-[20vh] w-[20vh] {Constants.scrollbar_layout}">
 						{#each magazine.pdf_files as pdf}
 							<DropdownItem

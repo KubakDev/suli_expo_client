@@ -6,7 +6,7 @@
 	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
 	import { fade } from 'svelte/transition';
 	import type { SwiperOptions } from 'swiper/types';
-	import SulyButton from './suliButton.svelte';
+	import SulyButton from './sulyButton.svelte';
 
 	export let supabase: any;
 	export let locale: Locale;

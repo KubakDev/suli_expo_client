@@ -7,7 +7,7 @@
 	import Constants from '../../../utils/constants';
 	import { fade } from 'svelte/transition'; // import the fade transition
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
-	import { MapPin } from 'svelte-heros-v2';
+	import { MapPin, BuildingOffice2, GlobeAsiaAustralia } from 'svelte-heros-v2';
 	import moment from 'moment';
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
@@ -76,41 +76,55 @@
 				<div class="w-full flex flex-col">
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
 						<div class="flex h-20 items-center my-1">
-							<div class="flex bg-white rounded-full justify-center items-center h-20 w-20 bloc">
-								<img src="/icons/earth.png" alt="" class="w-10 h-10" />
+							<div
+								class="flex bg-[var(--secondaryColor)] rounded-full justify-center items-center h-20 w-20 bloc"
+							>
+								<GlobeAsiaAustralia size="50" class="text-[var(--onSecondaryColor)]" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col w-40 dark:text-white">
 								{#if exhibition}
-									<h2 class="text-2xl font-bold">
+									<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p class="text-lg">{$LL.exhibition_mini_data.Countries()}</p>
+								<p class="text-lg text-[var(--onBackgroundColor)]">
+									{$LL.exhibition_mini_data.Countries()}
+								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
-							<div class="flex bg-white rounded-full h-20 w-20 justify-center items-center bloc">
-								<img src="/icons/company.png" alt="" class="w-10 h-10" />
+							<div
+								class="flex bg-[var(--secondaryColor)] rounded-full h-20 w-20 justify-center items-center bloc"
+							>
+								<BuildingOffice2 size="50" class="text-[var(--onSecondaryColor)]" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-2xl font-bold">
+								<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p class="text-lg">{$LL.exhibition_mini_data.Companies()}</p>
+								<p class="text-lg text-[var(--onBackgroundColor)]">
+									{$LL.exhibition_mini_data.Companies()}
+								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
-							<div class="flex bg-white rounded-full h-20 w-20 justify-center items-center bloc">
-								<MapPin size="50" color="black" />
+							<div
+								class="flex bg-[var(--secondaryColor)] rounded-full h-20 w-20 justify-center items-center bloc"
+							>
+								<MapPin size="50" class="text-[var(--onSecondaryColor)]" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-2xl font-bold">{$LL.exhibition_mini_data.Reservation.title()}</h2>
-								<p class="text-lg">{$LL.exhibition_mini_data.Reservation.place()}</p>
+								<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
+									{$LL.exhibition_mini_data.Reservation.title()}
+								</h2>
+								<p class="text-lg text-[var(--onBackgroundColor)]">
+									{$LL.exhibition_mini_data.Reservation.place()}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -133,10 +147,10 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<h1 class="text-4xl font-bold dark:text-white">
+								<h1 class="text-4xl font-bold text-[var(--onBackgroundColor)]e">
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
-								<p class="text-lg dark:text-white">
+								<p class="text-lg text-[var(--onBackgroundColor)]">
 									{$LL.exhibition_mini_data.Exhibition_Story()}
 								</p>
 							</div>
@@ -147,10 +161,14 @@
 				<div class="w-full h-10" />
 			</div>
 		</div>
-		<div class="w-full h-48 bg-white flex flex-col justify-around items-center py-10">
-			<div class="text-3xl uppercase">{$LL.exhibition_mini_data.Fair()}</div>
+		<div
+			class="w-full h-48 bg-[var(--secondaryColor)] flex flex-col justify-around items-center py-10"
+		>
+			<div class="text-3xl uppercase text-[var(--onSecondaryColor)]">
+				{$LL.exhibition_mini_data.Fair()}
+			</div>
 
-			<div class="text-xl">
+			<div class="text-xl text-[var(--onSecondaryColor)]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
@@ -216,7 +234,7 @@
 		{/if}
 		<div class="{Constants.page_max_width} mx-auto">
 			{#if exhibition && exhibition.video_youtube_link}
-				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={"Exhibition Video"} />
+				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={'Exhibition Video'} />
 			{/if}
 		</div>
 
