@@ -39,7 +39,7 @@
 				inverse: true
 			},
 			autoplay: {
-				delay: 1000,
+				delay: 3000,
 				reverseDirection: locale === 'en' ? false : true
 			},
 			speed: 1000,

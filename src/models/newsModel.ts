@@ -24,4 +24,5 @@ export interface NewsPaginatedModel {
 	data: NewsModel[];
 	page: number;
 	count: number;
+	pages: number;
 }

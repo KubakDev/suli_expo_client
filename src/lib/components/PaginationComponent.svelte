@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { activeThemeStore } from '../../stores/ui/theme';
+	import { newsStore } from '../../stores/newsStore';
 
 	// event
 
@@ -21,7 +23,7 @@
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<li on:click={() => handleClick(page - 1)} class="h-full">
 			<a
-				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight text-[var(--secondaryColor)] bg-[var(--primaryColor)] border border-gray-300 rounded-l-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
 			>
 				<span class="sr-only">Previous</span>
 				<svg
@@ -38,19 +40,17 @@
 				>
 			</a>
 		</li>
-		{#each Array.from({ length: total > 3 ? 3 : total }, (_, i) => i + (page - 1)) as pageNumber}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			{#if pageNumber > 0 && pageNumber <= total}
+		{#each Array.from({ length: Math.min(3, page === 1 ? $newsStore.pages - page + 1 : 2)}, (_, i) => i + (page === 1 ? page : page - 1)) as pageNumber}
+		{#if pageNumber > 0 && pageNumber <= $newsStore.pages}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<li on:click={() => handleClick(pageNumber)} class="h-full">
+					<!-- svelte-ignore a11y-missing-attribute -->
 					<a
-						href="#"
 						aria-current="page"
-						class="flex justify-center hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-blue-300 bg-blue-50 dark:border-gray-700 dark:bg-gray-700 {page ===
+						class="flex justify-center hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-[var(--transparentPrimaryColor)] {page ===
 						pageNumber
-							? 'dark:text-white text-gray-500'
-							: 'text-gray-500 '}">{pageNumber}</a
+							? ' text-[var(--secondaryColor)]'
+							: 'text-[var(--onSecondaryColor)] '}">{pageNumber}</a
 					>
 				</li>
 			{/if}
@@ -59,9 +59,16 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-		<li on:click={() => handleClick(page + 1)} class="h-full">
+		<li
+			on:click={() => {
+				if (page < $newsStore.pages) {
+					handleClick(page + 1);
+				}
+			}}
+			class="h-full"
+		>
 			<a
-				class="flex justify-center items-center h-full block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+				class="flex justify-center items-center h-full block px-3 py-2 leading-tight text-[var(--secondaryColor)] bg-[var(--primaryColor)] border border-gray-300 rounded-r-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
 			>
 				<span class="sr-only">Next</span>
 				<svg

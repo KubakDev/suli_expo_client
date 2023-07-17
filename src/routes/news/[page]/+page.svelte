@@ -48,6 +48,7 @@
 			{#each $newsStore.data as item, i}
 				<a href="/news/detail/{item.id}" class="a-tag">
 					<ExpoCard
+					imageClass="{Constants.image_card_layout}"
 						cardType={CardType.Square}
 						title={item.title}
 						thumbnail={item.thumbnail}

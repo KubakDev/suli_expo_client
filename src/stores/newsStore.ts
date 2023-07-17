@@ -31,8 +31,9 @@ const createNewsStore = () => {
 				const newsPaginated = {
 					data: news,
 					page: parseInt(page),
-					count: result.count
-				} as NewsPaginatedModel;
+					count: result.count,
+					pages: Math.ceil((result.count ?? 1) / limit) // this is the total number of pages
+				  } as NewsPaginatedModel;
 				
 				set(newsPaginated);
 				return null;
