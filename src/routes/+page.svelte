@@ -35,7 +35,7 @@
 			<PromoSection supabase={data.supabase} />
 		</div>
 
-		<div class="bg-[var(--secondaryColor)] w-full max-h-300 min-h-128 flex justify-center">
+		<div class=" w-full max-h-300 min-h-128 flex justify-center">
 			<AboutUsSection supabase={data.supabase} />
 		</div>
 

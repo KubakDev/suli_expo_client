@@ -57,11 +57,13 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
-								date={exhibition.exhibition_date}
+								imageClass={Constants.image_card_layout}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}
 								cardType={CardType.Main}
+								startDate={exhibition.start_date}
+								endDate={exhibition.end_date}
 							/>
 						</Saos>
 					</button>

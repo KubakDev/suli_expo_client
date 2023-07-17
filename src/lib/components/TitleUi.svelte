@@ -8,7 +8,7 @@
 	<h1
 		class="{footerSize
 			? ' font-sans'
-			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-[var(--onPrimaryColor)]"
+			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-[var(--onPrimaryColor)] text-2xl"
 	>
 		{text}
 	</h1>
