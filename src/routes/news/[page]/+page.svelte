@@ -7,7 +7,7 @@
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
 	import { stringToEnum } from '../../../utils/enumToString';
-	import { CardType, ExpoCard } from 'C:/Users/bnarp/kubakProjects/kubak_svelte_component/dist';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { page } from '$app/stores';
 	import DateRangePicker from '$lib/components/dateRangePicker.svelte';

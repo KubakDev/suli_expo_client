@@ -6,11 +6,11 @@ import type { Locales } from '$lib/i18n/i18n-types';
 
 const createPromoStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set, update } = writable<PromoModel>();
+	const { subscribe, set, update } = writable<PromoModel[]>();
 
 	return {
 		subscribe,
-		set: (promos: PromoModel) => {
+		set: (promos: PromoModel[]) => {
 			set(promos);
 			console.log('set promo');
 			
@@ -20,15 +20,15 @@ const createPromoStore = () => {
 				.from('promo')
 				.select('*,video:promo_languages(*)')
 				.eq('video.language', locale ?? 'en')
-                .order('created_at', { ascending: false })
-				.single();
+                .order('created_at', { ascending: false });
 			//.info(result.data);
+			
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
 				//.error(result.data);
-				const promo = result.data as PromoModel;
+				const promo = result.data;
 				//.info('$$$$$$$$$$$$$$');
 				//.info(carousel);
 				// // add to store

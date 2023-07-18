@@ -1,4 +1,4 @@
-export function convertModel<T extends MagazineModel>(data: any, isNewsModel: boolean = false) {
+export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	let lang = data.languages[0];
 	let obj = {} as T;
   
