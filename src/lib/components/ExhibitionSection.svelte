@@ -6,7 +6,7 @@
 	import constants from '../../utils/constants';
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
-	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import { CardType, ExpoCard } from 'C:/Users/bnarp/kubakProjects/kubak_svelte_component/dist';
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
 	import SulyButton from './sulyButton.svelte';

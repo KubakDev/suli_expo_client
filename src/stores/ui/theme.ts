@@ -4,18 +4,17 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 
 const themeStore = () => {
-  const { subscribe, set } = writable<activeTheme>()
+  const { subscribe, set, update } = writable<activeTheme>()
   return {
     subscribe,
     getActiveTheme: async (supabase: SupabaseClient) => {
-      console.log(supabase)
+
       const { data, error } = await supabase.from('color_palette').select('*').eq('active', true).single();
-      console.log(data);
+
 
       if (error) return;
       const root = document.documentElement;
       for (let color in data) {
-        console.log(color)
         if (color === 'active' || color === 'id' || color === 'name') continue;
         root.style.setProperty(`--${color}`, data[color]);
         console.log("Colors ",`--${color}`, data[color]);
@@ -25,6 +24,21 @@ const themeStore = () => {
 
       root.style.setProperty('--primaryColor', data.primaryColor);
       set(data)
+    },
+    reAddColors: () => {
+
+      update((data) => {
+        const root = document.documentElement;
+        for (let color in data) {
+          if (color === 'active' || color === 'id' || color === 'name') continue;
+          root.style.setProperty(`--${color}`, data[color]);
+        }
+        root.style.setProperty('--transparentSecondaryColor', data.secondaryColor + '80');
+
+        root.style.setProperty('--primaryColor', data.primaryColor);
+        return data;
+      });
+
     }
   }
 }

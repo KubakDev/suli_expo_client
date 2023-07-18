@@ -77,7 +77,7 @@
 			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
 			activeClass="dark:text-white text-[var(--primaryColor)] bg-primary md:bg-transparent dark:bg-primary md:dark:bg-transparent"
-			nonActiveClass="dark:text-white text-[var(--onPrimaryColor)] hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-[var(--primaryColor)]  dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+			nonActiveClass="dark:text-white text-[var(--onBackgroundColor)] hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-[var(--primaryColor)]  dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
 			<!-- <div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">

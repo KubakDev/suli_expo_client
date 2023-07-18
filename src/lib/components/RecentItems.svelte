@@ -30,9 +30,6 @@
 	{#each items as item}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
-
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
 			class=" flex md:flex-row flex-col items-start cursor-pointer bg-opacity-20 hover:bg-slate-400 dark:bg-opacity-40 rounded-xl transition-all"
 			on:click={() => DetailsPage(item.id)}
