@@ -40,21 +40,21 @@
 		<div
 			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
 		>
-			<div class=" flex-1 my-10 mt-auto col-span-2 w-full h-full">
+			<div class=" flex-1 my-10 mt-auto col-span-2 w-full h-full justify-start items-start">
 				<DetailPage
 					customClass="bg-none"
 					long_description={magazine.long_description}
 					imagesCarousel={magazine.imagesCarousel}
 				/>
 				<div class="flex justify-start mt-4 mx-2">
-					<Button class="w-[12vh]  text-red-500"><Chevron>{$LL.pdf_file()}</Chevron></Button>
+					<Button class="w-[12vh]  "><Chevron>{$LL.pdf_file()}</Chevron></Button>
 					<Dropdown class="overflow-y-auto max-h-[20vh] w-[20vh] {Constants.scrollbar_layout}">
 						{#each magazine.pdf_files as pdf}
 							<DropdownItem
 								href={pdf}
 								target="_blank"
-								class="flex flex-row justify-between items-center text-white"
-								><FilePdfSolid class="dark:text-red-500 mr-1" />{magazine.title}</DropdownItem
+								class="flex flex-row justify-between items-center dark:text-white text-slate-950"
+								><FilePdfSolid class="text-red-500 mr-1" size="lg" />{magazine.title}</DropdownItem
 							>
 							<DropdownDivider />
 						{/each}
