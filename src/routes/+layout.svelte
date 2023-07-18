@@ -24,7 +24,6 @@
 
 	onMount(async () => {
 		supabase = data.supabase;
-		console.log('supabase', supabase);
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
 	});
@@ -86,7 +85,13 @@
 		<Navbar {data} />
 		<main class="h-full flex">
 			{#key data.url.pathname}
-				<slot />
+				<div
+					class=" flex-1 sm:flex hidden"
+					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
+					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
+				>
+					<slot />
+				</div>
 			{/key}
 		</main>
 		<div>
