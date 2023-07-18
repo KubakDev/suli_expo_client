@@ -10,6 +10,7 @@
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { promoStore } from '../stores/promoStore';
+	import { Parallax, ParallaxLayer, StickyLayer } from 'svelte-parallax';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -26,22 +27,27 @@
 <div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-	<div class=" m-auto w-full overflow-hidden px-2">
-		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+	<div class="m-auto w-full overflow-hidden px-2">
+		<Parallax sections={1.6}>
+			<ParallaxLayer class="bg-black">
+				<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+				<NewsSection supabase={data.supabase} />
+			</ParallaxLayer>
 
-		<NewsSection supabase={data.supabase} />
+			<ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700">
+			<div style="background-color: gray;">
+				<PromoSection supabase={data.supabase} />
+			</div>
 
-		<div>
-			<PromoSection supabase={data.supabase} />
-		</div>
+			<div class=" w-full max-h-300 min-h-128 h-full flex justify-center">
+				<AboutUsSection supabase={data.supabase} />
+			</div>
+		</ParallaxLayer>
 
-		<div class=" w-full max-h-300 min-h-128 flex justify-center">
-			<AboutUsSection supabase={data.supabase} />
-		</div>
-
-		{#if seatLayout}
-			<SeatReservation {seatLayout} />
-		{/if}
+			{#if seatLayout}
+				<SeatReservation {seatLayout} />
+			{/if}
+		</Parallax>
 	</div>
 </div>
 
