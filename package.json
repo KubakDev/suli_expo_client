@@ -56,6 +56,7 @@
 		"svelte-datepicker": "^1.0.0",
 		"svelte-feather-icons": "^4.0.1",
 		"svelte-heros-v2": "^0.7.3",
+		"svelte-parallax": "^0.6.0",
 		"svelte-routing": "^1.11.0",
 		"svelte-toast": "^1.0.0",
 		"svelte-youtube-embed": "^0.2.0",

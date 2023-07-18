@@ -30,31 +30,29 @@
 </script>
 
 {#if $exhibitionSectionStore && $exhibitionSectionStore.length > 0}
-	<section
-		class="{constants.section_padding_y} {constants.page_max_width} mx-auto {constants.horizontal_padding}"
-	>
-		<div class="flex justify-between items-center">
-			<div class="h-10 w-32" />
-			<div class="">
-				<TitleUi text={$LL.exhibition()} />
+	<Saos animation="from-bottom {1 * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both">
+		<section
+			class="{constants.section_padding_y} {constants.page_max_width} mx-auto {constants.horizontal_padding}"
+		>
+			<div class="flex justify-between items-center">
+				<div class="h-10 w-32" />
+				<div class="">
+					<TitleUi text={$LL.exhibition()} />
+				</div>
+				<div class="flex justify-end w-32">
+					<SeeAllBtn onBtnClick={openAllExibition} />
+				</div>
 			</div>
-			<div class="flex justify-end w-32">
-				<SeeAllBtn onBtnClick={openAllExibition} />
-			</div>
-		</div>
-		{#if $exhibitionSectionStore}
-			<div
-				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
-			>
-				{#each exhibitions as exhibition, i}
-					<button
-						class="w-full"
-						on:click={() => {
-							openExhibition(exhibition.id || 0);
-						}}
-					>
-						<Saos
-							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
+			{#if $exhibitionSectionStore}
+				<div
+					class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
+				>
+					{#each exhibitions as exhibition, i}
+						<button
+							class="w-full"
+							on:click={() => {
+								openExhibition(exhibition.id || 0);
+							}}
 						>
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
@@ -65,12 +63,12 @@
 								startDate={exhibition.start_date}
 								endDate={exhibition.end_date}
 							/>
-						</Saos>
-					</button>
-				{/each}
-			</div>
-		{/if}
-	</section>
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</section>
+	</Saos>
 	<!-- {:else}
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
