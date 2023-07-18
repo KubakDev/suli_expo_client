@@ -19,27 +19,46 @@
 	onMount(async () => {
 		console.log(data);
 		if (data) {
-			adjustCanvasSize();
 			await loadSeats();
 		}
 	});
 
 	const adjustCanvasSize = () => {
+		const width = data[0].design.width;
+		const height = data[0].design.height;
+		const aspectRatio = width / height;
+		const containerWidth = container?.offsetWidth;
+		container.style.height = `${containerWidth / aspectRatio}px`;
+
+		const currentHeight = containerWidth / aspectRatio;
+		console.log(containerWidth);
+		console.log(currentHeight);
 		if (canvas) {
 			canvas.setDimensions({
-				width: container?.offsetWidth,
-				height: container?.offsetHeight
+				width: containerWidth,
+				height: currentHeight
 			});
 		}
+		canvas.renderAll();
 	};
 
 	const loadSeats = async () => {
-		const canvasElement: any = document.getElementById('canvas');
 		if (fabric) {
+			const canvasElement: any = document.getElementById('canvas');
 			canvas = new fabric.Canvas(canvasElement, {
 				hoverCursor: 'default',
 				selection: false
 			});
+			adjustCanvasSize();
+			const width = data[0].design.width;
+			const height = data[0].design.height;
+			const aspectRatio = width / height;
+			const containerWidth = container?.offsetWidth;
+			const containerHeight = container?.offsetHeight;
+			const widthRatio = containerWidth / width;
+			const heightRatio = containerHeight / height;
+			// loop through all objects and scale them based on the aspect ratio
+
 			await canvas.loadFromJSON(data[0].design, async () => {
 				canvas.forEachObject((obj: any) => {
 					obj.set('selectable', false);
@@ -50,6 +69,21 @@
 				canvas.on('mouse:over', handleMouseOver);
 				canvas.on('mouse:out', handleMouseOut);
 				await tick(); // wait for the next update cycle
+				canvas.forEachObject((obj: any) => {
+					const scaleX = obj.scaleX;
+					const scaleY = obj.scaleY;
+					const left = obj.left;
+					const top = obj.top;
+					const tempScaleX = scaleX * widthRatio;
+					const tempScaleY = scaleY * heightRatio;
+					const tempLeft = left * widthRatio;
+					const tempTop = top * heightRatio;
+					obj.scaleX = tempScaleX;
+					obj.scaleY = tempScaleY;
+					obj.left = tempLeft;
+					obj.top = tempTop;
+					obj.setCoords();
+				});
 				canvas.renderAll();
 			});
 		}
@@ -95,10 +129,7 @@
 </script>
 
 {#if fabric}
-	<div
-		bind:this={container}
-		class="h-[900px] w-full col-span-4 relative overflow-hidden rounded-3xl"
-	>
+	<div bind:this={container} class=" w-full col-span-4 relative overflow-hidden">
 		<canvas
 			id="canvas"
 			class="h-full w-full"

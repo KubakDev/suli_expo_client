@@ -13,18 +13,10 @@
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	//@ts-ignore
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-	import {
-		Button,
-		Card,
-		CarouselTransition,
-		Chevron,
-		Dropdown,
-		DropdownDivider,
-		DropdownItem
-	} from 'flowbite-svelte';
+	import { Button, Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
+	import ReservationComponent from '$lib/components/ReservationComponent.svelte';
 
 	export let data;
 
@@ -78,6 +70,9 @@
 						/>
 					{/if}
 				</div> -->
+				{#if exhibition?.seat_layout}
+					<ReservationComponent data={exhibition?.seat_layout} />
+				{/if}
 				<NewsSection supabase={data.supabase} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
@@ -180,12 +175,12 @@
 				{$LL.exhibition_mini_data.Fair()}
 			</div>
 
-
 			<div class="text-xl text-[var(--onSecondaryColor)]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
-		</div> -->
+		</div>
+		-->
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
 				<TitleUi
