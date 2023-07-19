@@ -25,9 +25,9 @@
 
 	onMount(async () => {
 		newsSectionStore.get($locale, supabase);
-
 		getNewsUi(supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
+			console.log($newsUiStore);
 		});
 	});
 
@@ -70,8 +70,8 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
-							imageClass={Constants.image_card_layout}
-								cardType={CardType.Square}
+								imageClass={Constants.image_card_layout}
+								cardType={$newsUiStore?.component_type.type ?? CardType.Flat}
 								title={n.title}
 								thumbnail={n.thumbnail}
 								date={n.created_at}
