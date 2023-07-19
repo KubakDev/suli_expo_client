@@ -42,7 +42,7 @@
 
 {#if $newsSectionStore && $newsSectionStore.length > 0}
 	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
+		class="w-full {Constants.page_max_width} mx-auto py-12 px-4 md:px-0}"
 	>
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />

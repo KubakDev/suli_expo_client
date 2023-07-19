@@ -14,15 +14,7 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-	import {
-		Button,
-		Card,
-		CarouselTransition,
-		Chevron,
-		Dropdown,
-		DropdownDivider,
-		DropdownItem
-	} from 'flowbite-svelte';
+	import { Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
 
@@ -31,11 +23,15 @@
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
 		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
-		console.log('Exibition Data', exhibition);
-		exhibitionStore.get($locale, data.supabase);
 	}
 
 	let currentImageIndex = 0;
+
+	$: {
+		if ($locale) {
+			getExhibition();
+		}
+	}
 
 	onMount(async () => {
 		await getExhibition();
@@ -67,8 +63,8 @@
 			{/key}
 		{/if}
 	</div>
-	<div>
-		<div class=" {Constants.page_max_width} mx-auto w-full">
+	<div class="{Constants.page_max_width} mx-auto w-full">
+		<div >
 			<div class=" items-start flex flex-col justify-around">
 				<!-- <div class="flex flex-col w-full h-full bg-gradient-to-r from-rose-500  to-blue-300 my-2 py-2 px-4 rounded-3xl border-solid border-2 dark:border-slate-200 shadow-md hover:shadow-xl shadow-blue-500/50 hover:shadow-red-500/50 opacity-80 hover:opacity-100 transition-all">
 					{#if exhibition}
@@ -174,24 +170,20 @@
 			</div>
 		</div>
 		<div
-			class="w-full h-48 bg-[var(--secondaryColor)] flex flex-col justify-around items-center py-10"
+			class="w-full h-48 bg-[var(--secondaryColor)] flex-col justify-around items-center py-10 lg:flex hidden"
 		>
 			<div class="text-3xl uppercase text-[var(--onSecondaryColor)]">
 				{$LL.exhibition_mini_data.Fair()}
 			</div>
 
-
 			<div class="text-xl text-[var(--onSecondaryColor)]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
-		</div> -->
+		</div>
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
-				<TitleUi
-					text={$LL.exhibition_mini_data.Exhibition_PDF()}
-					customClass=" dark:text-white text-secondary text-center"
-				/>
+				<TitleUi text={$LL.exhibition_mini_data.Exhibition_PDF()} />
 			</div>
 			<div class="flex xl:flex-row flex-col py-12 {Constants.page_max_width} mx-auto">
 				<div class="flex flex-col items-end py-5 w-full">
@@ -225,31 +217,24 @@
 				<div class="flex flex-col justify-center items-center px-2 h-full">
 					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Exhibition Story</h1>
 					<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore maiores nam
-						perspiciatis recusandae labore dolorem eligendi iste laboriosam corporis aliquam ipsum
-						porro et, eius iusto quo est molestias accusamus cumque. Lorem ipsum dolor sit amet
-						consectetur adipisicing elit. Natus aliquid a fugit minus, cum repellendus eligendi
-						saepe maiores voluptates reprehenderit esse quis. Temporibus maxime ipsam, accusamus
-						rerum laboriosam odit cumque.
+						{exhibition?.story}
 						<!-- <div class="relative w-0 h-0">
 							<LottiePlayer
-							class="absolute left-0"
+							class="flex justify-center items-center"
 								src="../../../../lottie/PDF lottie Jason Done.json"
 								autoplay={true}
 								loop={true}
-								height="{400}"
-								width="{400}"
+								height="{250}"
+								width="{250}"
 							/>
 						</div> -->
 					</span>
 				</div>
 			</div>
+			<div class="{Constants.page_max_width} mx-auto">
+					<VideoPlayer videoUrl={exhibition?.video_youtube_link+""} />
+			</div>
 		{/if}
-		<div class="{Constants.page_max_width} mx-auto">
-			{#if exhibition && exhibition.video_youtube_link}
-				<VideoPlayer videoUrl={exhibition.video_youtube_link} thumbnailUrl={'Exhibition Video'} />
-			{/if}
-		</div>
 
 		<!-- {#if exhibition?.seat_layout.length > 0} -->
 		<!-- <div class="{Constants.page_max_width} mx-auto py-8">

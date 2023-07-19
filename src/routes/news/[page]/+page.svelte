@@ -14,11 +14,15 @@
 	import { newsStore } from '../../../stores/newsStore';
 	import { activeThemeStore } from '../../../stores/ui/theme';
 	import { AcademicCap, ArrowDown, ArrowUp, ArrowsUpDown } from 'svelte-heros-v2';
+	import { Button, Checkbox, Chevron, Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { exhibitionStore } from '../../../stores/exhibtionStore';
+	import SulyButton from '$lib/components/sulyButton.svelte';
 
 	export let data;
 	let CardComponent: any;
 
-	let asc:boolean = false;
+	let asc: boolean = false;
+	let selectedExhibition: number[];
 
 	$: {
 		if ($locale || asc) {
@@ -31,6 +35,8 @@
 		await getNewsUi(data.supabase).then(async (value) => {
 			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
 		});
+
+		await exhibitionStore.get($locale,data.supabase);
 	});
 	onDestroy(() => {
 		activeThemeStore.reAddColors();
@@ -41,28 +47,34 @@
 	function changeOrder() {
 		asc = !asc;
 	}
+	async function filterByExhibition() {
+		console.log(selectedExhibition);
+		newsStore.get($locale, data.supabase, $page.params.page, 9, asc, selectedExhibition);
+	}
 </script>
 
 <section class=" py-12 {Constants.page_max_width} mx-auto" id="newsSection">
 	{#if $newsStore}
 		<div class="flex justify-between items-center mb-12 w-full">
-			<div class="bg-[var(--primaryColor)] p-2 rounded-full border-solid border-4 border-slate-100 text-center">
+			<div
+				class="bg-[var(--onPrimaryColor)] p-2 rounded-full text-center"
+			>
 				{#if asc}
-				<button on:click={changeOrder} class="flex flex-row items-center justify-center">
-					<ArrowUp
-						size="30"
-						class="text-[var(--onPrimaryColor)] transition-all hover:animate-pulse "
-					/>
-					<span class="text-black uppercase text-xs font-bold pl-2 ">Old - New</span>
-				</button>
+					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
+						<ArrowUp
+							size="30"
+							class="text-[var(--onSecondaryColor)] transition-all hover:animate-pulse "
+						/>
+						<span class="text-[var(--secondaryColor)] uppercase text-xs font-bold pl-2">Old - New</span>
+					</button>
 				{:else}
-				<button on:click={changeOrder} class="flex flex-row items-center justify-center">
-					<ArrowDown
-						size="30"
-						class="text-[var(--onPrimaryColor)] transition-all hover:animate-pulse"
-					/>
-					<span class="text-black uppercase text-xs font-bold pl-2 ">New - Old</span>
-				</button>
+					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
+						<ArrowDown
+							size="30"
+							class="text-[var(--onSecondaryColor)] transition-all hover:animate-pulse"
+						/>
+						<span class="text-[var(--secondaryColor)] uppercase text-xs font-bold pl-2">New - Old</span>
+					</button>
 				{/if}
 			</div>
 			<DateRangePicker />
@@ -70,12 +82,27 @@
 				<TitleUi text={$LL.news()} />
 			</div>
 
-			<div class="justify-end flex" />
+			<div class="justify-end flex z-10">
+				<Button class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)]"><Chevron>Filter By Exhibition</Chevron></Button>
+				<Dropdown class="w-44 p-3 space-y-3 text-sm bg-[var(--onPrimaryColor)]">
+					{#each $exhibitionStore as exhibition}
+					<li>
+						<Checkbox class="text-[var(--secondaryColor)]" bind:group={selectedExhibition} value={exhibition.id}>{exhibition.title}</Checkbox>
+					  </li>
+					{/each}
+					<DropdownItem class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)]" slot="footer" on:click={filterByExhibition}>Search</DropdownItem>
+				</Dropdown>
+			</div>
 		</div>
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
-				<button on:click={()=>{goto("/news/detail/{item.id}")}} class="no-underline">
+				<button
+					on:click={() => {
+						goto('/news/detail/{item.id}');
+					}}
+					class="no-underline"
+				>
 					<ExpoCard
 						primaryColor={'var(--primaryColor)'}
 						overlayPrimaryColor={'var(--onPrimaryColor)'}
