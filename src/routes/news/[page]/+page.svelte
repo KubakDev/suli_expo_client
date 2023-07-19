@@ -57,7 +57,7 @@
 	{#if $newsStore}
 		<div class="flex justify-between items-center mb-12 w-full">
 			<div
-				class="bg-[var(--onPrimaryColor)] p-2 rounded-full text-center"
+				class="bg-[var(--serviceOnBackgroundColor)] p-2 rounded-full text-center w-full"
 			>
 				{#if asc}
 					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
@@ -78,13 +78,13 @@
 				{/if}
 			</div>
 			<DateRangePicker />
-			<div class="flex justify-center">
+			<div class="flex justify-center w-full">
 				<TitleUi text={$LL.news()} />
 			</div>
 
-			<div class="justify-end flex z-10">
-				<Button class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)]"><Chevron>Filter By Exhibition</Chevron></Button>
-				<Dropdown class="w-44 p-3 space-y-3 text-sm bg-[var(--onPrimaryColor)]">
+			<div class="justify-end flex z-10 w-full">
+				<Button class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)] text-xs sm:text-md"><Chevron>Filter By Exhibition</Chevron></Button>
+				<Dropdown class="w-44 p-3 space-y-3 text-sm bg-[var(--onPrimaryColor)] max-h-32">
 					{#each $exhibitionStore as exhibition}
 					<li>
 						<Checkbox class="text-[var(--secondaryColor)]" bind:group={selectedExhibition} value={exhibition.id}>{exhibition.title}</Checkbox>

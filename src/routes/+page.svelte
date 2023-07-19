@@ -10,6 +10,7 @@
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { Parallax, ParallaxLayer, StickyLayer } from 'svelte-parallax';
+	import { pageBuilderStore } from '../stores/ui/page_layouts';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;

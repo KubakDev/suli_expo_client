@@ -14,6 +14,7 @@
 	import { register } from 'swiper/element';
 	import Constants from '../utils/constants';
 	import { activeThemeStore } from '../stores/ui/theme';
+	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	register();
 	export let data;
 
@@ -26,6 +27,7 @@
 		supabase = data.supabase;
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
+		await pageBuilderStore.get(data.supabase);
 	});
 
 	function scale(
