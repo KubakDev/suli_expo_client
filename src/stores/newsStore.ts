@@ -23,7 +23,8 @@ const createNewsStore = () => {
 				.limit(limit);
 
 				if (filters && filters.length > 0) {
-					query = query.in('exhibition_id', filters);
+					page = '1';
+					query = query.in('exhibition_id', filters).range((parseInt(page) - 1) * limit, parseInt(page) * limit - 1);
 				}
 			
 				const result = await query;
