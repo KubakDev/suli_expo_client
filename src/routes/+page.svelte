@@ -9,7 +9,6 @@
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import { promoStore } from '../stores/promoStore';
 	import { Parallax, ParallaxLayer, StickyLayer } from 'svelte-parallax';
 
 	export let data;
@@ -28,13 +27,13 @@
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
 	<div class="m-auto w-full overflow-hidden px-2">
-		<Parallax sections={1.6}>
-			<ParallaxLayer class="bg-black">
+		<!-- <Parallax sections={1.6}> -->
+			<!-- <ParallaxLayer class="bg-black"> -->
 				<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
 				<NewsSection supabase={data.supabase} />
-			</ParallaxLayer>
+			<!-- </ParallaxLayer> -->
 
-			<ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700">
+			<!-- <ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700"> -->
 			<div style="background-color: gray;">
 				<PromoSection supabase={data.supabase} />
 			</div>
@@ -42,12 +41,12 @@
 			<div class=" w-full max-h-300 min-h-128 h-full flex justify-center">
 				<AboutUsSection supabase={data.supabase} />
 			</div>
-		</ParallaxLayer>
+		<!-- </ParallaxLayer> -->
 
 			{#if seatLayout}
 				<SeatReservation {seatLayout} />
 			{/if}
-		</Parallax>
+		<!-- </Parallax> -->
 	</div>
 </div>
 

@@ -12,13 +12,13 @@ const createNewsStore = () => {
 		set: (seatLayout: NewsPaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient, page: string, limit: number) => {
+		get: async (locale: Locales, supabase: SupabaseClient, page: string, limit: number, asc?:boolean) => {
 			// get current selected language
 			const result = await supabase
 				.from('news')
 				.select('*,languages:news_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: false })
+				.order('news_date', { ascending: asc ?? false })
 				.range((parseInt(page) - 1) * limit, parseInt(page) * limit - 1)
 				.limit(limit);
 			
