@@ -35,7 +35,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-start mb-12">
 		<div>
-			<TitleUi text="{$LL.gallery()}" customClass=" dark:text-white text-secondary " />
+			<TitleUi text={$LL.gallery()} />
 		</div>
 	</div>
 	{#if $galleryStore}
@@ -45,7 +45,14 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard imageClass="{Constants.image_card_layout}" cardType={CardType.Main} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard
+							primaryColor={'var(--galleryPrimaryColor)'}
+							overlayPrimaryColor={'var(--galleryOnPrimaryColor)'}
+							imageClass={Constants.image_card_layout}
+							cardType={CardType.Main}
+							title={item.title}
+							thumbnail={item.thumbnail}
+						/>
 					</div>
 				{/if}
 			{/each}

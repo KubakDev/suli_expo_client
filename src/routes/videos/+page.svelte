@@ -35,7 +35,7 @@
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
 		<div>
-			<TitleUi text="{$LL.videos()}" />
+			<TitleUi text={$LL.videos()} />
 		</div>
 	</div>
 	{#if $videoStore}
@@ -43,7 +43,14 @@
 			{#each $videoStore as item, i}
 				{#if CardComponent}
 					<div on:click={() => DetailsPage(item.id)}>
-						<ExpoCard imageClass="rounded-t-3xl object-cover" cardType={CardType.Video} title={item.title} thumbnail={item.thumbnail} />
+						<ExpoCard
+							primaryColor={'var(--videoPrimaryColor)'}
+							overlayPrimaryColor={'var(--videoOnPrimaryColor)'}
+							imageClass="rounded-t-3xl object-cover"
+							cardType={CardType.Video}
+							title={item.title}
+							thumbnail={item.thumbnail}
+						/>
 					</div>
 				{/if}
 			{/each}

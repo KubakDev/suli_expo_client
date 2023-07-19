@@ -17,9 +17,7 @@
 		}
 	}
 
-	onMount(async () => {
-	
-	});
+	onMount(async () => {});
 
 	function openExhibition(id: number) {
 		goto(`/exhibitions/${id}`);
@@ -37,7 +35,7 @@
 		out:fade={{ duration: 400 }}
 		class="flex justify-center items-center mb-12"
 	>
-		<TitleUi text="{$LL.exhibition()}" customClass=" dark:text-white text-secondary " />
+		<TitleUi text={$LL.exhibition()} />
 	</div>
 
 	<div
@@ -45,13 +43,15 @@
 	>
 		{#each $exhibitionStore as exhibition, i}
 			<button
-						class="w-full"
-						on:click={() => {
-							openExhibition(exhibition.id || 0);
-						}}
-					>
+				class="w-full"
+				on:click={() => {
+					openExhibition(exhibition.id || 0);
+				}}
+			>
 				<ExpoCard
-				imageClass="{Constants.image_card_layout}"
+					imageClass={Constants.image_card_layout}
+					primaryColor={'var(--exhibitionPrimaryColor)'}
+					overlayPrimaryColor={'var(--exhibitionOnPrimaryColor)'}
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}
@@ -59,7 +59,7 @@
 					endDate={exhibition.end_date}
 					cardType={CardType.Main}
 				/>
-					</button>
+			</button>
 		{/each}
 	</div>
 </section>

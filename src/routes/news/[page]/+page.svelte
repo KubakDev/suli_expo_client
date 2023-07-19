@@ -57,7 +57,7 @@
 	{#if $newsStore}
 		<div class="flex justify-between items-center mb-12 w-full">
 			<div
-				class="bg-[var(--serviceOnBackgroundColor)] p-2 rounded-full text-center w-full"
+				class="bg-[var(--onPrimaryColor)] p-2 rounded-full text-center w-full"
 			>
 				{#if asc}
 					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
@@ -104,8 +104,8 @@
 					class="no-underline"
 				>
 					<ExpoCard
-						primaryColor={'var(--primaryColor)'}
-						overlayPrimaryColor={'var(--onPrimaryColor)'}
+						primaryColor={'var(--newsPrimaryColor)'}
+						overlayPrimaryColor={'var(--newsOnPrimaryColor)'}
 						imageClass={Constants.image_card_layout}
 						cardType={$newsUiStore?.component_type.type ?? CardType.Main}
 						title={item.title}
