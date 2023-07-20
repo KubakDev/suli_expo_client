@@ -127,7 +127,7 @@
 				>
 			</Dropdown>
 			<NavLi
-				on:click={() => updateActiveUrl('/services')}
+				on:click={() => updateActiveUrl('/services/1')}
 				class="  cursor-pointer text-sm  lg:text-lg"
 				href="/services"
 				active={activeUrl == '/services'}>{$LL.services()}</NavLi

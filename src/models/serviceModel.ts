@@ -7,3 +7,10 @@ export interface ServiceModel {
 	onPrimaryColor?: string;
 	created_at?: Date;
 }
+
+export interface ServicePaginatedModel {
+	data: ServiceModel[];
+	page: number;
+	count: number;
+	pages: number;
+}

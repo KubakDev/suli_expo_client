@@ -27,7 +27,7 @@
 	$: {
 		if ($locale || asc) {
 			const currentPage = $page.params.page;
-			newsStore.get($locale, data.supabase, currentPage, 9, asc);
+			newsStore.get($locale, data.supabase, currentPage, asc);
 		}
 	}
 
@@ -49,7 +49,7 @@
 	}
 	async function filterByExhibition() {
 		console.log(selectedExhibition);
-		newsStore.get($locale, data.supabase, $page.params.page, 9, asc, selectedExhibition);
+		newsStore.get($locale, data.supabase, $page.params.page, asc, selectedExhibition);
 	}
 </script>
 
