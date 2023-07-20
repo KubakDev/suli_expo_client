@@ -19,4 +19,5 @@ export interface ExhibitionModel {
 	start_date?: Date;
 	end_date?: Date;
 	story?: string;
+	deleted_status: string | null;
 }

@@ -9,8 +9,6 @@
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import { Parallax, ParallaxLayer, StickyLayer } from 'svelte-parallax';
-	import { pageBuilderStore } from '../stores/ui/page_layouts';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -35,7 +33,7 @@
 			<!-- </ParallaxLayer> -->
 
 			<!-- <ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700"> -->
-			<div style="background-color: gray;">
+			<div>
 				<PromoSection supabase={data.supabase} />
 			</div>
 

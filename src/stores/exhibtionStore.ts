@@ -21,6 +21,7 @@ const createExhibitionStore = () => {
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
+				.is('deleted_status', null)
 				.single();
 			if (result.error) {
 				//.error(result.error);
@@ -35,14 +36,14 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				// languages is just a name we put to use it later
 				.select('*,languages:exhibition_languages!inner(*)')
-				// And The inner it's for the inner join and be allowed to use the language and apply rules on it
-				// like in this equallity we are saying that we want to get the exhibition that has the language we want
+				.is('deleted_status', null)
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(9);
-			//  //(result);
+
+			console.log("Exhibition Data",result.data);
+			
 			if (result.error) {
 				//.error(result.error);
 				return null;

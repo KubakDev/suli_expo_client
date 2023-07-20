@@ -41,9 +41,7 @@
 </script>
 
 {#if $newsSectionStore && $newsSectionStore.length > 0}
-	<section
-		class="w-full {Constants.page_max_width} mx-auto py-12 px-4 md:px-0}"
-	>
+	<section class="w-full {Constants.page_max_width} mx-auto py-12 px-4 md:px-0}">
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
@@ -70,6 +68,8 @@
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
 							<ExpoCard
+								primaryColor={'var(--newsPrimaryColor)'}
+								overlayPrimaryColor={'var(--newsOnPrimaryColor)'}
 								imageClass={Constants.image_card_layout}
 								cardType={$newsUiStore?.component_type.type ?? CardType.Flat}
 								title={n.title}
