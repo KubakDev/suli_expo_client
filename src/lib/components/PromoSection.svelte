@@ -2,9 +2,7 @@
 	import { onMount } from 'svelte';
 	import constants from '../../utils/constants';
 	import TitleUi from './TitleUi.svelte';
-	import { videoSectionStore } from '../../stores/videoSectionStore';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import VideoPlayer from './VideoPlayer.svelte';
 	import { promoStore } from '../../stores/promoStore';
 	import type { PromoLanguagesModel, PromoModel } from '../../models/promoModel';
 	import VideoSlider from './VideoSlider.svelte';

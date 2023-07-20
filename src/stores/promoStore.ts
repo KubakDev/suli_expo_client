@@ -28,7 +28,7 @@ const createPromoStore = () => {
 				return null;
 			} else {
 				//.error(result.data);
-				const promo = result.data;
+				const promo = result.data as PromoModel[];
 				//.info('$$$$$$$$$$$$$$');
 				//.info(carousel);
 				// // add to store
