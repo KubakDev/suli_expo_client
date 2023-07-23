@@ -110,7 +110,7 @@
 				on:click={() => updateActiveUrl('/exhibition')}
 				href="/exhibition"
 				class="  cursor-pointer text-sm  lg:text-lg"
-				active={activeUrl == '/exhibitions'}>{$LL.exhibition()}</NavLi
+				active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
 			>
 			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi

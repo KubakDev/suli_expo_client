@@ -2,10 +2,16 @@
 	import TitleUi from './TitleUi.svelte';
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import { page } from '$app/stores';
-	import { getNameRegex } from '../../utils/urlRegexName';
+	import SocialIcons from '@rodneylab/svelte-social-icons';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import ContactInfo from './ContactInfo.svelte';
+	import type { PageData } from '../../routes/$types';
+	import type { SocialMediaModel } from '../../models/socialMedia';
 
+	export let data: PageData;
 	let contactInfoData: any;
+	let SocialMedia: SocialMediaModel;
 
 	$: {
 		//.info('locale changed %%%%%%%%%%%%%%%%%%');
@@ -15,11 +21,11 @@
 		}
 	}
 
-	// onMount(async () => {
-	// 	if (locale) {
-	// 		await contactInfoSectionStore.get(locale, data.supabase);
-	// 	}
-	// });
+	onMount(async () => {
+		SocialMedia = await contactInfoSectionStore.getSingle(data.supabase) as SocialMediaModel;
+		console.log('contactInfoData', SocialMedia);
+		
+	});
 </script>
 
 <div class="py-10 px-10 border-t border-black shadow-2xl" style="background-color: var(--secondaryColor);">
@@ -71,6 +77,27 @@
 				</div>
 			</div>
 		</div>
+		{#if SocialMedia}
+		<div class="w-full flex justify-center py-2 ">
+			<div class="justify-evenly flex w-[40%] ">
+				<!-- <a href="https:\\{SocialMedia.twitter_link}" target="_blank" class="cursor-pointer">
+					<SocialIcons network="twitter"/>
+				</a> -->
+				<a href="https:\\{SocialMedia.instagram_link}" target="_blank" class="cursor-pointer">
+				<SocialIcons network="instagram"/>
+				</a>
+				<a href="https:\\{SocialMedia.facebook_link}" target="_blank" class="cursor-pointer">
+				<SocialIcons network="facebook"/>
+				</a>
+				<a href="https:\\{SocialMedia.linkedIn_link}" target="_blank" class="cursor-pointer">
+				<SocialIcons network="linkedin"/>
+				</a>
+				<a href="https:\\{SocialMedia.youtube_link}" target="_blank" class="cursor-pointer">
+				<SocialIcons network="youtube"/>
+				</a>
+			</div>
+		</div>
+		{/if}
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<div class="sm:flex sm:items-center sm:justify-center">
 			<h3 style="color: var(--overlaySecondaryColor);">Copyright - SulyExpo ©</h3>

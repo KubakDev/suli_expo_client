@@ -15,6 +15,7 @@
 	}
 
 	onMount(async () => {
+		
 		console.log('contactInfoSectionStore', $contactInfoSectionStore);
 	});
 </script>
@@ -28,7 +29,7 @@
 	<div class="mx-auto px-4 {Constants.page_max_width}">
 		<!-- title  -->
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.contact()} customClass=" dark:text-white text-secondary " />
+			<TitleUi text={$LL.contact()} />
 		</div>
 
 		<!-- contact information section -->

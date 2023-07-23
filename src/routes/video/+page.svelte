@@ -45,7 +45,7 @@
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
 							primaryColor={'var(--videoPrimaryColor)'}
-							overlayPrimaryColor={'var(--videoOnPrimaryColor)'}
+							overlayPrimaryColor={'var(--videoOverlayPrimaryColor)'}
 							imageClass="rounded-t-3xl object-cover"
 							cardType={CardType.Video}
 							title={item.title}

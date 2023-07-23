@@ -100,7 +100,7 @@
 			{/key}
 		</main>
 		<div>
-			<Footer />
+			<Footer {data}/>
 		</div>
 	</div>
 {/if}

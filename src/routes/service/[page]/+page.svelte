@@ -53,14 +53,5 @@
 				</div>
 			{/each}
 		</div>
-		<div dir="ltr" class="flex justify-center my-10 bg-white">
-			{#if $serviceSectionStore.count > 9}
-				<PaginationComponent
-					total={$serviceSectionStore.count}
-					page={parseInt($page.params.page)}
-					on:changePage={(value) => changePage(value.detail.page)}
-				/>
-			{/if}
-		</div>
 	{/if}
 </section>

@@ -8,8 +8,6 @@ const newsUiStore = writable<UiModel | undefined>();
 
 export async function getNewsUi(supabase: SupabaseClient) {
 	{
-
-
 		const response: any = await supabase
 			.from('page_builder')
 			.select(
@@ -32,7 +30,6 @@ export async function getNewsUi(supabase: SupabaseClient) {
 			// const data = response.data as UiModel;
 			// newsUiStore.set(data);
 			// if (value.route.id?.includes("news")) {
-
 			// 	const root = document.documentElement;
 			// 	// if (root) {
 			// 	for (let color in data.color_palette) {
@@ -41,7 +38,6 @@ export async function getNewsUi(supabase: SupabaseClient) {
 			// 	}
 			// 	root.style.setProperty('--transparentSecondaryColor', data.color_palette.secondaryColor + '80');
 			// }
-
 		});
 	}
 	// }
