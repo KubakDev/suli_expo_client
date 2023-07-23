@@ -69,10 +69,11 @@
 						>
 							<ExpoCard
 								primaryColor={'var(--newsPrimaryColor)'}
-								overlayPrimaryColor={'var(--newsOnPrimaryColor)'}
+								overlayPrimaryColor={'var(--newsOverlayPrimaryColor)'}
 								imageClass={Constants.image_card_layout}
-								cardType={$newsUiStore?.component_type.type ?? CardType.Flat}
+								cardType={$newsUiStore?.component_type.type ?? CardType.Main}
 								title={n.title}
+								short_description={n.short_description}
 								thumbnail={n.thumbnail}
 								date={n.created_at}
 							/>

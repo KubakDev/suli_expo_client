@@ -43,9 +43,6 @@
 			{/if}
 		</div>
 
-		<!-- team section -->
-		<!-- <Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}> -->
-
 		<section>
 			<div class="text-center pb-12">
 				<h1
@@ -56,7 +53,7 @@
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
-					<div class=" text-[var(--onBackgroundColor)] rounded-lg p-2">
+					<div class=" text-[var(--overlayBackgroundColor)] rounded-lg p-2">
 						<Staff {staffSection} />
 					</div>
 				{/each}

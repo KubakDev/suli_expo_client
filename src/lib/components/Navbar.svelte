@@ -22,18 +22,23 @@
 	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
 	import { changeLanguage } from '../../utils/language';
 	import Constants from '../../utils/constants';
-	import { goto } from '$app/navigation';
 	import { previousPageStore } from '../../stores/navigationStore';
-	import SulyButton from './sulyButton.svelte';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { onMount } from 'svelte';
+	import { pageBuilderStore } from '../../stores/ui/page_layouts';
+	import type { PageLayout } from '../../models/pageModel';
 
 	export let data: PageData;
 	let themeMode = 'light';
 	let dropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
+	let navTextColor: string | undefined;
 
 	// acgtive on route
 	let activeUrl: string;
-	$: activeUrl = $page.url.pathname;
+	$: {
+		activeUrl = $page.url.pathname;
+	}
 
 	function onThemeModeChange() {
 		themeMode;
@@ -58,6 +63,10 @@
 		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
 		dropdownOpen = false;
 	}
+
+	onMount(async function () {
+		await pageBuilderStore.get(data.supabase);
+	});
 </script>
 
 <div class=" w-full border-b border-b-neutral-800">
@@ -66,18 +75,20 @@
 	</div> -->
 
 	<Navbar
-		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full dark:bg-black  "
-		style="background-color: var(--backgroundColor);"
+		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full "
+		style="background-color: var(--secondaryColor);"
 		navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
 		let:hidden
 		let:toggle
 	>
 		<NavHamburger on:click={toggle} />
+		
 		<NavUl
 			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
-			activeClass="dark:text-white text-[var(--primaryColor)] bg-primary md:bg-transparent dark:bg-primary md:dark:bg-transparent"
-			nonActiveClass="dark:text-white text-[var(--onBackgroundColor)] hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-[var(--primaryColor)]  dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+			activeClass="text-white bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
+			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+			style="color:blue"
 			{hidden}
 		>
 			<!-- <div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
@@ -96,8 +107,8 @@
 				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
 			>
 			<NavLi
-				on:click={() => updateActiveUrl('/exhibitions')}
-				href="/exhibitions"
+				on:click={() => updateActiveUrl('/exhibition')}
+				href="/exhibition"
 				class="  cursor-pointer text-sm  lg:text-lg"
 				active={activeUrl == '/exhibitions'}>{$LL.exhibition()}</NavLi
 			>
@@ -122,14 +133,14 @@
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/videos"
-					on:click={() => updateActiveUrl('/videos')}>{$LL.videos()}</DropdownItem
+					href="/video"
+					on:click={() => updateActiveUrl('/video')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
 			<NavLi
-				on:click={() => updateActiveUrl('/services/1')}
+				on:click={() => updateActiveUrl('/service/1')}
 				class="  cursor-pointer text-sm  lg:text-lg"
-				href="/services"
+				href="/service/1"
 				active={activeUrl == '/services'}>{$LL.services()}</NavLi
 			>
 			<NavLi
@@ -149,7 +160,8 @@
 				style="margin:0 ;"
 			>
 				<Button
-					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 border-[var(--primaryColor)] text-[var(--primaryColor)] hover:bg-[var(--primaryColor)] hover:text-[var(--onPrimaryColor)]"
+					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
+					style="color: var(--overlayPrimaryColor); "
 					dir="ltr"
 					pill
 					outline><Chevron>{selectedLang}</Chevron></Button

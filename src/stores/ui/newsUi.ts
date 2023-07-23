@@ -29,18 +29,18 @@ export async function getNewsUi(supabase: SupabaseClient) {
 			.eq('page', CardPageType.News)
 			.single();
 		page.subscribe((value) => {
-			const data = response.data as UiModel;
-			newsUiStore.set(data);
-			if (value.route.id?.includes("news")) {
+			// const data = response.data as UiModel;
+			// newsUiStore.set(data);
+			// if (value.route.id?.includes("news")) {
 
-				const root = document.documentElement;
-				// if (root) {
-				for (let color in data.color_palette) {
-					if (color === 'active' || color === 'id' || color === 'name') continue;
-					root.style.setProperty(`--${color}`, data.color_palette[color]);
-				}
-				root.style.setProperty('--transparentSecondaryColor', data.color_palette.secondaryColor + '80');
-			}
+			// 	const root = document.documentElement;
+			// 	// if (root) {
+			// 	for (let color in data.color_palette) {
+			// 		if (color === 'active' || color === 'id' || color === 'name') continue;
+			// 		root.style.setProperty(`--${color}`, data.color_palette[color]);
+			// 	}
+			// 	root.style.setProperty('--transparentSecondaryColor', data.color_palette.secondaryColor + '80');
+			// }
 
 		});
 	}

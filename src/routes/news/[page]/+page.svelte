@@ -7,16 +7,14 @@
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
 	import { stringToEnum } from '../../../utils/enumToString';
-	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { page } from '$app/stores';
-	import DateRangePicker from '$lib/components/dateRangePicker.svelte';
 	import { newsStore } from '../../../stores/newsStore';
 	import { activeThemeStore } from '../../../stores/ui/theme';
 	import { AcademicCap, ArrowDown, ArrowUp, ArrowsUpDown } from 'svelte-heros-v2';
 	import { Button, Checkbox, Chevron, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { exhibitionStore } from '../../../stores/exhibtionStore';
-	import SulyButton from '$lib/components/sulyButton.svelte';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 
 	export let data;
 	let CardComponent: any;
@@ -27,7 +25,7 @@
 	$: {
 		if ($locale || asc) {
 			const currentPage = $page.params.page;
-			newsStore.get($locale, data.supabase, currentPage, asc);
+			newsStore.get($locale, data.supabase, currentPage, undefined ,asc);
 		}
 	}
 
@@ -49,48 +47,48 @@
 	}
 	async function filterByExhibition() {
 		console.log(selectedExhibition);
-		newsStore.get($locale, data.supabase, $page.params.page, asc, selectedExhibition);
+		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
 </script>
 
-<section class=" py-12 {Constants.page_max_width} mx-auto" id="newsSection">
+<section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
 	{#if $newsStore}
 		<div class="flex justify-between items-center mb-12 w-full">
 			<div
-				class="bg-[var(--onPrimaryColor)] p-2 rounded-full text-center w-full"
+				class="bg-[var(--overlayPrimaryColor)] p-2 rounded-full text-center w-full"
 			>
 				{#if asc}
 					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
 						<ArrowUp
 							size="30"
-							class="text-[var(--onSecondaryColor)] transition-all hover:animate-pulse "
+							class="text-[var(--newsOverlaySecondaryColor)] transition-all hover:animate-pulse "
 						/>
-						<span class="text-[var(--secondaryColor)] uppercase text-xs font-bold pl-2">Old - New</span>
+						<span class="text-[var(--newsSecondaryColor)] uppercase text-xs font-bold pl-2">Old - New</span>
 					</button>
 				{:else}
 					<button on:click={changeOrder} class="flex flex-row items-center justify-center">
 						<ArrowDown
 							size="30"
-							class="text-[var(--onSecondaryColor)] transition-all hover:animate-pulse"
+							class="text-[var(--newsOverlaySecondaryColor)] transition-all hover:animate-pulse"
 						/>
-						<span class="text-[var(--secondaryColor)] uppercase text-xs font-bold pl-2">New - Old</span>
+						<span class="text-[var(--newsSecondaryColor)] uppercase text-xs font-bold pl-2">New - Old</span>
 					</button>
 				{/if}
 			</div>
-			<DateRangePicker />
-			<div class="flex justify-center w-full">
+			<!-- <DateRangePicker /> -->
+			<div class="flex justify-center w-full px-2">
 				<TitleUi text={$LL.news()} />
 			</div>
 
 			<div class="justify-end flex z-10 w-full">
-				<Button class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)] text-xs sm:text-md"><Chevron>Filter By Exhibition</Chevron></Button>
-				<Dropdown class="w-44 p-3 space-y-3 text-sm bg-[var(--onPrimaryColor)] max-h-32">
+				<Button class="bg-[var(--newsOverlayPrimaryColor)] hover:bg-[var(--newsOverlayPrimaryColor)] text-[var(--newsSecondaryColor)] text-xs sm:text-md"><Chevron>Filter By Exhibition</Chevron></Button>
+				<Dropdown class="w-44 p-3 space-y-3 text-sm bg-[var(--overlayPrimaryColor)] max-h-32 overflow-y-auto {Constants.scrollbar_layout}">
 					{#each $exhibitionStore as exhibition}
 					<li>
-						<Checkbox class="text-[var(--secondaryColor)]" bind:group={selectedExhibition} value={exhibition.id}>{exhibition.title}</Checkbox>
+						<Checkbox class="text-[var(--newsSecondaryColor)]" bind:group={selectedExhibition} value={exhibition.id}>{exhibition.title}</Checkbox>
 					  </li>
 					{/each}
-					<DropdownItem class="bg-[var(--onPrimaryColor)] hover:bg-[var(--onPrimaryColor)] text-[var(--secondaryColor)]" slot="footer" on:click={filterByExhibition}>Search</DropdownItem>
+					<DropdownItem class="bg-[var(--newsOverlayPrimaryColor)] hover:bg-[var(--newsOverlayPrimaryColor)] text-[var(--newsSecondaryColor)]" slot="footer" on:click={filterByExhibition}>Search</DropdownItem>
 				</Dropdown>
 			</div>
 		</div>
@@ -99,13 +97,13 @@
 			{#each $newsStore.data as item, i}
 				<button
 					on:click={() => {
-						goto('/news/detail/{item.id}');
+						goto(`/news/detail/${item.id}`);
 					}}
 					class="no-underline"
 				>
 					<ExpoCard
 						primaryColor={'var(--newsPrimaryColor)'}
-						overlayPrimaryColor={'var(--newsOnPrimaryColor)'}
+						overlayPrimaryColor={'var(--newsOverlayPrimaryColor)'}
 						imageClass={Constants.image_card_layout}
 						cardType={$newsUiStore?.component_type.type ?? CardType.Main}
 						title={item.title}

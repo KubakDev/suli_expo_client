@@ -14,8 +14,6 @@ const pageStore = () => {
 			if (!result.error) {
 				const root = document.documentElement;
 				let pageLayout = result.data as PageLayout[];
-				console.log('Page Layout ', pageLayout);
-
 				for (let page of pageLayout) {
 					for (let colorType in page.color_palette) {
 						if (
@@ -29,11 +27,13 @@ const pageStore = () => {
 						let cssVarName = `--${page.page}${colorType.charAt(0).toUpperCase() + colorType.slice(1)}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette[colorType]);
-						console.log('Page Layout ', cssVarName, page.color_palette[colorType]);
+						console.log('cssVarName', cssVarName, page.color_palette[colorType]);
+						
 					}
 				}
 
                 set(pageLayout);
+				return pageLayout;
 			} else {
 				return null;
 			}

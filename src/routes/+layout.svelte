@@ -12,9 +12,10 @@
 	import { fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
-	import Constants from '../utils/constants';
 	import { activeThemeStore } from '../stores/ui/theme';
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
+	import { page } from '$app/stores';
+	import { getNameRegex } from '../utils/urlRegexName';
 	register();
 	export let data;
 
@@ -28,6 +29,8 @@
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
 		await pageBuilderStore.get(data.supabase);
+
+		console.log('pageBuilderStore', $page);
 	});
 
 	function scale(
@@ -53,14 +56,14 @@
 
 	const pageTransitions: any = {
 		'/news': ['/'],
-		'/exhibitions': ['/news', '/'],
-		'/services': ['/exhibitions', '/news', '/'],
-		'/about': ['/services', '/exhibitions', '/news', '/'],
-		'/contact': ['/about', '/services', '/exhibitions', '/news', '/'],
-		'/gallery': ['/exhibitions', '/news', '/'],
-		'/magazine': ['/exhibitions', '/news', '/'],
-		'/publishing': ['/exhibitions', '/news', '/'],
-		'/videos': ['/exhibitions', '/news', '/']
+		'/exhibition': ['/news', '/'],
+		'/service': ['/exhibition', '/news', '/'],
+		'/about': ['/service', '/exhibition', '/news', '/'],
+		'/contact': ['/about', '/service', '/exhibition', '/news', '/'],
+		'/gallery': ['/exhibition', '/news', '/'],
+		'/magazine': ['/exhibition', '/news', '/'],
+		'/publishing': ['/exhibition', '/news', '/'],
+		'/video': ['/exhibition', '/news', '/']
 	};
 
 	// function for knowing which page go to which page
@@ -82,7 +85,7 @@
 </script>
 
 {#if supabase}
-	<div class=" app" style="background-color: var(--backgroundColor);">
+	<div class=" app" style="background-color: var(--{getNameRegex($page.url.pathname)}BackgroundColor);">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">

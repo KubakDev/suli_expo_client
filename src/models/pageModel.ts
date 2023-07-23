@@ -21,9 +21,9 @@ export interface ComponentType {
 export interface Color_Palette {
     primaryColor: string;
     secondaryColor: string;
-    onSecondaryColor: string;
-    onPrimaryColor: string;
+    overlaySecondaryColor: string;
+    overlayPrimaryColor: string;
     backgroundColor: string;
-    onBackgroundColor: string;
+    overlayBackgroundColor: string;
 }
 

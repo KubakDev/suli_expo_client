@@ -46,7 +46,7 @@
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
 							primaryColor={'var(--publishingPrimaryColor)'}
-							overlayPrimaryColor={'var(--publishingOnPrimaryColor)'}
+							overlayPrimaryColor={'var(--publishingOverlayPrimaryColor)'}
 							imageClass={Constants.image_card_layout}
 							cardType={CardType.Main}
 							title={item.title}

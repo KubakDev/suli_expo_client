@@ -18,9 +18,7 @@ const createServiceSectionStore = () => {
 				.from('service')
 				.select('*,languages:service_languages(*)')
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: false })
-				.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
-				.limit(Constants.page_limit);
+				.order('position', { ascending:true })
 			if (result.error) {
 				//.error(result.error);
 				return null;

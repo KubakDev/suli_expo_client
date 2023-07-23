@@ -20,7 +20,7 @@
 	onMount(async () => {});
 
 	function openExhibition(id: number) {
-		goto(`/exhibitions/${id}`);
+		goto(`/exhibition/${id}`);
 	}
 </script>
 
@@ -51,7 +51,7 @@
 				<ExpoCard
 					imageClass={Constants.image_card_layout}
 					primaryColor={'var(--exhibitionPrimaryColor)'}
-					overlayPrimaryColor={'var(--exhibitionOnPrimaryColor)'}
+					overlayPrimaryColor={'var(--exhibitionOverlayPrimaryColor)'}
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}

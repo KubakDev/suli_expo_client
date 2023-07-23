@@ -36,7 +36,7 @@ const themeStore = () => {
         }
         root.style.setProperty('--transparentSecondaryColor', data.secondaryColor + '80');
 
-        root.style.setProperty('--primaryColor', data.primaryColor);
+        root.style.setProperty('--transparentPrimaryColor', data.primaryColor+"80");
         return data;
       });
 

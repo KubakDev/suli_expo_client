@@ -22,7 +22,7 @@
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
 
-		newsStore.get($locale, data.supabase, '1', 5);
+		newsStore.get($locale, data.supabase, '1',5);
 	}
 
 	onMount(() => {

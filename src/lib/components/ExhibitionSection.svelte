@@ -57,7 +57,7 @@
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
 								primaryColor={'var(--exhibitionPrimaryColor)'}
-								overlayPrimaryColor={'var(--exhibitionOnPrimaryColor)'}
+								overlayPrimaryColor={'var(--exhibitionOverlayPrimaryColor)'}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}

@@ -46,21 +46,21 @@
 						description={item.short_description}
 						image={item.thumbnail}
 						service_color={{
-							title: item.onPrimaryColor || '#000000',
-							description: item.primaryColor || '#000000'
+							title: item.primaryColor || '#000000',
+							description: item.onPrimaryColor || '#000000'
 						}}
 					/>
 				</div>
 			{/each}
 		</div>
+		<div dir="ltr" class="flex justify-center my-10 bg-white">
+			{#if $serviceSectionStore.count > 9}
+				<PaginationComponent
+					total={$serviceSectionStore.count}
+					page={parseInt($page.params.page)}
+					on:changePage={(value) => changePage(value.detail.page)}
+				/>
+			{/if}
+		</div>
 	{/if}
-	<div dir="ltr" class="flex justify-center my-10">
-		{#if $serviceSectionStore.count > 9}
-			<PaginationComponent
-				total={$serviceSectionStore.count}
-				page={parseInt($page.params.page)}
-				on:changePage={(value) => changePage(value.detail.page)}
-			/>
-		{/if}
-	</div>
 </section>

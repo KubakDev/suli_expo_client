@@ -27,7 +27,7 @@
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: any) {
-		goto(`/videos/${itemId}`);
+		goto(`/video/detail/${itemId}`);
 		//('news :', itemId);
 	}
 </script>
@@ -41,7 +41,7 @@
 	{#if $videoStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore as item, i}
-				{#if CardComponent}
+				<!-- {#if CardComponent} -->
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
 							primaryColor={'var(--videoPrimaryColor)'}
@@ -52,7 +52,7 @@
 							thumbnail={item.thumbnail}
 						/>
 					</div>
-				{/if}
+				<!-- {/if} -->
 			{/each}
 		</div>
 	{/if}

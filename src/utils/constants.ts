@@ -7,7 +7,7 @@ class Constants {
 
 	static horizontal_padding = 'px-4 sm:px-0';
 
-	static scrollbar_layout = "scrollbar-thumb-blue-600 scrollbar-track-gray-100 scrollbar-thin scrollbar-thumb-rounded-3xl scrollbar-track-rounded-3xl"
+	static scrollbar_layout = "scrollbar-thumb-gray-600 scrollbar-track-gray-100 scrollbar-thin"
 
 	static image_card_layout = "rounded-t-2xl shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-103 object-cover"
 
