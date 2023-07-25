@@ -75,7 +75,10 @@
 	"dependencies": {
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
+		"@syncfusion/ej2-calendars": "^22.1.38",
 		"cheerio": "^1.0.0-rc.12",
+		"date-picker-svelte": "^2.6.0",
+		"daterangepicker": "^3.1.0",
 		"html-to-text": "^9.0.5",
 		"moment": "^2.29.4",
 		"prettier": "^2.8.8",

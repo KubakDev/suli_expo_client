@@ -18,10 +18,10 @@ const createNewsStore = () => {
 				.from('news')
 				.select('*,languages:news_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
-				.order('news_date', { ascending: asc ?? false});
+				.order('created_at', { ascending: asc ?? false});
 		
 			if (startDate && endDate) {
-				query = query.gte('news_date', startDate).lte('news_date', endDate);
+				query = query.gte('created_at', startDate).lte('created_at', endDate);
 			}
 		
 			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
