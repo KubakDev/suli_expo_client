@@ -187,7 +187,7 @@
 							cardType={CardComponent || CardType.Flat}
 							title={item.title}
 							thumbnail={item.thumbnail}
-							date={item.news_date ?? new Date()}
+							date={item.created_at ?? new Date()}
 							short_description={item.short_description}
 						/>
 					{/if}
