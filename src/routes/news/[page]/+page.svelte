@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { UiStore } from './../../../stores/ui/Ui';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { onMount, onDestroy } from 'svelte';
@@ -24,7 +25,6 @@
 	import { exhibitionStore } from '../../../stores/exhibtionStore';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import type { UiModel } from '../../../models/uiModel';
-	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
 	import moment from 'moment';
