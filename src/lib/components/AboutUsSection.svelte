@@ -4,6 +4,7 @@
 	import TitleUi from './TitleUi.svelte';
 	import constants from '../../utils/constants';
 	import Saos from '$lib/animate/Saos.svelte';
+	import Constants from '../../utils/constants';
 	export let supabase: any;
 
 	$: {
@@ -30,7 +31,7 @@
 			<!-- short description  -->
 			<!-- <Saos animation="from-bottom 1.2s cubic-bezier(0.500, 0.5, 0.1, 1) both"> -->
 			<p
-				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-[var(--overlaySecondaryColor)]"
+				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-[{Constants.main_theme.overlaySecondary}]"
 			>
 				{$aboutSectionStore.short_description}
 			</p>

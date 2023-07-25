@@ -16,6 +16,7 @@
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../utils/urlRegexName';
+	import Constants from '../utils/constants';
 	register();
 	export let data;
 
@@ -85,7 +86,7 @@
 </script>
 
 {#if supabase}
-	<div class=" app" style="background-color: var(--{getNameRegex($page.url.pathname)}BackgroundColor);">
+	<div class=" app" style="background-color: {`var(--${getNameRegex($page.url.pathname)}BackgroundColor)` ?? `var(--backgroundColor)`};">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">

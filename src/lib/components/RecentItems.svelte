@@ -38,7 +38,8 @@
 				<img class="object-cover w-full h-full rounded-lg" alt="hero" src={`${item.thumbnail}`} />
 			</div>
 			<div
-				class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2 text-[var(--onBackgroundColor)]"
+			style="color: {Constants.main_theme.background};"
+				class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
 			>
 				{#if item.title.length > 19}
 					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">

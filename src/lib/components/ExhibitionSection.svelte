@@ -9,10 +9,15 @@
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
-	import SulyButton from './sulyButton.svelte';
+	import { onMount } from 'svelte';
+	import { UiStore } from '../../stores/ui/Ui';
+	import { getPageType } from '../../utils/pageType';
+	import type { UiModel } from '../../models/uiModel';
+	import { stringToEnum } from '../../utils/enumToString';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
+	let CardComponent: any;
 
 	$: {
 		if ($locale) {
@@ -20,12 +25,19 @@
 		}
 	}
 
+	onMount(async () => {
+		let pageType = "Exhibition";
+		let newsUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
+		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
+		CardComponent = stringToEnum(cardType, CardType);
+	});
+
 	function openAllExibition() {
-		goto('/exhibitions');
+		goto('/exhibition');
 	}
 
 	function openExhibition(id: number) {
-		goto(`/exhibitions/${id}`);
+		goto(`/exhibition/${id}`);
 	}
 </script>
 
@@ -56,12 +68,12 @@
 						>
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
-								primaryColor={'var(--exhibitionPrimaryColor)'}
-								overlayPrimaryColor={'var(--exhibitionOverlayPrimaryColor)'}
+								primaryColor={Constants.page_theme.exhibition.primary ?? Constants.main_theme.primary}
+								overlayPrimaryColor={Constants.page_theme.exhibition.overlayPrimary ?? Constants.main_theme.overlayPrimary}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}
-								cardType={CardType.Main}
+								cardType={CardComponent}
 								startDate={exhibition.start_date}
 								endDate={exhibition.end_date}
 							/>

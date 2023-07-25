@@ -80,52 +80,55 @@
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex bg-[var(--secondaryColor)] rounded-full justify-center items-center h-20 w-20 bloc"
+							style="background-color:{Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary} ;"
+								class="flex rounded-full justify-center items-center h-20 w-20 bloc"
 							>
-								<GlobeAsiaAustralia size="50" class="text-[var(--onSecondaryColor)]" />
+								<GlobeAsiaAustralia style="color:{Constants.page_theme.exhibition.background ?? Constants.main_theme.background}" size="50" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col w-40 dark:text-white">
 								{#if exhibition}
-									<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
+									<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p class="text-lg text-[var(--onBackgroundColor)]">
+								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
 									{$LL.exhibition_mini_data.Countries()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex bg-[var(--secondaryColor)] rounded-full h-20 w-20 justify-center items-center bloc"
+							style="background-color:{Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
+								class="flex rounded-full h-20 w-20 justify-center items-center bloc"
 							>
-								<BuildingOffice2 size="50" class="text-[var(--onSecondaryColor)]" />
+								<BuildingOffice2 style="color: {Constants.page_theme.exhibition.background ?? Constants.main_theme.background};" size="50" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
+								<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p class="text-lg text-[var(--onBackgroundColor)]">
+								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
 									{$LL.exhibition_mini_data.Companies()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex bg-[var(--secondaryColor)] rounded-full h-20 w-20 justify-center items-center bloc"
+							style="background-color: {Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
+								class="flex rounded-full h-20 w-20 justify-center items-center bloc"
 							>
-								<MapPin size="50" class="text-[var(--onSecondaryColor)]" />
+								<MapPin size="50" style="color: {Constants.page_theme.exhibition.background ?? Constants.main_theme.background};" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-2xl font-bold text-[var(--onBackgroundColor)]">
+								<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
 									{$LL.exhibition_mini_data.Reservation.title()}
 								</h2>
-								<p class="text-lg text-[var(--onBackgroundColor)]">
+								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
 									{$LL.exhibition_mini_data.Reservation.place()}
 								</p>
 							</div>
@@ -150,15 +153,15 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<h1 class="text-4xl font-bold text-[var(--onBackgroundColor)]e">
+								<h1 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-4xl font-bold">
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 
-								<p class="text-lg text-[var(--onBackgroundColor)]e">
-									{#if exhibition?.story?.length || [].length > 200}
+								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
+									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
 									{:else}
-										{exhibition?.story || 'No Story Available'}
+										{exhibition?.story ?? 'No Story Available'}
 									{/if}
 								</p>
 							</div>
@@ -174,14 +177,15 @@
 
 
 		<div
-			class="w-full h-48 bg-[var(--secondaryColor)] flex-col justify-around items-center py-10 flex flex-wrap text-center"
+		style="background-color: {Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
+			class="w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
 		>
 		<div class="mx-auto max-w-screen-lg">
-			<div class="lg:text-3xl text-lg uppercase text-[var(--onSecondaryColor)] font-bold">
+			<div style="color: {Constants.page_theme.exhibition.overlaySecondary ?? Constants.main_theme.overlaySecondary};" class="lg:text-3xl text-lg uppercase font-bold">
 				{$LL.exhibition_mini_data.Fair()}
 			</div>
 
-			<div class="lg:text-xl text-base text-[var(--onSecondaryColor)] py-4 [word-spacing:5px]">
+			<div style="color: {Constants.page_theme.exhibition.overlaySecondary ?? Constants.main_theme.overlaySecondary};" class="lg:text-xl text-base py-4 [word-spacing:5px]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>

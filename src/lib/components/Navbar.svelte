@@ -76,7 +76,7 @@
 
 	<Navbar
 		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full "
-		style="background-color: var(--secondaryColor);"
+		style="background-color: {Constants.main_theme.secondary};"
 		navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
 		let:hidden
 		let:toggle
@@ -161,7 +161,7 @@
 			>
 				<Button
 					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
-					style="color: var(--overlayPrimaryColor); "
+					style="color: {Constants.main_theme.overlayPrimary}"
 					dir="ltr"
 					pill
 					outline><Chevron>{selectedLang}</Chevron></Button

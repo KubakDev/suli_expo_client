@@ -34,7 +34,7 @@
 
 		<!-- contact information section -->
 		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-[var(--secondaryColor)] text-[var(--overlaySecondaryColor)] shadow"
+			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-[{Constants.main_theme.secondary}] text-[{Constants.main_theme.overlaySecondary}] shadow"
 		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}

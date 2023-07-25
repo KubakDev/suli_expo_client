@@ -43,7 +43,7 @@
 		"formik": "^2.4.2",
 		"hls.js": "^1.4.8",
 		"js-cookie": "^3.0.5",
-		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.2.2.8",
+		"kubak-svelte-component": "git+https://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@github.com/KubakDev/kubak_svelte_component.git#v0.2.3.0",
 		"npm-run-all": "^4.1.5",
 		"pino": "^8.14.1",
 		"postcss": "^8.4.25",
@@ -80,6 +80,9 @@
 		"moment": "^2.29.4",
 		"prettier": "^2.8.8",
 		"pull": "^2.1.1",
-		"svelte-pdf": "^1.0.19"
+		"svelte-collapsible": "^0.2.2",
+		"svelte-date-range-select": "^1.0.4",
+		"svelte-pdf": "^1.0.19",
+		"svelte-select": "^5.6.1"
 	}
 }

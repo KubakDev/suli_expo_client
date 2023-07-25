@@ -8,8 +8,15 @@
 	import constants from '../../utils/constants.js';
 	import LL, { locale } from '$lib/i18n/i18n-svelte.js';
 	import { goto } from '$app/navigation';
+	import { getNameRegex } from '../../utils/urlRegexName.js';
+	import { page } from '$app/stores';
+	import { UiStore } from '../../stores/ui/Ui.js';
+	import { getPageType } from '../../utils/pageType.js';
+	import type { UiModel } from '../../models/uiModel.js';
+	import { stringToEnum } from '../../utils/enumToString.js';
 
 	export let data;
+	let CardComponent: any;
 
 	$: {
 		if ($locale) {
@@ -17,7 +24,12 @@
 		}
 	}
 
-	onMount(async () => {});
+	onMount(async () => {
+		let pageType = getNameRegex($page.url.pathname);
+		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
+		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
+		CardComponent = stringToEnum(cardType, CardType);
+	});
 
 	function openExhibition(id: number) {
 		goto(`/exhibition/${id}`);
@@ -48,17 +60,19 @@
 					openExhibition(exhibition.id || 0);
 				}}
 			>
+			{#if CardComponent}
 				<ExpoCard
 					imageClass={Constants.image_card_layout}
-					primaryColor={'var(--exhibitionPrimaryColor)'}
-					overlayPrimaryColor={'var(--exhibitionOverlayPrimaryColor)'}
+					primaryColor={Constants.page_theme.exhibition.primary ?? Constants.main_theme.primary}
+					overlayPrimaryColor={Constants.page_theme.exhibition.overlayPrimary ?? Constants.main_theme.overlayPrimary}
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}
 					startDate={exhibition.start_date}
 					endDate={exhibition.end_date}
-					cardType={CardType.Main}
+					cardType={CardComponent || CardType.Simple}
 				/>
+			{/if}
 			</button>
 		{/each}
 	</div>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import newsUiStore, { getNewsUi } from '../../../stores/ui/newsUi';
 	import TitleUi from '../TitleUi.svelte';
 	import { goto } from '$app/navigation';
 	import constants from '../../../utils/constants';
@@ -13,6 +12,11 @@
 	import Saos from '$lib/animate/Saos.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import Constants from '../../../utils/constants';
+	import { getNameRegex } from '../../../utils/urlRegexName';
+	import { page } from '$app/stores';
+	import { UiStore } from '../../../stores/ui/Ui';
+	import { getPageType } from '../../../utils/pageType';
+	import type { UiModel } from '../../../models/uiModel';
 
 	export let supabase: SupabaseClient;
 	let CardComponent: any;
@@ -25,10 +29,10 @@
 
 	onMount(async () => {
 		newsSectionStore.get($locale, supabase);
-		getNewsUi(supabase).then(async (value) => {
-			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
-			console.log($newsUiStore);
-		});
+		let pageType = "News";
+		let newsUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
+		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
+		CardComponent = stringToEnum(cardType, CardType);
 	});
 
 	function openNews() {
@@ -62,21 +66,22 @@
 				class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 				{#each $newsSectionStore as n, i}
-					<!-- {#if CardComponent && $newsUiStore} -->
 					<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">
 						<Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
+						<!-- {#if CardComponent} -->
 							<ExpoCard
-								primaryColor={'var(--newsPrimaryColor)'}
-								overlayPrimaryColor={'var(--newsOverlayPrimaryColor)'}
+								primaryColor={Constants.page_theme.news.primary ?? Constants.main_theme.primary}
+								overlayPrimaryColor={Constants.page_theme.news.overlayPrimary ?? Constants.main_theme.overlayPrimary}
 								imageClass={Constants.image_card_layout}
-								cardType={$newsUiStore?.component_type.type ?? CardType.Main}
+								cardType={CardComponent || CardType.Main}
 								title={n.title}
 								short_description={n.short_description}
 								thumbnail={n.thumbnail}
 								date={n.created_at}
 							/>
+						<!-- {/if} -->
 						</Saos>
 					</button>
 					<!-- {:else}
