@@ -26,6 +26,7 @@ const ar = {
 		Exhibition_PDF:"فایل المعرض (PDF)"
 	},
 	promo: 'ترويجي',
+	filter: 'منقي',
 	seeAll: 'اظهار الكل',
 	marketing: 'التسويق',
 	relations: 'الاتصال',

@@ -37,7 +37,7 @@ type RootTranslation = {
 	 */
 	news: string
 	/**
-	 * N​o​ ​n​e​w​s​ ​y​e​t
+	 * N​o​ ​N​e​w​s​ ​Y​e​t
 	 */
 	no_news: string
 	/**
@@ -96,6 +96,10 @@ type RootTranslation = {
 	 * P​r​o​m​o
 	 */
 	promo: string
+	/**
+	 * F​i​l​t​e​r
+	 */
+	filter: string
 	/**
 	 * S​e​e​ ​a​l​l
 	 */
@@ -232,7 +236,7 @@ export type TranslationFunctions = {
 	 */
 	news: () => LocalizedString
 	/**
-	 * No news yet
+	 * No News Yet
 	 */
 	no_news: () => LocalizedString
 	/**
@@ -291,6 +295,10 @@ export type TranslationFunctions = {
 	 * Promo
 	 */
 	promo: () => LocalizedString
+	/**
+	 * Filter
+	 */
+	filter: () => LocalizedString
 	/**
 	 * See all
 	 */
