@@ -19,6 +19,9 @@
 		Chevron,
 		Dropdown,
 		DropdownItem,
+		Input,
+		Label,
+		Modal,
 		Toggle
 	} from 'flowbite-svelte';
 	import { exhibitionStore } from '../../../stores/exhibtionStore';
@@ -36,14 +39,15 @@
 
 	let asc: boolean = false;
 	let selectedExhibition: number[];
-	let years: string[] = [];
 	let startDate: Date;
-	let expiryDate: Date;
+	let endDate: Date;
 
 	$: {
 		if ($locale || asc) {
 			const currentPage = $page.params.page;
 			newsStore.get($locale, data.supabase, currentPage, undefined, asc);
+
+			exhibitionStore.get($locale, data.supabase);
 		}
 	}
 
@@ -56,8 +60,6 @@
 		CardComponent = stringToEnum(cardType, CardType);
 
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-
-		years = [...new Set($newsStore.data.map((news) => moment(news.news_date).format('YYYY')))];
 	});
 	onDestroy(() => {
 		activeThemeStore.reAddColors();
@@ -72,28 +74,26 @@
 	async function filterByExhibition() {
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
+	async function filterByDate() {
+		console.log("Dates ",startDate, endDate);
+		newsStore.get(
+			$locale,
+			data.supabase,
+			$page.params.page,
+			undefined,
+			asc,
+			selectedExhibition,
+			startDate,
+			endDate
+		);
+
+		
+	}
 </script>
 
 <section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
 	{#if $newsStore}
 		<div class="flex justify-between items-center mb-12 w-full">
-			<div class="flex justify-start z-10">
-				<CollapsibleCard open={false} duration={0.3} easing="ease-in-out">
-					<div slot="header">
-						<!-- <LottiePlayer
-								src="../../../lottie/Calender Animation 2.json"
-								autoplay={true}
-								loop={true}
-								height={100}
-								width={100}
-							/> -->
-						<Avatar src="../../../icons/calendar-icon.png" rounded />
-					</div>
-					<div slot="body" class="w-full z-10" >
-						<DateInput format="dd-MM-yyyy" bind:value={startDate} />
-					</div>
-				</CollapsibleCard>
-			</div>
 			<div class="p-2 text-center w-full">
 				{#if asc}
 					<button
@@ -145,26 +145,36 @@
 						class="text-xs sm:text-[16px]"
 						style="background-color: {Constants.page_theme.news.primary ??
 							Constants.main_theme.overlayPrimary}; color: {Constants.page_theme.news
-							.overlayPrimary ?? Constants.main_theme.overlayPrimary}"
-						><Chevron>Filter By Exhibition</Chevron></Button
+							.overlayPrimary ?? Constants.main_theme.overlayPrimary}; marg"
+						><Chevron>{$LL.filter()}</Chevron></Button
 					>
 					<Dropdown
-						class="w-44 p-3 space-y-3 text-sm bg-[{Constants.page_theme.news.overlayPrimary ??
+						class="w-80 p-3 space-y-3 text-sm bg-[{Constants.page_theme.news.overlayPrimary ??
 							Constants.main_theme
-								.overlayPrimary}] max-h-32 overflow-y-auto {Constants.scrollbar_layout}"
+								.overlayPrimary}]"
 					>
+					<div class="max-h-48 overflow-y-auto {Constants.scrollbar_layout}">
 						{#each $exhibitionStore as exhibition}
-							<li>
-								<Checkbox bind:group={selectedExhibition} value={exhibition.id}
-									>{exhibition.title}</Checkbox
+							<li >
+								<Checkbox
+									on:change={filterByExhibition}
+									bind:group={selectedExhibition}
+									value={exhibition.id}
+									class="border-b border-solid border-gray-300 w-full flex justify-between p-1">{exhibition.title}</Checkbox
 								>
 							</li>
 						{/each}
-						<DropdownItem
-							slot="footer"
-							class="text-base text-center font-bold "
-							on:click={filterByExhibition}>Search</DropdownItem
-						>
+					</div>
+						<DropdownItem class="text-base text-center font-bold ">
+							<Label class="space-y-2">
+								<span>Start Date</span>
+								<DateInput min={new Date("01-01-2010")} on:input={filterByDate} format="dd-MM-yyyy" bind:value={startDate} />
+							</Label>
+							<Label class="space-y-2">
+								<span>End Date</span>
+								<DateInput max={new Date()} on:input={filterByDate} format="dd-MM-yyyy" bind:value={endDate} />
+							</Label>
+						</DropdownItem>
 					</Dropdown>
 				</div>
 			{/if}
@@ -210,11 +220,8 @@
 <style>
 	:root {
 		--dateSelectWidth: 135px;
-	}
-	:card-header {
-		display: flex;
-		width: 100%;
-		justify-content: center;
-		align-items: center;
+		--date-input-width: 100%;
+		--date-picker-highlight-border: 1px solid #000;
+		--date-picker-selected-color: #000;
 	}
 </style>

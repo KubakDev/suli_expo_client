@@ -7,7 +7,7 @@ const en = {
 	about: 'About',
 	contact: 'Contact',
 	news: 'News',
-	no_news: 'No news yet',
+	no_news: 'No News Yet',
 	pdf_file: 'PDF File',
 	services: 'Services',
 	exhibition: 'Exhibition',
@@ -26,6 +26,7 @@ const en = {
 		Exhibition_PDF: "Exhibition PDF'S"
 	},
 	promo: 'Promo',
+	filter: 'Filter',
 	seeAll: 'See all',
 	marketing: 'Marketing',
 	relations: 'Relations',

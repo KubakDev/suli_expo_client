@@ -26,6 +26,7 @@ const ckb = {
 		Exhibition_PDF: 'فایلی پێشانگا (PDF)'
 	},
 	promo: 'پرۆمۆ',
+	filter: 'فیلتەر',
 	seeAll: 'هەموو ببینە',
 	marketing: 'بازاڕکردن',
 	relations: 'پەیوەندییەکان',
