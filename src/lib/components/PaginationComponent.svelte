@@ -1,17 +1,42 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { activeThemeStore } from '../../stores/ui/theme';
-	import { newsStore } from '../../stores/newsStore';
+	import Constants from '../../utils/constants';
 
 	// event
 
 	export let page = 1;
-	export let total = 1;
+	export let total:number; // remove this line
 
 	const dispatch = createEventDispatcher();
 	function handleClick(page: number) {
-		if (page < 1 || page > total) return;
+		if (page < 1 || page > total) return; // use $newsStore.pages here
 		dispatch('changePage', { page: page });
+	}
+
+	// computed variable
+	$: pagesToShow = getPagesToShow(page, total); // use $newsStore.pages here
+
+	// helper function
+	function getPagesToShow(current: number, total: number) {
+		console.log('current', total);
+		
+		// convert current and total to numbers
+		current = Number(current);
+		total = Number(total);
+		let start = Math.max(1, current - 1);
+		let end = Math.min(total, current + 1);
+		let pages = [];
+		if (end === total) {
+			start--;
+		} else if (start === 1) { // add this condition
+			end++;
+		}
+		for (let i = start; i <= end; i++) {
+			pages.push(i);
+		}
+		// filter out any zeros from the array
+		pages = pages.filter(page => page > 0 && page <= total);
+		return pages;
 	}
 </script>
 
@@ -23,7 +48,8 @@
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<li on:click={() => handleClick(page - 1)} class="h-full">
 			<a
-				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight text-[var(--secondaryColor)] bg-[var(--primaryColor)] border border-gray-300 rounded-l-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
+			style="color: {Constants.main_theme.secondary}; background-color: {Constants.main_theme.primary};"
+				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
 			>
 				<span class="sr-only">Previous</span>
 				<svg
@@ -40,20 +66,16 @@
 				>
 			</a>
 		</li>
-		{#each Array.from({ length: Math.min(3, page === 1 ? $newsStore.pages - page + 1 : 2)}, (_, i) => i + (page === 1 ? page : page - 1)) as pageNumber}
-		{#if pageNumber > 0 && pageNumber <= $newsStore.pages}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li on:click={() => handleClick(pageNumber)} class="h-full">
-					<!-- svelte-ignore a11y-missing-attribute -->
-					<a
-						aria-current="page"
-						class="flex justify-center hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-[var(--transparentPrimaryColor)] {page ===
-						pageNumber
-							? ' text-[var(--secondaryColor)]'
-							: 'text-[var(--onSecondaryColor)] '}">{pageNumber}</a
-					>
-				</li>
-			{/if}
+		{#each pagesToShow as pageNumber}
+			<li on:click={() => handleClick(pageNumber)} class="h-full">
+				<a
+					aria-current="page"
+					class="flex justify-center hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-[var(--transparentPrimaryColor)] {page ===
+					pageNumber
+						? `text-[${Constants.main_theme.secondary}] `
+						: `text-[${Constants.main_theme.overlaySecondary}] `}">{pageNumber}</a
+				>
+			</li>
 		{/each}
 
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -61,14 +83,15 @@
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<li
 			on:click={() => {
-				if (page < $newsStore.pages) {
+				if (page < total) {
 					handleClick(page + 1);
 				}
 			}}
 			class="h-full"
 		>
 			<a
-				class="flex justify-center items-center h-full block px-3 py-2 leading-tight text-[var(--secondaryColor)] bg-[var(--primaryColor)] border border-gray-300 rounded-r-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
+			style="color: {Constants.main_theme.secondary}; background-color: {Constants.main_theme.primary};"
+				class="flex justify-center items-center h-full block px-3 py-2 leading-tight border border-gray-300 rounded-r-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
 			>
 				<span class="sr-only">Next</span>
 				<svg

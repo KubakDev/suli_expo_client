@@ -2,13 +2,14 @@
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
 	import Saos from 'saos';
+	import Constants from '../../utils/constants';
 </script>
 
 <div class="flex items-center justify-center flex-col px-4 lg:px-0 bbb">
 	<!-- short description  -->
 	<div class="text-center">
 		<p
-			class=" leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-[var(--overlaySecondaryColor)]"
+			class=" leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-[{Constants.main_theme.overlaySecondary}}]"
 		>
 			{aboutSection?.short_description}
 		</p>

@@ -46,14 +46,14 @@
 		<section>
 			<div class="text-center pb-12">
 				<h1
-					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[var(--primaryColor)]"
+					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-[{Constants.main_theme.primary}]"
 				>
 					{$LL.successTeam()}
 				</h1>
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
-					<div class=" text-[var(--overlayBackgroundColor)] rounded-lg p-2">
+					<div class=" text-[{Constants.main_theme.overlayBackground}] rounded-lg p-2">
 						<Staff {staffSection} />
 					</div>
 				{/each}

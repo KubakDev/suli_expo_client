@@ -1,5 +1,10 @@
+
 export const enum CardPageType {
-	Home = 'home',
 	News = 'news',
-	Service = 'service'
+	Service = 'service',
+	Exhibition = 'exhibition',
+	Video = 'video',
+	Gallery = 'gallery',
+	Publishing = 'publishing',
+	Magazine = 'magazine',
 }

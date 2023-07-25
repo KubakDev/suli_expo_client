@@ -2,14 +2,17 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
-	import { getNewsUi } from '../../stores/ui/newsUi';
+	import { UiStore } from '../../stores/ui/Ui';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import newsUiStore from '../../stores/ui/newsUi';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../utils/constants';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../utils/enumToString';
 	import { galleryStore } from '../../stores/galleryStore';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { page } from '$app/stores';
+	import { getPageType } from '../../utils/pageType';
+	import type { UiModel } from '../../models/uiModel';
 	export let data;
 	let CardComponent: any;
 
@@ -20,9 +23,13 @@
 	}
 
 	onMount(async () => {
-		getNewsUi(data.supabase).then(async (value) => {
-			CardComponent = stringToEnum($newsUiStore?.component.title!, CardType);
-		});
+		let pageType = getNameRegex($page.url.pathname);
+		
+		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
+		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
+		CardComponent = stringToEnum(cardType, CardType);		
+
+		await galleryStore.get($locale, data.supabase);
 	});
 
 	// Navigate to newsDetail page
@@ -46,10 +53,10 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
-							primaryColor={'var(--galleryPrimaryColor)'}
-							overlayPrimaryColor={'var(--galleryOverlayPrimaryColor)'}
+							primaryColor={Constants.page_theme.gallery.primary}
+							overlayPrimaryColor={Constants.page_theme.gallery.overlayPrimary}
 							imageClass={Constants.image_card_layout}
-							cardType={CardType.Main}
+							cardType={CardComponent}
 							title={item.title}
 							thumbnail={item.thumbnail}
 						/>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { StaffModel } from '../../models/satffModel';
+	import Constants from '../../utils/constants';
 
 	export let staffSection: StaffModel;
 </script>
@@ -14,7 +15,7 @@
 				alt="photo"
 			/>
 		</div>
-		<div class="text-center py-8 sm:py-6 text-[var(--onBackgroundColor)]">
+		<div class="text-center py-8 sm:py-6 text-[{Constants.main_theme.background}]">
 			<p class="text-xl font-bold mb-2">{staffSection.name}</p>
 			<p class="text-base font-normal uppercase dark:hover:text-blue-500 transition-all">
 				{staffSection.title}
