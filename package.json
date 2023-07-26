@@ -3,7 +3,6 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "npm-run-all --parallel vite typesafe-i18n",
-		"postinstall": "npm install",
 		"vite": "vite dev --open",
 		"build": "vite build",
 		"preview": "vite preview",
