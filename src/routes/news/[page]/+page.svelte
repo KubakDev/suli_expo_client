@@ -30,8 +30,7 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
-	import moment from 'moment';
-	import { CollapsibleCard } from 'svelte-collapsible';
+
 	import { DateInput } from 'date-picker-svelte';
 
 	export let data;
@@ -40,7 +39,9 @@
 	let asc: boolean = false;
 	let selectedExhibition: number[];
 	let startDate: Date;
-	let endDate: Date;
+
+	let endDate: Date = new Date();
+
 
 	$: {
 		if ($locale || asc) {
@@ -56,8 +57,9 @@
 		let pageType = getNameRegex($page.url.pathname);
 		let newsUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
-			newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
-		CardComponent = stringToEnum(cardType, CardType);
+			newsUi?.component_type?.type?.charAt(0).toUpperCase() +
+			newsUi?.component_type?.type?.slice(1);
+		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 	});
@@ -74,8 +76,10 @@
 	async function filterByExhibition() {
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
+
+
 	async function filterByDate() {
-		console.log("Dates ",startDate, endDate);
+
 		newsStore.get(
 			$locale,
 			data.supabase,
@@ -83,12 +87,18 @@
 			undefined,
 			asc,
 			selectedExhibition,
+
+			startDate.toISOString(),
+			endDate.toISOString()
+		);
+	};
+
 			startDate,
 			endDate
 		);
 
-		
 	}
+
 </script>
 
 <section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
@@ -150,30 +160,44 @@
 					>
 					<Dropdown
 						class="w-80 p-3 space-y-3 text-sm bg-[{Constants.page_theme.news.overlayPrimary ??
-							Constants.main_theme
-								.overlayPrimary}]"
+							Constants.main_theme.overlayPrimary}]"
 					>
-					<div class="max-h-48 overflow-y-auto {Constants.scrollbar_layout}">
-						{#each $exhibitionStore as exhibition}
-							<li >
-								<Checkbox
-									on:change={filterByExhibition}
-									bind:group={selectedExhibition}
-									value={exhibition.id}
-									class="border-b border-solid border-gray-300 w-full flex justify-between p-1">{exhibition.title}</Checkbox
-								>
-							</li>
-						{/each}
-					</div>
+						<div class="max-h-48 overflow-y-auto {Constants.scrollbar_layout}">
+							<Label class="space-y-2">Filter By Exhibition</Label>
+							{#each $exhibitionStore as exhibition}
+								<li>
+									<Checkbox
+										on:change={filterByExhibition}
+										bind:group={selectedExhibition}
+										value={exhibition.id}
+										class="border-b border-solid border-gray-300 w-full flex justify-between p-1"
+										>{exhibition.title}</Checkbox
+									>
+								</li>
+							{/each}
+						</div>
+						<Label class="space-y-2">Filter By Date</Label>
 						<DropdownItem class="text-base text-center font-bold ">
 							<Label class="space-y-2">
 								<span>Start Date</span>
-								<DateInput min={new Date("01-01-2010")} on:input={filterByDate} format="dd-MM-yyyy" bind:value={startDate} />
+								<DateInput
+									min={new Date('01-01-2010')}
+									max={endDate}
+									format="dd-MM-yyyy"
+									bind:value={startDate}
+								/>
 							</Label>
 							<Label class="space-y-2">
 								<span>End Date</span>
-								<DateInput max={new Date()} on:input={filterByDate} format="dd-MM-yyyy" bind:value={endDate} />
+								<DateInput
+									min={startDate}
+									max={new Date()}
+									format="dd-MM-yyyy"
+									bind:value={endDate}
+								/>
 							</Label>
+							<Button class="mt-2" on:click={filterByDate}>Search</Button>
+
 						</DropdownItem>
 					</Dropdown>
 				</div>
@@ -190,11 +214,11 @@
 				>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={Constants.page_theme.news.primary ?? Constants.main_theme.primary}
+							primaryColor={'var(--newsPrimaryColor)'}
 							overlayPrimaryColor={Constants.page_theme.news.overlayPrimary ??
 								Constants.main_theme.overlayPrimary}
 							imageClass={Constants.image_card_layout}
-							cardType={CardComponent || CardType.Flat}
+							cardType={CardComponent ?? CardType.Flat}
 							title={item.title}
 							thumbnail={item.thumbnail}
 							date={item.created_at ?? new Date()}

@@ -1,21 +1,30 @@
 <script lang="ts">
-	import { page } from "$app/stores";
-	import { getNameRegex } from "../../utils/urlRegexName";
+	import { page } from '$app/stores';
+	import { getNameRegex } from '../../utils/urlRegexName';
 
 	export let text: string = 'Title Here';
 	export let footerSize: boolean = false;
-	export let textColor: string = `var(--${getNameRegex($page.url.pathname)}SecondaryColor)`;
+	let textColor: string =
+		getNameRegex($page.url.pathname) &&
+		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
+			? `text-${getNameRegex($page.url.pathname)}OverlayBackgroundColor`
+			: 'text-overlayBackgroundColor';
+
+	let backgroundColor: string =
+		getNameRegex($page.url.pathname) &&
+		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
+			? `bg-${getNameRegex($page.url.pathname)}OverlaySecondaryColor`
+			: 'bg-overlaySecondaryColor';
 </script>
 
 <div>
-	<div class="h-[1px]" style="background-color: var(--overlaySecondaryColor);" />
+	<div class="h-[1px] {backgroundColor}" />
 	<h1
 		class="{footerSize
 			? ' font-sans'
-			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-2xl"
-		style="color: {textColor};"
+			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-2xl {textColor}"
 	>
 		{text}
 	</h1>
-	<div class="h-[1px]" style="background-color: var(--overlaySecondaryColor);" />
+	<div class="h-[1px] {backgroundColor}" />
 </div>
