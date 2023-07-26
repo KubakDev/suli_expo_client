@@ -23,9 +23,10 @@
 
 	onMount(async () => {
 		let pageType = getNameRegex($page.url.pathname);
-		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
-		CardComponent = stringToEnum(cardType, CardType);
+		let publishingUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
+		let cardType =
+			publishingUi?.component_type?.type?.charAt(0).toUpperCase() + publishingUi?.component_type?.type?.slice(1);
+		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		await publishingStore.get($locale, data.supabase);
 	});

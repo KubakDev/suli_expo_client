@@ -10,8 +10,9 @@
 	export let supabase: any;
 
 	interface Video {
-		title: string[];
-		video_link: string[];
+		title: string;
+		video_link: string;
+		thumbnail: string;
 		element?: HTMLIFrameElement;
 		playing?: boolean;
 	}
@@ -31,14 +32,13 @@
 		let data = await promoStore.get(supabase, $locale);
 
 		if (data) {
-			videos = data
-				.map(function (item) {
-					return {
-						title: item.video.map((video: PromoLanguagesModel) => video.title),
-						video_link: item.video.map((video: PromoLanguagesModel) => video.video_link)
-					};
-				})
-				.flat();
+			videos = data.map((video: any) => {
+				return {
+					title: video.title,
+					video_link: video.video_link,
+					thumbnail: video.thumbnail
+				};
+			})
 		}
 
 	};

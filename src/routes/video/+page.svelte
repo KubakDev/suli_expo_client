@@ -24,9 +24,10 @@
 
 	onMount(async () => {
 		let pageType = getNameRegex($page.url.pathname);
-		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
-		CardComponent = stringToEnum(cardType, CardType);
+		let videoUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
+		let cardType =
+			videoUi?.component_type?.type?.charAt(0).toUpperCase() + videoUi?.component_type?.type?.slice(1);
+		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 	});
 
 	// Navigate to newsDetail page

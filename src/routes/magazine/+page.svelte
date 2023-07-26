@@ -20,11 +20,13 @@
 			magazineStore.get($locale, data.supabase);
 		}
 	}
-	onMount(async () => {
+	onMount(async function () {
 		let pageType = getNameRegex($page.url.pathname);
-		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
-		CardComponent = stringToEnum(cardType, CardType);
+		let magazineUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
+		let cardType =
+			magazineUi?.component_type?.type?.charAt(0).toUpperCase() +
+			magazineUi?.component_type?.type?.slice(1);
+		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		await magazineStore.get($locale, data.supabase);
 	});
@@ -50,15 +52,16 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div on:click={() => DetailsPage(item.id)}>
 					{#if CardComponent}
-					<ExpoCard
-						primaryColor={Constants.page_theme.magazine.primary ?? Constants.main_theme.primary}
-						overlayPrimaryColor={Constants.page_theme.magazine.overlayPrimary ?? Constants.main_theme.overlayPrimary}
-						imageClass={Constants.image_card_layout}
-						cardType={CardComponent || CardType.Main}
-						title={item.title}
-						date={item.created_at}
-						thumbnail={item.thumbnail}
-					/>
+						<ExpoCard
+							primaryColor={Constants.page_theme.magazine.primary ?? Constants.main_theme.primary}
+							overlayPrimaryColor={Constants.page_theme.magazine.overlayPrimary ??
+								Constants.main_theme.overlayPrimary}
+							imageClass={Constants.image_card_layout}
+							cardType={CardComponent || CardType.Main}
+							title={item.title}
+							date={item.created_at}
+							thumbnail={item.thumbnail}
+						/>
 					{/if}
 				</div>
 				<!-- {/if} -->

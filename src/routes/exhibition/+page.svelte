@@ -26,9 +26,10 @@
 
 	onMount(async () => {
 		let pageType = getNameRegex($page.url.pathname);
-		let newsUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
-		CardComponent = stringToEnum(cardType, CardType);
+		let exhibitionUi = (await UiStore.get(data.supabase,getPageType(pageType))) as UiModel;
+		let cardType =
+			exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() + exhibitionUi?.component_type?.type?.slice(1);
+		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 	});
 
 	function openExhibition(id: number) {

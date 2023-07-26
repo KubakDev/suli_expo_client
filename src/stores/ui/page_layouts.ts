@@ -26,7 +26,7 @@ const pageStore = () => {
 							continue;
 						let cssVarName = `--${page.page}${colorType.charAt(0).toUpperCase() + colorType.slice(1)}`;
 						//@ts-ignore
-						root.style.setProperty(cssVarName, page.color_palette[colorType]);
+						root.style.setProperty(cssVarName, page.color_palette[colorType]??`--${colorType}` );
 						// console.log('cssVarName', cssVarName, page.color_palette[colorType]);
 						
 					}

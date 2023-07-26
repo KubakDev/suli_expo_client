@@ -20,6 +20,12 @@
 	register();
 	export let data;
 
+	let backgroundColor: string =
+		getNameRegex($page.url.pathname) &&
+		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
+			? `bg-${getNameRegex($page.url.pathname)}BackgroundColor`
+			: 'bg-backgroundColor';
+
 	let supabase: any;
 	if ($locale && data.supabase) {
 		contactInfoSectionStore.get($locale, data.supabase);
@@ -86,7 +92,7 @@
 </script>
 
 {#if supabase}
-	<div class=" app" style="background-color: {`var(--${getNameRegex($page.url.pathname)}BackgroundColor)` ?? `var(--backgroundColor)`};">
+	<div class="app {backgroundColor}">
 		<Headerbar />
 		<Navbar {data} />
 		<main class="h-full flex">
