@@ -30,7 +30,6 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
-
 	import { DateInput } from 'date-picker-svelte';
 
 	export let data;
@@ -39,9 +38,7 @@
 	let asc: boolean = false;
 	let selectedExhibition: number[];
 	let startDate: Date;
-
 	let endDate: Date = new Date();
-
 
 	$: {
 		if ($locale || asc) {
@@ -61,6 +58,8 @@
 			newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
+		console.log('CardComponent ', CardComponent);
+
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 	});
 	onDestroy(() => {
@@ -77,9 +76,8 @@
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
 
-
-	async function filterByDate() {
-
+	const filterByDate = function () {
+		console.log('Dates ', startDate, endDate);
 		newsStore.get(
 			$locale,
 			data.supabase,
@@ -87,18 +85,10 @@
 			undefined,
 			asc,
 			selectedExhibition,
-
 			startDate.toISOString(),
 			endDate.toISOString()
 		);
 	};
-
-			startDate,
-			endDate
-		);
-
-	}
-
 </script>
 
 <section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
@@ -197,7 +187,6 @@
 								/>
 							</Label>
 							<Button class="mt-2" on:click={filterByDate}>Search</Button>
-
 						</DropdownItem>
 					</Dropdown>
 				</div>
