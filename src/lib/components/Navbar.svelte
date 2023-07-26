@@ -33,6 +33,17 @@
 	let dropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 	let navTextColor: string | undefined;
+	let textColor: string =
+		getNameRegex($page.url.pathname) &&
+		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
+			? `text-${getNameRegex($page.url.pathname)}OverlayBackgroundColor`
+			: 'text-overlayBackgroundColor';
+
+	let backgroundColor: string =
+		getNameRegex($page.url.pathname) &&
+		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
+			? `bg-${getNameRegex($page.url.pathname)}OverlayBackgroundColor`
+			: 'bg-overlayBackgroundColor';
 
 	// acgtive on route
 	let activeUrl: string;
@@ -77,7 +88,7 @@
 	<Navbar
 		navDivClass="  mx-auto flex flex-wrap items-center  max-w-full "
 		style="background-color: {Constants.main_theme.secondary};"
-		navClass=" px-2 sm:px-4 py-2.5  w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
+		navClass=" px-2 sm:px-4 py-2.5   w-full z-20 top-0 left-0 border-b max-w-full relative bg-transparent"
 		let:hidden
 		let:toggle
 	>

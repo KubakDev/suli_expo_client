@@ -99,6 +99,62 @@ const config = {
 						on: '#E1B168' //800
 					}
 				},
+				primaryColor: "var(--primaryColor)",
+				overlayPrimaryColor: "var(--overlayPrimaryColor)",
+				secondaryColor: "var(--secondaryColor)",
+				overlaySecondaryColor: "var(--overlaySecondaryColor)",
+				backgroundColor: "var(--backgroundColor)",
+				overlayBackgroundColor: "var(--overlayBackgroundColor)",
+
+
+				exhibitionPrimaryColor: "var(--exhibitionPrimaryColor)",
+				exhibitionOverlayPrimaryColor: "var(--exhibitionOverlayPrimaryColor)",
+				exhibitionSecondaryColor: "var(--exhibitionSecondaryColor)",
+				exhibitionOverlaySecondaryColor: "var(--exhibitionOverlaySecondaryColor)",
+				exhibitionBackgroundColor: "var(--exhibitionBackgroundColor)",
+				exhibitionOverlayBackgroundColor: "var(--exhibitionOverlayBackgroundColor)",
+
+				newsPrimaryColor: "var(--newsPrimaryColor)",
+				newsOverlayPrimaryColor: "var(--newsOverlayPrimaryColor)",
+				newsSecondaryColor: "var(--newsSecondaryColor)",
+				newsOverlaySecondaryColor: "var(--newsOverlaySecondaryColor)",
+				newsBackgroundColor: "var(--newsBackgroundColor)",
+				newsOverlayBackgroundColor: "var(--newsOverlayBackgroundColor)",
+
+				magazinePrimaryColor: "var(--magazinePrimaryColor)",
+				magazineOverlayPrimaryColor: "var(--magazineOverlayPrimaryColor)",
+				magazineSecondaryColor: "var(--magazineSecondaryColor)",
+				magazineOverlaySecondaryColor: "var(--magazineOverlaySecondaryColor)",
+				magazineBackgroundColor: "var(--magazineBackgroundColor)",
+				magazineOverlayBackgroundColor: "var(--magazineOverlayBackgroundColor)",
+
+				videoPrimaryColor: "var(--videoPrimaryColor)",
+				videoOverlayPrimaryColor: "var(--videoOverlayPrimaryColor)",
+				videoSecondaryColor: "var(--videoSecondaryColor)",
+				videoOverlaySecondaryColor: "var(--videoOverlaySecondaryColor)",
+				videoBackgroundColor: "var(--videoBackgroundColor)",
+				videoOverlayBackgroundColor: "var(--videoOverlayBackgroundColor)",
+
+				publishingPrimaryColor: "var(--publishingPrimaryColor)",
+				publishingOverlayPrimaryColor: "var(--publishingOverlayPrimaryColor)",
+				publishingSecondaryColor: "var(--publishingSecondaryColor)",
+				publishingOverlaySecondaryColor: "var(--publishingOverlaySecondaryColor)",
+				publishingBackgroundColor: "var(--publishingBackgroundColor)",
+				publishingOverlayBackgroundColor: "var(--publishingOverlayBackgroundColor)",
+
+				galleryPrimaryColor: "var(--galleryPrimaryColor)",
+				galleryOverlayPrimaryColor: "var(--galleryOverlayPrimaryColor)",
+				gallerySecondaryColor: "var(--gallerySecondaryColor)",
+				galleryOverlaySecondaryColor: "var(--galleryOverlaySecondaryColor)",
+				galleryBackgroundColor: "var(--galleryBackgroundColor)",
+				galleryOverlayBackgroundColor: "var(--galleryOverlayBackgroundColor)",
+
+				servicePrimaryColor: "var(--servicePrimaryColor)",
+				serviceOverlayPrimaryColor: "var(--serviceOverlayPrimaryColor)",
+				serviceSecondaryColor: "var(--serviceSecondaryColor)",
+				serviceOverlaySecondaryColor: "var(--serviceOverlaySecondaryColor)",
+				serviceBackgroundColor: "var(--serviceBackgroundColor)",
+				serviceOverlayBackgroundColor: "var(--serviceOverlayBackgroundColor)",
 				// text colors
 				on: '#E1B168' //50
 

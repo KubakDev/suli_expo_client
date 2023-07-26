@@ -31,7 +31,7 @@
 		newsSectionStore.get($locale, supabase);
 		let pageType = "News";
 		let newsUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi.component_type.type.charAt(0).toUpperCase() + newsUi.component_type.type.slice(1);
+		let cardType = newsUi?.component_type?.type?.charAt(0).toUpperCase() + newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType);
 	});
 

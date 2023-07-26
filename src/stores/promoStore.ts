@@ -18,8 +18,8 @@ const createPromoStore = () => {
 		get: async (supabase: SupabaseClient, locale?: Locales) => {
 			const result = await supabase
 				.from('promo')
-				.select('*,video:promo_languages(*)')
-				.eq('video.language', locale ?? 'en')
+				.select('*,languages:promo_languages(*)!inner(*)', { count: 'exact' })
+				.eq('languages.language', locale ?? 'en')
                 .order('created_at', { ascending: false });
 			//.info(result.data);
 			
@@ -27,8 +27,12 @@ const createPromoStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
+				
 				//.error(result.data);
-				const promo = result.data as PromoModel[];
+				const promo = result.data.map((e) => convertModel<PromoModel>(e)) as PromoModel[];
+
+				console.log('promo', promo);
+				
 				//.info('$$$$$$$$$$$$$$');
 				//.info(carousel);
 				// // add to store
