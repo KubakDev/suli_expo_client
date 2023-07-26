@@ -30,7 +30,6 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
-
 	import { DateInput } from 'date-picker-svelte';
 
 	export let data;
@@ -78,8 +77,7 @@
 	}
 
 
-	async function filterByDate() {
-
+	const filterByDate = function () {
 		newsStore.get(
 			$locale,
 			data.supabase,
@@ -92,12 +90,6 @@
 			endDate.toISOString()
 		);
 	};
-
-			startDate,
-			endDate
-		);
-
-	}
 
 </script>
 
@@ -197,7 +189,6 @@
 								/>
 							</Label>
 							<Button class="mt-2" on:click={filterByDate}>Search</Button>
-
 						</DropdownItem>
 					</Dropdown>
 				</div>
