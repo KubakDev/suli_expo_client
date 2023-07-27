@@ -38,7 +38,6 @@
 	let asc: boolean = false;
 	let selectedExhibition: number[];
 	let startDate: Date;
-
 	let endDate: Date = new Date();
 
 	$: {

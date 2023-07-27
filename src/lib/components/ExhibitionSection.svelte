@@ -33,11 +33,11 @@
 	});
 
 	function openAllExibition() {
-		goto('/exhibition');
+		goto('/exhibition/1');
 	}
 
 	function openExhibition(id: number) {
-		goto(`/exhibition/${id}`);
+		goto(`/exhibition/detail/${id}`);
 	}
 </script>
 

@@ -28,6 +28,8 @@
 		let cardType =
 			videoUi?.component_type?.type?.charAt(0).toUpperCase() + videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
+
+		videoStore.get($locale, data.supabase);
 	});
 
 	// Navigate to newsDetail page
@@ -53,10 +55,9 @@
 						<ExpoCard
 							primaryColor={Constants.page_theme.video.primary ?? Constants.main_theme.primary}
 							overlayPrimaryColor={Constants.page_theme.video.overlayPrimary ?? Constants.main_theme.overlayPrimary}
-							imageClass="rounded-t-3xl object-cover"
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
-							thumbnail={item.thumbnail}
+							thumbnail={item?.thumbnail ?? "https://scontent.fisu6-2.fna.fbcdn.net/v/t39.30808-6/267549618_692154372169154_2449673849951386371_n.png?_nc_cat=105&cb=99be929b-59f725be&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=-9FJymvHNRIAX_RXdNE&_nc_ht=scontent.fisu6-2.fna&oh=00_AfCtYVAEqBRXNrcAdAUUEIqACXrGd0k7By5F5GfOSJ7pIg&oe=64C7618E"}
 						/>
 					</div>
 				{/if}

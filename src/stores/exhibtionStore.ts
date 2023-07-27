@@ -1,8 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
-import type { ExhibitionModel } from '../models/exhibitionModel';
+import type { ExhibitionModel, ExhibitionPaginatedModel } from '../models/exhibitionModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
+import { exhibition } from '../../../suli_expo_panel/src/stores/exhibitionTypeStore';
 
 const createExhibitionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
@@ -39,10 +40,7 @@ const createExhibitionStore = () => {
 				.select('*,languages:exhibition_languages!inner(*)')
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
-				.order('created_at', { ascending: false })
-				.limit(9);
-
-			console.log("Exhibition Data",result.data);
+				.order('created_at', { ascending: false });
 			
 			if (result.error) {
 				//.error(result.error);
@@ -54,6 +52,37 @@ const createExhibitionStore = () => {
 
 				set(exhibition);
 				return null;
+			}
+		},
+		getPaginated: async (locale: Locales, supabase: SupabaseClient, page: string, limit?: number, asc?:boolean ) => {
+			//.info('get exhibition');
+			let query = supabase
+				.from('exhibition')
+				.select('*,languages:exhibition_languages!inner(*)')
+				.is('deleted_status', null)
+				.eq('languages.language', locale ?? 'en')
+				.order('created_at', { ascending: asc ?? false });
+
+				query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
+
+				const result = await query;
+			
+			if (result.error) {
+				//.error(result.error);
+				return null;
+			} else {
+				const exhibition = result.data.map((e) =>
+					convertModel<ExhibitionModel>(e)
+				) as ExhibitionModel[];
+
+				const exhibitionPaginated = {
+					data: exhibition,
+					page: parseInt(page),
+					count: result.count,
+					pages: Math.ceil((result.count ?? 1) / 10) // this is the total number of pages
+				} as ExhibitionPaginatedModel;
+
+				return exhibitionPaginated;
 			}
 		}
 	};

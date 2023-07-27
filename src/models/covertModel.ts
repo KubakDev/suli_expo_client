@@ -20,6 +20,7 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 			});
 		  }
 		} else if (prop === 'thumbnail' || prop === 'image') {
+			if(!data[prop]) continue;
 		  obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 		} else if (prop === 'pdf_files') {
 		  obj[prop] = data[prop].map((e: string) => {

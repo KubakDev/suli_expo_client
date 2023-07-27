@@ -21,3 +21,10 @@ export interface ExhibitionModel {
 	story?: string;
 	deleted_status: string | null;
 }
+
+export interface ExhibitionPaginatedModel {
+	data: ExhibitionModel[];
+	page: number;
+	count: number;
+	pages: number;
+}

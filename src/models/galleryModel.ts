@@ -17,3 +17,10 @@ interface CarouselImage {
 	imgurl: string;
 	attribution: string;
 }
+
+export interface GalleryPaginatedModel {
+	data: GalleryModel[];
+	page: number;
+	count: number;
+	pages: number;
+}
