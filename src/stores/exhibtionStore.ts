@@ -3,7 +3,6 @@ import { writable } from 'svelte/store';
 import type { ExhibitionModel, ExhibitionPaginatedModel } from '../models/exhibitionModel';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
-import { exhibition } from '../../../suli_expo_panel/src/stores/exhibitionTypeStore';
 
 const createExhibitionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
