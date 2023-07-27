@@ -101,10 +101,16 @@ const config = {
 				},
 				primaryColor: "var(--primaryColor)",
 				overlayPrimaryColor: "var(--overlayPrimaryColor)",
+				transparentPrimaryColor: "var(--transparentPrimaryColor)",
+				transparentOverlayPrimaryColor: "var(--transparentOverlayPrimaryColor)",
 				secondaryColor: "var(--secondaryColor)",
 				overlaySecondaryColor: "var(--overlaySecondaryColor)",
+				transparentSecondaryColor: "var(--transparentSecondaryColor)",
+				transparentOverlaySecondaryColor: "var(--transparentOverlaySecondaryColor)",
 				backgroundColor: "var(--backgroundColor)",
 				overlayBackgroundColor: "var(--overlayBackgroundColor)",
+				transparentBackgroundColor: "var(--transparentBackgroundColor)",
+				transparentOverlayBackgroundColor: "var(--transparentOverlayBackgroundColor)",
 
 
 				exhibitionPrimaryColor: "var(--exhibitionPrimaryColor)",

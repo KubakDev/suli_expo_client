@@ -3,6 +3,8 @@
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import Constants from '../../utils/constants';
 	import type { ItemModel } from '../../models/covertModel';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { page } from '$app/stores';
 
 	export let title: string;
 	export let pageType: string;
@@ -38,8 +40,7 @@
 				<img class="object-cover w-full h-full rounded-lg" alt="hero" src={`${item.thumbnail}`} />
 			</div>
 			<div
-			style="color: {Constants.main_theme.background};"
-				class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
+				class="text-{getNameRegex($page.url.pathname)}SecondaryColor lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
 			>
 				{#if item.title.length > 19}
 					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">

@@ -5,6 +5,7 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	for (let prop in data) {
 	  if (prop !== 'languages') {
 		if (prop === 'images') {
+			if(!data[prop]) continue;
 		  obj[prop] = data[prop].map((e: string) => {
 			return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e;
 		  });

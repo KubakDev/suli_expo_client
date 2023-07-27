@@ -24,14 +24,16 @@ const createNewsStore = () => {
 				query = query.gte('created_at', startDate).lte('created_at', endDate);
 			}
 		
-			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
-				.limit(limit || Constants.page_limit);
-		
+			
 			if (filters && filters.length > 0) {
 				page = '1';
-				query = query.in('exhibition_id', filters).range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1);
+				query = query.in('exhibition_id', filters);
 			}
-		
+
+			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
+				.limit(limit || Constants.page_limit);
+			
+
 			const result = await query;
 		
 			if (result.error) {

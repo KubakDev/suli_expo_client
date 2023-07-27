@@ -5,7 +5,7 @@
 	// event
 
 	export let page = 1;
-	export let total:number; // remove this line
+	export let total: number; // remove this line
 
 	const dispatch = createEventDispatcher();
 	function handleClick(page: number) {
@@ -18,8 +18,10 @@
 
 	// helper function
 	function getPagesToShow(current: number, total: number) {
+		page = current;
 		console.log('current', total);
-		
+		console.log('total', page);
+
 		// convert current and total to numbers
 		current = Number(current);
 		total = Number(total);
@@ -28,14 +30,15 @@
 		let pages = [];
 		if (end === total) {
 			start--;
-		} else if (start === 1) { // add this condition
+		} else if (start === 1) {
+			// add this condition
 			end++;
 		}
 		for (let i = start; i <= end; i++) {
 			pages.push(i);
 		}
 		// filter out any zeros from the array
-		pages = pages.filter(page => page > 0 && page <= total);
+		pages = pages.filter((page) => page > 0 && page <= total);
 		return pages;
 	}
 </script>
@@ -46,10 +49,9 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<!-- svelte-ignore a11y-missing-attribute -->
-		<li on:click={() => handleClick(page - 1)} class="h-full">
+		<li on:click={() => handleClick(page - 1)} class="h-full cursor-pointer">
 			<a
-			style="color: {Constants.main_theme.secondary}; background-color: {Constants.main_theme.primary};"
-				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
+				class="flex justify-center text-overlaySecondaryColor bg-overlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-transparentSecondaryColor"
 			>
 				<span class="sr-only">Previous</span>
 				<svg
@@ -67,14 +69,22 @@
 			</a>
 		</li>
 		{#each pagesToShow as pageNumber}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<li on:click={() => handleClick(pageNumber)} class="h-full">
-				<a
-					aria-current="page"
-					class="flex justify-center hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-[var(--transparentPrimaryColor)] {page ===
-					pageNumber
-						? `text-[${Constants.main_theme.secondary}] `
-						: `text-[${Constants.main_theme.overlaySecondary}] `}">{pageNumber}</a
-				>
+				<!-- svelte-ignore a11y-missing-attribute -->
+				{#if page === pageNumber}
+					<a
+						aria-current="page"
+						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-transparentSecondaryColor text-overlaySecondaryColor font-bold hover:no-underline "
+						>{pageNumber}</a
+					>
+				{:else}
+					<a
+						aria-current="page"
+						class="flex justify-center font-light hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-transparentOverlayPrimaryColor text-secondaryColor hover:text-overlaySecondaryColor hover:no-underline hover:bg-transparentSecondaryColor"
+						>{pageNumber}</a
+					>
+				{/if}
 			</li>
 		{/each}
 
@@ -87,11 +97,10 @@
 					handleClick(page + 1);
 				}
 			}}
-			class="h-full"
+			class="h-full cursor-pointer"
 		>
 			<a
-			style="color: {Constants.main_theme.secondary}; background-color: {Constants.main_theme.primary};"
-				class="flex justify-center items-center h-full block px-3 py-2 leading-tight border border-gray-300 rounded-r-lg hover:bg-[var(--transparentSecondaryColor)] hover:text-[var(--primaryColor)]"
+				class="flex justify-center text-overlaySecondaryColor bg-overlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-r-lg hover:bg-transparentSecondaryColor"
 			>
 				<span class="sr-only">Next</span>
 				<svg

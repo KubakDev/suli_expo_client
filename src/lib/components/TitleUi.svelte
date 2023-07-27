@@ -18,13 +18,14 @@
 </script>
 
 <div>
-	<div class="h-[1px] {backgroundColor}" />
+	<div style="background-color: var(--overlaySecondaryColor);" class="h-[1px]" />
 	<h1
 		class="{footerSize
 			? ' font-sans'
-			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-2xl {textColor}"
+			: ' sm:text-4xl font-bold'} uppercase text-center my-1 px-4 ms:px-10 text-2xl"
+			style="color: var(--overlayBackgroundColor);"
 	>
 		{text}
 	</h1>
-	<div class="h-[1px] {backgroundColor}" />
+	<div style="background-color: var(--overlaySecondaryColor);" class="h-[1px]" />
 </div>
