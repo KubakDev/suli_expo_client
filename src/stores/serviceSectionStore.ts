@@ -6,14 +6,14 @@ import type { Locales } from '$lib/i18n/i18n-types';
 import Constants from '../utils/constants';
 
 const createServiceSectionStore = () => {
-	const { subscribe, set, update } = writable<ServicePaginatedModel>();
+	const { subscribe, set, update } = writable<ServiceModel[]>([]);
 
 	return {
 		subscribe,
-		set: (seatLayout: ServicePaginatedModel) => {
+		set: (seatLayout: ServiceModel[]) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales,supabase: SupabaseClient, page:string) => {
+		get: async (locale: Locales,supabase: SupabaseClient) => {
 			const result = await supabase
 				.from('service')
 				.select('*,languages:service_languages(*)')
@@ -25,18 +25,7 @@ const createServiceSectionStore = () => {
 			} else {
 				console.log('result', result);
 				const services = result.data.map((e) => convertModel<ServiceModel>(e)) as ServiceModel[];
-
-				const servicePaginated = {
-					data: services,
-					page: parseInt(page),
-					count: result.count,
-					pages: Math.ceil((result.count ?? 1) / Constants.page_limit) // this is the total number of pages
-				  } as ServicePaginatedModel;
-
-				  console.log('servicePaginated', servicePaginated);
-				  
-				//('services', services);
-				set(servicePaginated);
+				set(services);
 				return null;
 			}
 		}

@@ -41,22 +41,22 @@
 			<div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 dark:text-white">
 				<div>
 					<div
-						class="flex justify-start items-center uppercase mb-6 text-xs"
+						class="flex justify-center items-center uppercase mb-6 text-xs"
 					>
-						<TitleUi text={$LL.address()} footerSize={true} textColor="{Constants.main_theme.overlayPrimary}" />
+						<TitleUi text={$LL.address()} footerSize={true} />
 					</div>
 
-					<ul class="w-44 text-sm leading-6">
+					<ul class="w-full text-md leading-6 flex justify-center items-center">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li style="color: {Constants.main_theme.overlaySecondary};">{info.location}</li>
+								<li class="text-overlaySecondaryColor">{info.location}</li>
 							{/each}
 						{/if}
 					</ul>
 				</div>
 				<div>
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
-						<TitleUi text={$LL.contact()} footerSize={true} textColor="{Constants.main_theme.overlayPrimary}" />
+						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
 					<ul class="text-sm leading-6" style="color: {Constants.main_theme.overlaySecondary};">
 						{#if contactInfoData}

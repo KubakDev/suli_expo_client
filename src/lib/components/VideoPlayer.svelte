@@ -24,8 +24,6 @@
 				}
 			});
 		}
-
-		console.log('video', videoUrl);
 	});
 
 	// get the YouTube ID from the URL
@@ -38,7 +36,7 @@
 	}
 </script>
 
-<Youtube id={getYouTubeId()} altThumb={true} --title={"Hello There"} />
+<Youtube id={getYouTubeId()} altThumb={true} --title={'Hello There'} />
 
 <!-- remove `controls` attribute if you're designing a custom UI -->
 <!-- <media-player

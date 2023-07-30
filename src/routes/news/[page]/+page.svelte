@@ -38,14 +38,12 @@
 	let asc: boolean = false;
 	let selectedExhibition: number[];
 	let startDate: Date;
-
 	let endDate: Date = new Date();
-
 
 	$: {
 		if ($locale || asc) {
 			const currentPage = $page.params.page;
-			newsStore.get($locale, data.supabase, currentPage, undefined, asc);
+			newsStore.get($locale, data.supabase, currentPage, undefined, asc, selectedExhibition);
 
 			exhibitionStore.get($locale, data.supabase);
 		}
@@ -60,7 +58,7 @@
 			newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	});
 	onDestroy(() => {
 		activeThemeStore.reAddColors();
@@ -70,13 +68,11 @@
 	}
 	async function changeOrder() {
 		asc = !asc;
-		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
 	async function filterByExhibition() {
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
-
-
 	const filterByDate = function () {
 		newsStore.get(
 			$locale,
@@ -85,12 +81,10 @@
 			undefined,
 			asc,
 			selectedExhibition,
-
 			startDate.toISOString(),
 			endDate.toISOString()
 		);
 	};
-
 </script>
 
 <section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
@@ -100,39 +94,30 @@
 				{#if asc}
 					<button
 						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full"
-						style="background-color: {Constants.page_theme.news.primary ??
-							Constants.main_theme.primary};"
+						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
 					>
 						<ArrowUp
 							size="30"
-							class="transition-all hover:animate-pulse"
-							style="color:{Constants.page_theme.news.background ??
-								Constants.main_theme.background} ;"
+							class="transition-all hover:animate-pulse text-newsBackgroundColor"
 						/>
+
 						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1"
-							style="color:{Constants.page_theme.news.overlayPrimary ??
-								Constants.main_theme.overlayPrimary} ;">Old - New</span
+							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+							>Old - New</span
 						>
 					</button>
 				{:else}
 					<button
 						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full"
-						style="background-color: {Constants.page_theme.news.primary ??
-							Constants.main_theme.primary};"
+						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
 					>
 						<ArrowDown
 							size="30"
-							class="transition-all hover:animate-pulse"
-							style="color:{Constants.page_theme.news.background ??
-								Constants.main_theme.background} ;"
+							class="transition-all hover:animate-pulse text-newsBackgroundColor"
 						/>
 						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1"
-							style="color: {Constants.page_theme.news.background ??
-								Constants.main_theme.background};">New - Old</span
+							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+							>New - Old</span
 						>
 					</button>
 				{/if}
@@ -144,25 +129,19 @@
 			{#if $exhibitionStore.length > 0}
 				<div class="justify-end flex z-10 w-full">
 					<Button
-						class="text-xs sm:text-[16px]"
-						style="background-color: {Constants.page_theme.news.primary ??
-							Constants.main_theme.overlayPrimary}; color: {Constants.page_theme.news
-							.overlayPrimary ?? Constants.main_theme.overlayPrimary}; marg"
+						class="text-xs sm:text-[16px] bg-newsPrimaryColor hover:bg-newsBackgroundColor transition-all text-newsOverlayPrimaryColor"
 						><Chevron>{$LL.filter()}</Chevron></Button
 					>
-					<Dropdown
-						class="w-80 p-3 space-y-3 text-sm bg-[{Constants.page_theme.news.overlayPrimary ??
-							Constants.main_theme.overlayPrimary}]"
-					>
-						<div class="max-h-48 overflow-y-auto {Constants.scrollbar_layout}">
-							<Label class="space-y-2">Filter By Exhibition</Label>
+					<Dropdown class="w-80 p-3 space-y-3 text-sm bg-backgroundColor">
+						<div class="max-h-48 overflow-y-auto border-2 border-solid border-black p-2 rounded-sm {Constants.scrollbar_layout}">
+							<Label class="space-y-2 text-lg font-bold text-center border-b-2 border-solid border-gray-300">Filter By Exhibition</Label>
 							{#each $exhibitionStore as exhibition}
 								<li>
 									<Checkbox
 										on:change={filterByExhibition}
 										bind:group={selectedExhibition}
 										value={exhibition.id}
-										class="border-b border-solid border-gray-300 w-full flex justify-between p-1"
+										class="border-b border-solid border-gray-300 w-full flex justify-start p-1 text-xs min-h-[50px] hover:bg-transparentPrimaryColor hover:text-overlayPrimaryColor rounded-md transition-all"
 										>{exhibition.title}</Checkbox
 									>
 								</li>
@@ -195,7 +174,7 @@
 			{/if}
 		</div>
 
-		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
 			{#each $newsStore.data as item, i}
 				<button
 					on:click={() => {
@@ -205,10 +184,9 @@
 				>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={'var(--newsPrimaryColor)'}
+							primaryColor={Constants.page_theme.news.primary ?? Constants.main_theme.primary}
 							overlayPrimaryColor={Constants.page_theme.news.overlayPrimary ??
 								Constants.main_theme.overlayPrimary}
-							imageClass={Constants.image_card_layout}
 							cardType={CardComponent ?? CardType.Flat}
 							title={item.title}
 							thumbnail={item.thumbnail}

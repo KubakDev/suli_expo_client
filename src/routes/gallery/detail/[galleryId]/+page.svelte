@@ -4,20 +4,18 @@
 	import { DetailPage } from 'kubak-svelte-component';
 	import { onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import Constants from '../../../utils/constants';
-	import type { GalleryModel } from '../../../models/galleryModel';
-	import { galleryStore } from '../../../stores/galleryStore';
+	import Constants from '../../../../utils/constants';
+	import type { GalleryModel } from '../../../../models/galleryModel';
+	import { galleryStore } from '../../../../stores/galleryStore';
 	import RecentItems from '$lib/components/RecentItems.svelte';
-	import { modelToItemModel } from '../../../models/covertModel';
+	import { modelToItemModel } from '../../../../models/covertModel';
 
-	export let data;
+	export let data:any;
 	let gallery: GalleryModel | undefined | null;
 
 	async function getGallery() {
 		gallery = await galleryStore.getSingle($locale, data.supabase, $page.params.galleryId);
-		galleryStore.get($locale, data.supabase);
-		//(news);
-		//(news.images);
+		galleryStore.get($locale, data.supabase,"1", 5);
 	}
 
 	onMount(() => {
@@ -36,10 +34,10 @@
 				/>
 			</div>
 
-			{#if $galleryStore}
+			{#if $galleryStore.data}
 				<RecentItems
 					title={$LL.gallery()}
-					items={$galleryStore.map((gallery) => modelToItemModel(gallery))}
+					items={$galleryStore.data.map((gallery) => modelToItemModel(gallery))}
 					pageType={'gallery'}
 				/>
 			{/if}

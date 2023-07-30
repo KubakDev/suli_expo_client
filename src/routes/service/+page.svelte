@@ -1,31 +1,26 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { serviceSectionStore } from '../../../stores/serviceSectionStore';
+	import { serviceSectionStore } from '../../stores/serviceSectionStore';
 	import Card from '$lib/components/Card.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import Constants from '../../../utils/constants';
+	import Constants from '../../utils/constants';
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { goto } from '$app/navigation';
 
-	export let data;
+	export let data:any;
 
 	$: {
 		if ($locale) {
-			const currentPage = $page.params.page;
-			serviceSectionStore.get($locale, data.supabase,currentPage);
+			serviceSectionStore.get($locale, data.supabase);
 		}
 	}
 
 	onMount(async () => {
-		await serviceSectionStore.get($locale, data?.supabase,$page.params.page);
-		// console.log('serviceSectionStore', $serviceSectionStore);
+		await serviceSectionStore.get($locale, data?.supabase);
 	});
 
-	function changePage(page: number) {
-		goto(`/services/${page}`);
-	}
 </script>
 
 <svelte:head>
@@ -39,7 +34,7 @@
 		</div>
 
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each $serviceSectionStore.data as item, i}
+			{#each $serviceSectionStore as item, i}
 				<div class=" bg-white rounded-3xl">
 					<Card
 						title={item.title}

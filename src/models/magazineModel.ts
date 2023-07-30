@@ -19,3 +19,10 @@ interface CarouselImage {
 	imgurl: string;
 	attribution: string;
 }
+
+export interface MagazinePaginatedModel {
+	data: MagazineModel[];
+	page: number;
+	count: number;
+	pages: number;
+}

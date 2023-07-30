@@ -87,8 +87,7 @@
 								: 'right-4 sm:right-10 md:right:20 lg:right-32'}  z-10"
 						>
 							<div
-							style="color: {Constants.main_theme.overlayPrimary};"
-								class="text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="text-backgroundColor text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-100"
@@ -96,8 +95,7 @@
 								<p>{c.title}</p>
 							</div>
 							<div
-								style="color: {Constants.main_theme.overlayPrimary};"
-								class="w-full md:w-1/2 text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="text-backgroundColor w-full md:w-1/2 text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-300"

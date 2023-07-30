@@ -2,9 +2,9 @@
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
-	import { exhibitionStore } from '../../../stores/exhibtionStore';
-	import type { ExhibitionModel } from '../../../models/exhibitionModel';
-	import Constants from '../../../utils/constants';
+	import { exhibitionStore } from '../../../../stores/exhibtionStore';
+	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
+	import Constants from '../../../../utils/constants';
 	import { fade } from 'svelte/transition'; // import the fade transition
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import { MapPin, BuildingOffice2, GlobeAsiaAustralia } from 'svelte-heros-v2';
@@ -18,7 +18,7 @@
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
 
-	export let data;
+	export let data:any;
 
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
@@ -80,55 +80,52 @@
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
 						<div class="flex h-20 items-center my-1">
 							<div
-							style="background-color:{Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary} ;"
-								class="flex rounded-full justify-center items-center h-20 w-20 bloc"
+								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionSecondaryColor"
 							>
-								<GlobeAsiaAustralia style="color:{Constants.page_theme.exhibition.background ?? Constants.main_theme.background}" size="50" />
+								<GlobeAsiaAustralia class="text-exhibitionBackgroundColor" size="50" />
 							</div>
 							<div class="h-full w-4" />
-							<div class="flex flex-col w-40 dark:text-white">
+							<div class="flex flex-col w-40 ">
 								{#if exhibition}
-									<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
+									<h2 class="text-2xl text-exhibitionOverlayBackgroundColor font-bold">
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
+								<p class="text-exhibitionOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Countries()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-							style="background-color:{Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
-								class="flex rounded-full h-20 w-20 justify-center items-center bloc"
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionSecondaryColor"
 							>
-								<BuildingOffice2 style="color: {Constants.page_theme.exhibition.background ?? Constants.main_theme.background};" size="50" />
+								<BuildingOffice2 class="text-exhibitionBackgroundColor" size="50" />
 							</div>
 							<div class="h-full w-4" />
-							<div class="flex flex-col dark:text-white">
-								<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
+							<div class="flex flex-col ">
+								<h2 class="text-exhibitionOverlayBackgroundColor text-2xl font-bold">
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
+								<p class="text-exhibitionOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Companies()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-							style="background-color: {Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
-								class="flex rounded-full h-20 w-20 justify-center items-center bloc"
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionSecondaryColor"
 							>
-								<MapPin size="50" style="color: {Constants.page_theme.exhibition.background ?? Constants.main_theme.background};" />
+								<MapPin size="50" class="text-exhibitionBackgroundColor" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-2xl font-bold">
+								<h2 class="text-exhibitionOverlayBackgroundColor text-2xl font-bold">
 									{$LL.exhibition_mini_data.Reservation.title()}
 								</h2>
-								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
+								<p class="text-exhibitionOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Reservation.place()}
 								</p>
 							</div>
@@ -153,11 +150,11 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<h1 style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-4xl font-bold">
+								<h1  class="text-exhibitionOverlayBackgroundColor text-4xl font-bold">
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 
-								<p style="color: {Constants.page_theme.exhibition.overlayBackground ?? Constants.main_theme.overlayBackground};" class="text-lg">
+								<p class="text-exhibitionOverlayBackgroundColor text-lg">
 									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
 									{:else}
@@ -177,36 +174,19 @@
 
 
 		<div
-		style="background-color: {Constants.page_theme.exhibition.secondary ?? Constants.main_theme.secondary};"
-			class="w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
+			class="bg-transparentSecondaryColor w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
 		>
 		<div class="mx-auto max-w-screen-lg">
-			<div style="color: {Constants.page_theme.exhibition.overlaySecondary ?? Constants.main_theme.overlaySecondary};" class="lg:text-3xl text-lg uppercase font-bold">
+			<div class="text-exhibitionSecondaryColor lg:text-3xl text-lg uppercase font-bold">
 				{$LL.exhibition_mini_data.Fair()}
 			</div>
 
-			<div style="color: {Constants.page_theme.exhibition.overlaySecondary ?? Constants.main_theme.overlaySecondary};" class="lg:text-xl text-base py-4 [word-spacing:5px]">
+			<div  class="text-exhibitionOverlaySecondaryColor lg:text-xl text-base py-4 [word-spacing:5px]">
 				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
 				English. Many desktop publishing packages.
 			</div>
 		</div>
 		</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		{#if exhibition?.pdf_files.length || [].length > 0}

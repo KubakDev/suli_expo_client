@@ -13,13 +13,21 @@
 
 	export let data;
 	let video: VideoModel | undefined | null;
+	let thumbnailUrl: string[];
+
+	const youtubeRegex =
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 	async function getVideos() {
 		video = await videoStore.getSingle($locale, data.supabase, $page.params.videoId);
-		videoStore.get($locale, data.supabase);
+		videoStore.get($locale, data.supabase, '1', undefined, false);
+
+		thumbnailUrl = $videoStore.data.map((item) => {
+			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
+		});	
 	}
 
-	$:{
+	$: {
 		if ($locale) {
 			getVideos();
 		}
@@ -28,6 +36,15 @@
 	onMount(() => {
 		getVideos();
 	});
+
+	// get the YouTube ID from the URL
+	function getYouTubeId(url: string): string | null {
+		const match = youtubeRegex.exec(url);
+
+		console.log('match', match);
+
+		return match ? match[1] : null;
+	}
 </script>
 
 <section
@@ -42,7 +59,7 @@
 				<span class="flex justify-center">
 					{video.title}
 				</span>
-				<span class="text-justify"> 
+				<span class="text-justify">
 					{@html video.long_description}
 				</span>
 			</div>
@@ -51,8 +68,9 @@
 				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full">
 					<RecentItems
 						title={$LL.videos()}
-						items={$videoStore.map((video) => modelToItemModel(video))}
+						items={$videoStore.data.map((video) => modelToItemModel(video))}
 						pageType={'videos'}
+						youtubeThumbnail={thumbnailUrl}
 					/>
 				</div>
 			{/if}

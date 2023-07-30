@@ -118,10 +118,10 @@
 				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
 			>
 			<NavLi
-				on:click={() => updateActiveUrl('/exhibition')}
-				href="/exhibition"
+				on:click={() => updateActiveUrl('/exhibition/1')}
+				href="/exhibition/1"
 				class="  cursor-pointer text-sm  lg:text-lg"
-				active={activeUrl == '/exhibition'}>{$LL.exhibition()}</NavLi
+				active={activeUrl.startsWith('/exhibition')}>{$LL.exhibition()}</NavLi
 			>
 			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi
@@ -129,30 +129,30 @@
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/gallery"
-					on:click={() => updateActiveUrl('/gallery')}>{$LL.gallery()}</DropdownItem
+					href="/gallery/1"
+					on:click={() => updateActiveUrl('/gallery/1')}>{$LL.gallery()}</DropdownItem
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/magazine"
-					on:click={() => updateActiveUrl('/magazine')}>{$LL.magazine()}</DropdownItem
+					href="/magazine/1"
+					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/publishing"
-					on:click={() => updateActiveUrl('/publishing')}>{$LL.publishing()}</DropdownItem
+					href="/publishing/1"
+					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/video"
-					on:click={() => updateActiveUrl('/video')}>{$LL.videos()}</DropdownItem
+					href="/video/1"
+					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
 			<NavLi
-				on:click={() => updateActiveUrl('/service/1')}
+				on:click={() => updateActiveUrl('/service')}
 				class="  cursor-pointer text-sm  lg:text-lg"
-				href="/service/1"
-				active={activeUrl == '/services'}>{$LL.services()}</NavLi
+				href="/service"
+				active={activeUrl == '/service'}>{$LL.services()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/about')}
