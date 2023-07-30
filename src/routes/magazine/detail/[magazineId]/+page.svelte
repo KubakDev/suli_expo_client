@@ -25,7 +25,7 @@
 
 	async function getMagazine() {
 		magazine = await magazineStore.getSingle($locale, data.supabase, $page.params.magazineId);
-		magazineStore.get($locale, data.supabase);
+		magazineStore.get($locale, data.supabase, "1", 5);
 	}
 
 	onMount(() => {
@@ -65,7 +65,7 @@
 				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full">
 					<RecentItems
 						title={$LL.magazine()}
-						items={$magazineStore.map((magazine) => modelToItemModel(magazine))}
+						items={$magazineStore.data.map((magazine) => modelToItemModel(magazine))}
 						pageType={'magazine'}
 					/>
 				</div>

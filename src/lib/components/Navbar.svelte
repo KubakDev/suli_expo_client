@@ -134,18 +134,18 @@
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/magazine"
-					on:click={() => updateActiveUrl('/magazine')}>{$LL.magazine()}</DropdownItem
+					href="/magazine/1"
+					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/publishing"
-					on:click={() => updateActiveUrl('/publishing')}>{$LL.publishing()}</DropdownItem
+					href="/publishing/1"
+					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
 					defaultClass="dark:text-white text-secondary mb-1 text-base"
-					href="/video"
-					on:click={() => updateActiveUrl('/video')}>{$LL.videos()}</DropdownItem
+					href="/video/1"
+					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
 			<NavLi

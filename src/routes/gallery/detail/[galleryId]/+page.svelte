@@ -15,8 +15,7 @@
 
 	async function getGallery() {
 		gallery = await galleryStore.getSingle($locale, data.supabase, $page.params.galleryId);
-		//(news);
-		//(news.images);
+		galleryStore.get($locale, data.supabase,"1", 5);
 	}
 
 	onMount(() => {
