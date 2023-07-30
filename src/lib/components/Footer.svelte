@@ -49,7 +49,7 @@
 					<ul class="w-full text-md leading-6 flex justify-center items-center">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li class="text-overlaySecondaryColor">{info.location}</li>
+								<li class="text-backgroundColor">{info.location}</li>
 							{/each}
 						{/if}
 					</ul>
@@ -58,7 +58,7 @@
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
 						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
-					<ul class="text-sm leading-6" style="color: {Constants.main_theme.overlaySecondary};">
+					<ul class="text-sm leading-6 text-backgroundColor">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
 								{#if $locale === 'ckb' || $locale === 'ar'}
