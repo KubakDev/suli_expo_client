@@ -26,8 +26,7 @@
 
 	$: {
 		if ($locale) {
-			const currentPage = $page.params.page;
-			exhibitionStore.getPaginated($locale, data?.supabase,currentPage, undefined, asc);
+			getExhibitions();
 		}
 	}
 
@@ -37,8 +36,7 @@
 		let cardType =
 			exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() + exhibitionUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
-
-		exhibitions = await exhibitionStore.getPaginated($locale, data?.supabase, $page.params.page, undefined, asc) as ExhibitionPaginatedModel;
+		getExhibitions();
 	});
 
 	function openExhibition(id: number) {
@@ -49,9 +47,13 @@
 		goto(`/exhibition/${page}`);
 	}
 
+	async function getExhibitions() {
+		exhibitions = await exhibitionStore.getPaginated($locale, data?.supabase, $page.params.page, undefined, asc) as ExhibitionPaginatedModel;
+	}
+
 	async function changeOrder() {
 		asc = !asc;
-		exhibitions = await exhibitionStore.getPaginated($locale, data?.supabase, $page.params.page, undefined, asc) as ExhibitionPaginatedModel;
+		getExhibitions();
 	}
 </script>
 

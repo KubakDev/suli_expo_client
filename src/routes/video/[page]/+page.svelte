@@ -131,7 +131,7 @@
 			{/each}
 		</div>
 		<div dir="ltr" class="flex justify-center my-10">
-			{#if $videoStore.count > 10}
+			{#if $videoStore.count > 9}
 				<PaginationComponent
 					total={$videoStore.pages}
 					page={parseInt($page.params.page)}
