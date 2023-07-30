@@ -50,6 +50,7 @@
 						{#if contactInfoData}
 							{#each contactInfoData as info}
 								<li class="text-backgroundColor">{info.location}</li>
+
 							{/each}
 						{/if}
 					</ul>

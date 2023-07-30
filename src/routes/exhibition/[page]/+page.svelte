@@ -36,7 +36,6 @@
 		let cardType =
 			exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() + exhibitionUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
-
 		getExhibitions();
 	});
 
