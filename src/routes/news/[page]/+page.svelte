@@ -73,7 +73,6 @@
 	async function filterByExhibition() {
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	}
-
 	const filterByDate = function () {
 		newsStore.get(
 			$locale,
