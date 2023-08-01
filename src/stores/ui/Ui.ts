@@ -12,7 +12,7 @@ const Ui = () => {
 			const result = await supabase
 				.from('page_builder')
 				.select(
-					`id, component_type(id,type), component(title), color_palette_light:color_palette_id_lightMode(*),color_palette_dark:color_palette_id_darkMode(*)`
+					`id, component_type(id,type), component(title), color_palette_light:color_palette_id_lightMode(*),color_palette_dark:color_palette_id_darkMode(*),page,status`
 				)
 				.eq('page', cardPage)
 				.single();
@@ -23,10 +23,31 @@ const Ui = () => {
 				return null;
 			} else {
 				// @ts-ignore
-				let newsUi: UiModel = result.data as UiModel;
+				let Ui: UiModel = result.data as UiModel;
 
-				set(newsUi);
-				return newsUi;
+				set(Ui);
+				return Ui;
+			}
+		},
+		getPage: async (supabase: SupabaseClient, page:string) => {
+			const result = await supabase
+				.from('page_builder')
+				.select(
+					`id, component_type(id,type), component(title), color_palette_light:color_palette_id_lightMode(*),color_palette_dark:color_palette_id_darkMode(*),page,status`
+				)
+				.eq('page', page)
+				.single();
+			if (result.error) {
+				//.error(result.error);
+				console.log('result.error', result.error);
+
+				return null;
+			} else {
+				// @ts-ignore
+				let Ui: UiModel = result.data as UiModel;
+
+				set(Ui);
+				return Ui.status;
 			}
 		}
 	};
