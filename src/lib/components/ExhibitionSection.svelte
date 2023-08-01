@@ -68,8 +68,8 @@
 						>
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
-								primaryColor={Constants.page_theme.exhibition.primary ?? Constants.main_theme.primary}
-								overlayPrimaryColor={Constants.page_theme.exhibition.overlayPrimary ?? Constants.main_theme.overlayPrimary}
+								primaryColor={Constants.page_theme.exhibition.lightPrimary ?? Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={Constants.page_theme.exhibition.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}

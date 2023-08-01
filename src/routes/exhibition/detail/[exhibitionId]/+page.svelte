@@ -16,9 +16,8 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
-	import ExhibitionDate from '$lib/components/ExhibitionDate.svelte';
 
-	export let data:any;
+	export let data: any;
 
 	let exhibition: ExhibitionModel | undefined | null;
 	async function getExhibition() {
@@ -74,58 +73,58 @@
 						/>
 					{/if}
 				</div> -->
-				<NewsSection supabase={data.supabase} />
+				<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionSecondaryColor"
+								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<GlobeAsiaAustralia class="text-exhibitionBackgroundColor" size="50" />
+								<GlobeAsiaAustralia class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" size="50" />
 							</div>
 							<div class="h-full w-4" />
-							<div class="flex flex-col w-40 ">
+							<div class="flex flex-col w-40">
 								{#if exhibition}
-									<h2 class="text-2xl text-exhibitionOverlayBackgroundColor font-bold">
+									<h2 class="text-2xl text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor font-bold">
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p class="text-exhibitionOverlayBackgroundColor text-lg">
+								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Countries()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionSecondaryColor"
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<BuildingOffice2 class="text-exhibitionBackgroundColor" size="50" />
+								<BuildingOffice2 class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" size="50" />
 							</div>
 							<div class="h-full w-4" />
-							<div class="flex flex-col ">
-								<h2 class="text-exhibitionOverlayBackgroundColor text-2xl font-bold">
+							<div class="flex flex-col">
+								<h2 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold">
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p class="text-exhibitionOverlayBackgroundColor text-lg">
+								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Companies()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionSecondaryColor"
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<MapPin size="50" class="text-exhibitionBackgroundColor" />
+								<MapPin size="50" class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-exhibitionOverlayBackgroundColor text-2xl font-bold">
+								<h2 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold">
 									{$LL.exhibition_mini_data.Reservation.title()}
 								</h2>
-								<p class="text-exhibitionOverlayBackgroundColor text-lg">
+								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
 									{$LL.exhibition_mini_data.Reservation.place()}
 								</p>
 							</div>
@@ -150,11 +149,11 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<h1  class="text-exhibitionOverlayBackgroundColor text-4xl font-bold">
+								<h1 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold">
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 
-								<p class="text-exhibitionOverlayBackgroundColor text-lg">
+								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
 									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
 									{:else}
@@ -170,24 +169,22 @@
 			</div>
 		</div>
 
-
-
-
-		<div
+		<!-- <div
 			class="bg-transparentSecondaryColor w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
 		>
-		<div class="mx-auto max-w-screen-lg">
-			<div class="text-exhibitionSecondaryColor lg:text-3xl text-lg uppercase font-bold">
-				{$LL.exhibition_mini_data.Fair()}
-			</div>
+			<div class="mx-auto max-w-screen-lg">
+				<div class="text-exhibitionSecondaryColor lg:text-3xl text-lg uppercase font-bold">
+					{$LL.exhibition_mini_data.Fair()}
+				</div>
 
-			<div  class="text-exhibitionOverlaySecondaryColor lg:text-xl text-base py-4 [word-spacing:5px]">
-				distribution of letters, as opposed to using 'Content here, content, makinlook like readable
-				English. Many desktop publishing packages.
+				<div
+					class="text-exhibitionOverlaySecondaryColor lg:text-xl text-base py-4 [word-spacing:5px]"
+				>
+					distribution of letters, as opposed to using 'Content here, content, makinlook like
+					readable English. Many desktop publishing packages.
+				</div>
 			</div>
-		</div>
-		</div>
-
+		</div> -->
 
 		{#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="flex justify-center w-full pt-12">
@@ -240,7 +237,7 @@
 				</div>
 			</div>
 			<div class="{Constants.page_max_width} mx-auto">
-					<VideoPlayer videoUrl={exhibition?.video_youtube_link+""} />
+				<VideoPlayer videoUrl={exhibition?.video_youtube_link + ''} />
 			</div>
 		{/if}
 

@@ -17,7 +17,7 @@ const createVideoStore = () => {
 			// get current selected language
 			let query = supabase
 				.from('media_video')
-				.select('*,languages:media_video_languages!inner(*)')
+				.select('*,languages:media_video_languages!inner(*)',{ count: 'exact' })
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: asc ?? false});
 
@@ -30,6 +30,7 @@ const createVideoStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
+				
 				const videos = result.data.map((e) => convertModel<VideoModel>(e, true)) as VideoModel[];
 
 				const videosPaginated = {
@@ -38,6 +39,9 @@ const createVideoStore = () => {
 					count: result.count,
 					pages: Math.ceil((result.count ?? 1) / 9) // this is the total number of pages
 				} as VideoPaginatedModel;
+
+				console.log("Data Video ",videosPaginated);
+				
 
 				set(videosPaginated);
 				return null;

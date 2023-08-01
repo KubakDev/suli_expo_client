@@ -40,6 +40,7 @@
 
 		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 
+		if(!$videoStore.data) return;
 		thumbnailUrl = $videoStore.data.map((item) => {
 			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
 		});		
@@ -76,26 +77,26 @@
 			{#if asc}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-newsBackgroundColor" />
+					<ArrowUp size="30" class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor" />
 
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
 						>Old - New</span
 					>
 				</button>
 			{:else}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
 				>
 					<ArrowDown
 						size="30"
-						class="transition-all hover:animate-pulse text-newsBackgroundColor"
+						class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
 					/>
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
 						>New - Old</span
 					>
 				</button>
@@ -110,7 +111,7 @@
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
-	{#if $videoStore}
+	{#if $videoStore && thumbnailUrl}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore.data as item, index}
 				{#if CardComponent}
@@ -118,13 +119,13 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>
 						<ExpoCard
-							primaryColor={Constants.page_theme.video.primary ?? Constants.main_theme.primary}
-							overlayPrimaryColor={Constants.page_theme.video.overlayPrimary ??
-								Constants.main_theme.overlayPrimary}
+							primaryColor={Constants.page_theme.video.lightPrimary ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={Constants.page_theme.video.lightOverlayPrimary ??
+								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
 							thumbnail={item?.thumbnail ??
-								thumbnailUrl[index]}
+								thumbnailUrl[index] ?? ""}
 						/>
 					</div>
 				{/if}

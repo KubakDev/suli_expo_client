@@ -60,9 +60,9 @@
 
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	});
-	onDestroy(() => {
-		activeThemeStore.reAddColors();
-	});
+	// onDestroy(() => {
+	// 	activeThemeStore.reAddColors();
+	// });
 	function changePage(page: number) {
 		goto(`/news/${page}`);
 	}
@@ -94,29 +94,29 @@
 				{#if asc}
 					<button
 						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
 					>
 						<ArrowUp
 							size="30"
-							class="transition-all hover:animate-pulse text-newsBackgroundColor"
+							class="transition-all hover:animate-pulse text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
 						/>
 
 						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
 							>Old - New</span
 						>
 					</button>
 				{:else}
 					<button
 						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+						class="flex flex-row items-center justify-center p-2 rounded-full bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
 					>
 						<ArrowDown
 							size="30"
-							class="transition-all hover:animate-pulse text-newsBackgroundColor"
+							class="transition-all hover:animate-pulse text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
 						/>
 						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
 							>New - Old</span
 						>
 					</button>
@@ -129,10 +129,10 @@
 			{#if $exhibitionStore.length > 0}
 				<div class="justify-end flex z-10 w-full">
 					<Button
-						class="text-xs sm:text-[16px] bg-newsPrimaryColor hover:bg-newsBackgroundColor transition-all text-newsOverlayPrimaryColor"
+						class="text-xs sm:text-[16px] bg-newsLightPrimaryColor hover:bg-newsLightBackgroundColor transition-all text-newsLightOverlayPrimaryColor dark:bg-newsDarkPrimaryColor dark:hover:bg-newsDarkBackgroundColor dark:text-newsDarkOverlayPrimaryColor"
 						><Chevron>{$LL.filter()}</Chevron></Button
 					>
-					<Dropdown class="w-80 p-3 space-y-3 text-sm bg-backgroundColor">
+					<Dropdown class="w-80 p-3 space-y-3 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor">
 						<div class="max-h-48 overflow-y-auto border-2 border-solid border-black p-2 rounded-sm {Constants.scrollbar_layout}">
 							<Label class="space-y-2 text-lg font-bold text-center border-b-2 border-solid border-gray-300">Filter By Exhibition</Label>
 							{#each $exhibitionStore as exhibition}
@@ -141,7 +141,7 @@
 										on:change={filterByExhibition}
 										bind:group={selectedExhibition}
 										value={exhibition.id}
-										class="border-b border-solid border-gray-300 w-full flex justify-start p-1 text-xs min-h-[50px] hover:bg-transparentPrimaryColor hover:text-overlayPrimaryColor rounded-md transition-all"
+										class="border-b border-solid border-gray-300 w-full flex justify-start p-1 text-xs min-h-[50px] hover:bg-lightTransparentPrimaryColor hover:text-lightOverlayPrimaryColor rounded-md transition-all dark:hover:bg-darkTransparentPrimaryColor dark:hover:text-darkOverlayPrimaryColor dark:bg-darkPrimaryColor dark:text-darkOverlayPrimaryColor"
 										>{exhibition.title}</Checkbox
 									>
 								</li>
@@ -184,9 +184,9 @@
 				>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={Constants.page_theme.news.primary ?? Constants.main_theme.primary}
-							overlayPrimaryColor={Constants.page_theme.news.overlayPrimary ??
-								Constants.main_theme.overlayPrimary}
+							primaryColor={Constants.page_theme.news.lightPrimary ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={Constants.page_theme.news.lightOverlayPrimary ??
+								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent ?? CardType.Flat}
 							title={item.title}
 							thumbnail={item.thumbnail}

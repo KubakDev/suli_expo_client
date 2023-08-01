@@ -20,10 +20,11 @@
 
 	export let supabase: SupabaseClient;
 	let CardComponent: any;
+	export let exhibitionId:string = "";
 
 	$: {
 		if ($locale) {
-			newsSectionStore.get($locale, supabase);
+			newsSectionStore.get($locale, supabase, exhibitionId);
 		}
 	}
 
@@ -72,8 +73,8 @@
 						>
 						<!-- {#if CardComponent} -->
 							<ExpoCard
-								primaryColor={Constants.page_theme.news.primary ?? Constants.main_theme.primary}
-								overlayPrimaryColor={Constants.page_theme.news.overlayPrimary ?? Constants.main_theme.overlayPrimary}
+								primaryColor={Constants.page_theme.news.lightPrimary ?? Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={Constants.page_theme.news.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
 								imageClass={Constants.image_card_layout}
 								cardType={CardComponent || CardType.Main}
 								title={n.title}

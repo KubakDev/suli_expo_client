@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Button } from 'flowbite-svelte';
 	import constants from '../../../utils/constants';
 	import TitleUi from '../TitleUi.svelte';
@@ -13,7 +12,7 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi textColorDark="text-white" textColorLight="text-white" text={$LL.news()} />
+				<TitleUi text={$LL.news()} />
 			</div>
 			<Button color="primary" class="w-32 rounded-md bg-primary text-black">See all</Button>
 		</div>

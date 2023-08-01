@@ -15,7 +15,6 @@
 	import type { UiModel } from '../../../models/uiModel.js';
 	import { stringToEnum } from '../../../utils/enumToString.js';
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
-	import { CardPlaceholder, Spinner } from 'flowbite-svelte';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 
@@ -70,29 +69,29 @@
 			{#if asc}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-exhibitionLightPrimaryColor dark:bg-exhibitionDarkPrimaryColor"
 				>
 					<ArrowUp
 						size="30"
-						class="transition-all hover:animate-pulse text-newsBackgroundColor"
+						class="transition-all hover:animate-pulse text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
 					/>
 
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
 						>Old - New</span
 					>
 				</button>
 			{:else}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-exhibitionLightPrimaryColor dark:bg-exhibitionDarkPrimaryColor"
 				>
 					<ArrowDown
 						size="30"
-						class="transition-all hover:animate-pulse text-newsBackgroundColor"
+						class="transition-all hover:animate-pulse text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
 					/>
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
 						>New - Old</span
 					>
 				</button>
@@ -120,8 +119,8 @@
 			>
 			{#if CardComponent}
 				<ExpoCard
-					primaryColor={Constants.page_theme.exhibition.primary ?? Constants.main_theme.primary}
-					overlayPrimaryColor={Constants.page_theme.exhibition.overlayPrimary ?? Constants.main_theme.overlayPrimary}
+					primaryColor={Constants.page_theme.exhibition.lightPrimary ?? Constants.main_theme.lightPrimary}
+					overlayPrimaryColor={Constants.page_theme.exhibition.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}

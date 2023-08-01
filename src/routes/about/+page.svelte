@@ -46,14 +46,14 @@
 		<section>
 			<div class="text-center pb-12">
 				<h1
-					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-primaryColor"
+					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-lightPrimaryColor dark:text-darkPrimaryColor"
 				>
 					{$LL.successTeam()}
 				</h1>
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
-					<div class=" text-overlayBackground rounded-lg p-2">
+					<div class=" text-lightOverlayBackground dark:text-darkOverlayBackgroundColor rounded-lg p-2">
 						<Staff {staffSection} />
 					</div>
 				{/each}

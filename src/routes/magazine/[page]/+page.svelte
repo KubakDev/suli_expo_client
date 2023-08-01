@@ -56,26 +56,26 @@
 			{#if asc}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-magazineLightPrimaryColor dark:bg-magazineDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-newsBackgroundColor" />
+					<ArrowUp size="30" class="transition-all hover:animate-pulse text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor" />
 
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor"
 						>Old - New</span
 					>
 				</button>
 			{:else}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-magazineLightPrimaryColor dark:bg-magazineDarkPrimaryColor"
 				>
 					<ArrowDown
 						size="30"
-						class="transition-all hover:animate-pulse text-newsBackgroundColor"
+						class="transition-all hover:animate-pulse text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor"
 					/>
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor"
 						>New - Old</span
 					>
 				</button>
@@ -99,9 +99,9 @@
 				<div on:click={() => DetailsPage(item.id)}>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={Constants.page_theme.magazine.primary ?? Constants.main_theme.primary}
-							overlayPrimaryColor={Constants.page_theme.magazine.overlayPrimary ??
-								Constants.main_theme.overlayPrimary}
+							primaryColor={Constants.page_theme.magazine.lightPrimary ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={Constants.page_theme.magazine.lightOverlayPrimary ??
+								Constants.main_theme.lightOverlayPrimary}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}

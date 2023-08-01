@@ -57,26 +57,26 @@
 			{#if asc}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-publishingLightPrimaryColor dark:bg-publishingDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-newsBackgroundColor" />
+					<ArrowUp size="30" class="transition-all hover:animate-pulse text-publishingLightBackgroundColor dark:text-publishingLightBackgroundColor" />
 
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsOverlayPrimaryColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-publishingLightBackgroundColor dark:text-publishingLightBackgroundColor"
 						>Old - New</span
 					>
 				</button>
 			{:else}
 				<button
 					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-newsPrimaryColor"
+					class="flex flex-row items-center justify-center p-2 rounded-full bg-publishingLightPrimaryColor dark:bg-publishingDarkPrimaryColor"
 				>
 					<ArrowDown
 						size="30"
-						class="transition-all hover:animate-pulse text-newsBackgroundColor"
+						class="transition-all hover:animate-pulse text-publishingLightBackgroundColor dark:text-publishingLightBackgroundColor"
 					/>
 					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsBackgroundColor"
+						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-publishingLightBackgroundColor dark:text-publishingLightBackgroundColor"
 						>New - Old</span
 					>
 				</button>
@@ -99,9 +99,9 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id || 1)}>
 						<ExpoCard
-							primaryColor={Constants.page_theme.publishing.primary ?? Constants.main_theme.primary}
-							overlayPrimaryColor={Constants.page_theme.publishing.overlayPrimary ??
-								Constants.main_theme.overlayPrimary}
+							primaryColor={Constants.page_theme.publishing.lightPrimary ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={Constants.page_theme.publishing.lightOverlayPrimary ??
+								Constants.main_theme.lightOverlayPrimary}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
