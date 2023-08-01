@@ -62,6 +62,7 @@
 						{#if contactInfoData}
 							{#each contactInfoData as info}
 								<li class="text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">{info.location}</li>
+
 							{/each}
 						{/if}
 					</ul>
@@ -71,6 +72,7 @@
 						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
 					<ul class="text-sm leading-6 text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">
+
 						{#if contactInfoData}
 							{#each contactInfoData as info}
 								{#if $locale === 'ckb' || $locale === 'ar'}
