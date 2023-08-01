@@ -6,7 +6,7 @@
 
 <Button
 	on:click={onBtnClick}
-	class="border-overlaySecondaryColor text-overlaySecondaryColor hover:bg-overlaySecondaryColor hover:text-overlayBackgroundColor"
+	class="border-lightOverlaySecondaryColor dark:border-darkOverlaySecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor hover:bg-lightOverlaySecondaryColor dark:hover:bg-darkOverlaySecondaryColor hover:text-lightOverlayBackgroundColor dark:hover:text-darkOverlayBackgroundColor"
 	dir="ltr"
 	outline
 >

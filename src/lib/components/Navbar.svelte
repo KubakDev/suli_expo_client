@@ -149,15 +149,14 @@
 					on:click={() => updateActiveUrl('/contact')}
 					active={activeUrl == '/contact'}
 					href="/contact"
-					class="   cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
+					class="cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 				>
 				<div
 					class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
 					style="margin:0 ;"
 				>
 					<Button
-						class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
-						style="color: {Constants.main_theme.lightOverlayPrimary}"
+						class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 text-lightOverlayPrimaryColor dark:text-darkOverlayPrimaryColor"
 						dir="ltr"
 						pill
 						outline><Chevron>{selectedLang}</Chevron></Button

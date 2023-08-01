@@ -38,7 +38,7 @@
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 
 		if(!$videoStore.data) return;
 		thumbnailUrl = $videoStore.data.map((item) => {

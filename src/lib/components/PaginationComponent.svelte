@@ -51,7 +51,7 @@
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<li on:click={() => handleClick(page - 1)} class="h-full cursor-pointer">
 			<a
-				class="flex justify-center text-overlaySecondaryColor bg-overlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-transparentSecondaryColor"
+				class="flex justify-center text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor bg-lightOverlayBackgroundColor dark:bg-darkOverlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
 			>
 				<span class="sr-only">Previous</span>
 				<svg
@@ -75,13 +75,13 @@
 				{#if page === pageNumber}
 					<a
 						aria-current="page"
-						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-transparentSecondaryColor text-overlaySecondaryColor font-bold hover:no-underline "
+						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentSecondaryColor dark:bg-darkTransparentSecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor font-bold hover:no-underline "
 						>{pageNumber}</a
 					>
 				{:else}
 					<a
 						aria-current="page"
-						class="flex justify-center font-light hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-transparentOverlayPrimaryColor text-secondaryColor hover:text-overlaySecondaryColor hover:no-underline hover:bg-transparentSecondaryColor"
+						class="flex justify-center font-light hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentOverlayPrimaryColor dark:bg-darkTransparentOverlayPrimaryColor text-lightSecondaryColor dark:text-darkSecondaryColor hover:text-lightOverlaySecondaryColor dark:hover:text-darkOverlaySecondaryColor hover:no-underline hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
 						>{pageNumber}</a
 					>
 				{/if}
@@ -100,7 +100,7 @@
 			class="h-full cursor-pointer"
 		>
 			<a
-				class="flex justify-center text-overlaySecondaryColor bg-overlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-r-lg hover:bg-transparentSecondaryColor"
+				class="flex justify-center text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor bg-lightOverlayBackgroundColor dark:bg-darkOverlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-r-lg hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
 			>
 				<span class="sr-only">Next</span>
 				<svg
