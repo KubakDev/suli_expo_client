@@ -8,23 +8,31 @@
 	import { locale } from '$lib/i18n/i18n-svelte';
 	import { changeLanguage } from '../utils/language';
 	import { contactInfoSectionStore } from '../stores/contactInfo';
-	import { easeCubicIn, transition } from 'd3';
-	import { fly } from 'svelte/transition';
+	import { color, easeCubicIn, transition } from 'd3';
+	import { fade, fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
 	import { activeThemeStore } from '../stores/ui/theme';
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../utils/urlRegexName';
-	import Constants from '../utils/constants';
 	register();
 	export let data;
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVarLight: string = 'light';
+	let tailVarDark: string = 'dark';
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			console.log('Page Name ', pageName);
 
-	let backgroundColor: string =
-		getNameRegex($page.url.pathname) &&
-		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
-			? `bg-${getNameRegex($page.url.pathname)}BackgroundColor`
-			: 'bg-backgroundColor';
+			tailVarLight = pageName + 'Light';
+			tailVarDark = pageName + 'Dark';
+		} else {
+			tailVarLight = 'light';
+			tailVarDark = 'dark';
+		}
+	}
 
 	let supabase: any;
 	if ($locale && data.supabase) {
@@ -36,8 +44,6 @@
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
 		await pageBuilderStore.get(data.supabase);
-
-		console.log('pageBuilderStore', $page);
 	});
 
 	function scale(
@@ -92,24 +98,28 @@
 </script>
 
 {#if supabase}
-	<div class="app {backgroundColor}">
-		<Headerbar />
-		<Navbar {data} />
-		<main class="h-full flex">
-			{#key data.url.pathname}
-				<div
-					class=" flex-1 sm:flex"
-					in:fly={{ x: inLeft() ? -300 : 300, duration: 800, delay: 600 }}
-					out:fly={{ x: inLeft() ? 300 : -300, duration: 500 }}
-				>
-					<slot />
-				</div>
-			{/key}
-		</main>
-		<div>
-			<Footer {data}/>
+	{#if $page}
+		<div class="app">
+			<Headerbar />
+			<Navbar {data} />
+			<main
+				class="h-full flex bg-{tailVarLight}BackgroundColor dark:bg-{tailVarDark}BackgroundColor"
+			>
+				{#key data.url.pathname}
+					<div
+						class=" flex-1 sm:flex"
+						in:fly={{ duration: 500, delay: 300 }}
+						out:fly={{ duration: 300 }}
+					>
+						<slot />
+					</div>
+				{/key}
+			</main>
+			<div>
+				<Footer {data} />
+			</div>
 		</div>
-	</div>
+	{/if}
 {/if}
 
 <style>

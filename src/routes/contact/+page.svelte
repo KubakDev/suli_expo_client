@@ -5,31 +5,14 @@
 	import ContactInfo from '$lib/components/ContactInfo.svelte';
 	import Contact from '$lib/components/Contact.svelte';
 	import Constants from '../../utils/constants';
-	import { onMount } from 'svelte';
-	import { getNameRegex } from '../../utils/urlRegexName';
-	import { page } from '$app/stores';
 
 	export let data;
-	let textColor: string =
-		getNameRegex($page.url.pathname) &&
-		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
-			? `text-${getNameRegex($page.url.pathname)}OverlaySecondaryColor`
-			: 'text-overlaySecondaryColor';
-
-	let backgroundColor: string =
-		getNameRegex($page.url.pathname) &&
-		!['about', 'contact', "undefined", ''].includes(getNameRegex($page.url.pathname))
-			? `bg-${getNameRegex($page.url.pathname)}SecondaryColor`
-			: 'bg-secondaryColor';
 	$: {
 		if ($locale && data.supabase) {
 			contactInfoSectionStore.get($locale, data.supabase);
 		}
 	}
 
-	onMount(async () => {
-		console.log('contactInfoSectionStore', $contactInfoSectionStore);
-	});
 </script>
 
 <svelte:head>
@@ -46,7 +29,7 @@
 
 		<!-- contact information section -->
 		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 {backgroundColor} {textColor} shadow"
+			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-lightSecondaryColor text-lightOverlaySecondaryColor dark:bg-darkSecondaryColor dark:text-darkOverlaySecondaryColor shadow"
 		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}

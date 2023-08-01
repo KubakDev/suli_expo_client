@@ -17,7 +17,7 @@ const createMagazineStore = () => {
 			// get current selected language
 			let query = supabase
 				.from('magazine')
-				.select('*,languages:magazine_languages!inner(*)')
+				.select('*,languages:magazine_languages!inner(*)',{ count: 'exact' })
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: asc ?? false});
 

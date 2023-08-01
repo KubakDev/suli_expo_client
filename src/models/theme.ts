@@ -1,4 +1,5 @@
 export interface activeTheme {
+  mode_type:string,
   primaryColor: string,
   secondaryColor: string,
   onSecondaryColor: string,

@@ -47,7 +47,7 @@ const createPublishingStore = () => {
 			// get current selected language
 			const result = await supabase
 				.from('publishing')
-				.select('*,languages:publishing_languages!inner(*)')
+				.select('*,languages:publishing_languages!inner(*)',{ count: 'exact' })
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.single();

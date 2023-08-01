@@ -17,7 +17,7 @@ const createGalleryStore = () => {
 			// get current selected language
 			let query = supabase
 				.from('gallery')
-				.select('*,languages:gallery_languages!inner(*)')
+				.select('*,languages:gallery_languages!inner(*)',{ count: 'exact' })
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: asc ?? false});
 

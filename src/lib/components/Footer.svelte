@@ -3,33 +3,45 @@
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import SocialIcons from '@rodneylab/svelte-social-icons';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import ContactInfo from './ContactInfo.svelte';
 	import type { PageData } from '../../routes/$types';
 	import type { SocialMediaModel } from '../../models/socialMedia';
-	import Constants from '../../utils/constants';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 	let contactInfoData: any;
 	let SocialMedia: SocialMediaModel;
+	let tailVarLight: string = 'light';
+	let tailVarDark: string = 'dark';
 
 	$: {
-		//.info('locale changed %%%%%%%%%%%%%%%%%%');
+		if (
+			$page.url.pathname.includes(
+				'news' || 'exhibition' || 'gallery' || 'magazine' || 'publishing' || 'video'
+			)
+		) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVarLight = pageName+'Light';
+			tailVarDark = pageName+'Dark';
+		}else{
+			tailVarLight = 'light';
+			tailVarDark = 'dark';
+		}
+	}
+
+	$: {
 		if ($locale) {
 			contactInfoData = $contactInfoSectionStore;
-			//('contactInfoData', contactInfoData);
 		}
 	}
 
 	onMount(async () => {
 		SocialMedia = await contactInfoSectionStore.getSingle(data.supabase) as SocialMediaModel;
-		console.log('contactInfoData', SocialMedia);
-		
 	});
 </script>
-
-<div class="py-10 px-10 border-t border-black shadow-2xl" style="background-color: {Constants.main_theme.secondary};">
+{#if $page}
+<div class="py-10 px-10 border-t border-black shadow-2xl bg-{tailVarLight}SecondaryColor dark:bg-{tailVarDark}SecondaryColor" >
 	<div
 		class="mx-auto
     sm:px-2 md:px-5 lg:px-7 max-w-screen-2xl"
@@ -49,7 +61,7 @@
 					<ul class="w-full text-md leading-6 flex justify-center items-center">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li class="text-backgroundColor">{info.location}</li>
+								<li class="text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">{info.location}</li>
 
 							{/each}
 						{/if}
@@ -59,7 +71,8 @@
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
 						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
-					<ul class="text-sm leading-6 text-backgroundColor">
+					<ul class="text-sm leading-6 text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">
+
 						{#if contactInfoData}
 							{#each contactInfoData as info}
 								{#if $locale === 'ckb' || $locale === 'ar'}
@@ -81,9 +94,9 @@
 		</div>
 		{#if SocialMedia}
 		<div class="w-full flex justify-center py-2 ">
-			<div class="justify-evenly flex w-[40%]">
-				<a href="https:\\{SocialMedia.twitter_link}" target="_blank" class="cursor-pointer mx-1">
-					<SocialIcons network="twitter" fgColor="#eeeeee" bgColor="#b18c25" width={50} height={50}/>
+			<div class="justify-evenly flex sm:w-[40%]">
+				<a href="https:\\{SocialMedia.twitter_link}" target="_blank" class="cursor-pointer mx-1 ">
+				<SocialIcons network="twitter" fgColor="#eeeeee" bgColor="#b18c25" width={50} height={50}/>
 				</a>
 				<a href="https:\\{SocialMedia.instagram_link}" target="_blank" class="cursor-pointer mx-1">
 				<SocialIcons network="instagram" fgColor="#eeeeee" bgColor="#b18c25" width={50} height={50}/>
@@ -102,7 +115,8 @@
 		{/if}
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<div class="sm:flex sm:items-center sm:justify-center">
-			<h3 style="color: {Constants.main_theme.overlaySecondary};">Copyright - SulyExpo ©</h3>
+			<h3 class="text-{tailVarLight}OverlaySecondaryColor dark:text-{tailVarDark}OverlaySecondaryColor" >Copyright - SulyExpo ©</h3>
 		</div>
 	</div>
 </div>
+{/if}

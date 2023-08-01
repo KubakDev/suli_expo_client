@@ -17,7 +17,7 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)'
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)',{ count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
@@ -36,10 +36,10 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages!inner(*)')
+				.select('*,languages:exhibition_languages!inner(*)',{ count: 'exact' })
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
-				.order('created_at', { ascending: false });
+				.order('position', { ascending: false });
 			
 			if (result.error) {
 				//.error(result.error);
@@ -57,10 +57,10 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			let query = supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages!inner(*)')
+				.select('*,languages:exhibition_languages!inner(*)',{ count: 'exact' })
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
-				.order('created_at', { ascending: asc ?? false });
+				.order('position', { ascending: asc ?? false });
 
 				query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
 

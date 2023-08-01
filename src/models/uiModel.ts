@@ -6,6 +6,8 @@ export interface UiModel {
 	component_type: ComponentType;
 	component: Component;
 	color_palette: ColorTheme;
+	page: string;
+	status:boolean;
 }
 
 export interface Component {

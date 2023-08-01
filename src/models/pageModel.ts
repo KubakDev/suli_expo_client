@@ -6,7 +6,8 @@ export interface PageLayout {
     component: Component;
     component_type: ComponentType;
     page: string;
-    color_palette:Color_Palette;
+    color_palette_light:Color_Palette;
+    color_palette_dark:Color_Palette;
 }
 
 export interface Component {
