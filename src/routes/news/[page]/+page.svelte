@@ -31,6 +31,7 @@
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
 	import { DateInput } from 'date-picker-svelte';
+	import { themeToggle } from '../../../stores/darkMode';
 
 	export let data;
 	let CardComponent: any;
@@ -39,6 +40,18 @@
 	let selectedExhibition: number[];
 	let startDate: Date;
 	let endDate: Date = new Date();
+
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
+		}
+	}
 
 	$: {
 		if ($locale || asc) {
@@ -129,12 +142,19 @@
 			{#if $exhibitionStore.length > 0}
 				<div class="justify-end flex z-10 w-full">
 					<Button
-						class="text-xs sm:text-[16px] bg-newsLightPrimaryColor hover:bg-newsLightBackgroundColor transition-all text-newsLightOverlayPrimaryColor dark:bg-newsDarkPrimaryColor dark:hover:bg-newsDarkBackgroundColor dark:text-newsDarkOverlayPrimaryColor"
+						class="text-xs sm:text-[16px] bg-newsLightPrimaryColor hover:bg-newsLightSecondaryColor transition-all text-newsLightOverlayPrimaryColor dark:bg-newsDarkPrimaryColor dark:hover:bg-newsLightSecondaryColor dark:text-newsDarkOverlayPrimaryColor"
 						><Chevron>{$LL.filter()}</Chevron></Button
 					>
-					<Dropdown class="w-80 p-3 space-y-3 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor">
-						<div class="max-h-48 overflow-y-auto border-2 border-solid border-black p-2 rounded-sm {Constants.scrollbar_layout}">
-							<Label class="space-y-2 text-lg font-bold text-center border-b-2 border-solid border-gray-300">Filter By Exhibition</Label>
+					<Dropdown
+						class="w-80 p-3 space-y-3 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor"
+					>
+						<div
+							class="max-h-48 overflow-y-auto border-2 border-solid border-black p-2 rounded-sm {Constants.scrollbar_layout}"
+						>
+							<Label
+								class="space-y-2 text-lg font-bold text-center border-b-2 border-solid border-gray-300"
+								>Filter By Exhibition</Label
+							>
 							{#each $exhibitionStore as exhibition}
 								<li>
 									<Checkbox
@@ -174,7 +194,7 @@
 			{/if}
 		</div>
 
-		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
+		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
 				<button
 					on:click={() => {
@@ -184,8 +204,8 @@
 				>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={Constants.page_theme.news.lightPrimary ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={Constants.page_theme.news.lightOverlayPrimary ??
+							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent ?? CardType.Flat}
 							title={item.title}

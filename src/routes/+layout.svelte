@@ -16,21 +16,18 @@
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../utils/urlRegexName';
+	import { themeToggle } from '../stores/darkMode';
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
-	let tailVarLight: string = 'light';
-	let tailVarDark: string = 'dark';
+	let tailVar: string = 'light';
+
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			console.log('Page Name ', pageName);
-
-			tailVarLight = pageName + 'Light';
-			tailVarDark = pageName + 'Dark';
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVarLight = 'light';
-			tailVarDark = 'dark';
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
 		}
 	}
 
@@ -95,15 +92,28 @@
 			return true;
 		}
 	}
+
+	function applyTheme(node: HTMLElement) {
+    let unsubscribe = themeToggle.subscribe(value => {
+      node.className = value;
+    });
+
+    return {
+      destroy() {
+        unsubscribe();
+      }
+    };
+  }
 </script>
 
 {#if supabase}
 	{#if $page}
-		<div class="app">
+		<div class="app" use:applyTheme>
 			<Headerbar />
 			<Navbar {data} />
 			<main
-				class="h-full flex bg-{tailVarLight}BackgroundColor dark:bg-{tailVarDark}BackgroundColor"
+			style="background-color: var(--{tailVar}BackgroundColor);"
+				class="h-full flex min-h-screen"
 			>
 				{#key data.url.pathname}
 					<div

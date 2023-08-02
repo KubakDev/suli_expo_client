@@ -14,10 +14,24 @@
 	import { getPageType } from '../../utils/pageType';
 	import type { UiModel } from '../../models/uiModel';
 	import { stringToEnum } from '../../utils/enumToString';
+	import { themeToggle } from '../../stores/darkMode';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { page } from '$app/stores';
 
 	export let exhibitions: ExhibitionModel[];
 	export let supabase: any;
 	let CardComponent: any;
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+		}
+	}
 
 	$: {
 		if ($locale) {
@@ -68,8 +82,8 @@
 						>
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
-								primaryColor={Constants.page_theme.exhibition.lightPrimary ?? Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={Constants.page_theme.exhibition.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
+								primaryColor={`var(--exhibition${tailVar === "light" ? "Light" : "Dark"}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={`var(--exhibition${tailVar === "light" ? "Light" : "Dark"}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}

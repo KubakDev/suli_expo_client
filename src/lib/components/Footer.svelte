@@ -8,25 +8,20 @@
 	import type { SocialMediaModel } from '../../models/socialMedia';
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { page } from '$app/stores';
+	import { themeToggle } from '../../stores/darkMode';
 
 	export let data: PageData;
 	let contactInfoData: any;
 	let SocialMedia: SocialMediaModel;
-	let tailVarLight: string = 'light';
-	let tailVarDark: string = 'dark';
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
 
 	$: {
-		if (
-			$page.url.pathname.includes(
-				'news' || 'exhibition' || 'gallery' || 'magazine' || 'publishing' || 'video'
-			)
-		) {
+		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVarLight = pageName+'Light';
-			tailVarDark = pageName+'Dark';
-		}else{
-			tailVarLight = 'light';
-			tailVarDark = 'dark';
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
 		}
 	}
 
@@ -41,7 +36,7 @@
 	});
 </script>
 {#if $page}
-<div class="py-10 px-10 border-t border-black shadow-2xl bg-{tailVarLight}SecondaryColor dark:bg-{tailVarDark}SecondaryColor" >
+<div style="background-color: var(--{tailVar}SecondaryColor);" class="py-10 px-10 border-t border-black shadow-2xl" >
 	<div
 		class="mx-auto
     sm:px-2 md:px-5 lg:px-7 max-w-screen-2xl"
@@ -61,7 +56,7 @@
 					<ul class="w-full text-md leading-6 flex justify-center items-center">
 						{#if contactInfoData}
 							{#each contactInfoData as info}
-								<li class="text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">{info.location}</li>
+								<li style="color: var(--{tailVar}BackgroundColor)">{info.location}</li>
 
 							{/each}
 						{/if}
@@ -71,7 +66,7 @@
 					<div class="flex justify-start uppercase mb-6 text-xs text-gray-900 dark:text-white">
 						<TitleUi text={$LL.contact()} footerSize={true} />
 					</div>
-					<ul class="text-sm leading-6 text-{tailVarLight}BackgroundColor dark:text-{tailVarDark}BackgroundColor">
+					<ul style="color: var(--{tailVar}BackgroundColor)" class="text-sm leading-6">
 
 						{#if contactInfoData}
 							{#each contactInfoData as info}
@@ -115,7 +110,7 @@
 		{/if}
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<div class="sm:flex sm:items-center sm:justify-center">
-			<h3 class="text-{tailVarLight}OverlaySecondaryColor dark:text-{tailVarDark}OverlaySecondaryColor" >Copyright - SulyExpo ©</h3>
+			<h3 style="color: var(--{tailVar}OverlaySecondaryColor)" >Copyright - SulyExpo ©</h3>
 		</div>
 	</div>
 </div>

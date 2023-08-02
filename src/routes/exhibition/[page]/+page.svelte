@@ -17,11 +17,25 @@
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
+	import { themeToggle } from '../../../stores/darkMode.js';
 
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
 	let exhibitions: ExhibitionPaginatedModel;
+
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+		}
+	}
+
 
 	$: {
 		if ($locale) {
@@ -118,8 +132,8 @@
 			>
 			{#if CardComponent}
 				<ExpoCard
-					primaryColor={Constants.page_theme.exhibition.lightPrimary ?? Constants.main_theme.lightPrimary}
-					overlayPrimaryColor={Constants.page_theme.exhibition.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
+					primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+					overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
 					title={exhibition.title}
 					thumbnail={exhibition.thumbnail}
 					short_description={exhibition.description}

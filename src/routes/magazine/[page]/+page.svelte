@@ -15,9 +15,23 @@
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { fade } from 'svelte/transition';
+	import { themeToggle } from '../../../stores/darkMode';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
+
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
+		}
+	}
+
 	$: {
 		if ($locale) {
 			const currentPage = $page.params.page;
@@ -58,7 +72,10 @@
 					on:click={changeOrder}
 					class="flex flex-row items-center justify-center p-2 rounded-full bg-magazineLightPrimaryColor dark:bg-magazineDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor" />
+					<ArrowUp
+						size="30"
+						class="transition-all hover:animate-pulse text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor"
+					/>
 
 					<span
 						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-magazineLightBackgroundColor dark:text-magazineDarkBackgroundColor"
@@ -99,8 +116,9 @@
 				<div on:click={() => DetailsPage(item.id)}>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={Constants.page_theme.magazine.lightPrimary ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={Constants.page_theme.magazine.lightOverlayPrimary ??
+							primaryColor={`var(--${tailVar}PrimaryColor)` ??
+								Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
 								Constants.main_theme.lightOverlayPrimary}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent || CardType.Main}

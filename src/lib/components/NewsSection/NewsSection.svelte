@@ -17,10 +17,22 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
+	import { themeToggle } from '../../../stores/darkMode';
 
 	export let supabase: SupabaseClient;
 	let CardComponent: any;
 	export let exhibitionId:string = "";
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+		}
+	}
 
 	$: {
 		if ($locale) {
@@ -73,8 +85,8 @@
 						>
 						<!-- {#if CardComponent} -->
 							<ExpoCard
-								primaryColor={Constants.page_theme.news.lightPrimary ?? Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={Constants.page_theme.news.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
+								primaryColor={`var(--news${tailVar === "light" ? "Light" : "Dark"}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={`var(--news${tailVar === "light" ? "Light" : "Dark"}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
 								imageClass={Constants.image_card_layout}
 								cardType={CardComponent || CardType.Main}
 								title={n.title}

@@ -15,6 +15,7 @@
 	import type { UiModel } from '../../../models/uiModel';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
+	import { themeToggle } from '../../../stores/darkMode';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
@@ -22,6 +23,18 @@
 
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
+		}
+	}
 
 	$: {
 		if ($locale) {
@@ -119,8 +132,8 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>
 						<ExpoCard
-							primaryColor={Constants.page_theme.video.lightPrimary ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={Constants.page_theme.video.lightOverlayPrimary ??
+							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
