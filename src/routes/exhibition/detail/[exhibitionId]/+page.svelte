@@ -171,7 +171,7 @@
 		</div>
 
 		<div class="{Constants.page_max_width} mx-auto">
-			{#if exhibition}
+			{#if exhibition && exhibition?.sponsor_images?.length  > 0}
 			<SponsorSlider locale={$locale} exhibition={exhibition} />
 			{/if}
 		</div>
