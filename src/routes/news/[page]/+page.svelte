@@ -191,6 +191,8 @@
 						</DropdownItem>
 					</Dropdown>
 				</div>
+			{:else}
+				<div class="justify-end flex z-10 w-full" />
 			{/if}
 		</div>
 
