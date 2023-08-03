@@ -63,7 +63,7 @@
 				<div class="relative mb-4">
 					<input
 						bind:value={fields.name}
-						placeholder="your name"
+						placeholder="Your Name"
 						type="text"
 						id="name"
 						name="name"
@@ -73,7 +73,7 @@
 				<div class="relative mb-4">
 					<input
 						bind:value={fields.email}
-						placeholder="your Email"
+						placeholder="Your Email"
 						type="text"
 						id="email"
 						name="email"
@@ -83,7 +83,7 @@
 				<div class="relative mb-4">
 					<textarea
 						bind:value={fields.message}
-						placeholder="Please enter your message here..."
+						placeholder="Please Enter Your Message Here..."
 						id="message"
 						name="message"
 						class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"

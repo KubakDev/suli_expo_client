@@ -22,6 +22,7 @@
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { onMount } from 'svelte';
 	import { themeToggle, toggleTheme } from '../../stores/darkMode';
+	import { Moon, Sun } from 'svelte-heros-v2';
 
 	export let data: PageData;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -90,11 +91,20 @@
 		>
 			
 			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0" >
-				<button on:click={()=>{
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div on:click={()=>{
 					toggleTheme();				
 				}}>
-					<DarkMode class="right-10" />
-				</button>
+					<!-- <DarkMode class="right-10" /> -->
+					<div class="cursor-pointer border-solid text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10">
+						{#if currentTheme === "light"}
+							<Sun />
+							{:else}
+							<Moon />
+						{/if}
+					</div>
+				</div>
 			</div>
 			<NavLi
 				on:click={() => updateActiveUrl('/')}

@@ -34,10 +34,10 @@
 				/>
 			</div>
 
-			{#if $galleryStore.data}
+			{#if $galleryStore?.data}
 				<RecentItems
 					title={$LL.gallery()}
-					items={$galleryStore.data.map((gallery) => modelToItemModel(gallery))}
+					items={$galleryStore?.data.map((gallery) => modelToItemModel(gallery))}
 					pageType={'gallery'}
 				/>
 			{/if}

@@ -16,7 +16,7 @@
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../utils/urlRegexName';
-	import { themeToggle } from '../stores/darkMode';
+	import { themeToggle,setTheme } from '../stores/darkMode';
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -37,6 +37,7 @@
 	}
 
 	onMount(async () => {
+		setTheme()
 		supabase = data.supabase;
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);

@@ -16,6 +16,7 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
+	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 
 	export let data: any;
 
@@ -122,10 +123,10 @@
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
 								<h2 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold">
-									{$LL.exhibition_mini_data.Reservation.title()}
+									{exhibition?.location_title ?? 'No Location Available'}
 								</h2>
 								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
-									{$LL.exhibition_mini_data.Reservation.place()}
+									{exhibition?.location ?? 'No Address Available'}
 								</p>
 							</div>
 						</div>
@@ -169,6 +170,11 @@
 			</div>
 		</div>
 
+		<div class="{Constants.page_max_width} mx-auto">
+			{#if exhibition}
+			<SponsorSlider locale={$locale} exhibition={exhibition} />
+			{/if}
+		</div>
 		<!-- <div
 			class="bg-transparentSecondaryColor w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
 		>

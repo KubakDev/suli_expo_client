@@ -19,7 +19,11 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 			  };
 			});
 		  }
-		} else if (prop === 'thumbnail' || prop === 'image') {
+		}else if (prop === 'sponsor_images') {
+		  obj[prop] = data[prop].map((e: string) => {
+			return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e;
+		  });
+		 } else if (prop === 'thumbnail' || prop === 'image' ) {
 			if(!data[prop]) continue;
 		  obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 		} else if (prop === 'pdf_files') {

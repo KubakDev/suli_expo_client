@@ -1,9 +1,6 @@
 // src/routes/+layout.ts
 
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit';
-import type { LayoutLoad } from './$types';
-import { redirect } from '@sveltejs/kit';
-import { detectLocale } from '$lib/i18n/i18n-util';
 import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
 import { setLocale } from '$lib/i18n/i18n-svelte';
 export const load = async ({ fetch, data, depends, params, url }) => {

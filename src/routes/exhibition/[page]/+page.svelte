@@ -21,7 +21,7 @@
 
 	export let data: any;
 	let CardComponent: any;
-	let asc: boolean = false;
+	let asc: boolean = true;
 	let exhibitions: ExhibitionPaginatedModel;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
