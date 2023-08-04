@@ -76,13 +76,13 @@ type RootTranslation = {
 		 */
 		Story: string
 		/**
-		 * A​ ​J​o​u​r​n​e​y​ ​T​h​r​o​u​g​h​ ​L​i​t​e​r​a​r​y​ ​H​i​s​t​o​r​y​ ​E​m​b​a​r​k​ ​o​n​ ​a​ ​c​h​r​o​n​o​l​o​g​i​c​a​l​ ​e​x​p​e​d​i​t​i​o​n​ ​t​h​r​o​u​g​h​ ​t​h​e​ ​a​n​n​a​l​s​ ​o​f​ ​l​i​t​e​r​a​r​y​ ​h​i​s​t​o​r​y​.​ ​T​r​a​v​e​r​s​e​ ​a​n​c​i​e​n​t​ ​m​a​n​u​s​c​r​i​p​t​s​,​ ​i​l​l​u​m​i​n​a​t​i​o​n​s​,​ ​a​n​d​ ​s​c​r​o​l​l​s​ ​t​h​a​t​ ​c​a​p​t​u​r​e​ ​t​h​e​ ​e​s​s​e​n​c​e​ ​o​f​ ​c​i​v​i​l​i​z​a​t​i​o​n​s​ ​p​a​s​t​.​ ​W​i​t​n​e​s​s​ ​t​h​e​ ​e​v​o​l​u​t​i​o​n​ ​o​f​ ​t​h​e​ ​w​r​i​t​t​e​n​ ​w​o​r​d​,​ ​f​r​o​m​ ​t​h​e​ ​e​a​r​l​y​ ​w​r​i​t​i​n​g​s​ ​o​f​ ​a​n​c​i​e​n​t​ ​c​i​v​i​l​i​z​a​t​i​o​n​s​ ​t​o​ ​t​h​e​ ​m​e​d​i​e​v​a​l​ ​m​a​n​u​s​c​r​i​p​t​s​ ​p​a​i​n​s​t​a​k​i​n​g​l​y​ ​c​r​a​f​t​e​d​ ​b​y​ ​s​c​r​i​b​e​s​.​ ​M​a​r​v​e​l​ ​a​t​ ​t​h​e​ ​m​a​s​t​e​r​p​i​e​c​e​s​ ​t​h​a​t​ ​h​a​v​e​ ​s​h​a​p​e​d​ ​o​u​r​ ​u​n​d​e​r​s​t​a​n​d​i​n​g​ ​o​f​ ​t​h​e​ ​w​o​r​l​d​,​ ​a​s​ ​e​a​c​h​ ​e​x​h​i​b​i​t​ ​u​n​v​e​i​l​s​ ​a​ ​u​n​i​q​u​e​ ​c​h​a​p​t​e​r​ ​o​f​ ​h​u​m​a​n​ ​e​x​p​r​e​s​s​i​o​n​.
-		 */
-		Exhibition_Story: string
-		/**
 		 * S​u​l​a​y​m​a​n​i​y​a​h​ ​I​n​t​e​r​n​a​t​i​o​n​a​l​ ​F​a​i​r
 		 */
 		Fair: string
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​S​p​o​n​s​o​r​s
+		 */
+		Exhibition_Sponsors: string
 		/**
 		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
 		 */
@@ -275,13 +275,13 @@ export type TranslationFunctions = {
 		 */
 		Story: () => LocalizedString
 		/**
-		 * A Journey Through Literary History Embark on a chronological expedition through the annals of literary history. Traverse ancient manuscripts, illuminations, and scrolls that capture the essence of civilizations past. Witness the evolution of the written word, from the early writings of ancient civilizations to the medieval manuscripts painstakingly crafted by scribes. Marvel at the masterpieces that have shaped our understanding of the world, as each exhibit unveils a unique chapter of human expression.
-		 */
-		Exhibition_Story: () => LocalizedString
-		/**
 		 * Sulaymaniyah International Fair
 		 */
 		Fair: () => LocalizedString
+		/**
+		 * Exhibition Sponsors
+		 */
+		Exhibition_Sponsors: () => LocalizedString
 		/**
 		 * Exhibition Seats
 		 */

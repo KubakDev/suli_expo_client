@@ -73,6 +73,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@arisbh/marqueeck": "^0.2.1",
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
 		"@syncfusion/ej2-calendars": "^22.1.38",
@@ -85,6 +86,7 @@
 		"pull": "^2.1.1",
 		"svelte-collapsible": "^0.2.2",
 		"svelte-date-range-select": "^1.0.4",
+		"svelte-fast-marquee": "^0.4.1",
 		"svelte-pdf": "^1.0.19",
 		"svelte-select": "^5.6.1"
 	}
