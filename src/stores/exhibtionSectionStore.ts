@@ -19,7 +19,7 @@ const createExhibitionSectionStore = () => {
 				.select('*,languages:exhibition_languages!inner(*)')
 				.eq('languages.language', locale)
 				.is('deleted_status', null)
-				.order('created_at', { ascending: false })
+				.order('position', { ascending: true })
 				.limit(2);
 
 			let data = result.data;

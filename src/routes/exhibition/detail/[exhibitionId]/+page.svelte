@@ -16,12 +16,17 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
+	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 
 	export let data: any;
 
-	let exhibition: ExhibitionModel | undefined | null;
+	let exhibition: ExhibitionModel;
 	async function getExhibition() {
-		exhibition = await exhibitionStore.getSingle($locale, data.supabase, $page.params.exhibitionId);
+		exhibition = (await exhibitionStore.getSingle(
+			$locale,
+			data.supabase,
+			$page.params.exhibitionId
+		)) as ExhibitionModel;
 	}
 
 	let currentImageIndex = 0;
@@ -48,7 +53,7 @@
 	}
 </script>
 
-<section class="w-full flex-1">
+<section class="w-full flex-1 overflow-x-hidden">
 	<div class="w-full h-200 relative">
 		{#if exhibition?.images.length}
 			{#key currentImageIndex}
@@ -81,16 +86,23 @@
 							<div
 								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<GlobeAsiaAustralia class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" size="50" />
+								<GlobeAsiaAustralia
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+									size="50"
+								/>
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col w-40">
 								{#if exhibition}
-									<h2 class="text-2xl text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor font-bold">
+									<h2
+										class="text-2xl text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor font-bold"
+									>
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
 									{$LL.exhibition_mini_data.Countries()}
 								</p>
 							</div>
@@ -99,16 +111,23 @@
 							<div
 								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<BuildingOffice2 class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" size="50" />
+								<BuildingOffice2
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+									size="50"
+								/>
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col">
-								<h2 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold">
+								<h2
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+								>
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
 									{$LL.exhibition_mini_data.Companies()}
 								</p>
 							</div>
@@ -117,15 +136,22 @@
 							<div
 								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
 							>
-								<MapPin size="50" class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor" />
+								<MapPin
+									size="50"
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+								/>
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
-								<h2 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold">
-									{$LL.exhibition_mini_data.Reservation.title()}
+								<h2
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+								>
+									{exhibition?.location_title ?? 'No Location Available'}
 								</h2>
-								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
-									{$LL.exhibition_mini_data.Reservation.place()}
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
+									{exhibition?.location ?? 'No Address Available'}
 								</p>
 							</div>
 						</div>
@@ -149,11 +175,15 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<h1 class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold">
+								<h1
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold"
+								>
 									{$LL.exhibition_mini_data.Story()}
 								</h1>
 
-								<p class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg">
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
 									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
 									{:else}
@@ -169,6 +199,14 @@
 			</div>
 		</div>
 
+		<div class="flex justify-center w-full py-6">
+			<TitleUi text={$LL.exhibition_mini_data.Exhibition_Sponsors()} />
+		</div>
+		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
+			<div class="{Constants.page_max_width} mx-auto">
+				<SponsorSlider locale={$locale} {exhibition} />
+			</div>
+		{/if}
 		<!-- <div
 			class="bg-transparentSecondaryColor w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
 		>
@@ -185,61 +223,62 @@
 				</div>
 			</div>
 		</div> -->
-
-		{#if exhibition?.pdf_files.length || [].length > 0}
-			<div class="flex justify-center w-full pt-12">
-				<TitleUi text={$LL.exhibition_mini_data.Exhibition_PDF()} />
-			</div>
-			<div class="flex xl:flex-row flex-col py-12 {Constants.page_max_width} mx-auto">
-				<div class="flex flex-col items-end py-5 w-full">
-					<div
-						class="xl:w-[45vh] w-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-auto max-h-[26rem] {Constants.scrollbar_layout}"
-					>
-						{#each exhibition?.pdf_files || [] as pdf}
-							<Card horizontal class="my-2 w-full">
-								<div class="w-full h-full">
-									<button
-										class="flex justify-between flex-row items-center w-full h-full"
-										on:click={() => {
-											pdf_page(pdf);
-										}}
-									>
-										<FilePdfSolid class="dark:text-red-500 mx-2" />
-										<h5
-											class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end"
-										>
-											{exhibition?.title}
-										</h5>
-										<OpenBookSolid
-											class="dark:text-blue-500 transition-all dark:hover:animate-pulse"
-										/>
-									</button>
-								</div>
-							</Card>
-						{/each}
-					</div>
-				</div>
-				<div class="flex flex-col justify-center items-center px-2 h-full">
-					<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Exhibition Story</h1>
-					<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
-						{exhibition?.story}
-						<!-- <div class="relative w-0 h-0">
-							<LottiePlayer
-							class="flex justify-center items-center"
-								src="../../../../lottie/PDF lottie Jason Done.json"
-								autoplay={true}
-								loop={true}
-								height="{250}"
-								width="{250}"
-							/>
-						</div> -->
-					</span>
-				</div>
-			</div>
+		<!-- {#if exhibition?.pdf_files.length || [].length > 0}
 			<div class="{Constants.page_max_width} mx-auto">
-				<VideoPlayer videoUrl={exhibition?.video_youtube_link + ''} />
-			</div>
-		{/if}
+				<div class="flex justify-center w-full pt-12">
+					<TitleUi text={$LL.exhibition_mini_data.Exhibition_PDF()} />
+				</div>
+				<div class="flex xl:flex-row flex-col py-12"> -->
+					<!-- <div class="flex flex-col items-end py-5 w-full">
+						<div
+							class="xl:w-[45vh] w-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-auto max-h-[26rem] {Constants.scrollbar_layout}"
+						>
+							{#each exhibition?.pdf_files || [] as pdf}
+								<Card horizontal class="my-2 w-full">
+									<div class="w-full h-full">
+										<button
+											class="flex justify-between flex-row items-center w-full h-full"
+											on:click={() => {
+												pdf_page(pdf);
+											}}
+										>
+											<FilePdfSolid class="dark:text-red-500 mx-2" />
+											<h5
+												class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end"
+											>
+												{exhibition?.title}
+											</h5>
+											<OpenBookSolid
+												class="dark:text-blue-500 transition-all dark:hover:animate-pulse"
+											/>
+										</button>
+									</div>
+								</Card>
+							{/each}
+						</div> -->
+					<!-- </div> -->
+					<!-- <div class="flex flex-col justify-center items-center px-2 h-full">
+						<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Exhibition Story</h1>
+						<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
+							{exhibition?.story} -->
+					<!-- <div class="relative w-0 h-0">
+								<LottiePlayer
+								class="flex justify-center items-center"
+									src="../../../../lottie/PDF lottie Jason Done.json"
+									autoplay={true}
+									loop={true}
+									height="{250}"
+									width="{250}"
+								/>
+							</div> -->
+					<!-- </span>
+					</div> -->
+				<!-- </div>
+			</div> -->
+		<!-- {/if} -->
+		<div class="{Constants.page_max_width} mx-auto">
+			<VideoPlayer videoUrl={exhibition?.video_youtube_link + ''} />
+		</div>
 
 		<!-- {#if exhibition?.seat_layout.length > 0} -->
 		<!-- <div class="{Constants.page_max_width} mx-auto py-8">

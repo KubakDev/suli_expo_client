@@ -15,9 +15,22 @@
 	import type { UiModel } from '../../../models/uiModel';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
+	import { themeToggle } from '../../../stores/darkMode';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
+
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+		}
+	}
 
 	$: {
 		if ($locale) {
@@ -101,8 +114,8 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
-							primaryColor={Constants.page_theme.gallery.lightPrimary ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={Constants.page_theme.gallery.lightOverlayPrimary ?? Constants.main_theme.lightOverlayPrimary}
+							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent}
 							title={item.title}

@@ -74,6 +74,9 @@ const createExhibitionStore = () => {
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
 
+				console.log("Hello There",exhibition);
+				
+
 				const exhibitionPaginated = {
 					data: exhibition,
 					page: parseInt(page),

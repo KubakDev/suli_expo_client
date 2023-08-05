@@ -8,6 +8,7 @@
 	function formatPhoneNumber(phoneNumber: string): string {
 		return phoneNumber.slice(0, 4) + '-' + phoneNumber.slice(4, 7) + '-' + phoneNumber.slice(7);
 	}
+
 </script>
 
 <div class="flex flex-col items-center justify-start gap-2 lg:gap-5">
