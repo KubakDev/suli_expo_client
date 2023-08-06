@@ -1,6 +1,9 @@
 {
 	"name": "suli-expo-client",
 	"version": "0.0.1",
+	"resolutions": {
+		"svelte": "4.1.2"
+	},
 	"scripts": {
 		"dev": "npm-run-all --parallel vite typesafe-i18n",
 		"vite": "vite dev --open",
@@ -73,7 +76,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@arisbh/marqueeck": "^0.2.1",
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
 		"@syncfusion/ej2-calendars": "^22.1.38",
