@@ -20,6 +20,8 @@
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 
 	export let data: any;
+	const youtubeRegex =
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 	let exhibition: ExhibitionModel;
 	async function getExhibition() {
@@ -290,9 +292,11 @@
 		<!-- </div>
 			</div> -->
 		<!-- {/if} -->
+		{#if youtubeRegex.exec(exhibition?.video_youtube_link)}
 		<div class="{Constants.page_max_width} mx-auto">
-			<VideoPlayer videoUrl={exhibition?.video_youtube_link + ''} />
+			<VideoPlayer videoUrl={exhibition?.video_youtube_link} />
 		</div>
+		{/if}
 
 		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
 			<div class="{Constants.page_max_width} mx-auto">
