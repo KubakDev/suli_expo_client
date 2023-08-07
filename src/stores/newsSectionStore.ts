@@ -12,7 +12,7 @@ const createNewsSectionStore = () => {
 		set: (seatLayout: NewsModel[]) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient, filterExhibition?:string) => {
+		get: async (locale: Locales, supabase: SupabaseClient, filterExhibition?: string) => {
 			// get current selected language
 			let query = supabase
 				.from('news')
@@ -20,19 +20,19 @@ const createNewsSectionStore = () => {
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false })
 				.limit(3);
-				
-				if (filterExhibition) {
+
+			if (filterExhibition) {
 				query = query.eq('exhibition_id', filterExhibition);
-				}
+			}
 
 			const result = await query;
-			
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				console.log('newsSectionStore', result.data);
-				
+
+
 				let data = result.data;
 				const news = data!.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
 				set(news);

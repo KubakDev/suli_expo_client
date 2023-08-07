@@ -13,24 +13,24 @@ const createVideoStore = () => {
 		set: (seatLayout: VideoPaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient, page:string, limit?:number,asc?:boolean) => {
+		get: async (locale: Locales, supabase: SupabaseClient, page: string, limit?: number, asc?: boolean) => {
 			// get current selected language
 			let query = supabase
 				.from('media_video')
-				.select('*,languages:media_video_languages!inner(*)',{ count: 'exact' })
+				.select('*,languages:media_video_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: asc ?? false});
+				.order('created_at', { ascending: asc ?? false });
 
-				query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
+			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
 				.limit(limit || Constants.page_limit);
 
-				const result = await query;
+			const result = await query;
 
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				
+
 				const videos = result.data.map((e) => convertModel<VideoModel>(e, true)) as VideoModel[];
 
 				const videosPaginated = {
@@ -40,8 +40,8 @@ const createVideoStore = () => {
 					pages: Math.ceil((result.count ?? 1) / 9) // this is the total number of pages
 				} as VideoPaginatedModel;
 
-				console.log("Data Video ",videosPaginated);
-				
+
+
 
 				set(videosPaginated);
 				return null;

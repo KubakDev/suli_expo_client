@@ -13,18 +13,18 @@ const createGalleryStore = () => {
 		set: (seatLayout: GalleryPaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient, page:string, limit?:number ,asc?:boolean) => {
+		get: async (locale: Locales, supabase: SupabaseClient, page: string, limit?: number, asc?: boolean) => {
 			// get current selected language
 			let query = supabase
 				.from('gallery')
-				.select('*,languages:gallery_languages!inner(*)',{ count: 'exact' })
+				.select('*,languages:gallery_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: asc ?? false});
+				.order('created_at', { ascending: asc ?? false });
 
-				query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
+			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
 				.limit(limit || Constants.page_limit);
 
-				const result = await query;
+			const result = await query;
 			if (result.error) {
 				//.error(result.error);
 				return null;
@@ -33,8 +33,8 @@ const createGalleryStore = () => {
 					convertModel<GalleryModel>(e, true)
 				) as GalleryModel[];
 
-				console.log("Hello ",result.data);
-				
+
+
 
 				const galleryPaginated = {
 					data: gallery,

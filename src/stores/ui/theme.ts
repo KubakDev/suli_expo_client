@@ -16,10 +16,10 @@ const themeStore = () => {
 
 			data.forEach((theme: activeTheme) => {
 				for (let color in theme) {
-					if (color === 'active' || color === 'id' || color === 'name' || color==="mode_type") continue;
+					if (color === 'active' || color === 'id' || color === 'name' || color === "mode_type") continue;
 					let cssVarName = `--${theme.mode_type}${color.charAt(0).toUpperCase() + color.slice(1)}`;
 					//@ts-ignore
-					root.style.setProperty(cssVarName,theme[color]);
+					root.style.setProperty(cssVarName, theme[color]);
 				}
 				root.style.setProperty(`--${theme.mode_type}TransparentSecondaryColor`, theme.secondaryColor + '10');
 				root.style.setProperty(`--${theme.mode_type}TransparentOverlaySecondaryColor`, theme.onSecondaryColor + '80');
@@ -28,21 +28,21 @@ const themeStore = () => {
 				root.style.setProperty(`--${theme.mode_type}TransparentBackgroundColor`, theme.backgroundColor + '80');
 				root.style.setProperty(`--${theme.mode_type}TransparentOverlayBackgroundColor`, theme.onBackgroundColor + '80');
 			});
-			
+
 			// for (let color in data) {
 			// 	if (color === 'active' || color === 'id' || color === 'name') continue;
 			// 	root.style.setProperty(`--${color}`, data["modeType"]+data[color]);
-			// 	console.log('Colors ', `--${color}`, data["modeType"]+data[color]);
+			// 	
 			// }
-			
+
 
 			// root.style.setProperty('--primaryColor', data.primaryColor);
 			set(data);
 		},
 		// reAddColors: () => {
 		// 	update((data) => {
-		// 		console.log('Colors ', data);
-				
+		// 		
+
 		// 		const root = document.documentElement;
 		// 		for (let color in data) {
 		// 			if (color === 'active' || color === 'id' || color === 'name') continue;

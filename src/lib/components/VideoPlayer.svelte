@@ -29,8 +29,6 @@
 	function getYouTubeId(): string | null {
 		const match = youtubeRegex.exec(videoUrl);
 
-		console.log('match', match);
-
 		return match ? match[1] : null;
 	}
 </script>

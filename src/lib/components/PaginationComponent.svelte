@@ -19,8 +19,6 @@
 	// helper function
 	function getPagesToShow(current: number, total: number) {
 		page = current;
-		console.log('current', total);
-		console.log('total', page);
 
 		// convert current and total to numbers
 		current = Number(current);
@@ -75,7 +73,7 @@
 				{#if page === pageNumber}
 					<a
 						aria-current="page"
-						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentSecondaryColor dark:bg-darkTransparentSecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor font-bold hover:no-underline "
+						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentSecondaryColor dark:bg-darkTransparentSecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor font-bold hover:no-underline"
 						>{pageNumber}</a
 					>
 				{:else}

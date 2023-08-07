@@ -16,7 +16,8 @@
 	import { pageBuilderStore } from '../stores/ui/page_layouts';
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../utils/urlRegexName';
-	import { themeToggle,setTheme } from '../stores/darkMode';
+	import { themeToggle, setTheme } from '../stores/darkMode';
+	import { currentUser } from '../stores/currentUser';
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -25,9 +26,9 @@
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
 
@@ -37,7 +38,7 @@
 	}
 
 	onMount(async () => {
-		setTheme()
+		setTheme();
 		supabase = data.supabase;
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
@@ -95,16 +96,16 @@
 	}
 
 	function applyTheme(node: HTMLElement) {
-    let unsubscribe = themeToggle.subscribe(value => {
-      node.className = value;
-    });
+		let unsubscribe = themeToggle.subscribe((value) => {
+			node.className = value;
+		});
 
-    return {
-      destroy() {
-        unsubscribe();
-      }
-    };
-  }
+		return {
+			destroy() {
+				unsubscribe();
+			}
+		};
+	}
 </script>
 
 {#if supabase}
@@ -113,7 +114,7 @@
 			<Headerbar />
 			<Navbar {data} />
 			<main
-			style="background-color: var(--{tailVar}BackgroundColor);"
+				style="background-color: var(--{tailVar}BackgroundColor);"
 				class="h-full flex min-h-screen"
 			>
 				{#key data.url.pathname}

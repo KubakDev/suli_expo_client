@@ -22,7 +22,7 @@
 	let thumbnailUrl: string[];
 
 	const youtubeRegex =
-	/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -53,10 +53,10 @@
 
 		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 
-		if(!$videoStore.data) return;
+		if (!$videoStore.data) return;
 		thumbnailUrl = $videoStore.data.map((item) => {
 			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});		
+		});
 	});
 
 	// Navigate to newsDetail page
@@ -75,10 +75,8 @@
 	}
 
 	// get the YouTube ID from the URL
-	function getYouTubeId(url:string): string | null {
+	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
-
-		console.log('match', match);
 
 		return match ? match[1] : null;
 	}
@@ -92,7 +90,10 @@
 					on:click={changeOrder}
 					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor" />
+					<ArrowUp
+						size="30"
+						class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
+					/>
 
 					<span
 						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
@@ -137,8 +138,7 @@
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
-							thumbnail={item?.thumbnail ??
-								thumbnailUrl[index] ?? ""}
+							thumbnail={item?.thumbnail ?? thumbnailUrl[index] ?? ''}
 						/>
 					</div>
 				{/if}

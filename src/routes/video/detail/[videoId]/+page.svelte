@@ -24,7 +24,7 @@
 
 		thumbnailUrl = $videoStore.data.map((item) => {
 			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});	
+		});
 	}
 
 	$: {
@@ -40,8 +40,6 @@
 	// get the YouTube ID from the URL
 	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
-
-		console.log('match', match);
 
 		return match ? match[1] : null;
 	}

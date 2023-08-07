@@ -18,7 +18,7 @@ const Ui = () => {
 				.single();
 			if (result.error) {
 				//.error(result.error);
-				console.log('result.error', result.error);
+
 
 				return null;
 			} else {
@@ -29,7 +29,7 @@ const Ui = () => {
 				return Ui;
 			}
 		},
-		getPage: async (supabase: SupabaseClient, page:string) => {
+		getPage: async (supabase: SupabaseClient, page: string) => {
 			const result = await supabase
 				.from('page_builder')
 				.select(
@@ -39,7 +39,7 @@ const Ui = () => {
 				.single();
 			if (result.error) {
 				//.error(result.error);
-				console.log('result.error', result.error);
+
 
 				return null;
 			} else {

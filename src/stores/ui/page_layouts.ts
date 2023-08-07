@@ -23,12 +23,11 @@ const pageStore = () => {
 							colorType === 'mode_type'
 						)
 							continue;
-						let cssVarName = `--${page.page}${
-							"Light"+colorType.charAt(0).toUpperCase() + colorType.slice(1)
-						}`;
+						let cssVarName = `--${page.page}${"Light" + colorType.charAt(0).toUpperCase() + colorType.slice(1)
+							}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_light[colorType] ?? `--${colorType}`);
-						// console.log('cssVarName', cssVarName, page.color_palette_light[colorType]);
+						// 
 					}
 					for (let colorType in page.color_palette_dark) {
 						if (
@@ -40,19 +39,18 @@ const pageStore = () => {
 							colorType === 'mode_type'
 						)
 							continue;
-						let cssVarName = `--${page.page}${
-							"Dark"+colorType.charAt(0).toUpperCase() + colorType.slice(1)
-						}`;
+						let cssVarName = `--${page.page}${"Dark" + colorType.charAt(0).toUpperCase() + colorType.slice(1)
+							}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_dark[colorType] ?? `--${colorType}`);
-						// console.log('cssVarName', cssVarName, page.color_palette_dark[colorType]);
+						// 
 					}
 				}
 
 				set(pageLayout);
 				return pageLayout;
 			} else {
-				console.log('pageBuilderStore', result.error);
+
 
 				return null;
 			}

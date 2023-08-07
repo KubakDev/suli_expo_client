@@ -13,17 +13,17 @@ const createServiceSectionStore = () => {
 		set: (seatLayout: ServiceModel[]) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales,supabase: SupabaseClient) => {
+		get: async (locale: Locales, supabase: SupabaseClient) => {
 			const result = await supabase
 				.from('service')
 				.select('*,languages:service_languages(*)')
 				.eq('languages.language', locale)
-				.order('position', { ascending:true })
+				.order('position', { ascending: true })
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
-				console.log('result', result);
+
 				const services = result.data.map((e) => convertModel<ServiceModel>(e)) as ServiceModel[];
 				set(services);
 				return null;

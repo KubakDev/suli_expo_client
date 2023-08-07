@@ -17,7 +17,6 @@
 	};
 
 	onMount(async () => {
-		console.log(data);
 		if (data) {
 			adjustCanvasSize();
 			await loadSeats();
@@ -57,7 +56,7 @@
 
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
-		console.log(event);
+
 		selectedObject = event.target?.objectDetail;
 		selectableObjectTotalPrice = +selectedObject?.price;
 
@@ -122,7 +121,6 @@
 								<Checkbox
 									{checked}
 									on:change={(e) => {
-										console.log(service);
 										addServicesToAnObject(service);
 									}}
 								/>
