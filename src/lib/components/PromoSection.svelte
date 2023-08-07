@@ -45,7 +45,7 @@
 </script>
 
 {#if videos.length > 0}
-	<section class="{constants.section_padding_y} {constants.page_max_width} mx-auto">
+	<section class="{constants.section_padding_y} {constants.page_max_width} mx-auto" dir="ltr">
 		<div class="flex justify-center items-center pb-4">
 			<TitleUi text={$LL.promo()} />
 		</div>

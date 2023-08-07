@@ -25,7 +25,7 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Suly Expo" />
 </svelte:head>
 <div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
