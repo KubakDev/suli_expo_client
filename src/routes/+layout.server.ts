@@ -19,8 +19,9 @@ export const load: LayoutServerLoad = async ({ locals: { getSession }, url, cook
 		throw redirect(303, urlObj.toString());
 	}
 
+	
 	// Get the locale from the cookie
-	const locale = detectLocale(() => [cookies.get(langParam) ?? '']);
+	const locale = detectLocale(() => [cookies.get(langParam) ?? 'ckb']);
 	//('locale', locale);
 	return {
 		session: session,

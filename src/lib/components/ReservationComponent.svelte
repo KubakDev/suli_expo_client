@@ -3,8 +3,12 @@
 	import { onMount, tick } from 'svelte';
 	import { fabric } from 'fabric';
 	import type { Canvas } from 'fabric/fabric-impl';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
 	export let data: any;
+	export let supabase: SupabaseClient;
+	export let locale: string;
+
 	let canvas: Canvas;
 	let container: any;
 	let selectedObject: any = undefined;
@@ -15,9 +19,9 @@
 		top: 0,
 		left: 0
 	};
-
+	let freeServices: any = [];
+	let paidServices: any = [];
 	onMount(async () => {
-		console.log(data);
 		if (data) {
 			await loadSeats();
 		}
@@ -31,8 +35,6 @@
 		container.style.height = `${containerWidth / aspectRatio}px`;
 
 		const currentHeight = containerWidth / aspectRatio;
-		console.log(containerWidth);
-		console.log(currentHeight);
 		if (canvas) {
 			canvas.setDimensions({
 				width: containerWidth,
@@ -91,16 +93,41 @@
 
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
-		console.log(event);
+		console.log(event.target);
 		selectedObject = event.target?.objectDetail;
 		selectableObjectTotalPrice = +selectedObject?.price;
-
+		if (!selectedObject) return;
+		addServiceDetailForSelectableObject(event.target?.objectDetail);
 		const pointer = canvas.getPointer(event.e);
 		popupPosition = {
 			left: pointer.x,
 			top: pointer.y
 		};
 	};
+	async function addServiceDetailForSelectableObject(object: any) {
+		let servicesId = object.services.map((service: any) => service.id);
+		freeServices = [];
+		paidServices = [];
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				result.data?.forEach((service: any) => {
+					let selectedObjectService = selectedObject.services.find(
+						(item: any) => item.id === service.id
+					);
+					selectedObjectService.serviceDetail = service;
+					if (selectedObjectService.isFree) {
+						freeServices = [...freeServices, selectedObjectService];
+					} else {
+						paidServices = [...paidServices, selectedObjectService];
+					}
+				});
+				selectedObject = { ...selectedObject };
+			});
+	}
 	const handleMouseOver = (event: any) => {
 		const object = event.target;
 		if (object?.objectDetail && object?.objectDetail?.selectable) {
@@ -118,13 +145,18 @@
 	function addServicesToAnObject(service: any) {
 		let index = selectableObjectServices.findIndex((item: any) => item.id === service.id);
 		if (index === -1) {
-			selectableObjectServices.push(service);
+			selectableObjectServices.push(service.serviceDetail);
 		} else {
 			selectableObjectServices.splice(index, 1);
 		}
+		selectableObjectTotalPrice = 0;
 		selectableObjectServices.forEach((service: any) => {
 			selectableObjectTotalPrice += +service.price;
 		});
+	}
+	function reserveSeat() {
+		console.log('selectableObjectServices', selectableObjectServices);
+		console.log(selectedObject);
 	}
 </script>
 
@@ -146,25 +178,39 @@
 				<h3>seat Price = {selectedObject.price}</h3>
 				<h3>total Price = {selectableObjectTotalPrice}</h3>
 				<div class="my-4">
-					<h2>services for this seat</h2>
-					{#each selectedObject.services as service}
-						<div class="flex justify-around items-center my-2">
-							<div class="flex items-center">
-								<Checkbox
-									{checked}
-									on:change={(e) => {
-										console.log(service);
-										addServicesToAnObject(service);
-									}}
-								/>
-
-								<h2>{service.seat_services_languages[0].title}</h2>
+					{#if freeServices.length > 0}
+						<h2>free services for this seat</h2>
+						{#each freeServices as FreeService}
+							<div class="flex justify-around items-center my-2">
+								<div class="flex items-center">
+									<h2>{FreeService?.serviceDetail?.languages[0]?.title}</h2>
+								</div>
+								<h2 class="font-bold">Free</h2>
 							</div>
-							<h2 class="font-bold">{service.price ?? 'Free'}</h2>
-						</div>
-					{/each}
+						{/each}
+					{/if}
+					{#if paidServices.length > 0}
+						<h2>paid services for this seat</h2>
+
+						{#each paidServices as paidService}
+							<div class="flex justify-around items-center my-2">
+								<div class="flex items-center">
+									<Checkbox
+										{checked}
+										on:change={(e) => {
+											addServicesToAnObject(paidService);
+										}}
+									/>
+									<h2>{paidService?.serviceDetail?.languages[0]?.title}</h2>
+								</div>
+								<h2 class="font-bold">
+									{paidService?.serviceDetail?.price}
+								</h2>
+							</div>
+						{/each}
+					{/if}
 				</div>
-				<Button>Reserve this Seat</Button>
+				<Button on:click={reserveSeat}>Reserve this Seat</Button>
 			</div>
 		{/if}
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />

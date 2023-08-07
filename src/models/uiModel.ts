@@ -1,3 +1,4 @@
+import type { CardType } from 'kubak-svelte-component';
 import type { ColorTheme } from './colorTheme';
 
 export interface UiModel {
@@ -5,6 +6,8 @@ export interface UiModel {
 	component_type: ComponentType;
 	component: Component;
 	color_palette: ColorTheme;
+	page: string;
+	status:boolean;
 }
 
 export interface Component {
@@ -12,5 +15,5 @@ export interface Component {
 }
 export interface ComponentType {
 	id: number;
-	type: string;
+	type: CardType;
 }

@@ -8,14 +8,29 @@
 	import { locale } from '$lib/i18n/i18n-svelte';
 	import { changeLanguage } from '../utils/language';
 	import { contactInfoSectionStore } from '../stores/contactInfo';
-	import { easeCubicIn, transition } from 'd3';
-	import { fly } from 'svelte/transition';
+	import { color, easeCubicIn, transition } from 'd3';
+	import { fade, fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
-	import Constants from '../utils/constants';
 	import { activeThemeStore } from '../stores/ui/theme';
+	import { pageBuilderStore } from '../stores/ui/page_layouts';
+	import { page } from '$app/stores';
+	import { getNameRegex } from '../utils/urlRegexName';
+	import { themeToggle, setTheme } from '../stores/darkMode';
+	import { currentUser } from '../stores/currentUser';
 	register();
 	export let data;
+	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
+	let tailVar: string = 'light';
+
+	$: {
+		if (routeRegex.test($page.url.pathname)) {
+			let pageName = getNameRegex($page.url.pathname);
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
+		} else {
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
+		}
+	}
 
 	let supabase: any;
 	if ($locale && data.supabase) {
@@ -23,10 +38,11 @@
 	}
 
 	onMount(async () => {
+		setTheme();
 		supabase = data.supabase;
-		console.log('supabase', supabase);
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
+		await pageBuilderStore.get(data.supabase);
 	});
 
 	function scale(
@@ -52,14 +68,14 @@
 
 	const pageTransitions: any = {
 		'/news': ['/'],
-		'/exhibitions': ['/news', '/'],
-		'/services': ['/exhibitions', '/news', '/'],
-		'/about': ['/services', '/exhibitions', '/news', '/'],
-		'/contact': ['/about', '/services', '/exhibitions', '/news', '/'],
-		'/gallery': ['/exhibitions', '/news', '/'],
-		'/magazine': ['/exhibitions', '/news', '/'],
-		'/publishing': ['/exhibitions', '/news', '/'],
-		'/videos': ['/exhibitions', '/news', '/']
+		'/exhibition': ['/news', '/'],
+		'/service': ['/exhibition', '/news', '/'],
+		'/about': ['/service', '/exhibition', '/news', '/'],
+		'/contact': ['/about', '/service', '/exhibition', '/news', '/'],
+		'/gallery': ['/exhibition', '/news', '/'],
+		'/magazine': ['/exhibition', '/news', '/'],
+		'/publishing': ['/exhibition', '/news', '/'],
+		'/video': ['/exhibition', '/news', '/']
 	};
 
 	// function for knowing which page go to which page
@@ -78,21 +94,44 @@
 			return true;
 		}
 	}
+
+	function applyTheme(node: HTMLElement) {
+		let unsubscribe = themeToggle.subscribe((value) => {
+			node.className = value;
+		});
+
+		return {
+			destroy() {
+				unsubscribe();
+			}
+		};
+	}
 </script>
 
 {#if supabase}
-	<div class=" app" style="background-color: var(--backgroundColor);">
-		<Headerbar />
-		<Navbar {data} />
-		<main class="h-full flex">
-			{#key data.url.pathname}
-				<slot />
-			{/key}
-		</main>
-		<div>
-			<Footer />
+	{#if $page}
+		<div class="app" use:applyTheme>
+			<Headerbar />
+			<Navbar {data} />
+			<main
+				style="background-color: var(--{tailVar}BackgroundColor);"
+				class="h-full flex min-h-screen"
+			>
+				{#key data.url.pathname}
+					<div
+						class=" flex-1 sm:flex"
+						in:fly={{ duration: 500, delay: 300 }}
+						out:fly={{ duration: 300 }}
+					>
+						<slot />
+					</div>
+				{/key}
+			</main>
+			<div>
+				<Footer {data} />
+			</div>
 		</div>
-	</div>
+	{/if}
 {/if}
 
 <style>

@@ -2,26 +2,29 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
-import type { MagazineModel } from '../models/magazineModel';
+import type { MagazineModel, MagazinePaginatedModel } from '../models/magazineModel';
+import Constants from '../utils/constants';
 const createMagazineStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set } = writable<MagazineModel[]>();
+	const { subscribe, set } = writable<MagazinePaginatedModel>();
 
 	return {
 		subscribe,
-		set: (seatLayout: MagazineModel[]) => {
+		set: (seatLayout: MagazinePaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient) => {
+		get: async (locale: Locales, supabase: SupabaseClient, page:string, limit?:number, asc?:boolean ) => {
 			// get current selected language
-			const result = await supabase
+			let query = supabase
 				.from('magazine')
-				.select('*,languages:magazine_languages!inner(*)')
+				.select('*,languages:magazine_languages!inner(*)',{ count: 'exact' })
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: false })
-				.limit(9);
+				.order('created_at', { ascending: asc ?? false});
 
+				query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
+				.limit(limit || Constants.page_limit);
 
+				const result = await query;
 
 			if (result.error) {
 				// .error(result.error);
@@ -30,7 +33,15 @@ const createMagazineStore = () => {
 				const magazines = result.data.map((e) =>
 					convertModel<MagazineModel>(e, true)
 				) as MagazineModel[];
-				set(magazines);
+
+				const magazinePaginated = {
+					data: magazines,
+					page: parseInt(page),
+					count: result.count,
+					pages: Math.ceil((result.count ?? 1) / 9) // this is the total number of pages
+				} as MagazinePaginatedModel;
+
+				set(magazinePaginated);
 				return null;
 			}
 		},

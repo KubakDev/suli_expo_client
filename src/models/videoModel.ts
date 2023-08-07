@@ -6,3 +6,10 @@ export interface VideoModel {
 	long_description?: string;
 	short_description?: string;
 }
+
+export interface VideoPaginatedModel {
+	data: VideoModel[];
+	page: number;
+	count: number;
+	pages: number;
+}

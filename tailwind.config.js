@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors');
 
-const config = {
+
+module.exports = {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}',
@@ -99,6 +100,155 @@ const config = {
 						on: '#E1B168' //800
 					}
 				},
+				// Main Theme
+				  // Light
+					lightPrimaryColor: "var(--lightPrimaryColor)",
+					lightOverlayPrimaryColor: "var(--lightOverlayPrimaryColor)",
+					lightTransparentPrimaryColor: "var(--lightTransparentPrimaryColor)",
+					lightTransparentOverlayPrimaryColor: "var(--lightTransparentOverlayPrimaryColor)",
+					lightSecondaryColor: "var(--lightSecondaryColor)",
+					lightOverlaySecondaryColor: "var(--lightOverlaySecondaryColor)",
+					lightTransparentSecondaryColor: "var(--lightTransparentSecondaryColor)",
+					lightTransparentOverlaySecondaryColor: "var(--lightTransparentOverlaySecondaryColor)",
+					lightBackgroundColor: "var(--lightBackgroundColor)",
+					lightOverlayBackgroundColor: "var(--lightOverlayBackgroundColor)",
+					lightTransparentBackgroundColor: "var(--lightTransparentBackgroundColor)",
+					lightTransparentOverlayBackgroundColor: "var(--lightTransparentOverlayBackgroundColor)",
+				  // Dark
+					darkPrimaryColor: "var(--darkPrimaryColor)",
+					darkOverlayPrimaryColor: "var(--darkOverlayPrimaryColor)",
+					darkTransparentPrimaryColor: "var(--darkTransparentPrimaryColor)",
+					darkTransparentOverlayPrimaryColor: "var(--darkTransparentOverlayPrimaryColor)",
+					darkSecondaryColor: "var(--darkSecondaryColor)",
+					darkOverlaySecondaryColor: "var(--darkOverlaySecondaryColor)",
+					darkTransparentSecondaryColor: "var(--darkTransparentSecondaryColor)",
+					darkTransparentOverlaySecondaryColor: "var(--darkTransparentOverlaySecondaryColor)",
+					darkBackgroundColor: "var(--darkBackgroundColor)",
+					darkOverlayBackgroundColor: "var(--darkOverlayBackgroundColor)",
+					darkTransparentBackgroundColor: "var(--darkTransparentBackgroundColor)",
+					darkTransparentOverlayBackgroundColor: "var(--darkTransparentOverlayBackgroundColor)",
+				// Main Theme
+				
+
+				// Pages Theme
+					// Exhibition Theme
+						// Light
+						exhibitionLightPrimaryColor: "var(--exhibitionLightPrimaryColor)",
+						exhibitionLightOverlayPrimaryColor: "var(--exhibitionLightOverlayPrimaryColor)",
+						exhibitionLightSecondaryColor: "var(--exhibitionLightSecondaryColor)",
+						exhibitionLightOverlaySecondaryColor: "var(--exhibitionLightOverlaySecondaryColor)",
+						exhibitionLightBackgroundColor: "var(--exhibitionLightBackgroundColor)",
+						exhibitionLightOverlayBackgroundColor: "var(--exhibitionLightOverlayBackgroundColor)",
+						// Dark
+						exhibitionDarkPrimaryColor: "var(--exhibitionDarkPrimaryColor)",
+						exhibitionDarkOverlayPrimaryColor: "var(--exhibitionDarkOverlayPrimaryColor)",
+						exhibitionDarkSecondaryColor: "var(--exhibitionDarkSecondaryColor)",
+						exhibitionDarkOverlaySecondaryColor: "var(--exhibitionDarkOverlaySecondaryColor)",
+						exhibitionDarkBackgroundColor: "var(--exhibitionDarkBackgroundColor)",
+						exhibitionDarkOverlayBackgroundColor: "var(--exhibitionDarkOverlayBackgroundColor)",
+					// Exhibition Theme
+
+					// News Theme
+						// Light
+						newsLightPrimaryColor: "var(--newsLightPrimaryColor)",
+						newsLightOverlayPrimaryColor: "var(--newsLightOverlayPrimaryColor)",
+						newsLightSecondaryColor: "var(--newsLightSecondaryColor)",
+						newsLightOverlaySecondaryColor: "var(--newsLightOverlaySecondaryColor)",
+						newsLightBackgroundColor: "var(--newsLightBackgroundColor)",
+						newsLightOverlayBackgroundColor: "var(--newsLightOverlayBackgroundColor)",
+						// Dark
+						newsDarkPrimaryColor: "var(--newsDarkPrimaryColor)",
+						newsDarkOverlayPrimaryColor: "var(--newsDarkOverlayPrimaryColor)",
+						newsDarkSecondaryColor: "var(--newsDarkSecondaryColor)",
+						newsDarkOverlaySecondaryColor: "var(--newsDarkOverlaySecondaryColor)",
+						newsDarkBackgroundColor: "var(--newsDarkBackgroundColor)",
+						newsDarkOverlayBackgroundColor: "var(--newsDarkOverlayBackgroundColor)",
+					// News Theme
+
+					// Magazine Theme
+						// Light
+						magazineLightPrimaryColor: "var(--magazineLightPrimaryColor)",
+						magazineLightOverlayPrimaryColor: "var(--magazineLightOverlayPrimaryColor)",
+						magazineLightSecondaryColor: "var(--magazineLightSecondaryColor)",
+						magazineLightOverlaySecondaryColor: "var(--magazineLightOverlaySecondaryColor)",
+						magazineLightBackgroundColor: "var(--magazineLightBackgroundColor)",
+						magazineLightOverlayBackgroundColor: "var(--magazineLightOverlayBackgroundColor)",
+						// Dark
+						magazineDarkPrimaryColor: "var(--magazineDarkPrimaryColor)",
+						magazineDarkOverlayPrimaryColor: "var(--magazineDarkOverlayPrimaryColor)",
+						magazineDarkSecondaryColor: "var(--magazineDarkSecondaryColor)",
+						magazineDarkOverlaySecondaryColor: "var(--magazineDarkOverlaySecondaryColor)",
+						magazineDarkBackgroundColor: "var(--magazineDarkBackgroundColor)",
+						magazineDarkOverlayBackgroundColor: "var(--magazineDarkOverlayBackgroundColor)",
+					// Magazine Theme
+
+					// Video Theme
+						// Light
+						videoLightPrimaryColor: "var(--videoLightPrimaryColor)",
+						videoLightOverlayPrimaryColor: "var(--videoLightOverlayPrimaryColor)",
+						videoLightSecondaryColor: "var(--videoLightSecondaryColor)",
+						videoLightOverlaySecondaryColor: "var(--videoLightOverlaySecondaryColor)",
+						videoLightBackgroundColor: "var(--videoLightBackgroundColor)",
+						videoLightOverlayBackgroundColor: "var(--videoLightOverlayBackgroundColor)",
+						// Dark
+						videoDarkPrimaryColor: "var(--videoDarkPrimaryColor)",
+						videoDarkOverlayPrimaryColor: "var(--videoDarkOverlayPrimaryColor)",
+						videoDarkSecondaryColor: "var(--videoDarkSecondaryColor)",
+						videoDarkOverlaySecondaryColor: "var(--videoDarkOverlaySecondaryColor)",
+						videoDarkBackgroundColor: "var(--videoDarkBackgroundColor)",
+						videoDarkOverlayBackgroundColor: "var(--videoDarkOverlayBackgroundColor)",
+					// Video Theme
+
+					// Publishing Theme
+						// Light
+						publishingLightPrimaryColor: "var(--publishingLightPrimaryColor)",
+						publishingLightOverlayPrimaryColor: "var(--publishingLightOverlayPrimaryColor)",
+						publishingLightSecondaryColor: "var(--publishingLightSecondaryColor)",
+						publishingLightOverlaySecondaryColor: "var(--publishingLightOverlaySecondaryColor)",
+						publishingLightBackgroundColor: "var(--publishingLightBackgroundColor)",
+						publishingLightOverlayBackgroundColor: "var(--publishingLightOverlayBackgroundColor)",
+						// Dark
+						publishingDarkPrimaryColor: "var(--publishingDarkPrimaryColor)",
+						publishingDarkOverlayPrimaryColor: "var(--publishingDarkOverlayPrimaryColor)",
+						publishingDarkSecondaryColor: "var(--publishingDarkSecondaryColor)",
+						publishingDarkOverlaySecondaryColor: "var(--publishingDarkOverlaySecondaryColor)",
+						publishingDarkBackgroundColor: "var(--publishingDarkBackgroundColor)",
+						publishingDarkOverlayBackgroundColor: "var(--publishingDarkOverlayBackgroundColor)",
+					// Publishing Theme
+
+					// Gallery Theme
+						// Light
+						galleryLightPrimaryColor: "var(--galleryLightPrimaryColor)",
+						galleryLightOverlayPrimaryColor: "var(--galleryLightOverlayPrimaryColor)",
+						galleryLightSecondaryColor: "var(--galleryLightSecondaryColor)",
+						galleryLightOverlaySecondaryColor: "var(--galleryLightOverlaySecondaryColor)",
+						galleryLightBackgroundColor: "var(--galleryLightBackgroundColor)",
+						galleryLightOverlayBackgroundColor: "var(--galleryLightOverlayBackgroundColor)",
+						// Dark
+						galleryDarkPrimaryColor: "var(--galleryDarkPrimaryColor)",
+						galleryDarkOverlayPrimaryColor: "var(--galleryDarkOverlayPrimaryColor)",
+						galleryDarkSecondaryColor: "var(--galleryDarkSecondaryColor)",
+						galleryDarkOverlaySecondaryColor: "var(--galleryDarkOverlaySecondaryColor)",
+						galleryDarkBackgroundColor: "var(--galleryDarkBackgroundColor)",
+						galleryDarkOverlayBackgroundColor: "var(--galleryDarkOverlayBackgroundColor)",
+					// Gallery Theme
+
+					// Service Theme
+						// Light
+						serviceLightPrimaryColor: "var(--serviceLightPrimaryColor)",
+						serviceLightOverlayPrimaryColor: "var(--serviceLightOverlayPrimaryColor)",
+						serviceLightSecondaryColor: "var(--serviceLightSecondaryColor)",
+						serviceLightOverlaySecondaryColor: "var(--serviceLightOverlaySecondaryColor)",
+						serviceLightBackgroundColor: "var(--serviceLightBackgroundColor)",
+						serviceLightOverlayBackgroundColor: "var(--serviceLightOverlayBackgroundColor)",
+						// Dark
+						serviceDarkPrimaryColor: "var(--serviceDarkPrimaryColor)",
+						serviceDarkOverlayPrimaryColor: "var(--serviceDarkOverlayPrimaryColor)",
+						serviceDarkSecondaryColor: "var(--serviceDarkSecondaryColor)",
+						serviceDarkOverlaySecondaryColor: "var(--serviceDarkOverlaySecondaryColor)",
+						serviceDarkBackgroundColor: "var(--serviceDarkBackgroundColor)",
+						serviceDarkOverlayBackgroundColor: "var(--serviceDarkOverlayBackgroundColor)",
+				// Pages Theme
 				// text colors
 				on: '#E1B168' //50
 
@@ -168,5 +318,3 @@ const config = {
 		}
 	}
 };
-
-module.exports = config;

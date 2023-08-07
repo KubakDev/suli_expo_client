@@ -9,13 +9,19 @@
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
-	import { promoStore } from '../stores/promoStore';
+	import { UiStore } from '../stores/ui/Ui';
+	import { currentUser } from '../stores/currentUser';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
+	let exhibitionSection: boolean = false;
+	let newsSection: boolean = false;
 
 	onMount(async () => {
+		console.log($currentUser);
 		seatLayout = await seatStore.get(data.supabase);
+		exhibitionSection = (await UiStore.getPage(data.supabase, 'exhibition')) as boolean;
+		newsSection = (await UiStore.getPage(data.supabase, 'news')) as boolean;
 	});
 </script>
 
@@ -26,22 +32,32 @@
 <div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-	<div class=" m-auto w-full overflow-hidden px-2">
-		<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+	<div class="m-auto w-full overflow-hidden px-2">
+		<!-- <Parallax sections={1.6}> -->
+		<!-- <ParallaxLayer class="bg-black"> -->
+		{#if exhibitionSection}
+			<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+		{/if}
 
-		<NewsSection supabase={data.supabase} />
+		{#if newsSection}
+			<NewsSection supabase={data.supabase} />
+		{/if}
+		<!-- </ParallaxLayer> -->
 
+		<!-- <ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700"> -->
 		<div>
 			<PromoSection supabase={data.supabase} />
 		</div>
 
-		<div class=" w-full max-h-300 min-h-128 flex justify-center">
+		<div class=" w-full max-h-300 min-h-128 h-full flex justify-center">
 			<AboutUsSection supabase={data.supabase} />
 		</div>
+		<!-- </ParallaxLayer> -->
 
 		{#if seatLayout}
 			<SeatReservation {seatLayout} />
 		{/if}
+		<!-- </Parallax> -->
 	</div>
 </div>
 

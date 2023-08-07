@@ -5,12 +5,11 @@
 
 	export let start_date: Date;
 	export let end_date: Date;
-    let result: number = 0;
+	let result: number = 0;
 
 	function countDays(start_date: Date, end_date: Date): number {
-
-        start_date = new Date(start_date);
-        end_date = new Date(end_date);
+		start_date = new Date(start_date);
+		end_date = new Date(end_date);
 
 		// Get the number of milliseconds for each date
 		let start_ms = start_date.getTime();
@@ -25,32 +24,29 @@
 	}
 
 	onMount(() => {
-		console.log('start_date', start_date);
-		console.log('end_date', end_date);
-		console.log('countDays', countDays(start_date as Date, end_date as Date));
-        result = countDays(start_date as Date, end_date as Date);
+		result = countDays(start_date as Date, end_date as Date);
 	});
 </script>
 
-<div class="dark:text-slate-300 flex sm:flex-row sm:justify-between flex-col justify-center items-center {Constants.page_max_width}">
+<div
+	class="dark:text-slate-300 flex sm:flex-row sm:justify-between flex-col justify-center items-center {Constants.page_max_width}"
+>
 	<span class="flex flex-col justify-center">
 		<p class="text-center text-lg font-bold uppercase">Start Date</p>
-        <p class="text-slate-800 font-bold text-lg">
-            {moment(start_date).format('DD MMMM YYYY, h:mm:ss')}
-        </p>
+		<p class="text-slate-800 font-bold text-lg">
+			{moment(start_date).format('DD MMMM YYYY, h:mm:ss')}
+		</p>
 	</span>
 	<span class="flex flex-col justify-center text-center text-2xl font-bold">
 		<p class="text-center text-lg font-bold uppercase">Days</p>
-        <p class="text-slate-900 font-extrabold text-3xl">
-            {result}
-        </p>
-		</span
-	>
+		<p class="text-slate-900 font-extrabold text-3xl">
+			{result}
+		</p>
+	</span>
 	<span class="flex flex-col justify-center">
 		<p class="text-center text-lg font-bold uppercase">End Date</p>
 		<p class="text-slate-800 font-bold text-lg">
-            {moment(end_date).format('DD MMMM YYYY, h:mm:ss')}
-        </p>
-        </span
-	>
+			{moment(end_date).format('DD MMMM YYYY, h:mm:ss')}
+		</p>
+	</span>
 </div>

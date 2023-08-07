@@ -14,3 +14,10 @@ interface CarouselImage {
 	imgurl: string;
 	attribution: string;
 }
+
+export interface PublishingPaginatedModel {
+	data: PublishingModel[];
+	page: number;
+	count: number;
+	pages: number;
+}

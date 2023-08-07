@@ -6,32 +6,30 @@ import type { Locales } from '$lib/i18n/i18n-types';
 
 const createPromoStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
-	const { subscribe, set, update } = writable<PromoModel>();
+	const { subscribe, set, update } = writable<PromoModel[]>();
 
 	return {
 		subscribe,
-		set: (promos: PromoModel) => {
+		set: (promos: PromoModel[]) => {
 			set(promos);
-			console.log('set promo');
-			
+
+
 		},
 		get: async (supabase: SupabaseClient, locale?: Locales) => {
 			const result = await supabase
 				.from('promo')
-				.select('*,video:promo_languages(*)')
-				.eq('video.language', locale ?? 'en')
-                .order('created_at', { ascending: false })
-				.single();
-			//.info(result.data);
+				.select('*,languages:promo_languages(*)!inner(*)', { count: 'exact' })
+				.eq('languages.language', locale ?? 'en')
+				.order('created_at', { ascending: false })
+				.limit(3);
+
 			if (result.error) {
-				//.error(result.error);
 				return null;
 			} else {
+
 				//.error(result.data);
-				const promo = result.data as PromoModel;
-				//.info('$$$$$$$$$$$$$$');
-				//.info(carousel);
-				// // add to store
+				const promo = result.data.map((e) => convertModel<PromoModel>(e)) as PromoModel[];
+
 				set(promo);
 				return promo;
 			}

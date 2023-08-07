@@ -3,10 +3,13 @@
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import Constants from '../../utils/constants';
 	import type { ItemModel } from '../../models/covertModel';
+	import { getNameRegex } from '../../utils/urlRegexName';
+	import { page } from '$app/stores';
 
 	export let title: string;
 	export let pageType: string;
 	export let items: ItemModel[];
+	export let youtubeThumbnail: string[] = [];
 
 	interface $$props extends HTMLAnchorAttributes {
 		title: string;
@@ -27,10 +30,7 @@
 	class="flex flex-col justify-start mb-10 lg:mt-10 mt-5 rounded-lg {Constants.page_max_width} mx-auto"
 >
 	<h1 class="text-2xl py-4 font-bold text-center">Recent {title}</h1>
-	{#each items as item}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
-
+	{#each items as item, index}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
@@ -38,10 +38,10 @@
 			on:click={() => DetailsPage(item.id)}
 		>
 			<div class="lg:w-2/4 md:w-1/2 w-full mb-4 md:mb-0 h-60 3xl:h-36 p-2">
-				<img class="object-cover w-full h-full rounded-lg" alt="hero" src={`${item.thumbnail}`} />
+				<img class="object-cover w-full h-full rounded-lg" alt="hero" src={item.thumbnail ?? youtubeThumbnail[index]} />
 			</div>
 			<div
-				class="lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2 text-[var(--onBackgroundColor)]"
+				class="text-{getNameRegex($page.url.pathname)}SecondaryColor lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
 			>
 				{#if item.title.length > 19}
 					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">

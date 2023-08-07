@@ -5,7 +5,8 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	for (let prop in data) {
 		if (prop !== 'languages') {
 			if (prop === 'images') {
-				obj[prop] = data[prop].map((e: string) => {
+				if (!data[prop]) continue;
+				obj[prop] = data[prop]?.map((e: string) => {
 					return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e;
 				});
 				if (isNewsModel) {
@@ -18,10 +19,15 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 						};
 					});
 				}
+			} else if (prop === 'sponsor_images') {
+				obj[prop] = data[prop]?.map((e: string) => {
+					return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e;
+				});
 			} else if (prop === 'thumbnail' || prop === 'image') {
+				if (!data[prop]) continue;
 				obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 			} else if (prop === 'pdf_files') {
-				obj[prop] = data[prop].map((e: string) => {
+				obj[prop] = data[prop]?.map((e: string) => {
 					return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
 				});
 			} else {

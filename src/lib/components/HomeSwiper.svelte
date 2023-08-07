@@ -7,11 +7,13 @@
 	import { fade } from 'svelte/transition';
 	import type { SwiperOptions } from 'swiper/types';
 	import SulyButton from './sulyButton.svelte';
+	import Constants from '../../utils/constants';
 
 	export let supabase: any;
 	export let locale: Locale;
 	$: {
 		let a = locale;
+		console.log($carouselStore)
 		// swiperjs set scroll directin write to left or left to write
 	}
 
@@ -86,7 +88,7 @@
 								: 'right-4 sm:right-10 md:right:20 lg:right-32'}  z-10"
 						>
 							<div
-								class="text-[var(--onPrimaryColor)] text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="text-lightBackgroundColor dark:text-darkBackgroundColor text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-8xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-100"
@@ -94,7 +96,7 @@
 								<p>{c.title}</p>
 							</div>
 							<div
-								class="w-full md:w-1/2 text-[var(--onPrimaryColor)] text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
+								class="text-lightBackgroundColor dark:text-darkBackgroundColor w-full md:w-1/2 text-sm sm:text-base md:text-lg xl:text-2xl slide-text duration-1000 ease-in-out opacity-0 {locale ===
 								'en'
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-300"

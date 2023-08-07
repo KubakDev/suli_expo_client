@@ -3,6 +3,7 @@ import { writable } from 'svelte/store';
 import type { ContactInfoModel } from '../models/contactInfo';
 import { convertModel } from '../models/covertModel';
 import type { Locales } from '$lib/i18n/i18n-types';
+import type { SocialMediaModel } from '../models/socialMedia';
 
 const createContactInfoSectionStore = () => {
 	const { subscribe, set, update } = writable<ContactInfoModel[]>();
@@ -32,6 +33,23 @@ const createContactInfoSectionStore = () => {
 				//.info(contactInfo);
 				set(contactInfo);
 				return null;
+			}
+		},
+		getSingle: async (supabase: SupabaseClient) => {
+			// get current selected language
+			//.info(locale);
+			//.info('#############');
+			const result = await supabase
+				.from('contact_info')
+				.select('*')
+				.single();
+
+			if (result.error) {
+				//.error(result.error);
+				return null;
+			} else {
+				const contactInfo = result.data as SocialMediaModel;
+				return contactInfo;
 			}
 		}
 	};

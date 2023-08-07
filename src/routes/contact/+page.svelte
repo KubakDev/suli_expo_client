@@ -5,7 +5,6 @@
 	import ContactInfo from '$lib/components/ContactInfo.svelte';
 	import Contact from '$lib/components/Contact.svelte';
 	import Constants from '../../utils/constants';
-	import { onMount } from 'svelte';
 
 	export let data;
 	$: {
@@ -14,9 +13,6 @@
 		}
 	}
 
-	onMount(async () => {
-		console.log('contactInfoSectionStore', $contactInfoSectionStore);
-	});
 </script>
 
 <svelte:head>
@@ -28,12 +24,12 @@
 	<div class="mx-auto px-4 {Constants.page_max_width}">
 		<!-- title  -->
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.contact()} customClass=" dark:text-white text-secondary " />
+			<TitleUi text={$LL.contact()} />
 		</div>
 
 		<!-- contact information section -->
 		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-[var(--secondaryColor)] text-[var(--onSecondaryColor)] shadow"
+			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal dark:text-slate-300 bg-lightSecondaryColor text-lightOverlaySecondaryColor dark:bg-darkSecondaryColor dark:text-darkOverlaySecondaryColor shadow"
 		>
 			{#if $contactInfoSectionStore}
 				{#each $contactInfoSectionStore as contactInfoSection}

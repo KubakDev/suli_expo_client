@@ -1,0 +1,207 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import LL, { locale } from '$lib/i18n/i18n-svelte';
+	import { exhibitionStore } from '../../../../stores/exhibtionStore';
+	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
+	import Constants from '../../../../utils/constants';
+	import { fade } from 'svelte/transition'; // import the fade transition
+	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
+	import { MapPin, BuildingOffice2, GlobeAsiaAustralia } from 'svelte-heros-v2';
+	import moment from 'moment';
+	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
+	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
+	import TitleUi from '$lib/components/TitleUi.svelte';
+	//@ts-ignore
+	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
+	import ReservationComponent from '$lib/components/ReservationComponent.svelte';
+
+	export let data: any;
+
+	let exhibition: ExhibitionModel;
+	async function getExhibition() {
+		exhibition = (await exhibitionStore.getSingle(
+			$locale,
+			data.supabase,
+			$page.params.exhibitionId
+		)) as ExhibitionModel;
+	}
+
+	let currentImageIndex = 0;
+
+	$: {
+		if ($locale) {
+			getExhibition();
+		}
+	}
+
+	onMount(async () => {
+		await getExhibition();
+		if (exhibition!.images.length) {
+			const interval = setInterval(() => {
+				currentImageIndex = (currentImageIndex + 1) % exhibition!.images.length;
+			}, 3000); // change image every 2 seconds
+
+			() => clearInterval(interval); // clear interval on component unmount
+		}
+	});
+</script>
+
+<section class="w-full flex-1 overflow-x-hidden">
+	<div class="w-full h-200 relative">
+		{#if exhibition?.images.length}
+			{#key currentImageIndex}
+				<img
+					src={exhibition.images[currentImageIndex]}
+					alt=""
+					class="w-full object-cover absolute h-200 slide-img"
+					in:fade={{ duration: 1000 }}
+					out:fade={{ duration: 1000 }}
+				/>
+			{/key}
+		{/if}
+	</div>
+	<div>
+		<div class="{Constants.page_max_width} mx-auto w-full">
+			<div class=" items-start flex flex-col justify-around">
+				{#if exhibition?.seat_layout}
+					<ReservationComponent
+						data={exhibition?.seat_layout}
+						supabase={data.supabase}
+						locale={$locale}
+					/>
+				{/if}
+				<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
+				<div class="w-full h-20" />
+				<div class="w-full flex flex-col">
+					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
+						<div class="flex h-20 items-center my-1">
+							<div
+								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+							>
+								<GlobeAsiaAustralia
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+									size="50"
+								/>
+							</div>
+							<div class="h-full w-4" />
+							<div class="flex flex-col w-40">
+								{#if exhibition}
+									<h2
+										class="text-2xl text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor font-bold"
+									>
+										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
+									</h2>
+								{/if}
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
+									{$LL.exhibition_mini_data.Countries()}
+								</p>
+							</div>
+						</div>
+						<div class="flex h-20 items-center my-1">
+							<div
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+							>
+								<BuildingOffice2
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+									size="50"
+								/>
+							</div>
+							<div class="h-full w-4" />
+							<div class="flex flex-col">
+								<h2
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+								>
+									{#if exhibition}
+										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
+									{/if}
+								</h2>
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
+									{$LL.exhibition_mini_data.Companies()}
+								</p>
+							</div>
+						</div>
+						<div class="flex h-20 items-center my-1">
+							<div
+								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+							>
+								<MapPin
+									size="50"
+									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
+								/>
+							</div>
+							<div class="h-full w-4" />
+							<div class="flex flex-col dark:text-white">
+								<h2
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+								>
+									{exhibition?.location_title ?? 'No Location Available'}
+								</h2>
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
+									{exhibition?.location ?? 'No Address Available'}
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="w-full h-10" />
+					<div class="grid md:grid-cols-2">
+						<div class="  h-100 w-full relative">
+							<img
+								class="object-cover w-full h-100"
+								src={exhibition?.thumbnail}
+								alt={exhibition?.title}
+							/>
+							<div
+								class="flex justify-center items-center absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent"
+							>
+								<h1 class="text-4xl font-bold text-white bg-black opacity-75 w-full text-center">
+									<!--  format date to yyyy-mm-dd -->
+									{moment(exhibition?.exhibition_date).format('DD MMMM YYYY')}
+								</h1>
+							</div>
+						</div>
+						<div class="p-8 flex justify-between flex-col items-start">
+							<div class="flex flex-col items-start">
+								<h1
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold"
+								>
+									{$LL.exhibition_mini_data.Story()}
+								</h1>
+
+								<p
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+								>
+									{#if exhibition?.story && exhibition.story.length > 600}
+										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
+									{:else}
+										{exhibition?.story ?? 'No Story Available'}
+									{/if}
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="w-full h-10" />
+				</div>
+				<div class="w-full h-10" />
+			</div>
+		</div>
+
+		<div class="flex justify-center w-full py-6">
+			<TitleUi text={$LL.exhibition_mini_data.Exhibition_Sponsors()} />
+		</div>
+		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
+			<div class="{Constants.page_max_width} mx-auto">
+				<SponsorSlider locale={$locale} {exhibition} />
+			</div>
+		{/if}
+		<div class="{Constants.page_max_width} mx-auto">
+			<VideoPlayer videoUrl={exhibition?.video_youtube_link + ''} />
+		</div>
+	</div>
+</section>
