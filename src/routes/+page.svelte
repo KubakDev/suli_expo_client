@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MailTemplate from './../lib/components/MailTemplate.svelte';
 	import HomeSwiper from '$lib/components/HomeSwiper.svelte';
 	import { onMount } from 'svelte';
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';

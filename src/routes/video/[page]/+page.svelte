@@ -16,6 +16,7 @@
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle } from '../../../stores/darkMode';
+	import MailTemplate from '$lib/components/MailTemplate.svelte';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
@@ -52,6 +53,10 @@
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+
+		if ($locale) {
+			videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		}
 
 		if(!$videoStore.data) return;
 		thumbnailUrl = $videoStore.data.map((item) => {
@@ -152,4 +157,6 @@
 			{/if}
 		</div>
 	{/if}
+
+	<!-- <MailTemplate /> -->
 </section>
