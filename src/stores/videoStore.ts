@@ -39,10 +39,6 @@ const createVideoStore = () => {
 					count: result.count,
 					pages: Math.ceil((result.count ?? 1) / 9) // this is the total number of pages
 				} as VideoPaginatedModel;
-
-				console.log("Data Video ",videosPaginated);
-				
-
 				set(videosPaginated);
 				return null;
 			}

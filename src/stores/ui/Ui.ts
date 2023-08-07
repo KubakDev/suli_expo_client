@@ -17,9 +17,7 @@ const Ui = () => {
 				.eq('page', cardPage)
 				.single();
 			if (result.error) {
-				//.error(result.error);
-				console.log('result.error', result.error);
-
+				console.error(result.error);
 				return null;
 			} else {
 				// @ts-ignore
@@ -38,9 +36,7 @@ const Ui = () => {
 				.eq('page', page)
 				.single();
 			if (result.error) {
-				//.error(result.error);
-				console.log('result.error', result.error);
-
+				console.error(result.error);
 				return null;
 			} else {
 				// @ts-ignore

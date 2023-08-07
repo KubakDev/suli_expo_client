@@ -19,8 +19,6 @@
 	// helper function
 	function getPagesToShow(current: number, total: number) {
 		page = current;
-		console.log('current', total);
-		console.log('total', page);
 
 		// convert current and total to numbers
 		current = Number(current);

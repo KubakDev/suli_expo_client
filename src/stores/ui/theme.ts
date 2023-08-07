@@ -32,7 +32,6 @@ const themeStore = () => {
 			// for (let color in data) {
 			// 	if (color === 'active' || color === 'id' || color === 'name') continue;
 			// 	root.style.setProperty(`--${color}`, data["modeType"]+data[color]);
-			// 	console.log('Colors ', `--${color}`, data["modeType"]+data[color]);
 			// }
 			
 
@@ -41,8 +40,6 @@ const themeStore = () => {
 		},
 		// reAddColors: () => {
 		// 	update((data) => {
-		// 		console.log('Colors ', data);
-				
 		// 		const root = document.documentElement;
 		// 		for (let color in data) {
 		// 			if (color === 'active' || color === 'id' || color === 'name') continue;

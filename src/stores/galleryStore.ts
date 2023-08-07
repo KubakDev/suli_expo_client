@@ -33,9 +33,6 @@ const createGalleryStore = () => {
 					convertModel<GalleryModel>(e, true)
 				) as GalleryModel[];
 
-				console.log("Hello ",result.data);
-				
-
 				const galleryPaginated = {
 					data: gallery,
 					page: parseInt(page),

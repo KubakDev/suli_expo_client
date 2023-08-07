@@ -41,8 +41,6 @@
 			videos.forEach((video, index) => {
 				videoIds[index] = getVideoId(video.video_link);
 			});
-
-			console.log('videoIds', videos);
 		}
 	}
 

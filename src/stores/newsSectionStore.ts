@@ -31,8 +31,6 @@ const createNewsSectionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				console.log('newsSectionStore', result.data);
-				
 				let data = result.data;
 				const news = data!.map((e) => convertModel<NewsModel>(e)) as NewsModel[];
 				set(news);

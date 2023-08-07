@@ -28,7 +28,6 @@ const pageStore = () => {
 						}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_light[colorType] ?? `--${colorType}`);
-						// console.log('cssVarName', cssVarName, page.color_palette_light[colorType]);
 					}
 					for (let colorType in page.color_palette_dark) {
 						if (
@@ -45,15 +44,12 @@ const pageStore = () => {
 						}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_dark[colorType] ?? `--${colorType}`);
-						// console.log('cssVarName', cssVarName, page.color_palette_dark[colorType]);
 					}
 				}
 
 				set(pageLayout);
 				return pageLayout;
 			} else {
-				console.log('pageBuilderStore', result.error);
-
 				return null;
 			}
 		}

@@ -25,9 +25,6 @@
 	}
 
 	onMount(() => {
-		console.log('start_date', start_date);
-		console.log('end_date', end_date);
-		console.log('countDays', countDays(start_date as Date, end_date as Date));
         result = countDays(start_date as Date, end_date as Date);
 	});
 </script>

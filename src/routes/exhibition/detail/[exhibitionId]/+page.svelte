@@ -49,8 +49,6 @@
 
 			() => clearInterval(interval); // clear interval on component unmount
 		}
-
-		console.log(exhibition);
 	});
 
 	function pdf_page(pdf_url: string) {
@@ -160,7 +158,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="w-full h-10">
+					<div class="w-full h-10" >
 						<h3
 							class="text-xl pt-2 flex flex-row font-bold text-exhibitionLightPrimaryColor w-full " 
 						>

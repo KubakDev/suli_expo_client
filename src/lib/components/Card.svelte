@@ -21,7 +21,6 @@
 	};
 
 	onMount(() => {
-		console.log(service_color);
 		gradientColor = `background: linear-gradient(to top, ${service_color.description} 0%, rgba(15, 15, 15, 0)); Fade gradient`;
 	});
 </script>
