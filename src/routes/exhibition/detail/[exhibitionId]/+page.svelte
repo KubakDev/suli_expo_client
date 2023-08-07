@@ -85,7 +85,7 @@
 				</div> -->
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
-					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center">
+					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center pb-6">
 						<div class="flex h-20 items-center my-1">
 							<div
 								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
@@ -150,19 +150,19 @@
 								<h2
 									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
 								>
-									{exhibition?.location_title ?? 'No Location Available'}
+									{exhibition?.location_title ?? 'Not Available'}
 								</h2>
 								<p
 									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
 								>
-									{exhibition?.location ?? 'No Address Available'}
+									{exhibition?.location ?? 'Not Available'}
 								</p>
 							</div>
 						</div>
 					</div>
 					<div class="w-full h-10">
 						<h3
-							class="text-xl pt-2 flex flex-row font-bold text-exhibitionLightPrimaryColor w-full"
+							class="text-xl pt-2 flex flex-row font-bold text-exhibitionLightPrimaryColor w-full " 
 						>
 							<!--  format date to yyyy-mm-dd -->
 							{moment(exhibition?.exhibition_date).format('DD MMMM YYYY')}
@@ -171,7 +171,7 @@
 					<div class="grid md:grid-cols-2">
 						<div class="h-100 w-full relative">
 							<img
-								class="object-cover w-full h-100"
+								class="object-cover w-full h-100 "
 								src={exhibition?.thumbnail}
 								alt={exhibition?.title}
 							/>
@@ -181,8 +181,8 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<!-- {#if exhibition?.pdf_files && exhibition.pdf_files.length > 0} -->
-								<CollapsibleCard open={false} duration={1} easing="ease-in-out">
+								{#if exhibition?.pdf_files && exhibition.pdf_files.length > 0}
+								<CollapsibleCard open={false} duration={0.2} easing="ease-in-out">
 									<h2
 										slot="header"
 										class="text-blue-400 cursor-pointer flex flex-row w-full justify-start font-bold hover:underline"
@@ -196,7 +196,7 @@
 									</p>
 								</CollapsibleCard>
 
-								<!-- {/if} -->
+								{/if}
 
 								<h1
 									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold"
