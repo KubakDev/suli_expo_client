@@ -17,7 +17,8 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)',{ count: 'exact' }
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)',
+					{ count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
@@ -27,7 +28,11 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
+				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
+				
+				console.log('Exhibition', exhibition);
+
+				exhibition.pdf_files = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.pdf_files;
 
 				return exhibition;
 			}
@@ -36,11 +41,11 @@ const createExhibitionStore = () => {
 			//.info('get exhibition');
 			const result = await supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages!inner(*)',{ count: 'exact' })
+				.select('*,languages:exhibition_languages!inner(*)', { count: 'exact' })
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
 				.order('position', { ascending: false });
-			
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
@@ -53,19 +58,25 @@ const createExhibitionStore = () => {
 				return null;
 			}
 		},
-		getPaginated: async (locale: Locales, supabase: SupabaseClient, page: string, limit?: number, asc?:boolean ) => {
+		getPaginated: async (
+			locale: Locales,
+			supabase: SupabaseClient,
+			page: string,
+			limit?: number,
+			asc?: boolean
+		) => {
 			//.info('get exhibition');
 			let query = supabase
 				.from('exhibition')
-				.select('*,languages:exhibition_languages!inner(*)',{ count: 'exact' })
+				.select('*,languages:exhibition_languages!inner(*)', { count: 'exact' })
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
 				.order('position', { ascending: asc ?? false });
 
-				query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
+			query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
 
-				const result = await query;
-			
+			const result = await query;
+
 			if (result.error) {
 				//.error(result.error);
 				return null;

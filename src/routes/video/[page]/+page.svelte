@@ -41,10 +41,14 @@
 		if ($locale) {
 			const currentPage = $page.params.page;
 			videoStore.get($locale, data.supabase, currentPage, undefined, asc);
+			thumbnailChanging();
 		}
 	}
 
 	onMount(async () => {
+		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		thumbnailChanging();
+
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
@@ -52,17 +56,16 @@
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-
-		if ($locale) {
-			videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-		}
-
-		if(!$videoStore.data) return;
-		thumbnailUrl = $videoStore.data.map((item) => {
-			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});		
 	});
+
+
+	function thumbnailChanging(){
+		if($videoStore?.data){
+			thumbnailUrl = $videoStore.data.map((item) => {
+				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
+			});	
+		}
+	}
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: number) {
@@ -77,6 +80,7 @@
 	function changeOrder() {
 		asc = !asc;
 		videoStore.get($locale, data?.supabase, $page.params.page, undefined, asc);
+		thumbnailChanging();
 	}
 
 	// get the YouTube ID from the URL

@@ -146,7 +146,7 @@
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
 								<h2
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold uppercase tracking-wide"
 								>
 									{exhibition?.location_title ?? 'Not Available'}
 								</h2>
@@ -158,28 +158,32 @@
 							</div>
 						</div>
 					</div>
-					<div class="w-full h-10" >
-						<h3
-							class="text-xl pt-2 flex flex-row font-bold text-exhibitionLightPrimaryColor w-full " 
-						>
+					<div class="w-full flex flex-row justify-between" dir="ltr">
+						<h3 class="text-xl pt-2 font-bold text-exhibitionLightPrimaryColor w-full">
 							<!--  format date to yyyy-mm-dd -->
 							{moment(exhibition?.exhibition_date).format('DD MMMM YYYY')}
 						</h3>
+						<h1
+							class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
+						>
+							{$LL.exhibition_mini_data.Brochure()}
+						</h1>
+						<div class="pl-2 w-full" />
 					</div>
-					<div class="grid md:grid-cols-2">
+					<div class="grid">
 						<div class="h-100 w-full relative">
 							<img
-								class="object-cover w-full h-100 "
+								class="w-full h-100 rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
+								on:click={() => {
+									pdf_page(exhibition?.pdf_files);
+								}}
 								src={exhibition?.thumbnail}
 								alt={exhibition?.title}
-							/>
-							<div
-								class="flex justify-center items-center absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent"
 							/>
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								{#if exhibition?.pdf_files && exhibition.pdf_files.length > 0}
+								<!-- {#if exhibition?.pdf_files && exhibition.pdf_files.length > 0}
 								<CollapsibleCard open={false} duration={0.2} easing="ease-in-out">
 									<h2
 										slot="header"
@@ -193,14 +197,7 @@
 										{/each}
 									</p>
 								</CollapsibleCard>
-
-								{/if}
-
-								<h1
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-4xl font-bold"
-								>
-									{$LL.exhibition_mini_data.Story()}
-								</h1>
+								{/if} -->
 
 								<p
 									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
@@ -208,11 +205,25 @@
 									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
 									{:else}
-										{exhibition?.story ?? 'No Story Available'}
+										{exhibition?.story ?? 'No Story Available'}.
 									{/if}
 								</p>
 							</div>
 						</div>
+						{#if exhibition?.image_map}
+						<h1
+							class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
+						>
+							{$LL.exhibition_mini_data.Map_Title()}
+						</h1>
+							<div class="h-100 w-full relative flex justify-center">
+								<img
+									class="w-[60%] h-50 rounded-xl shadow-2xl object-cover border-4 border-solid border-white"
+									src={exhibition?.image_map}
+									alt={exhibition?.title}
+								/>
+							</div>
+						{/if}
 					</div>
 					<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 					<div class="w-full h-10" />
@@ -291,9 +302,9 @@
 			</div> -->
 		<!-- {/if} -->
 		{#if youtubeRegex.exec(exhibition?.video_youtube_link)}
-		<div class="{Constants.page_max_width} mx-auto">
-			<VideoPlayer videoUrl={exhibition?.video_youtube_link} />
-		</div>
+			<div class="{Constants.page_max_width} mx-auto">
+				<VideoPlayer videoUrl={exhibition?.video_youtube_link} />
+			</div>
 		{/if}
 
 		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}

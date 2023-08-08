@@ -6,7 +6,6 @@
 
 	import { onMount } from 'svelte';
 	export let videoUrl: string;
-	// export let thumbnailUrl: string;
 
 	// YouTube video ID regex
 	const youtubeRegex =
