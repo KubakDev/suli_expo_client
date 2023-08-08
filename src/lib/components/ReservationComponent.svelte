@@ -4,6 +4,10 @@
 	import { fabric } from 'fabric';
 	import type { Canvas } from 'fabric/fabric-impl';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { currentUser } from '../../stores/currentUser';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { ReservationStatusEnum, type ReserveSeatModel } from '../../models/reserveSeat';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -21,12 +25,18 @@
 	};
 	let freeServices: any = [];
 	let paidServices: any = [];
+	let reserveSeatData: ReserveSeatModel = {
+		company_id: 0,
+		exhibition_id: +$page.params.exhibitionId,
+		object_id: 0,
+		services: [],
+		status: ReservationStatusEnum.PENDING
+	};
 	onMount(async () => {
 		if (data) {
 			await loadSeats();
 		}
 	});
-
 	const adjustCanvasSize = () => {
 		const width = data[0].design.width;
 		const height = data[0].design.height;
@@ -43,7 +53,6 @@
 		}
 		canvas.renderAll();
 	};
-
 	const loadSeats = async () => {
 		if (fabric) {
 			const canvasElement: any = document.getElementById('canvas');
@@ -90,13 +99,13 @@
 			});
 		}
 	};
-
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
-		console.log(event.target);
 		selectedObject = event.target?.objectDetail;
 		selectableObjectTotalPrice = +selectedObject?.price;
+		selectableObjectServices = [];
 		if (!selectedObject) return;
+		reserveSeatData.object_id = event?.target?.id;
 		addServiceDetailForSelectableObject(event.target?.objectDetail);
 		const pointer = canvas.getPointer(event.e);
 		popupPosition = {
@@ -155,8 +164,18 @@
 		});
 	}
 	function reserveSeat() {
-		console.log('selectableObjectServices', selectableObjectServices);
-		console.log(selectedObject);
+		if (!$currentUser?.uid) {
+			localStorage.setItem('reservedExhibitionId', $page.params.exhibitionId);
+			goto('/login');
+			return;
+		}
+		reserveSeatData.company_id = $currentUser.id;
+		let servicesIds = selectableObjectServices.map((service: any) => service.id);
+		reserveSeatData.services = servicesIds;
+		supabase
+			.from('seat_reservation')
+			.insert(reserveSeatData)
+			.then((result) => {});
 	}
 </script>
 
@@ -191,15 +210,15 @@
 					{/if}
 					{#if paidServices.length > 0}
 						<h2>paid services for this seat</h2>
-
 						{#each paidServices as paidService}
 							<div class="flex justify-around items-center my-2">
-								<div class="flex items-center">
+								<div class="flex items-center justify-between">
 									<Checkbox
 										{checked}
 										on:change={(e) => {
 											addServicesToAnObject(paidService);
 										}}
+										class="mx-1"
 									/>
 									<h2>{paidService?.serviceDetail?.languages[0]?.title}</h2>
 								</div>

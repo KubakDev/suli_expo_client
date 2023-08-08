@@ -40,6 +40,22 @@
 	onMount(async () => {
 		setTheme();
 		supabase = data.supabase;
+
+		const response: any = await data.supabase.auth.getUser();
+		console.log(response);
+		if (response?.data?.user) {
+			data.supabase
+				.from('company')
+				.select('*')
+				.eq('uid', response.data.user.id)
+				.single()
+				.then((res) => {
+					if (res.data) {
+						currentUser.set(res.data);
+					}
+				});
+		}
+
 		await activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
 		await pageBuilderStore.get(data.supabase);

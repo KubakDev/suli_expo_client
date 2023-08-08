@@ -23,6 +23,7 @@
 	});
 	let formSubmitted = false;
 	let uid = '';
+	let exhibitionId = localStorage.getItem('reservedExhibitionId');
 
 	onMount(async () => {
 		const response: any = await data.supabase.auth.getUser();
@@ -38,7 +39,7 @@
 				.then((res) => {
 					if (res.data) {
 						currentUser.set(res.data);
-						goto('/exhibition/detail/92');
+						goto(`/exhibition/detail/${exhibitionId}`);
 					}
 				});
 		}
@@ -52,7 +53,7 @@
 			company_name: companyData.companyName
 		});
 		currentUser.set(companyData);
-		goto('/exhibition/detail/92');
+		goto(`/exhibition/detail/${exhibitionId}`);
 	}
 	function inValidField(field: string) {
 		let invalid = false;
