@@ -12,9 +12,8 @@
 	import moment from 'moment';
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
-	import TitleUi from '$lib/components/TitleUi.svelte';
 	//@ts-ignore
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
+	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { Card } from 'flowbite-svelte';
 	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
@@ -51,8 +50,13 @@
 		}
 	});
 
-	function pdf_page(pdf_url: string) {
-		window.open(pdf_url, '_blank');
+	function openPdfFile(pdfLink: string) {
+		const completePdfLink = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${pdfLink}`;
+
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
+		}
 	}
 </script>
 
@@ -171,11 +175,11 @@
 						<div class="pl-2 w-full" />
 					</div>
 					<div class="grid">
-						<div class="h-100 w-full relative">
+						<div class="h-100 w-full relative mx-auto">
 							<img
 								class="w-full h-100 rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
 								on:click={() => {
-									pdf_page(exhibition?.pdf_files);
+									openPdfFile(exhibition?.pdf_files);
 								}}
 								src={exhibition?.thumbnail}
 								alt={exhibition?.title}
@@ -211,17 +215,15 @@
 							</div>
 						</div>
 						{#if exhibition?.image_map}
-						<h1
-							class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
-						>
-							{$LL.exhibition_mini_data.Map_Title()}
-						</h1>
-							<div class="h-100 w-full relative flex justify-center">
-								<img
-									class="w-[60%] h-50 rounded-xl shadow-2xl object-cover border-4 border-solid border-white"
-									src={exhibition?.image_map}
-									alt={exhibition?.title}
-								/>
+							<h1
+								class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
+							>
+								{$LL.exhibition_mini_data.Map_Title()}
+							</h1>
+							<div class="relative flex justify-center"> 
+								<!-- <Gallery >
+									<img src="{exhibition?.image_map}" alt="{exhibition?.title}" class="w-[60%] rounded-xl shadow-2xl object-cover border-4 border-solid border-white flex justify-center items-center" />
+								</Gallery> -->
 							</div>
 						{/if}
 					</div>
@@ -309,7 +311,7 @@
 
 		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
 			<div class="{Constants.page_max_width} mx-auto">
-				<SponsorSlider locale={$locale} {exhibition} />
+				<SponsorSlider images={exhibition.sponsor_images} />
 			</div>
 		{/if}
 		<!-- {#if exhibition?.seat_layout.length > 0} -->

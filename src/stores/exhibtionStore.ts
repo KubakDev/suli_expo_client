@@ -29,11 +29,6 @@ const createExhibitionStore = () => {
 				return null;
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
-				
-				console.log('Exhibition', exhibition);
-
-				exhibition.pdf_files = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.pdf_files;
-
 				return exhibition;
 			}
 		},

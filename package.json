@@ -59,6 +59,7 @@
 		"svelte-datepicker": "^1.0.0",
 		"svelte-feather-icons": "^4.0.1",
 		"svelte-heros-v2": "^0.7.3",
+		"svelte-image-gallery": "^1.7.0",
 		"svelte-parallax": "^0.6.0",
 		"svelte-routing": "^1.11.0",
 		"svelte-toast": "^1.0.0",
@@ -87,11 +88,13 @@
 		"nodemailer": "^6.9.4",
 		"prettier": "^2.8.8",
 		"pull": "^2.1.1",
+		"react-modal-image": "^2.6.0",
 		"svelte-collapsible": "^0.2.2",
 		"svelte-date-range-select": "^1.0.4",
 		"svelte-email": "^0.0.4",
 		"svelte-fast-marquee": "^0.4.1",
 		"svelte-pdf": "^1.0.19",
-		"svelte-select": "^5.6.1"
+		"svelte-select": "^5.6.1",
+		"svelte-zoom": "^1.0.16"
 	}
 }

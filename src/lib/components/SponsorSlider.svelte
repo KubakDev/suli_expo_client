@@ -1,4 +1,5 @@
-<script lang="ts">
+<!-- <script lang="ts">
+	import { TitleUi } from '$lib/components/TitleUi.svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	//@ts-ignore
 	import Marquee from "svelte-fast-marquee";
@@ -14,13 +15,61 @@
 <div class="sponsor-slider flex py-6">
 	<Marquee
 	speed={30}
-	--bg-color="transparent"
 	> 
-		<div class="flex flex-row space-x-8">
+		<div class="flex flex-row justify-between">
 			{#each exhibition.sponsor_images as sponsor}
 				<img src={sponsor} class="w-48 h-48 object-cover rounded-xl" />
 			{/each}
 		</div>
 	</Marquee>
 </div>
-{/if}
+{/if} -->
+
+<script lang="ts">
+	import { LL } from '$lib/i18n/i18n-svelte';
+	import TitleUi from '$lib/components/TitleUi.svelte';
+	export let images: string[];
+
+	let selectedImage = 0;
+
+	function nextImage() {
+		selectedImage = (selectedImage + 1) % images.length;
+	}
+
+	setInterval(nextImage, 3000);
+</script>
+<div class="flex justify-between items-center py-5">
+	<div class="h-10 w-32" />
+	<div class="">
+		<TitleUi text={$LL.exhibition_mini_data.Exhibition_Sponsors()} />
+	</div>
+	<div class="flex justify-end w-32">
+	</div>
+</div>
+<div class="flex overflow-x-hidden ">
+	<div class="animate-marquee flex flex-row-reverse whitespace-nowrap w-full mx-auto py-5">
+		{#each images as image}
+			<img src={image} class="w-48 h-32 object-fit rounded-lg mx-6 hover:bg-lightTransparentBackgroundColor hover:p-1 transition-all " />
+		{/each}
+	</div>
+</div>
+
+<style>
+	.animate-marquee {
+		animation: marquee 17.5s linear infinite;
+	}
+
+	.animate-marquee:hover {
+		animation-play-state: paused;
+	}
+
+	@keyframes marquee {
+		0% {
+			/* Start with images shifted outside viewport */
+			transform: translateX(50%);
+		}
+		100% {
+			transform: translateX(-100%);
+		}
+	}
+</style>
