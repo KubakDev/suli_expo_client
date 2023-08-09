@@ -29,6 +29,9 @@ const createExhibitionStore = () => {
 				return null;
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
+
+				console.log(exhibition);
+				
 				return exhibition;
 			}
 		},

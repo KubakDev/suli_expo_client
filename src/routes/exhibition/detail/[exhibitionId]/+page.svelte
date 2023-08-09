@@ -6,7 +6,6 @@
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	import Constants from '../../../../utils/constants';
 	import { fade } from 'svelte/transition'; // import the fade transition
-	import { CollapsibleCard } from 'svelte-collapsible';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import { MapPin, BuildingOffice2, GlobeAsiaAustralia, CloudArrowDown } from 'svelte-heros-v2';
 	import moment from 'moment';
@@ -14,8 +13,6 @@
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	//@ts-ignore
 	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-	import { Card } from 'flowbite-svelte';
-	import { FilePdfSolid, OpenBookSolid } from 'flowbite-svelte-icons';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 
 	export let data: any;
@@ -51,7 +48,8 @@
 	});
 
 	function openPdfFile(pdfLink: string) {
-		const completePdfLink = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${pdfLink}`;
+		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
+		console.log(completePdfLink);
 
 		const newWindow = window.open();
 		if (newWindow !== null) {
@@ -176,14 +174,24 @@
 					</div>
 					<div class="grid">
 						<div class="h-100 w-full relative mx-auto">
-							<img
-								class="w-full h-100 rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
-								on:click={() => {
-									openPdfFile(exhibition?.pdf_files);
-								}}
-								src={exhibition?.thumbnail}
-								alt={exhibition?.title}
-							/>
+							{#if exhibition?.pdf_files}
+								<!-- svelte-ignore a11y-click-events-have-key-events -->
+								<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+								<img
+									class="w-full h-100 rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
+									on:click={() => {
+										openPdfFile(exhibition?.pdf_files);
+									}}
+									src={exhibition?.thumbnail}
+									alt={exhibition?.title}
+								/>
+							{:else}
+								<img
+									class="w-full h-100 rounded-xl shadow-lg transition-all"
+									src={exhibition?.thumbnail}
+									alt={exhibition?.title}
+								/>
+							{/if}
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
@@ -215,16 +223,18 @@
 							</div>
 						</div>
 						{#if exhibition?.image_map}
-							<h1
+							<!-- <h1
 								class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
 							>
 								{$LL.exhibition_mini_data.Map_Title()}
 							</h1>
-							<div class="relative flex justify-center"> 
-								<!-- <Gallery >
-									<img src="{exhibition?.image_map}" alt="{exhibition?.title}" class="w-[60%] rounded-xl shadow-2xl object-cover border-4 border-solid border-white flex justify-center items-center" />
-								</Gallery> -->
-							</div>
+							<div class="relative flex justify-center">
+								<img
+								  src={exhibition?.image_map}
+								  alt={exhibition?.title}
+								  class="w-[60%] rounded-xl shadow-2xl object-cover border-4 border-solid border-white flex justify-center items-center"
+								/>
+							  </div> -->
 						{/if}
 					</div>
 					<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
