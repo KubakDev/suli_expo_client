@@ -30,7 +30,11 @@ const createExhibitionStore = () => {
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
-				exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
+				if(exhibition.brochure){
+					exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
+				}else{
+					exhibition.brochure = undefined;
+				}
 				
 				return exhibition;
 			}
