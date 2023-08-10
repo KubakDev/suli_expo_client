@@ -5,10 +5,6 @@
 </script>
 
 
-
-<h1 class="text-gradient text-shadow text-3xl font-bold text-center pb-4 w-full animate-pulse">
-	{$LL.exhibition_mini_data.Map_Title()}
-</h1>
 <div class="relative flex justify-center">
 	<Lightbox>
 		<img

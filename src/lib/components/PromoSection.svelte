@@ -49,7 +49,7 @@
 		<div class="flex justify-center items-center pb-4">
 			<TitleUi text={$LL.promo()} />
 		</div>
-		<div class="w-full">
+		<div class="w-full h-full">
 			{#if videos.length > 0}
 				<VideoSlider {videos} />
 			{/if}

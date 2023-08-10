@@ -24,6 +24,8 @@ export interface ExhibitionModel {
 	location_title:string;
 	sponsor_images?: string[];
 	sponsor_title?: string;
+	brochure?: string;
+	map_title?: string;
 	deleted_status: string | null;
 }
 

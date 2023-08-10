@@ -19,7 +19,7 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 						};
 					});
 				}
-			} else if (prop === 'sponsor_images') {
+			} else if (prop === 'sponsor_images' || prop === 'brochure') {
 				obj[prop] = data[prop]?.map((e: string) => {
 					return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + e;
 				});
@@ -27,7 +27,6 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 				if (!data[prop]) continue;
 				obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 			} else if (prop === 'languages') {
-				console.log("Prop",prop);
 					obj[prop].pdf_files = data[prop]?.map((e: string) => {
 						return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
 					});

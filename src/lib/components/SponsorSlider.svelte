@@ -38,14 +38,6 @@
 
 	setInterval(nextImage, 3000);
 </script>
-<div class="flex justify-between items-center py-5">
-	<div class="h-10 w-32" />
-	<div class="">
-		<TitleUi text={$LL.exhibition_mini_data.Exhibition_Sponsors()} />
-	</div>
-	<div class="flex justify-end w-32">
-	</div>
-</div>
 <div class="flex overflow-x-hidden ">
 	<div class="animate-marquee flex flex-row-reverse whitespace-nowrap w-full mx-auto py-5">
 		{#each images as image}

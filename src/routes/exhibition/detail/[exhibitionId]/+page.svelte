@@ -15,6 +15,7 @@
 	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
+	import TitleUi from '$lib/components/TitleUi.svelte';
 
 	export let data: any;
 	const youtubeRegex =
@@ -28,8 +29,7 @@
 			$page.params.exhibitionId
 		)) as ExhibitionModel;
 
-		console.log("Data ",exhibition);
-		
+		console.log('Data ', exhibition);
 	}
 
 	let currentImageIndex = 0;
@@ -62,14 +62,16 @@
 	}
 </script>
 
+<section class="text-gray-600 body-font" />
+
 <section class="w-full flex-1 overflow-x-hidden">
-	<div class="w-full h-200 relative">
+	<div class="w-full relative h-64 lg:h-200 md:h-128 sm:h-100 mx-auto">
 		{#if exhibition?.images.length}
 			{#key currentImageIndex}
 				<img
 					src={exhibition.images[currentImageIndex]}
 					alt=""
-					class="w-full object-cover absolute h-200 slide-img"
+					class="w-full object-fit slide-img absolute h-64 lg:h-200 md:h-128 sm:h-100"
 					in:fade={{ duration: 1000 }}
 					out:fade={{ duration: 1000 }}
 				/>
@@ -79,14 +81,6 @@
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class="items-start flex flex-col justify-around">
-				<!-- <div class="flex flex-col w-full h-full bg-gradient-to-r from-rose-500  to-blue-300 my-2 py-2 px-4 rounded-3xl border-solid border-2 dark:border-slate-200 shadow-md hover:shadow-xl shadow-blue-500/50 hover:shadow-red-500/50 opacity-80 hover:opacity-100 transition-all">
-					{#if exhibition}
-						<ExhibitionDate
-							start_date={exhibition?.start_date || new Date()}
-							end_date={exhibition?.end_date || new Date()}
-						/>
-					{/if}
-				</div> -->
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center pb-6">
@@ -164,17 +158,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="w-full flex flex-row justify-between" dir="ltr">
-						<h3 class="text-xl pt-2 font-bold text-exhibitionLightPrimaryColor w-full">
-							<!--  format date to yyyy-mm-dd -->
-							{moment(exhibition?.exhibition_date).format('DD MMMM YYYY')}
-						</h3>
+					<div class="w-full flex flex-row justify-center">
 						<h1
 							class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
 						>
 							{$LL.exhibition_mini_data.Brochure()}
 						</h1>
-						<div class="pl-2 w-full" />
 					</div>
 					<div class="grid">
 						<div class="h-100 w-full relative mx-auto">
@@ -186,13 +175,13 @@
 									on:click={() => {
 										openPdfFile(exhibition?.pdf_files);
 									}}
-									src={exhibition?.thumbnail}
+									src={exhibition?.brochure ?? exhibition?.thumbnail}
 									alt={exhibition?.title}
 								/>
 							{:else}
 								<img
 									class="w-full h-100 rounded-xl shadow-lg transition-all"
-									src={exhibition?.thumbnail}
+									src={exhibition?.brochure ?? exhibition?.thumbnail}
 									alt={exhibition?.title}
 								/>
 							{/if}
@@ -227,6 +216,11 @@
 							</div>
 						</div>
 						{#if exhibition?.image_map}
+							<h1
+								class="text-gradient text-shadow text-3xl font-bold text-center pb-4 w-full animate-pulse"
+							>
+								{exhibition?.map_title ?? $LL.exhibition_mini_data.Map_Title()}
+							</h1>
 							<ImageViewer image={exhibition?.image_map} />
 						{/if}
 					</div>
@@ -313,6 +307,15 @@
 		{/if}
 
 		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
+			<div class="flex justify-between items-center py-5">
+				<div class="h-10 w-32" />
+				<div class="">
+					<TitleUi
+						text={exhibition?.sponsor_title ?? $LL.exhibition_mini_data.Exhibition_Sponsors()}
+					/>
+				</div>
+				<div class="flex justify-end w-32" />
+			</div>
 			<div class="{Constants.page_max_width} mx-auto">
 				<SponsorSlider images={exhibition.sponsor_images} />
 			</div>
@@ -332,3 +335,6 @@
 		<!-- {/if} -->
 	</div>
 </section>
+
+<style>
+</style>
