@@ -14,6 +14,7 @@
 	//@ts-ignore
 	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
+	import ImageViewer from '$lib/components/ImageViewer.svelte';
 
 	export let data: any;
 	const youtubeRegex =
@@ -26,6 +27,9 @@
 			data.supabase,
 			$page.params.exhibitionId
 		)) as ExhibitionModel;
+
+		console.log("Data ",exhibition);
+		
 	}
 
 	let currentImageIndex = 0;
@@ -223,18 +227,7 @@
 							</div>
 						</div>
 						{#if exhibition?.image_map}
-							<!-- <h1
-								class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
-							>
-								{$LL.exhibition_mini_data.Map_Title()}
-							</h1>
-							<div class="relative flex justify-center">
-								<img
-								  src={exhibition?.image_map}
-								  alt={exhibition?.title}
-								  class="w-[60%] rounded-xl shadow-2xl object-cover border-4 border-solid border-white flex justify-center items-center"
-								/>
-							  </div> -->
+							<ImageViewer image={exhibition?.image_map} />
 						{/if}
 					</div>
 					<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
