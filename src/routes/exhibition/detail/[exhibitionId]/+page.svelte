@@ -62,10 +62,10 @@
 	}
 </script>
 
-<section class="text-gray-600 body-font" />
-
 <section class="w-full flex-1 overflow-x-hidden">
-	<div class="w-full relative h-64 lg:h-200 md:h-128 sm:h-100 mx-auto">
+	<div
+		class="w-full relative h-64 lg:h-200 md:h-128 sm:h-100 mx-auto flex flex-wrap justify-center items-center"
+	>
 		{#if exhibition?.images.length}
 			{#key currentImageIndex}
 				<img
