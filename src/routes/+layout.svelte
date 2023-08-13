@@ -42,7 +42,6 @@
 		supabase = data.supabase;
 
 		const response: any = await data.supabase.auth.getUser();
-		console.log(response);
 		if (response?.data?.user) {
 			data.supabase
 				.from('company')

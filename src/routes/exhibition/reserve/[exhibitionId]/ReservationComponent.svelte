@@ -4,21 +4,28 @@
 	import { fabric } from 'fabric';
 	import type { Canvas } from 'fabric/fabric-impl';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { currentUser } from '../../stores/currentUser';
+	import { currentUser } from '../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { ReservationStatusEnum, type ReserveSeatModel } from '../../models/reserveSeat';
+	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
+	import {
+		addSelectedSeat,
+		addSelectedPaidSeatServices,
+		addSelectedFreeSeatServices,
+		setSeatDataLoading
+	} from './seatReservationStore';
+	import { LL } from '$lib/i18n/i18n-svelte';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 
+	let previousReserveSeatData: any = [];
 	let canvas: Canvas;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
 	let selectableObjectTotalPrice: number = 0;
-	let checked: any;
 	let popupPosition = {
 		top: 0,
 		left: 0
@@ -63,18 +70,17 @@
 			adjustCanvasSize();
 			const width = data[0].design.width;
 			const height = data[0].design.height;
-			const aspectRatio = width / height;
 			const containerWidth = container?.offsetWidth;
 			const containerHeight = container?.offsetHeight;
 			const widthRatio = containerWidth / width;
 			const heightRatio = containerHeight / height;
-			// loop through all objects and scale them based on the aspect ratio
-
-			await canvas.loadFromJSON(data[0].design, async () => {
+			canvas.loadFromJSON(data[0].design, async () => {
 				canvas.forEachObject((obj: any) => {
 					obj.set('selectable', false);
 					obj.set('lockMovementX', true);
 					obj.set('lockMovementY', true);
+
+					obj.setCoords();
 				});
 				canvas.on('mouse:down', handleMouseDown);
 				canvas.on('mouse:over', handleMouseOver);
@@ -98,10 +104,31 @@
 				canvas.renderAll();
 			});
 		}
+		getPreviousReserveSeatData();
 	};
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
+		addSelectedSeat(undefined);
+		if (previousReserveSeatData.some((x: any) => x.object_id == event.target?.id)) return;
 		selectedObject = event.target?.objectDetail;
+		clearSelectedDesign();
+		if (selectedObject) {
+			event.target.set('stroke', '#1782ff');
+			event.target.set('strokeWidth', 4);
+			event.target.set({
+				backgroundColor: '#ecf1f7',
+				shadow: {
+					color: 'rgba(97, 97, 97, 0.13)',
+					offsetX: 0,
+					offsetY: 4,
+					blur: 17
+				},
+				padding: 8
+			});
+			canvas.renderAll();
+		}
+
+		addSelectedSeat(event.target);
 		selectableObjectTotalPrice = +selectedObject?.price;
 		selectableObjectServices = [];
 		if (!selectedObject) return;
@@ -117,6 +144,9 @@
 		let servicesId = object.services.map((service: any) => service.id);
 		freeServices = [];
 		paidServices = [];
+		addSelectedFreeSeatServices([]);
+		addSelectedPaidSeatServices([]);
+		setSeatDataLoading(true);
 		await supabase
 			.from('seat_services')
 			.select('*,languages:seat_services_languages!inner(*)')
@@ -130,16 +160,23 @@
 					selectedObjectService.serviceDetail = service;
 					if (selectedObjectService.isFree) {
 						freeServices = [...freeServices, selectedObjectService];
+						addSelectedFreeSeatServices(freeServices);
 					} else {
 						paidServices = [...paidServices, selectedObjectService];
+						addSelectedPaidSeatServices(paidServices);
 					}
 				});
 				selectedObject = { ...selectedObject };
 			});
+		setSeatDataLoading(false);
 	}
 	const handleMouseOver = (event: any) => {
 		const object = event.target;
-		if (object?.objectDetail && object?.objectDetail?.selectable) {
+		if (
+			object?.objectDetail &&
+			object?.objectDetail?.selectable &&
+			!object?.objectDetail?.reserve
+		) {
 			object.set('stroke', '#8d93a5');
 			object.set('strokeWidth', 3);
 			object.hoverCursor = 'pointer';
@@ -148,96 +185,91 @@
 	};
 	const handleMouseOut = (event: any) => {
 		const object = event.target;
-		object?.set('stroke', '');
-		canvas.renderAll();
-	};
-	function addServicesToAnObject(service: any) {
-		let index = selectableObjectServices.findIndex((item: any) => item.id === service.id);
-		if (index === -1) {
-			selectableObjectServices.push(service.serviceDetail);
-		} else {
-			selectableObjectServices.splice(index, 1);
+		if (!selectedObject && !object?.objectDetail?.reserve) {
+			object?.set('stroke', '');
+			canvas.renderAll();
 		}
-		selectableObjectTotalPrice = 0;
-		selectableObjectServices.forEach((service: any) => {
-			selectableObjectTotalPrice += +service.price;
+	};
+	function clearSelectedDesign() {
+		canvas.forEachObject((obj: any) => {
+			obj.set('stroke', '');
+			obj.set('strokeWidth', 0);
+			obj.set({
+				backgroundColor: '',
+				shadow: {
+					color: '',
+					offsetX: 0,
+					offsetY: 0,
+					blur: 0
+				},
+				padding: 0
+			});
+			for (let reservedSeat of previousReserveSeatData) {
+				checkIfTheSeatSold(reservedSeat);
+			}
+			canvas.renderAll();
 		});
 	}
-	function reserveSeat() {
-		if (!$currentUser?.uid) {
-			localStorage.setItem('reservedExhibitionId', $page.params.exhibitionId);
-			goto('/login');
-			return;
-		}
-		reserveSeatData.company_id = $currentUser.id;
-		let servicesIds = selectableObjectServices.map((service: any) => service.id);
-		reserveSeatData.services = servicesIds;
-		supabase
+	async function getPreviousReserveSeatData() {
+		await supabase
 			.from('seat_reservation')
-			.insert(reserveSeatData)
-			.then((result) => {});
+			.select('*,company(*)')
+			.eq('exhibition_id', +$page.params.exhibitionId)
+			.then((response) => {
+				previousReserveSeatData = response.data;
+				for (let reservedSeat of previousReserveSeatData) {
+					checkIfTheSeatSold(reservedSeat);
+				}
+			});
+	}
+	async function checkIfTheSeatSold(reservedSeat: any) {
+		for (let object of data[0].design?.objects) {
+			if (object?.id == reservedSeat?.object_id) {
+				canvas.forEachObject((obj: any) => {
+					if (obj.id == object.id) {
+						obj.set({
+							objectDetail: {
+								...object.objectDetail,
+								reserve: true
+							}
+						});
+						if (reservedSeat.status == 'pending') {
+							obj.set('fill', '#A0B0C2');
+							obj.set('backgroundColor', '#A0B0C2');
+							obj.set('stroke', '#A0B0C2');
+							obj.set('strokeWidth', 3);
+						} else if (reservedSeat.status == 'accept') {
+							obj.set('fill', '#ff176b');
+							obj.set('backgroundColor', '#ff176b');
+							obj.set('stroke', '#ff176b');
+							obj.set('strokeWidth', 3);
+						}
+						obj.setCoords();
+						canvas.renderAll();
+					}
+				});
+			}
+		}
 	}
 </script>
 
 {#if fabric}
-	<div bind:this={container} class=" w-full col-span-4 relative overflow-hidden">
-		<canvas
-			id="canvas"
-			class="h-full w-full"
-			style={selectedObject ? `background-color: #1c274c60` : ''}
-		/>
-		{#if selectedObject}
-			<div
-				class="popup min-h-[300px] min-w-[400px] bg-white absolute rounded-md border-2 border-black flex flex-col justify-center items-center"
-				style="
-		top: {popupPosition.top}px;
-		left: {popupPosition.left}px;
-	"
-			>
-				<h3>seat Price = {selectedObject.price}</h3>
-				<h3>total Price = {selectableObjectTotalPrice}</h3>
-				<div class="my-4">
-					{#if freeServices.length > 0}
-						<h2>free services for this seat</h2>
-						{#each freeServices as FreeService}
-							<div class="flex justify-around items-center my-2">
-								<div class="flex items-center">
-									<h2>{FreeService?.serviceDetail?.languages[0]?.title}</h2>
-								</div>
-								<h2 class="font-bold">Free</h2>
-							</div>
-						{/each}
-					{/if}
-					{#if paidServices.length > 0}
-						<h2>paid services for this seat</h2>
-						{#each paidServices as paidService}
-							<div class="flex justify-around items-center my-2">
-								<div class="flex items-center justify-between">
-									<Checkbox
-										{checked}
-										on:change={(e) => {
-											addServicesToAnObject(paidService);
-										}}
-										class="mx-1"
-									/>
-									<h2>{paidService?.serviceDetail?.languages[0]?.title}</h2>
-								</div>
-								<h2 class="font-bold">
-									{paidService?.serviceDetail?.price}
-								</h2>
-							</div>
-						{/each}
-					{/if}
-				</div>
-				<Button on:click={reserveSeat}>Reserve this Seat</Button>
+	<div bind:this={container} class=" w-full relative overflow-hidden">
+		<div class="w-full flex justify-center mt-10">
+			<div class="flex justify-center items-center">
+				<div class="h-[30px] w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2" />
+				<p class="font-bold text-md">{$LL.reservation.seat_types.selected()}</p>
 			</div>
-		{/if}
+			<div class="flex justify-center items-center mx-8">
+				<div class="h-[30px] w-[30px] bg-[#FF176B] rounded-md shadow-md mx-2" />
+				<p class="font-bold text-md">{$LL.reservation.seat_types.reserved()}</p>
+			</div>
+			<div class="flex justify-center items-center">
+				<div class="h-[30px] w-[30px] bg-[#A0B0C2] rounded-md shadow-md mx-2" />
+				<p class="font-bold text-md">{$LL.reservation.seat_types.pending()}</p>
+			</div>
+		</div>
+		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
-
-<style>
-	canvas {
-		border: 1px solid black;
-	}
-</style>

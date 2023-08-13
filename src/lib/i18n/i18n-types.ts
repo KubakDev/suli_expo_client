@@ -212,6 +212,74 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
+	reservation: {
+		/**
+		 * D​e​s​c​r​i​p​t​i​o​n
+		 */
+		description: string
+		/**
+		 * C​o​m​m​e​n​t
+		 */
+		comment: string
+		/**
+		 * P​l​e​a​s​e​ ​w​r​i​t​e​ ​y​o​u​r​ ​c​o​m​m​e​n​t
+		 */
+		comment_placeholder: string
+		services: {
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			title: string
+			/**
+			 * F​r​e​e​ ​S​e​r​v​i​c​e​s
+			 */
+			free_services: string
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			paid_services: string
+		}
+		/**
+		 * T​o​t​a​l​ ​P​r​i​c​e
+		 */
+		total_price: string
+		/**
+		 * R​e​s​e​r​v​e
+		 */
+		reserve: string
+		seat_types: {
+			/**
+			 * S​E​L​E​C​T​E​D
+			 */
+			selected: string
+			/**
+			 * R​E​S​E​R​V​E​D
+			 */
+			reserved: string
+			/**
+			 * P​E​N​D​I​N​G
+			 */
+			pending: string
+		}
+		/**
+		 * S​e​l​e​c​t​ ​a​ ​s​e​a​t​ ​t​o​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​i​t
+		 */
+		unselect_seat_desc: string
+		privacy_policy: {
+			/**
+			 * T​e​r​m​s​ ​o​f​ ​R​e​s​e​r​v​a​t​i​o​n
+			 */
+			title: string
+			/**
+			 * I​ ​a​c​c​e​p​t
+			 */
+			accept: string
+			/**
+			 * D​e​c​l​i​n​e
+			 */
+			decline: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -411,6 +479,74 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
+	reservation: {
+		/**
+		 * Description
+		 */
+		description: () => LocalizedString
+		/**
+		 * Comment
+		 */
+		comment: () => LocalizedString
+		/**
+		 * Please write your comment
+		 */
+		comment_placeholder: () => LocalizedString
+		services: {
+			/**
+			 * Services
+			 */
+			title: () => LocalizedString
+			/**
+			 * Free Services
+			 */
+			free_services: () => LocalizedString
+			/**
+			 * Services
+			 */
+			paid_services: () => LocalizedString
+		}
+		/**
+		 * Total Price
+		 */
+		total_price: () => LocalizedString
+		/**
+		 * Reserve
+		 */
+		reserve: () => LocalizedString
+		seat_types: {
+			/**
+			 * SELECTED
+			 */
+			selected: () => LocalizedString
+			/**
+			 * RESERVED
+			 */
+			reserved: () => LocalizedString
+			/**
+			 * PENDING
+			 */
+			pending: () => LocalizedString
+		}
+		/**
+		 * Select a seat to get information about it
+		 */
+		unselect_seat_desc: () => LocalizedString
+		privacy_policy: {
+			/**
+			 * Terms of Reservation
+			 */
+			title: () => LocalizedString
+			/**
+			 * I accept
+			 */
+			accept: () => LocalizedString
+			/**
+			 * Decline
+			 */
+			decline: () => LocalizedString
+		}
+	}
 }
 
 export type Formatters = {}

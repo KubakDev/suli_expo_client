@@ -53,7 +53,30 @@ const ckb = {
 	gallery: 'گەلەری',
 	videos: 'ڤیدیۆکان',
 	MoreInGallery: 'زیاتر لە گەلەری',
-	moreVideos: 'زیاتر لە ڤیدیۆکان'
+	moreVideos: 'زیاتر لە ڤیدیۆکان',
+	reservation: {
+		description: "وردەکاری",
+		comment: "سەرنج",
+		comment_placeholder: "تکایە سەرنجەکەت بنووسە",
+		services: {
+			title: "خزمەتگوزاریەکان",
+			free_services: "خزمەتگوزارییە بێ بەرامبەرەکان",
+			paid_services: "خزمەتگوزاریەکان",
+		},
+		total_price: "کۆی گشتی",
+		reserve: "بەکرێ گرتن",
+		seat_types: {
+			selected: 'دەستنیشانکراو',
+			reserved: 'بەکرێ گیراو',
+			pending: 'لە چاوەڕوانی',
+		},
+		unselect_seat_desc: "شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری",
+		privacy_policy: {
+			title: 'مەرجەکانی بە کرێگرتن',
+			accept: 'ڕازیم',
+			decline: 'رازینیم',
+		}
+	}
 } satisfies Translation;
 
 export default ckb;

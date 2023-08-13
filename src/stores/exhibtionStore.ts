@@ -17,7 +17,7 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)', { count: 'exact' }
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*,seat_privacy_policy_lang(*))', { count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)

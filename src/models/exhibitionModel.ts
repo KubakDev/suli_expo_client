@@ -19,11 +19,12 @@ export interface ExhibitionModel {
 	start_date?: Date;
 	end_date?: Date;
 	story?: string;
-	location:string;
-	location_title:string;
+	location: string;
+	location_title: string;
 	sponsor_images?: string[];
 	sponsor_title?: string;
 	deleted_status: string | null;
+	image_map?: string;
 }
 
 export interface ExhibitionPaginatedModel {

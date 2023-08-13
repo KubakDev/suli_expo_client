@@ -11,18 +11,18 @@ const ar = {
 	pdf_file: 'ملف PDF',
 	services: 'خدمات',
 	exhibition: 'معرض',
-	exhibition_mini_data:{
-		Reservation:{
-			title:"حجز",
-			place:"العراق - السليمانية",
-	},
-		Companies:"الشركات",
-		Countries:"بلدان" ,
-		Story:"قصة" ,
-		Fair:"معرض السليمانية الدولي" ,
-		Exhibition_Sponsors:"رعاة المعرض" ,
-		Exhibition_Seats:"مقاعد المعرض",
-		Exhibition_PDF:"فایل المعرض (PDF)"
+	exhibition_mini_data: {
+		Reservation: {
+			title: "حجز",
+			place: "العراق - السليمانية",
+		},
+		Companies: "الشركات",
+		Countries: "بلدان",
+		Story: "قصة",
+		Fair: "معرض السليمانية الدولي",
+		Exhibition_Sponsors: "رعاة المعرض",
+		Exhibition_Seats: "مقاعد المعرض",
+		Exhibition_PDF: "فایل المعرض (PDF)"
 	},
 	promo: 'ترويجي',
 	filter: 'منقي',
@@ -53,7 +53,30 @@ const ar = {
 	gallery: 'صالة عرض',
 	videos: 'مقاطع الفيديو',
 	MoreInGallery: 'المزيد في المعرض',
-	moreVideos: 'المزيد من مقاطع الفيديو'
+	moreVideos: 'المزيد من مقاطع الفيديو',
+	reservation: {
+		description: "وردەکاری",
+		comment: "سەرنج",
+		comment_placeholder: "تکایە سەرنجەکەت بنووسە",
+		services: {
+			title: "خزمەتگوزاریەکان",
+			free_services: "خزمەتگوزارییە بێ بەرامبەرەکان",
+			paid_services: "خزمەتگوزاریەکان",
+		},
+		total_price: "کۆی گشتی",
+		reserve: "بەکرێ گرتن",
+		seat_types: {
+			selected: 'دەستنیشانکراو',
+			reserved: 'بەکرێ گیراو',
+			pending: 'لە چاوەڕوانی',
+		},
+		unselect_seat_desc: "شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری",
+		privacy_policy: {
+			title: 'مەرجەکانی بە کرێگرتن',
+			accept: 'ڕازیم',
+			decline: 'رازینیم',
+		}
+	}
 } satisfies Translation;
 
 export default ar;

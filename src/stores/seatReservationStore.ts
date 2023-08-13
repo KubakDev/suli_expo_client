@@ -39,11 +39,9 @@ const seatReservationStore = () => {
 		get: async (supabase: SupabaseClient) => {
 			const result = await supabase.from('seat_layout').select('*,seats(*)').eq('id', 73).single();
 			if (result.error) {
-				//.error(result.error);
 				return null;
 			} else {
 				const seatLayout = result.data as SeatLayoutModel;
-				//.info(seatLayout);
 				return seatLayout;
 			}
 		}

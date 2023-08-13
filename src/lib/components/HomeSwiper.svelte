@@ -11,11 +11,6 @@
 
 	export let supabase: any;
 	export let locale: Locale;
-	$: {
-		let a = locale;
-		console.log($carouselStore)
-		// swiperjs set scroll directin write to left or left to write
-	}
 
 	// function toggleDirection() {
 	// 	const swiperEl = document.querySelector('swiper-container');

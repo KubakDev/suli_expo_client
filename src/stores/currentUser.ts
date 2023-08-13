@@ -6,7 +6,6 @@ const currentUserStore = () => {
   return {
     subscribe,
     set: (userInfo: any) => {
-      console.log('set', userInfo);
       set(userInfo);
     },
 

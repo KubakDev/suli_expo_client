@@ -53,7 +53,30 @@ const en = {
 	gallery: 'Gallery',
 	videos: 'Videos',
 	MoreInGallery: 'More in Gallery',
-	moreVideos: 'More Videos'
+	moreVideos: 'More Videos',
+	reservation: {
+		description: "Description",
+		comment: "Comment",
+		comment_placeholder: "Please write your comment",
+		services: {
+			title: "Services",
+			free_services: "Free Services",
+			paid_services: "Services",
+		},
+		total_price: "Total Price",
+		reserve: "Reserve",
+		seat_types: {
+			selected: 'SELECTED',
+			reserved: 'RESERVED',
+			pending: 'PENDING',
+		},
+		unselect_seat_desc: "Select a seat to get information about it",
+		privacy_policy: {
+			title: 'Terms of Reservation',
+			accept: 'I accept',
+			decline: 'Decline',
+		}
+	}
 } satisfies BaseTranslation;
 
 export default en;

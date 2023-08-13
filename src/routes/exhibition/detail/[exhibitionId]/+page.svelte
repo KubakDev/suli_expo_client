@@ -14,7 +14,7 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	//@ts-ignore
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
-	import ReservationComponent from '$lib/components/ReservationComponent.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
 
@@ -64,13 +64,25 @@
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
-				{#if exhibition?.seat_layout}
-					<ReservationComponent
-						data={exhibition?.seat_layout}
-						supabase={data.supabase}
-						locale={$locale}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					class="w-full py-8 mb-20"
+					on:click={() => {
+						goto(`/exhibition/reserve/${$page.params.exhibitionId}`);
+					}}
+				>
+					<div class="py-8 flex justify-center">
+						<TitleUi text={$LL.news()} />
+					</div>
+					<div
+						class="w-full h-[700px] bg-cover bg-no-repeat bg-center cursor-pointer"
+						style={`background-image: url(${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+							exhibition?.image_map
+						});
+						`}
 					/>
-				{/if}
+				</div>
 				<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
