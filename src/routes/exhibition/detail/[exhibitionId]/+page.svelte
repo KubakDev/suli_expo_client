@@ -17,6 +17,7 @@
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
+	import ExhibitionMapImage from '$lib/components/exhibitionMapImage.svelte';
 
 	export let data: any;
 	const youtubeRegex =
@@ -82,24 +83,13 @@
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div
-					class="w-full py-8 mb-20"
-					on:click={() => {
-						goto(`/exhibition/reserve/${$page.params.exhibitionId}`);
-					}}
-				>
+				<div class="w-full py-8 mb-20">
 					<div class="py-8 flex justify-center">
 						<TitleUi text={$LL.news()} />
 					</div>
-					<div
-						class="w-full h-[700px] bg-cover bg-no-repeat bg-center cursor-pointer"
-						style={`background-image: url(${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
-							exhibition?.image_map
-						});
-						`}
-					/>
+					{#if exhibition?.image_map}
+						<ExhibitionMapImage {exhibition} />
+					{/if}
 				</div>
 				<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 				<div class="w-full h-20" />
@@ -236,14 +226,6 @@
 								</p>
 							</div>
 						</div>
-						{#if exhibition?.image_map}
-							<h1
-								class="text-gradient text-shadow text-3xl font-bold text-center pb-4 w-full animate-pulse"
-							>
-								{exhibition?.map_title ?? $LL.exhibition_mini_data.Map_Title()}
-							</h1>
-							<ImageViewer image={exhibition?.image_map} />
-						{/if}
 					</div>
 					<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 					<div class="w-full h-10" />

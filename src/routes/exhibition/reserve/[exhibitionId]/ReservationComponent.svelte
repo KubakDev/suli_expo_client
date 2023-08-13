@@ -15,6 +15,7 @@
 		setSeatDataLoading
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
+	import { exhibition } from '../../../../../../suli_expo_panel/src/stores/exhibitionTypeStore';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -44,6 +45,7 @@
 			await loadSeats();
 		}
 	});
+
 	const adjustCanvasSize = () => {
 		const width = data[0].design.width;
 		const height = data[0].design.height;

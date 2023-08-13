@@ -1,16 +1,32 @@
 <script lang="ts">
 	import { Button, Input, Label, Spinner } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
+	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
+
 	export let form;
+	export let data;
 	let loading = false;
 
-	$: {
-		if (form?.errors) {
-			loading = false;
+	onMount(async () => {
+		const response: any = await data.supabase.auth.getUser();
+		if (response?.data?.user) {
+			data.supabase
+				.from('company')
+				.select('*')
+				.eq('uid', response.data.user.id)
+				.single()
+				.then((res) => {
+					if (res.data) {
+						currentUser.set(res.data);
+						goto(localStorage.getItem('redirect') ?? '/');
+					} else {
+						goto('/company-registration');
+					}
+				});
 		}
-	}
-
+	});
 	function onSubmit() {
 		loading = true;
 	}
