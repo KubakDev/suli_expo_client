@@ -23,7 +23,7 @@ const themeStore = () => {
 				}
 				root.style.setProperty(`--${theme.mode_type}TransparentSecondaryColor`, theme.secondaryColor + '10');
 				root.style.setProperty(`--${theme.mode_type}TransparentOverlaySecondaryColor`, theme.onSecondaryColor + '80');
-				root.style.setProperty(`--${theme.mode_type}TransparentPrimaryColor`, theme.primaryColor + '80');
+				root.style.setProperty(`--${theme.mode_type}TransparentPrimaryColor`, theme.primaryColor + '95');
 				root.style.setProperty(`--${theme.mode_type}TransparentOverlayPrimaryColor`, theme.onPrimaryColor + '80');
 				root.style.setProperty(`--${theme.mode_type}TransparentBackgroundColor`, theme.backgroundColor + '80');
 				root.style.setProperty(`--${theme.mode_type}TransparentOverlayBackgroundColor`, theme.onBackgroundColor + '80');
