@@ -18,8 +18,9 @@ const ar = {
 	},
 		Companies:"الشركات",
 		Countries:"بلدان" ,
-		Story:"قصة" ,
+		Brochure:"كراسة المعرض" ,
 		Fair:"معرض السليمانية الدولي" ,
+		Map_Title:"خريطة المعرض" ,
 		Exhibition_Sponsors:"رعاة المعرض" ,
 		Exhibition_Seats:"مقاعد المعرض",
 		Exhibition_PDF:"فایل المعرض (PDF)"

@@ -24,7 +24,7 @@
 	}
 
 	onMount(() => {
-		result = countDays(start_date as Date, end_date as Date);
+        result = countDays(start_date as Date, end_date as Date);
 	});
 </script>
 

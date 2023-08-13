@@ -18,8 +18,9 @@ const ckb = {
 		},
 		Companies: 'کۆمپانیاکان',
 		Countries: 'وڵاتەکان',
-		Story: 'ڕوونکردنەوە',
+		Brochure: 'بڕۆشوری پێشانگا',
 		Fair: 'پێشانگای نێودەوڵەتی سلێمانی',
+		Map_Title: 'نەخشەی پێشانگا',
 		Exhibition_Sponsors: 'سپۆنسەرەکانی پێشانگا',
 		Exhibition_Seats: 'کورسی پێشانگە',
 		Exhibition_PDF: 'فایلی پێشانگا (PDF)'

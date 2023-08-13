@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MailTemplate from './../lib/components/MailTemplate.svelte';
 	import HomeSwiper from '$lib/components/HomeSwiper.svelte';
 	import { onMount } from 'svelte';
 	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
@@ -27,7 +28,7 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Suly Expo" />
 </svelte:head>
 <div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />

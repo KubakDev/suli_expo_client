@@ -13,20 +13,7 @@
 	export let locale: Locale;
 	$: {
 		let a = locale;
-		console.log($carouselStore)
-		// swiperjs set scroll directin write to left or left to write
 	}
-
-	// function toggleDirection() {
-	// 	const swiperEl = document.querySelector('swiper-container');
-	// 	if (swiperEl) {
-	// 		if (locale === 'en') {
-	// 			swiperEl!.setAttribute('dir', 'ltr');
-	// 		} else {
-	// 			swiperEl!.setAttribute('dir', 'rtl');
-	// 		}
-	// 	}
-	// }
 
 	onMount(async () => {
 		await carouselStore.get(supabase);

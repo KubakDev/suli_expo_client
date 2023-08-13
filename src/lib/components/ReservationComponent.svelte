@@ -56,7 +56,6 @@
 
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
-
 		selectedObject = event.target?.objectDetail;
 		selectableObjectTotalPrice = +selectedObject?.price;
 

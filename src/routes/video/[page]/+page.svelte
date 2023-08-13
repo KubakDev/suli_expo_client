@@ -5,7 +5,7 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
-	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import { CardType, ExpoCard } from 'F:/kubak_svelte_component/dist';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import { videoStore } from '../../../stores/videoStore';
 	import { getNameRegex } from '../../../utils/urlRegexName';
@@ -16,10 +16,12 @@
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle } from '../../../stores/darkMode';
+	import { Shadow } from 'svelte-loading-spinners';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
 	let thumbnailUrl: string[];
+	let isLoading = true;
 
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -40,10 +42,13 @@
 		if ($locale) {
 			const currentPage = $page.params.page;
 			videoStore.get($locale, data.supabase, currentPage, undefined, asc);
+			thumbnailChanging();
 		}
 	}
 
 	onMount(async () => {
+		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
@@ -51,13 +56,17 @@
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-
-		if (!$videoStore.data) return;
-		thumbnailUrl = $videoStore.data.map((item) => {
-			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});
+		thumbnailChanging();
+		isLoading = false;
 	});
+
+	function thumbnailChanging() {
+		if ($videoStore?.data) {
+			thumbnailUrl = $videoStore.data.map((item) => {
+				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
+			});
+		}
+	}
 
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: number) {
@@ -72,6 +81,7 @@
 	function changeOrder() {
 		asc = !asc;
 		videoStore.get($locale, data?.supabase, $page.params.page, undefined, asc);
+		thumbnailChanging();
 	}
 
 	// get the YouTube ID from the URL
@@ -125,10 +135,10 @@
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
-	{#if $videoStore && thumbnailUrl}
+	{#if $videoStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore.data as item, index}
-				{#if CardComponent}
+				{#if CardComponent && !isLoading}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>
@@ -154,4 +164,6 @@
 			{/if}
 		</div>
 	{/if}
+
+	<!-- <MailTemplate /> -->
 </section>

@@ -72,13 +72,17 @@ type RootTranslation = {
 		 */
 		Countries: string
 		/**
-		 * S​t​o​r​y
+		 * E​x​h​i​b​i​t​i​o​n​ ​B​r​o​c​h​u​r​e
 		 */
-		Story: string
+		Brochure: string
 		/**
 		 * S​u​l​a​y​m​a​n​i​y​a​h​ ​I​n​t​e​r​n​a​t​i​o​n​a​l​ ​F​a​i​r
 		 */
 		Fair: string
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​M​a​p
+		 */
+		Map_Title: string
 		/**
 		 * E​x​h​i​b​i​t​i​o​n​ ​S​p​o​n​s​o​r​s
 		 */
@@ -271,13 +275,17 @@ export type TranslationFunctions = {
 		 */
 		Countries: () => LocalizedString
 		/**
-		 * Story
+		 * Exhibition Brochure
 		 */
-		Story: () => LocalizedString
+		Brochure: () => LocalizedString
 		/**
 		 * Sulaymaniyah International Fair
 		 */
 		Fair: () => LocalizedString
+		/**
+		 * Exhibition Map
+		 */
+		Map_Title: () => LocalizedString
 		/**
 		 * Exhibition Sponsors
 		 */

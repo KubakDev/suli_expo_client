@@ -17,7 +17,8 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)', { count: 'exact' }
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)',
+					{ count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
@@ -27,8 +28,14 @@ const createExhibitionStore = () => {
 				//.error(result.error);
 				return null;
 			} else {
-				const exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
+				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
+				if(exhibition.brochure){
+					exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
+				}else{
+					exhibition.brochure = undefined;
+				}
+				
 				return exhibition;
 			}
 		},
@@ -53,7 +60,13 @@ const createExhibitionStore = () => {
 				return null;
 			}
 		},
-		getPaginated: async (locale: Locales, supabase: SupabaseClient, page: string, limit?: number, asc?: boolean) => {
+		getPaginated: async (
+			locale: Locales,
+			supabase: SupabaseClient,
+			page: string,
+			limit?: number,
+			asc?: boolean
+		) => {
 			//.info('get exhibition');
 			let query = supabase
 				.from('exhibition')
@@ -73,9 +86,6 @@ const createExhibitionStore = () => {
 				const exhibition = result.data.map((e) =>
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
-
-
-
 
 				const exhibitionPaginated = {
 					data: exhibition,

@@ -27,7 +27,6 @@ const pageStore = () => {
 							}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_light[colorType] ?? `--${colorType}`);
-						// 
 					}
 					for (let colorType in page.color_palette_dark) {
 						if (
@@ -43,15 +42,12 @@ const pageStore = () => {
 							}`;
 						//@ts-ignore
 						root.style.setProperty(cssVarName, page.color_palette_dark[colorType] ?? `--${colorType}`);
-						// 
 					}
 				}
 
 				set(pageLayout);
 				return pageLayout;
 			} else {
-
-
 				return null;
 			}
 		}

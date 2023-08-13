@@ -44,6 +44,11 @@
 		let exhibitionUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
 		let cardType = exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() + exhibitionUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
+
+		// Fetch data for exhibitionSectionStore
+	if ($locale) {
+		exhibitionSectionStore.get($locale, supabase);
+	}
 	});
 
 	function openAllExibition() {
