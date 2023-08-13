@@ -5,6 +5,7 @@
 	import constants from '../../utils/constants';
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
+	import { onMount } from 'svelte';
 	export let supabase: any;
 
 	$: {
@@ -14,6 +15,13 @@
 			aboutSectionStore.get($locale, supabase);
 		}
 	}
+
+	onMount(async () => {
+		if ($locale) {
+			//.info('locale changed #########', $locale);
+			aboutSectionStore.get($locale, supabase);
+		}
+	});
 </script>
 
 {#if $aboutSectionStore}

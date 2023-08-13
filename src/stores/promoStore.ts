@@ -12,8 +12,6 @@ const createPromoStore = () => {
 		subscribe,
 		set: (promos: PromoModel[]) => {
 			set(promos);
-
-
 		},
 		get: async (supabase: SupabaseClient, locale?: Locales) => {
 			const result = await supabase

@@ -11,17 +11,9 @@
 
 	export let supabase: any;
 	export let locale: Locale;
-
-	// function toggleDirection() {
-	// 	const swiperEl = document.querySelector('swiper-container');
-	// 	if (swiperEl) {
-	// 		if (locale === 'en') {
-	// 			swiperEl!.setAttribute('dir', 'ltr');
-	// 		} else {
-	// 			swiperEl!.setAttribute('dir', 'rtl');
-	// 		}
-	// 	}
-	// }
+	$: {
+		let a = locale;
+	}
 
 	onMount(async () => {
 		await carouselStore.get(supabase);

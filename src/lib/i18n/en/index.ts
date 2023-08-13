@@ -18,8 +18,9 @@ const en = {
 		},
 		Companies: 'Companies',
 		Countries: 'Countries',
-		Story: 'Story',
+		Brochure: 'Exhibition Brochure',
 		Fair: 'Sulaymaniyah International Fair',
+		Map_Title: 'Exhibition Map',
 		Exhibition_Sponsors: 'Exhibition Sponsors',
 		Exhibition_Seats: 'Exhibition Seats',
 		Exhibition_PDF: "Exhibition PDF'S"

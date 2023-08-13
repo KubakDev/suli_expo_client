@@ -6,6 +6,7 @@ export interface ExhibitionModel {
 	title: string;
 	video_youtube_link: string;
 	images: string[];
+	image_map: string;
 	thumbnail: string;
 	exhibition_date: Date;
 	description?: string;
@@ -15,7 +16,7 @@ export interface ExhibitionModel {
 	country_number: number;
 	company_number: number;
 	seat_layout?: any;
-	pdf_files: string[];
+	pdf_files: string;
 	start_date?: Date;
 	end_date?: Date;
 	story?: string;
@@ -23,6 +24,8 @@ export interface ExhibitionModel {
 	location_title: string;
 	sponsor_images?: string[];
 	sponsor_title?: string;
+	brochure?: string;
+	map_title?: string;
 	deleted_status: string | null;
 	image_map?: string;
 }
