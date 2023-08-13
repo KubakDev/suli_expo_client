@@ -27,7 +27,7 @@ const Ui = () => {
 				return Ui;
 			}
 		},
-		getPage: async (supabase: SupabaseClient, page:string) => {
+		getPage: async (supabase: SupabaseClient, page: string) => {
 			const result = await supabase
 				.from('page_builder')
 				.select(

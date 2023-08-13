@@ -18,16 +18,16 @@ const createPromoStore = () => {
 				.from('promo')
 				.select('*,languages:promo_languages(*)!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale ?? 'en')
-                .order('created_at', { ascending: false })
+				.order('created_at', { ascending: false })
 				.limit(3);
-			
+
 			if (result.error) {
 				return null;
 			} else {
-				
+
 				//.error(result.data);
 				const promo = result.data.map((e) => convertModel<PromoModel>(e)) as PromoModel[];
-				
+
 				set(promo);
 				return promo;
 			}

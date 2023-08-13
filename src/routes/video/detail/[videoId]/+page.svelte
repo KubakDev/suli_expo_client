@@ -24,7 +24,7 @@
 
 		thumbnailUrl = $videoStore.data.map((item) => {
 			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});	
+		});
 	}
 
 	$: {

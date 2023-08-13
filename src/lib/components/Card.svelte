@@ -8,9 +8,9 @@
 	export let service_color: {
 		title: string;
 		description: string;
-	} = {title:'#000000', description:'#000000'};
+	} = { title: '#000000', description: '#000000' };
 
-	let gradientColor:any;
+	let gradientColor: any;
 
 	const handleMouseOver = () => {
 		isHovering = true;
@@ -29,8 +29,8 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="card cursor-pointer" on:mouseover={handleMouseOver} on:mouseout={handleMouseOut}>
 	<img class="card-img" src={image} alt="Image" />
-<div class="card-content" style="{gradientColor}">
-		<h3 class="card-title font-bold " style="color: {service_color.title};">{title}</h3>
+	<div class="card-content" style={gradientColor}>
+		<h3 class="card-title font-bold" style="color: {service_color.title};">{title}</h3>
 		<p class="card-description" style="color: {service_color.title};">{description}</p>
 	</div>
 </div>

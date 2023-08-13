@@ -57,25 +57,19 @@
 	};
 
 	const handleThumbnailClick = () => {
-  // Show video iframe
-  videos[currentVideo].playing = true;
-  
-  // Hide thumbnail
-  videos[currentVideo].thumbnail = null; 
-}
+		// Show video iframe
+		videos[currentVideo].playing = true;
+
+		// Hide thumbnail
+		videos[currentVideo].thumbnail = null;
+	};
 </script>
 
 <div class="pt-10">
 	<div class="video-container" in:fade={{ duration: 100 }} out:fade={{ duration: 100 }}>
-
 		{#if videos[currentVideo].thumbnail}
-	
 			<button on:click={handleThumbnailClick}>
-				<div
-					class="video-thumbnail"
-					style="background-image:url({videos[currentVideo].thumbnail})"
-				>
-		
+				<div class="video-thumbnail" style="background-image:url({videos[currentVideo].thumbnail})">
 					<div class="play-button">
 						<svg class="play-icon" viewBox="0 0 24 24">
 							<path d="M8,5.14V19.14L19,12.14L8,5.14Z" />
@@ -100,10 +94,15 @@
 				class="p-2 bg-white rounded-full bg-opacity-75 hover:bg-opacity-100"
 			>
 				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M15 19l-7-7 7-7"
+					/>
 				</svg>
 			</button>
-	
+
 			<button
 				on:click={nextVideo}
 				class="p-2 bg-white rounded-full bg-opacity-75 hover:bg-opacity-100"
@@ -124,9 +123,7 @@
 				/>
 			{/each}
 		</div>
-		
 	</div>
-
 
 	<!-- Video titles -->
 	<!-- <div
@@ -139,7 +136,6 @@
 </div>
 
 <style>
-
 	/* Use tailwind classes to style the component */
 	.video-container {
 		position: relative;
