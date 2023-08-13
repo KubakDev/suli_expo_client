@@ -5,7 +5,7 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
-	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import { CardType, ExpoCard } from 'F:/kubak_svelte_component/dist';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import { videoStore } from '../../../stores/videoStore';
 	import { getNameRegex } from '../../../utils/urlRegexName';
@@ -16,14 +16,15 @@
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle } from '../../../stores/darkMode';
-	import MailTemplate from '$lib/components/MailTemplate.svelte';
+	import { Shadow } from 'svelte-loading-spinners';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
 	let thumbnailUrl: string[];
+	let isLoading = true;
 
 	const youtubeRegex =
-	/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -47,7 +48,6 @@
 
 	onMount(async () => {
 		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-		thumbnailChanging();
 
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
@@ -56,14 +56,15 @@
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
+		thumbnailChanging();
+		isLoading = false;
 	});
 
-
-	function thumbnailChanging(){
-		if($videoStore?.data){
+	function thumbnailChanging() {
+		if ($videoStore?.data) {
 			thumbnailUrl = $videoStore.data.map((item) => {
 				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-			});	
+			});
 		}
 	}
 
@@ -84,7 +85,7 @@
 	}
 
 	// get the YouTube ID from the URL
-	function getYouTubeId(url:string): string | null {
+	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
 
 		return match ? match[1] : null;
@@ -99,7 +100,10 @@
 					on:click={changeOrder}
 					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
 				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor" />
+					<ArrowUp
+						size="30"
+						class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
+					/>
 
 					<span
 						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
@@ -131,10 +135,10 @@
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
-	{#if $videoStore && thumbnailUrl}
+	{#if $videoStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore.data as item, index}
-				{#if CardComponent}
+				{#if CardComponent && !isLoading}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>
@@ -144,8 +148,7 @@
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
-							thumbnail={item?.thumbnail ??
-								thumbnailUrl[index] ?? ""}
+							thumbnail={item?.thumbnail ?? thumbnailUrl[index] ?? ''}
 						/>
 					</div>
 				{/if}

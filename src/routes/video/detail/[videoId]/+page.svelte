@@ -20,7 +20,7 @@
 
 	async function getVideos() {
 		video = await videoStore.getSingle($locale, data.supabase, $page.params.videoId);
-		videoStore.get($locale, data.supabase, '1', undefined, false);
+		videoStore.get($locale, data.supabase, '1', 8, false);
 
 		thumbnailUrl = $videoStore.data.map((item) => {
 			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
