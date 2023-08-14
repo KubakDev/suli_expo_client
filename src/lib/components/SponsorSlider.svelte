@@ -38,10 +38,15 @@
 
 	setInterval(nextImage, 3000);
 </script>
-<div class="flex overflow-x-hidden ">
+
+<div class="flex overflow-x-hidden">
 	<div class="animate-marquee flex flex-row-reverse whitespace-nowrap w-full mx-auto py-5">
 		{#each images as image}
-			<img src={image} class="w-48 h-32 object-fit rounded-lg mx-6 hover:bg-lightTransparentBackgroundColor hover:p-1 transition-all " />
+			<!-- svelte-ignore a11y-missing-attribute -->
+			<img
+				src={image}
+				class="w-48 h-32 object-fit rounded-lg mx-6 hover:bg-lightTransparentBackgroundColor hover:p-1 transition-all"
+			/>
 		{/each}
 	</div>
 </div>

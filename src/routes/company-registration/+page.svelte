@@ -23,25 +23,26 @@
 	});
 	let formSubmitted = false;
 	let uid = '';
+	let exhibitionId = localStorage.getItem('redirect');
 
 	onMount(async () => {
-		const response: any = await data.supabase.auth.getUser();
-		uid = response.data.user.id;
-		if (!response?.data?.user) {
-			goto('/login');
-		} else {
-			data.supabase
-				.from('company')
-				.select('*')
-				.eq('uid', response.data.user.id)
-				.single()
-				.then((res) => {
-					if (res.data) {
-						currentUser.set(res.data);
-						goto('/exhibition/detail/92');
-					}
-				});
-		}
+		// const response: any = await data.supabase.auth.getUser();
+		// uid = response.data.user.id;
+		// if (!response?.data?.user) {
+		// 	goto('/login');
+		// } else {
+		// 	data.supabase
+		// 		.from('company')
+		// 		.select('*')
+		// 		.eq('uid', response.data.user.id)
+		// 		.single()
+		// 		.then((res) => {
+		// 			if (res.data) {
+		// 				currentUser.set(res.data);
+		// 				goto(localStorage.getItem('redirect') ?? '/');
+		// 			}
+		// 		});
+		// }
 	});
 
 	async function submitForm() {
@@ -52,7 +53,7 @@
 			company_name: companyData.companyName
 		});
 		currentUser.set(companyData);
-		goto('/exhibition/detail/92');
+		goto(localStorage.getItem('redirect') ?? '/');
 	}
 	function inValidField(field: string) {
 		let invalid = false;
