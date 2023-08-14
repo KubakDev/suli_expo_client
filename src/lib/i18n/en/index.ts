@@ -1,8 +1,13 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
-	// TODO: your translations go here
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
+	validation: {
+		required: '{field} is required',
+	},
+	buttons: {
+		submit: 'Submit',
+	},
 	home: 'Home',
 	about: 'About',
 	contact: 'Contact',
@@ -56,6 +61,12 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
+		title: "Exhibition Seats",
+		welcome: 'Welcome',
+		logged_in_description: 'To reserve a seat and get information about each one , click goto reservation page',
+		not_logged_in_description: 'To reserve a seat and get information about each one ,you have to logging before',
+		logged_in_button: "goto reservation page",
+		not_logged_in_button: "goto login page",
 		description: "Description",
 		comment: "Comment",
 		comment_placeholder: "Please write your comment",
@@ -76,7 +87,13 @@ const en = {
 			title: 'Terms of Reservation',
 			accept: 'I accept',
 			decline: 'Decline',
-		}
+		},
+		login: {
+			title: 'Login',
+			email: 'Email',
+			password: 'Password',
+		},
+
 	}
 } satisfies BaseTranslation;
 

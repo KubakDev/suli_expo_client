@@ -20,6 +20,19 @@ type RootTranslation = {
 	 * @param {string} name
 	 */
 	HI: RequiredParams<'name'>
+	validation: {
+		/**
+		 * {​f​i​e​l​d​}​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 * @param {unknown} field
+		 */
+		required: RequiredParams<'field'>
+	}
+	buttons: {
+		/**
+		 * S​u​b​m​i​t
+		 */
+		submit: string
+	}
 	/**
 	 * H​o​m​e
 	 */
@@ -218,6 +231,30 @@ type RootTranslation = {
 	moreVideos: string
 	reservation: {
 		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
+		 */
+		title: string
+		/**
+		 * W​e​l​c​o​m​e
+		 */
+		welcome: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​ ​c​l​i​c​k​ ​g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_description: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​y​o​u​ ​h​a​v​e​ ​t​o​ ​l​o​g​g​i​n​g​ ​b​e​f​o​r​e
+		 */
+		not_logged_in_description: string
+		/**
+		 * g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_button: string
+		/**
+		 * g​o​t​o​ ​l​o​g​i​n​ ​p​a​g​e
+		 */
+		not_logged_in_button: string
+		/**
 		 * D​e​s​c​r​i​p​t​i​o​n
 		 */
 		description: string
@@ -283,6 +320,20 @@ type RootTranslation = {
 			 */
 			decline: string
 		}
+		login: {
+			/**
+			 * L​o​g​i​n
+			 */
+			title: string
+			/**
+			 * E​m​a​i​l
+			 */
+			email: string
+			/**
+			 * P​a​s​s​w​o​r​d
+			 */
+			password: string
+		}
 	}
 }
 
@@ -291,6 +342,18 @@ export type TranslationFunctions = {
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
 	 */
 	HI: (arg: { name: string }) => LocalizedString
+	validation: {
+		/**
+		 * {field} is required
+		 */
+		required: (arg: { field: unknown }) => LocalizedString
+	}
+	buttons: {
+		/**
+		 * Submit
+		 */
+		submit: () => LocalizedString
+	}
 	/**
 	 * Home
 	 */
@@ -489,6 +552,30 @@ export type TranslationFunctions = {
 	moreVideos: () => LocalizedString
 	reservation: {
 		/**
+		 * Exhibition Seats
+		 */
+		title: () => LocalizedString
+		/**
+		 * Welcome
+		 */
+		welcome: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one , click goto reservation page
+		 */
+		logged_in_description: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one ,you have to logging before
+		 */
+		not_logged_in_description: () => LocalizedString
+		/**
+		 * goto reservation page
+		 */
+		logged_in_button: () => LocalizedString
+		/**
+		 * goto login page
+		 */
+		not_logged_in_button: () => LocalizedString
+		/**
 		 * Description
 		 */
 		description: () => LocalizedString
@@ -553,6 +640,20 @@ export type TranslationFunctions = {
 			 * Decline
 			 */
 			decline: () => LocalizedString
+		}
+		login: {
+			/**
+			 * Login
+			 */
+			title: () => LocalizedString
+			/**
+			 * Email
+			 */
+			email: () => LocalizedString
+			/**
+			 * Password
+			 */
+			password: () => LocalizedString
 		}
 	}
 }

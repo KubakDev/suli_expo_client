@@ -26,23 +26,23 @@
 	let exhibitionId = localStorage.getItem('redirect');
 
 	onMount(async () => {
-		const response: any = await data.supabase.auth.getUser();
-		uid = response.data.user.id;
-		if (!response?.data?.user) {
-			goto('/login');
-		} else {
-			data.supabase
-				.from('company')
-				.select('*')
-				.eq('uid', response.data.user.id)
-				.single()
-				.then((res) => {
-					if (res.data) {
-						currentUser.set(res.data);
-						goto(localStorage.getItem('redirect') ?? '/');
-					}
-				});
-		}
+		// const response: any = await data.supabase.auth.getUser();
+		// uid = response.data.user.id;
+		// if (!response?.data?.user) {
+		// 	goto('/login');
+		// } else {
+		// 	data.supabase
+		// 		.from('company')
+		// 		.select('*')
+		// 		.eq('uid', response.data.user.id)
+		// 		.single()
+		// 		.then((res) => {
+		// 			if (res.data) {
+		// 				currentUser.set(res.data);
+		// 				goto(localStorage.getItem('redirect') ?? '/');
+		// 			}
+		// 		});
+		// }
 	});
 
 	async function submitForm() {

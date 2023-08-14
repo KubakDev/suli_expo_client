@@ -3,6 +3,12 @@ import type { Translation } from '../i18n-types';
 const ar = {
 	// arabic language translation
 	HI: 'مرحبا {name}! يرجى تقديم نجمة ، وقت الاستجابة للمشاريع في الطوابق السفلية',
+	validation: {
+		required: '{field} مطلوب',
+	},
+	buttons: {
+		submit: 'إرسال',
+	},
 	home: 'الرئيسية',
 	about: 'حول',
 	contact: 'اتصل',
@@ -56,26 +62,37 @@ const ar = {
 	MoreInGallery: 'المزيد في المعرض',
 	moreVideos: 'المزيد من مقاطع الفيديو',
 	reservation: {
-		description: "وردەکاری",
-		comment: "سەرنج",
-		comment_placeholder: "تکایە سەرنجەکەت بنووسە",
+		title: "مقاعد المعرض",
+		welcome: 'مرحبا بكم',
+		logged_in_description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
+		not_logged_in_description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
+		logged_in_button: 'تسجيل الدخول',
+		not_logged_in_button: 'تسجيل الدخول',
+		description: "لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً",
+		comment: 'تعليق',
+		comment_placeholder: 'يرجى كتابة تعليقك',
 		services: {
-			title: "خزمەتگوزاریەکان",
-			free_services: "خزمەتگوزارییە بێ بەرامبەرەکان",
-			paid_services: "خزمەتگوزاریەکان",
+			title: 'الخدمات',
+			free_services: 'خدمات مجانية',
+			paid_services: 'خدمات',
 		},
-		total_price: "کۆی گشتی",
-		reserve: "بەکرێ گرتن",
+		total_price: 'السعر الكلي',
+		reserve: 'حجز',
 		seat_types: {
-			selected: 'دەستنیشانکراو',
-			reserved: 'بەکرێ گیراو',
-			pending: 'لە چاوەڕوانی',
+			selected: 'مختار',
+			reserved: '	محجوز',
+			pending: 'قيد الانتظار',
 		},
-		unselect_seat_desc: "شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری",
+		unselect_seat_desc: 'حدد مقعدًا للحصول على معلومات حوله',
 		privacy_policy: {
-			title: 'مەرجەکانی بە کرێگرتن',
-			accept: 'ڕازیم',
-			decline: 'رازینیم',
+			title: 'شروط الحجز',
+			accept: 'أوافق',
+			decline: 'رفض',
+		},
+		login: {
+			title: 'تسجيل الدخول',
+			email: 'البريد الإلكتروني',
+			password: 'كلمه السر',
 		}
 	}
 } satisfies Translation;

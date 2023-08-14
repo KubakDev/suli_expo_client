@@ -2,6 +2,8 @@
 	import { Button } from 'flowbite-svelte';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
+	import { LL } from '$lib/i18n/i18n-svelte';
+
 	export let exhibition: any = { image_map: '' };
 
 	function gotoLogin() {
@@ -13,11 +15,7 @@
 <div class="wrapper">
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div class="scenes rounded-xl" tabindex="0">
-		<div
-			class="scene-1 rounded-xl"
-			id="imageTest"
-			style={`background-image: url(${exhibition?.image_map});`}
-		/>
+		<div class="scene-1 rounded-xl" style={`background-image: url(${exhibition?.image_map});`} />
 		<div class="scene-2 rounded-xl">
 			<div
 				class="w-full flex flex-col justify-center items-center h-full"
@@ -26,22 +24,24 @@
 				<div class="w-full h-[300px] flex flex-col justify-center items-center">
 					{#if $currentUser?.id}
 						<h1 class="my-2 text-white font-bold">
-							Welcome <span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span
-							>
+							{$LL.reservation.welcome()}
+							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
 						</h1>
 						<h2 class="text-xl mb-5 text-white">
-							To reserve this seat click goto reservation page
+							{$LL.reservation.logged_in_description()}
 						</h2>
 						<Button
 							on:click={() => {
 								goto('/exhibition/reserve/' + exhibition.id);
-							}}>Go to reservation page</Button
+							}}
 						>
+							{$LL.reservation.logged_in_button()}
+						</Button>
 					{:else}
 						<h2 class="text-xl font-bold mb-5 text-white">
-							To reserve this seat you have to login and regester as company
+							{$LL.reservation.not_logged_in_description()}
 						</h2>
-						<Button on:click={gotoLogin}>Go to login page</Button>
+						<Button on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button>
 					{/if}
 				</div>
 			</div>
