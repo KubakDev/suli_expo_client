@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
 	import { exhibitionStore } from '../../../../stores/exhibtionStore';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
@@ -12,11 +12,12 @@
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	//@ts-ignore
+	import { goto } from '$app/navigation';
 	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import Image from 'svimg';
+	import ExhibitionMapImage from '$lib/components/exhibitionMapImage.svelte';
 
 	export let data: any;
 	const youtubeRegex =
@@ -29,8 +30,6 @@
 			data.supabase,
 			$page.params.exhibitionId
 		)) as ExhibitionModel;
-
-		console.log('Data ', exhibition);
 	}
 
 	let currentImageIndex = 0;
@@ -54,7 +53,6 @@
 
 	function openPdfFile(pdfLink: string) {
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
-		console.log(completePdfLink);
 
 		const newWindow = window.open();
 		if (newWindow !== null) {
@@ -81,7 +79,15 @@
 </div>
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
-			<div class="items-start flex flex-col justify-around">
+			<div class=" items-start flex flex-col justify-around">
+				<div class="w-full py-8 mb-20">
+					<div class="py-8 flex justify-center">
+						<TitleUi text={$LL.reservation.title()} />
+					</div>
+					{#if exhibition?.image_map}
+						<ExhibitionMapImage {exhibition} />
+					{/if}
+				</div>
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
 					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center pb-6">
@@ -189,22 +195,6 @@
 						</div>
 						<div class="p-8 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
-								<!-- {#if exhibition?.pdf_files && exhibition.pdf_files.length > 0}
-								<CollapsibleCard open={false} duration={0.2} easing="ease-in-out">
-									<h2
-										slot="header"
-										class="text-blue-400 cursor-pointer flex flex-row w-full justify-start font-bold hover:underline"
-									>
-										<CloudArrowDown width="25" height="25" class="pr-[1px]" /> Download
-									</h2>
-									<p slot="body" class="flex flex-col">
-										{#each exhibition?.pdf_files || [] as pdf, index}
-											<a href={pdf} target="_blank" class="text-center text-blue-500 flex flex-row py-1 font-bold tracking-wide uppercase hover:no-underline hover:text-primary-500"><FilePdfSolid class="dark:text-red-500 mx-2" />{exhibition.title} {index+1}</a>
-										{/each}
-									</p>
-								</CollapsibleCard>
-								{/if} -->
-
 								<p
 									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
 								>
@@ -216,14 +206,6 @@
 								</p>
 							</div>
 						</div>
-						{#if exhibition?.image_map}
-							<h1
-								class="text-gradient text-shadow text-3xl font-bold text-center pb-4 w-full animate-pulse"
-							>
-								{exhibition?.map_title ?? $LL.exhibition_mini_data.Map_Title()}
-							</h1>
-							<ImageViewer image={exhibition?.image_map} />
-						{/if}
 					</div>
 					<NewsSection supabase={data.supabase} exhibitionId={$page.params.exhibitionId} />
 					<div class="w-full h-10" />
@@ -231,76 +213,6 @@
 				<div class="w-full h-10" />
 			</div>
 		</div>
-
-		<!-- <div
-			class="bg-transparentSecondaryColor w-full h-48 flex-col justify-around items-center py-10 flex flex-wrap text-center"
-			>
-			<div class="mx-auto max-w-screen-lg">
-				<div class="text-exhibitionSecondaryColor lg:text-3xl text-lg uppercase font-bold">
-					{$LL.exhibition_mini_data.Fair()}
-				</div>
-
-				<div
-					class="text-exhibitionOverlaySecondaryColor lg:text-xl text-base py-4 [word-spacing:5px]"
-					>
-					distribution of letters, as opposed to using 'Content here, content, makinlook like
-					readable English. Many desktop publishing packages.
-				</div>
-			</div>
-		</div> -->
-		<!-- {#if exhibition?.pdf_files.length || [].length > 0}
-			<div class="{Constants.page_max_width} mx-auto">
-				<div class="flex justify-center w-full pt-12">
-					<TitleUi text={$LL.exhibition_mini_data.Exhibition_PDF()} />
-				</div>
-				<div class="flex xl:flex-row flex-col py-12"> -->
-		<!-- <div class="flex flex-col items-end py-5 w-full">
-						<div
-						class="xl:w-[45vh] w-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-auto max-h-[26rem] {Constants.scrollbar_layout}"
-						>
-							{#each exhibition?.pdf_files || [] as pdf}
-							<Card horizontal class="my-2 w-full">
-									<div class="w-full h-full">
-										<button
-											class="flex justify-between flex-row items-center w-full h-full"
-											on:click={() => {
-												pdf_page(pdf);
-											}}
-										>
-											<FilePdfSolid class="dark:text-red-500 mx-2" />
-											<h5
-												class="text-base font-bold tracking-tight text-gray-900 dark:text-white flex justify-end"
-											>
-												{exhibition?.title}
-											</h5>
-											<OpenBookSolid
-											class="dark:text-blue-500 transition-all dark:hover:animate-pulse"
-											/>
-										</button>
-									</div>
-								</Card>
-							{/each}
-						</div> -->
-		<!-- </div> -->
-		<!-- <div class="flex flex-col justify-center items-center px-2 h-full">
-						<h1 class="dark:text-slate-50 text-3xl py-5 font-bold">Exhibition Story</h1>
-						<span class="dark:text-slate-200 px-4 text-justify flex flex-row">
-							{exhibition?.story} -->
-		<!-- <div class="relative w-0 h-0">
-								<LottiePlayer
-								class="flex justify-center items-center"
-								src="../../../../lottie/PDF lottie Jason Done.json"
-									autoplay={true}
-									loop={true}
-									height="{250}"
-									width="{250}"
-								/>
-							</div> -->
-		<!-- </span>
-					</div> -->
-		<!-- </div>
-			</div> -->
-		<!-- {/if} -->
 		{#if youtubeRegex.exec(exhibition?.video_youtube_link)}
 			<div class="{Constants.page_max_width} mx-auto">
 				<VideoPlayer videoUrl={exhibition?.video_youtube_link} />
@@ -321,21 +233,5 @@
 				<SponsorSlider images={exhibition.sponsor_images} />
 			</div>
 		{/if}
-		<!-- {#if exhibition?.seat_layout.length > 0} -->
-		<!-- <div class="{Constants.page_max_width} mx-auto py-8">
-			<div class="flex justify-center w-full py-12">
-				<TitleUi
-					text={$LL.exhibition_mini_data.Exhibition_Seats()}
-					customClass=" dark:text-white text-secondary text-center"
-				/>
-			</div>
-			<div class="border-solid border-t-2 rounded-3xl border-opacity-100">
-				<ReservationComponent data={exhibition?.seat_layout} />
-			</div>
-		</div> -->
-		<!-- {/if} -->
 	</div>
 </section>
-
-<style>
-</style>

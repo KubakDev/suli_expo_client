@@ -20,6 +20,19 @@ type RootTranslation = {
 	 * @param {string} name
 	 */
 	HI: RequiredParams<'name'>
+	validation: {
+		/**
+		 * {​f​i​e​l​d​}​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 * @param {unknown} field
+		 */
+		required: RequiredParams<'field'>
+	}
+	buttons: {
+		/**
+		 * S​u​b​m​i​t
+		 */
+		submit: string
+	}
 	/**
 	 * H​o​m​e
 	 */
@@ -216,6 +229,112 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
+	reservation: {
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
+		 */
+		title: string
+		/**
+		 * W​e​l​c​o​m​e
+		 */
+		welcome: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​ ​c​l​i​c​k​ ​g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_description: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​y​o​u​ ​h​a​v​e​ ​t​o​ ​l​o​g​g​i​n​g​ ​b​e​f​o​r​e
+		 */
+		not_logged_in_description: string
+		/**
+		 * g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_button: string
+		/**
+		 * g​o​t​o​ ​l​o​g​i​n​ ​p​a​g​e
+		 */
+		not_logged_in_button: string
+		/**
+		 * D​e​s​c​r​i​p​t​i​o​n
+		 */
+		description: string
+		/**
+		 * C​o​m​m​e​n​t
+		 */
+		comment: string
+		/**
+		 * P​l​e​a​s​e​ ​w​r​i​t​e​ ​y​o​u​r​ ​c​o​m​m​e​n​t
+		 */
+		comment_placeholder: string
+		services: {
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			title: string
+			/**
+			 * F​r​e​e​ ​S​e​r​v​i​c​e​s
+			 */
+			free_services: string
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			paid_services: string
+		}
+		/**
+		 * T​o​t​a​l​ ​P​r​i​c​e
+		 */
+		total_price: string
+		/**
+		 * R​e​s​e​r​v​e
+		 */
+		reserve: string
+		seat_types: {
+			/**
+			 * S​E​L​E​C​T​E​D
+			 */
+			selected: string
+			/**
+			 * R​E​S​E​R​V​E​D
+			 */
+			reserved: string
+			/**
+			 * P​E​N​D​I​N​G
+			 */
+			pending: string
+		}
+		/**
+		 * S​e​l​e​c​t​ ​a​ ​s​e​a​t​ ​t​o​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​i​t
+		 */
+		unselect_seat_desc: string
+		privacy_policy: {
+			/**
+			 * T​e​r​m​s​ ​o​f​ ​R​e​s​e​r​v​a​t​i​o​n
+			 */
+			title: string
+			/**
+			 * I​ ​a​c​c​e​p​t
+			 */
+			accept: string
+			/**
+			 * D​e​c​l​i​n​e
+			 */
+			decline: string
+		}
+		login: {
+			/**
+			 * L​o​g​i​n
+			 */
+			title: string
+			/**
+			 * E​m​a​i​l
+			 */
+			email: string
+			/**
+			 * P​a​s​s​w​o​r​d
+			 */
+			password: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -223,6 +342,18 @@ export type TranslationFunctions = {
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
 	 */
 	HI: (arg: { name: string }) => LocalizedString
+	validation: {
+		/**
+		 * {field} is required
+		 */
+		required: (arg: { field: unknown }) => LocalizedString
+	}
+	buttons: {
+		/**
+		 * Submit
+		 */
+		submit: () => LocalizedString
+	}
 	/**
 	 * Home
 	 */
@@ -419,6 +550,112 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
+	reservation: {
+		/**
+		 * Exhibition Seats
+		 */
+		title: () => LocalizedString
+		/**
+		 * Welcome
+		 */
+		welcome: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one , click goto reservation page
+		 */
+		logged_in_description: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one ,you have to logging before
+		 */
+		not_logged_in_description: () => LocalizedString
+		/**
+		 * goto reservation page
+		 */
+		logged_in_button: () => LocalizedString
+		/**
+		 * goto login page
+		 */
+		not_logged_in_button: () => LocalizedString
+		/**
+		 * Description
+		 */
+		description: () => LocalizedString
+		/**
+		 * Comment
+		 */
+		comment: () => LocalizedString
+		/**
+		 * Please write your comment
+		 */
+		comment_placeholder: () => LocalizedString
+		services: {
+			/**
+			 * Services
+			 */
+			title: () => LocalizedString
+			/**
+			 * Free Services
+			 */
+			free_services: () => LocalizedString
+			/**
+			 * Services
+			 */
+			paid_services: () => LocalizedString
+		}
+		/**
+		 * Total Price
+		 */
+		total_price: () => LocalizedString
+		/**
+		 * Reserve
+		 */
+		reserve: () => LocalizedString
+		seat_types: {
+			/**
+			 * SELECTED
+			 */
+			selected: () => LocalizedString
+			/**
+			 * RESERVED
+			 */
+			reserved: () => LocalizedString
+			/**
+			 * PENDING
+			 */
+			pending: () => LocalizedString
+		}
+		/**
+		 * Select a seat to get information about it
+		 */
+		unselect_seat_desc: () => LocalizedString
+		privacy_policy: {
+			/**
+			 * Terms of Reservation
+			 */
+			title: () => LocalizedString
+			/**
+			 * I accept
+			 */
+			accept: () => LocalizedString
+			/**
+			 * Decline
+			 */
+			decline: () => LocalizedString
+		}
+		login: {
+			/**
+			 * Login
+			 */
+			title: () => LocalizedString
+			/**
+			 * Email
+			 */
+			email: () => LocalizedString
+			/**
+			 * Password
+			 */
+			password: () => LocalizedString
+		}
+	}
 }
 
 export type Formatters = {}

@@ -35,10 +35,7 @@
 		<div class="">
 			{#if $aboutSectionStore}
 				<div class=" rounded-xl">
-
-					<ul class="">
-						<About aboutSection={$aboutSectionStore} />
-					</ul>
+					<About aboutSection={$aboutSectionStore} />
 				</div>
 			{/if}
 		</div>
@@ -53,7 +50,9 @@
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
-					<div class=" text-lightOverlayBackground dark:text-darkOverlayBackgroundColor rounded-lg p-2">
+					<div
+						class=" text-lightOverlayBackground dark:text-darkOverlayBackgroundColor rounded-lg p-2"
+					>
 						<Staff {staffSection} />
 					</div>
 				{/each}

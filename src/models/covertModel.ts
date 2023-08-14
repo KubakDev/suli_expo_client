@@ -48,7 +48,6 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 	return obj;
 }
 
-
 export interface ItemModel {
 	id: number;
 	title: string;
