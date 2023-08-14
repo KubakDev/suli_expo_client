@@ -63,17 +63,17 @@
 
 <section class="w-full flex-1 overflow-x-hidden">
 	<div
-	class="w-full relative h-screen lg:h-screen md:h-screen sm:h-screen mx-auto flex flex-wrap justify-center items-center"
+	class="flex flex-col justify-center items-center w-full h-auto relative"
 >
 	{#if exhibition?.images.length}
 		{#key currentImageIndex}
-			<!-- <img
+			<img
 				src={exhibition.images[currentImageIndex]}
 				alt=""
-				class="absolute top-0 left-0 w-full h-full object-contain slide-img"
-				in:fade={{ duration: 1000 }}
-				out:fade={{ duration: 1000 }}
-			/> -->
+				class="w-full h-auto slide-img flex"
+				in:fade={{ duration: 3000 }}
+				out:fade={{ duration: 3000 }}
+			/>
 		{/key}
 	{/if}
 </div>

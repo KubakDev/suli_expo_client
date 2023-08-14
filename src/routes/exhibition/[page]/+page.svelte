@@ -3,8 +3,8 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { exhibitionStore } from '../../../stores/exhibtionStore.js';
 	import Constants from '../../../utils/constants.js';
-	import { fly, fade } from 'svelte/transition';
-	import { CardType, ExpoCard } from 'kubak-svelte-component';
+	import { fade } from 'svelte/transition';
+	import { CardType, ExpoCard } from 'F:/kubak_svelte_component/dist';
 	import constants from '../../../utils/constants.js';
 	import LL, { locale } from '$lib/i18n/i18n-svelte.js';
 	import { goto } from '$app/navigation';
