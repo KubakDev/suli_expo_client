@@ -16,6 +16,7 @@
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
+	import Image from 'svimg';
 
 	export let data: any;
 	const youtubeRegex =
@@ -68,15 +69,13 @@
 >
 	{#if exhibition?.images.length}
 		{#key currentImageIndex}
-		
-			<img
+			<!-- <img
 				src={exhibition.images[currentImageIndex]}
 				alt=""
-				class="absolute top-0 left-0 w-full h-full object-cover slide-img"
+				class="absolute top-0 left-0 w-full h-full object-contain slide-img"
 				in:fade={{ duration: 1000 }}
 				out:fade={{ duration: 1000 }}
-				style="object-fit: contain; object-position: center;"
-			/>
+			/> -->
 		{/key}
 	{/if}
 </div>
