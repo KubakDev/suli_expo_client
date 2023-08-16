@@ -4,7 +4,7 @@
 	import { exhibitionStore } from '../../../stores/exhibtionStore.js';
 	import Constants from '../../../utils/constants.js';
 	import { fade } from 'svelte/transition';
-	import { CardType, ExpoCard } from 'F:/kubak_svelte_component/dist';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import constants from '../../../utils/constants.js';
 	import LL, { locale } from '$lib/i18n/i18n-svelte.js';
 	import { goto } from '$app/navigation';

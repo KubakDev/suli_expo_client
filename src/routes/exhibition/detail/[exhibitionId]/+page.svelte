@@ -5,23 +5,22 @@
 	import { exhibitionStore } from '../../../../stores/exhibtionStore';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	import Constants from '../../../../utils/constants';
-	import { fade } from 'svelte/transition'; // import the fade transition
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
 	import { MapPin, BuildingOffice2, GlobeAsiaAustralia, CloudArrowDown } from 'svelte-heros-v2';
-	import moment from 'moment';
 	import NumberAnimationIncrement from '$lib/components/NumberAnimationIncrement.svelte';
 	import VideoPlayer from '$lib/components/VideoPlayer.svelte';
 	//@ts-ignore
-	import { goto } from '$app/navigation';
 	// import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SponsorSlider from '$lib/components/SponsorSlider.svelte';
-	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import ExhibitionMapImage from '$lib/components/exhibitionMapImage.svelte';
+	import { Carousel } from 'flowbite-svelte';
 
 	export let data: any;
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
+	let exhibitionImage: { id: number; name: string; imgurl: string; attribution: string }[] = [];
 
 	let exhibition: ExhibitionModel;
 	async function getExhibition() {
@@ -43,11 +42,14 @@
 	onMount(async () => {
 		await getExhibition();
 		if (exhibition!.images.length) {
-			const interval = setInterval(() => {
-				currentImageIndex = (currentImageIndex + 1) % exhibition!.images.length;
-			}, 3000); // change image every 2 seconds
-
-			() => clearInterval(interval); // clear interval on component unmount
+			exhibitionImage = exhibition!.images.map((image, index) => {
+				return {
+					id: index,
+					name: exhibition.title,
+					imgurl: image,
+					attribution: exhibition.description ?? ''
+				};
+			});
 		}
 	});
 
@@ -62,21 +64,23 @@
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
-	<div
-	class="flex flex-col justify-center items-center w-full h-auto relative"
->
-	{#if exhibition?.images.length}
-		{#key currentImageIndex}
-			<img
-				src={exhibition.images[currentImageIndex]}
-				alt=""
-				class="w-full h-auto slide-img flex"
-				in:fade={{ duration: 3000 }}
-				out:fade={{ duration: 3000 }}
+	<div class="w-full">
+		{#if exhibitionImage.length > 0}
+			<Carousel
+				divClass="w-full"
+				slideClass="w-full"
+				images={exhibitionImage}
+				loop
+				transitionType="fade"
+				transitionParams={{ duration: 2000 }}
+				showCaptions={false}
+				showThumbs={false}
+				slideControls={false}
+				showIndicators={false}
+				duration={5000}
 			/>
-		{/key}
-	{/if}
-</div>
+		{/if}
+	</div>
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
@@ -173,12 +177,12 @@
 						</h1>
 					</div>
 					<div class="grid">
-						<div class="h-100 w-full relative mx-auto">
+						<div class="w-full relative mx-auto">
 							{#if exhibition?.pdf_files}
 								<!-- svelte-ignore a11y-click-events-have-key-events -->
 								<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 								<img
-									class="w-full h-100 rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
+									class="w-full rounded-xl hover:shadow-2xl shadow-lg transition-all cursor-pointer"
 									on:click={() => {
 										openPdfFile(exhibition?.pdf_files);
 									}}
@@ -235,3 +239,10 @@
 		{/if}
 	</div>
 </section>
+<style>
+	img, video {
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+	}
+</style>
