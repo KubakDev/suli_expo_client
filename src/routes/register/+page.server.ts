@@ -9,6 +9,7 @@ export const actions = {
         const formData = await request.formData();
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
+        console.log(email + ' ' + password)
         if (!email) {
             const errors = 'email required';
             return {
@@ -35,35 +36,32 @@ export const actions = {
             };
         }
 
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signUp({
             email,
             password
         });
         console.log(error)
-        if (error) {
-            if (error instanceof AuthApiError && error.status === 400) {
-                const errors = error.message;
-                return {
-                    email,
-                    password,
-                    errors
-                };
-            }
-            const errors = error.message;
-            return {
-                email,
-                password,
-                errors
-            };
-        } else {
-            throw redirect(303, 'company-registration');
+        // if (error) {
+        //     if (error instanceof AuthApiError && error.status === 400) {
+        //         const errors = error.message;
+        //         return {
+        //             email,
+        //             password,
+        //             errors
+        //         };
+        //     }
+        //     const errors = error.message;
+        //     return {
+        //         email,
+        //         password,
+        //         errors
+        //     };
+        // } else {
+        //     throw redirect(303, 'company-registration');
 
-        }
+        // }
     },
 
-    signout: async ({ locals: { supabase } }) => {
-        await supabase.auth.signOut();
-        throw redirect(303, '/');
-    }
+
 };
 
