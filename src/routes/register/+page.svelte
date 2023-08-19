@@ -4,11 +4,11 @@
 	import { onMount } from 'svelte';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
-	import LoginIcon from './loginIcon.json';
+	import LoginIcon from '../login/loginIcon.json';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import Test from './test.png';
+
 	export let form;
 	export let data;
 	let loading = false;
@@ -40,48 +40,44 @@
 	<form
 		action="?/signin"
 		method="POST"
-		class="flex h-screen justify-center items-center w-3/4 max-w-[1000px]"
+		class="flex h-screen justify-center items-center w-3/4 max-w-[1500px]"
 		use:enhance
 	>
-		<div class="shadow-md rounded-md w-1/2 z-50" style="background-color:white">
-			<div
-				class="w-full h-[100px] rounded-t-md"
-				style={`background-image: url(${Test});  background-repeat: no-repeat;
-			background-size: cover; `}
-			/>
-			<div class="px-8 pt-32 pb-10">
-				<div class="w-full flex justify-center">
-					<!-- <LottiePlayer
-						src={LoginIcon}
-						autoplay={true}
-						loop={true}
-						renderer="svg"
-						background="transparent"
-						height={300}
-						width={300}
-					/> -->
-				</div>
-				<div class="w-full pb-8">
-					<Input
-						type="text"
-						id="email"
-						placeholder="example@example.com"
-						name="email"
-						value={form?.email ?? ''}
-					/>
-				</div>
-				<div class="w-full">
-					<Input
-						type="password"
-						id="password"
-						placeholder="*********"
-						name="password"
-						value={form?.password ?? ''}
-					/>
-				</div>
-				{#if form?.errors}
-					<span class="py-2 px-1 text-red-400">{form?.errors}</span>
-				{/if}
+		<div class="shadow-md rounded-md p-8 w-1/2" style="background-color: var(secondaryColor);">
+			<div class="w-full flex justify-center">
+				<LottiePlayer
+					src={LoginIcon}
+					autoplay={true}
+					loop={true}
+					renderer="svg"
+					background="transparent"
+					height={300}
+					width={300}
+				/>
+			</div>
+
+			<div class="w-full pb-8">
+				<Input
+					type="text"
+					id="email"
+					placeholder="example@example.com"
+					name="email"
+					value={form?.email ?? ''}
+				/>
+			</div>
+			<div class="w-full">
+				<Input
+					type="password"
+					id="password"
+					placeholder="*********"
+					name="password"
+					value={form?.password ?? ''}
+				/>
+			</div>
+			{#if form?.errors}
+				<span class="py-2 px-1 text-red-400">{form?.errors}</span>
+			{/if}
+			<div class="w-full grid grid-cols-3 gap-2">
 				<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2">
 					{#if loading}
 						<Spinner class="mr-3" size="4" />
@@ -93,7 +89,7 @@
 					}}
 					type="button"
 					class=" mt-10"
-					outline>Register</Button
+					outline>login</Button
 				>
 			</div>
 		</div>

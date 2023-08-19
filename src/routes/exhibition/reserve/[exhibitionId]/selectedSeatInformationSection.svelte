@@ -15,7 +15,7 @@
 	import { XMark } from 'svelte-heros-v2';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher } from 'svelte';
-	import { LL } from '$lib/i18n/i18n-svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let supabase: SupabaseClient;
 
@@ -29,6 +29,7 @@
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
+	console.log($selectedSeat.objectDetail);
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
@@ -74,7 +75,12 @@
 				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.description()}
 				</p>
-				<p class="py-4 text-center">{$selectedSeat?.objectDetail?.description}</p>
+				<p class="py-4 text-center">
+					{$selectedSeat?.objectDetail?.description ??
+						$selectedSeat?.objectDetail?.descriptionLanguages.find((x) => x.language == $locale)
+							?.description ??
+						''}
+				</p>
 				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.comment()}
 				</p>
@@ -155,7 +161,7 @@
 				<div class="w-full h-[2px] bg-[var(--lightPrimaryColor)]" />
 				<div class="w-full flex justify-between">
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
-					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
+					<h1 class="text-2xl my-6 font-bold">{totalPrice} IQD</h1>
 				</div>
 				<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button>
 			</div>
