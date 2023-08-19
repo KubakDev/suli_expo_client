@@ -63,20 +63,22 @@
 
 <section class="w-full flex-1 overflow-x-hidden">
 	<div
-		class="w-full relative h-64 lg:h-200 md:h-128 sm:h-100 mx-auto flex flex-wrap justify-center items-center"
-	>
-		{#if exhibition?.images.length}
-			{#key currentImageIndex}
-				<img
-					src={exhibition.images[currentImageIndex]}
-					alt=""
-					class="w-full object-fit slide-img absolute h-64 lg:h-200 md:h-128 sm:h-100"
-					in:fade={{ duration: 1000 }}
-					out:fade={{ duration: 1000 }}
-				/>
-			{/key}
-		{/if}
-	</div>
+	class="w-full relative h-screen lg:h-screen md:h-screen sm:h-screen mx-auto flex flex-wrap justify-center items-center"
+>
+	{#if exhibition?.images.length}
+		{#key currentImageIndex}
+		
+			<img
+				src={exhibition.images[currentImageIndex]}
+				alt=""
+				class="absolute top-0 left-0 w-full h-full object-cover slide-img"
+				in:fade={{ duration: 1000 }}
+				out:fade={{ duration: 1000 }}
+				style="object-fit: contain; object-position: center;"
+			/>
+		{/key}
+	{/if}
+</div>
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
