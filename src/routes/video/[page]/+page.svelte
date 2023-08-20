@@ -5,7 +5,7 @@
 	import TitleUi from '$lib/components/TitleUi.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Constants from '../../../utils/constants';
-	import { CardType, ExpoCard } from 'F:/kubak_svelte_component/dist';
+	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
 	import { videoStore } from '../../../stores/videoStore';
 	import { getNameRegex } from '../../../utils/urlRegexName';
