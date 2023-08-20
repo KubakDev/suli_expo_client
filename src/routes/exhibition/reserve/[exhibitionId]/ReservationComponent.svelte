@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { Button, Checkbox } from 'flowbite-svelte';
 	import { onMount, tick } from 'svelte';
 	import { fabric } from 'fabric';
 	import type { Canvas } from 'fabric/fabric-impl';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { currentUser } from '../../../../stores/currentUser';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
 	import {
@@ -15,7 +12,7 @@
 		setSeatDataLoading
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { exhibition } from '../../../../../../suli_expo_panel/src/stores/exhibitionTypeStore';
+
 
 	export let data: any;
 	export let supabase: SupabaseClient;
