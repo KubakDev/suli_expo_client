@@ -11,14 +11,12 @@
 		company_name: '',
 		email: '',
 		phone_number: '',
-		logo_url: '',
 		type: ''
 	};
 	let schema: any = yup.object().shape({
 		company_name: yup.string().required(),
 		email: yup.string().required().email(),
 		phone_number: yup.string().required(),
-		logo_url: yup.string().required(),
 		type: yup.string().required()
 	});
 	let formSubmitted = false;
@@ -26,34 +24,41 @@
 	let exhibitionId = localStorage.getItem('redirect');
 
 	onMount(async () => {
-		// const response: any = await data.supabase.auth.getUser();
-		// uid = response.data.user.id;
-		// if (!response?.data?.user) {
-		// 	goto('/login');
-		// } else {
-		// 	data.supabase
-		// 		.from('company')
-		// 		.select('*')
-		// 		.eq('uid', response.data.user.id)
-		// 		.single()
-		// 		.then((res) => {
-		// 			if (res.data) {
-		// 				currentUser.set(res.data);
-		// 				goto(localStorage.getItem('redirect') ?? '/');
-		// 			}
-		// 		});
-		// }
+		const response: any = await data.supabase.auth.getUser();
+		uid = response.data.user.id;
+		if (!response?.data?.user) {
+			goto('/login');
+		} else {
+			data.supabase
+				.from('company')
+				.select('*')
+				.eq('uid', response.data.user.id)
+				.single()
+				.then((res) => {
+					if (res.data) {
+						currentUser.set(res.data);
+						goto(localStorage.getItem('redirect') ?? '/');
+					}
+				});
+		}
 	});
 
 	async function submitForm() {
 		formSubmitted = true;
 		if (!schema.isValidSync(companyData)) return;
-		await data.supabase.from('company').insert({
-			uid: uid,
-			company_name: companyData.companyName
-		});
-		currentUser.set(companyData);
-		goto(localStorage.getItem('redirect') ?? '/');
+		await data.supabase
+			.from('company')
+			.insert({
+				uid: uid,
+				company_name: companyData.company_name,
+				email: companyData.email,
+				phone_number: companyData.phoneNumber,
+				type: companyData.type
+			})
+			.then(() => {
+				currentUser.set(companyData);
+				goto(localStorage.getItem('redirect') ?? '/');
+			});
 	}
 	function inValidField(field: string) {
 		let invalid = false;
@@ -112,7 +117,7 @@
 			{/each}
 		</div>
 		<div class="w-full flex justify-end">
-			<Button on:click={submitForm}>Submit</Button>
+			<Button on:click={submitForm} type="button">Submit</Button>
 		</div>
 	</div>
 </form>
