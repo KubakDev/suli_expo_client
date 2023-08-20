@@ -77,7 +77,7 @@
 				</p>
 				<p class="py-4 text-center">
 					{$selectedSeat?.objectDetail?.description ??
-						$selectedSeat?.objectDetail?.descriptionLanguages.find((x) => x.language == $locale)
+						$selectedSeat?.objectDetail?.descriptionLanguages?.find((x) => x.language == $locale)
 							?.description ??
 						''}
 				</p>
