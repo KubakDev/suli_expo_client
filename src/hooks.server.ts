@@ -20,6 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
     return session;
   };
+  
 
   return resolve(event, {
     filterSerializedResponseHeaders(name) {

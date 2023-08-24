@@ -16,7 +16,6 @@
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle } from '../../../stores/darkMode';
-	import { Shadow } from 'svelte-loading-spinners';
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;

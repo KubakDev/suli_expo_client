@@ -1,9 +1,11 @@
 <script lang="ts">
 	import * as yup from 'yup';
+	//@ts-ignore
 	import { Form, Message } from 'svelte-yup';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import SulyButton from './sulyButton.svelte';
 	import Constants from '../../utils/constants';
+	import MailTemplate from './MailTemplate.svelte';
 
 	let schema = yup.object().shape({
 		name: yup.string().required().max(30).label('Name'),
@@ -20,6 +22,7 @@
 		isValid = schema.isValidSync(fields);
 		if (isValid) {
 			showToast = true; // Set showToast to true to display the toast
+			sendEmail();
 			resetForm();
 			setTimeout(() => {
 				showToast = false; // Hide the toast after 1 second
@@ -31,8 +34,29 @@
 		submitted = false;
 		fields = { email: '', name: '', message: '' };
 	}
-</script>
 
+	function sendEmail() {
+		fetch("/api/email", {
+			method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                emailUser: fields.email,
+                name: fields.name,
+                message: fields.message
+            })
+        }).then(res => {
+			if (res.status === 200) {
+				 
+			} else {
+				 
+			}
+		}).catch(err => {
+			 
+		});
+	}
+</script>
 <section class="text-gray-600 body-font relative">
 	{#if showToast}
 		<div class="bg-green-500 text-white text-center py-2 fixed bottom-0 left-0 right-0">
@@ -59,7 +83,7 @@
 			<h2 class="text-gray-900 text-lg mb-1 font-medium title-font py-5">{$LL.feedback()}</h2>
 			<!-- <p class="leading-relaxed mb-5 text-gray-600">write any text</p> -->
 
-			<Form class="form" {schema} {fields} submitHandler={formSubmit} {submitted}>
+			<Form dir="ltr" class="form" {schema} {fields} submitHandler={formSubmit} {submitted}>
 				<div class="relative mb-4">
 					<input
 						bind:value={fields.name}

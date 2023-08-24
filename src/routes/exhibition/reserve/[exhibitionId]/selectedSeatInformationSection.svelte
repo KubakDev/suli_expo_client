@@ -29,7 +29,7 @@
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
-	console.log($selectedSeat.objectDetail);
+	 
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
