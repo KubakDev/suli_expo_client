@@ -39,7 +39,7 @@
 		<div
 			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
 		>
-			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full">
+			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full z-0">
 				<DetailPage imagesCarousel={news.imagesCarousel} long_description={news.long_description} />
 			</div>
 			{#if $newsStore && $newsStore.data.length > 0}

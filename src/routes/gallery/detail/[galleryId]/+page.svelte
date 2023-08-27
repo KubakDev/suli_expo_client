@@ -13,6 +13,12 @@
 	export let data:any;
 	let gallery: GalleryModel | undefined | null;
 
+	$:{
+		if($locale) {
+			getGallery();
+		}
+	}
+
 	async function getGallery() {
 		gallery = await galleryStore.getSingle($locale, data.supabase, $page.params.galleryId);
 		galleryStore.get($locale, data.supabase,"1", 5);
@@ -27,7 +33,7 @@
 	{#if gallery}
 		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
 			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
-			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10">
+			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10 z-0">
 				<DetailPage
 					imagesCarousel={gallery.imagesCarousel}
 					long_description={gallery.long_description}

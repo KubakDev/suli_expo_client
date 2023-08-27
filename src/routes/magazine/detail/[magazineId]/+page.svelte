@@ -23,6 +23,12 @@
 	export let data;
 	let magazine: MagazineModel | undefined | null;
 
+	$:{
+		if($locale) {
+			getMagazine();
+		}
+	}
+
 	async function getMagazine() {
 		magazine = await magazineStore.getSingle($locale, data.supabase, $page.params.magazineId);
 		magazineStore.get($locale, data.supabase, "1", 5);
@@ -40,7 +46,7 @@
 		<div
 			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
 		>
-			<div class=" flex-1 my-10 mt-auto col-span-2 w-full h-full justify-start items-start">
+			<div class=" flex-1 my-10 mt-auto col-span-2 w-full h-full justify-start items-start z-0">
 				<DetailPage
 					customClass="bg-none"
 					long_description={magazine.long_description}

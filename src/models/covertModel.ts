@@ -26,14 +26,11 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 			} else if (prop === 'thumbnail' || prop === 'image' || prop === 'image_map') {
 				if (!data[prop]) continue;
 				obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
-			} else if (prop === 'languages') {
-					obj[prop].pdf_files = data[prop]?.map((e: string) => {
-						return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
-					});
-			} else if(prop === "pdf_files"){
-				if (!data[prop]) continue;
-				obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + data[prop];
-			} else {
+			} else if (prop === 'pdf_files') {
+				obj[prop] = data[prop].map((e: string) => {
+				  return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
+				});
+			  }else {
 				obj[prop] = data[prop];
 			}
 
