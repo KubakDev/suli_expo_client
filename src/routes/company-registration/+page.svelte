@@ -23,6 +23,20 @@
 	});
 	let formSubmitted = false;
 
+	onMount(() => {
+		if (data?.session?.user) {
+			data.supabase
+				.from('users')
+				.select('*')
+				.eq('uid', data?.session?.user.id)
+				.single()
+				.then((res) => {
+					userData = res;
+					goto(localStorage.getItem('redirect') ?? '/');
+				});
+		}
+	});
+
 	async function submitForm() {
 		formSubmitted = true;
 		if (!schema.isValidSync(userData)) return;

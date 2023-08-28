@@ -53,13 +53,15 @@
 		
 		if (data?.session?.user) {
 			data.supabase
-				.from('company')
+				.from('users')
 				.select('*')
 				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
 					if (res.data) {
 						currentUser.set(res.data);
+						console.log("User data",$currentUser);
+						
 					}
 				});
 			}

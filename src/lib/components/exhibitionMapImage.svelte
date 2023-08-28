@@ -25,7 +25,7 @@
 					{#if $currentUser?.id}
 						<h1 class="my-2 text-white font-bold">
 							{$LL.reservation.welcome()}
-							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
+							<span class="text-[#b18c25]">{$currentUser?.first_name?.toUpperCase()}</span>
 						</h1>
 						<h2 class="text-xl mb-5 text-white">
 							{$LL.reservation.logged_in_description()}
