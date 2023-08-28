@@ -14,17 +14,21 @@
 	let loading = false;
 
 	onMount(async () => {
-		const response: any = await data.supabase.auth.getUser();
-		if (response?.data?.user) {
+		if (data?.session?.user.id) {
 			data.supabase
-				.from('company')
+				.from('users')
 				.select('*')
-				.eq('uid', response.data.user.id)
+				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
 					if (res.data) {
-						currentUser.set(res.data);
-						goto(localStorage.getItem('redirect') ?? '/');
+						// Check if first_name, last_name, or phonenumber is null or empty
+						if (!res.data.first_name || !res.data.last_name || !res.data.phonenumber) {
+							goto('/company-registration'); // Redirect to a page where user can complete their info
+						} else {
+							currentUser.set(res.data);
+							goto(localStorage.getItem('redirect') ?? '/');
+						}
 					} else {
 						goto('/company-registration');
 					}

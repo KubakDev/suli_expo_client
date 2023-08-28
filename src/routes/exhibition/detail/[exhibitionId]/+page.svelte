@@ -31,8 +31,6 @@
 		)) as ExhibitionModel;
 	}
 
-	let currentImageIndex = 0;
-
 	$: {
 		if ($locale) {
 			getExhibition();
@@ -63,12 +61,12 @@
 	}
 </script>
 
+
 <section class="w-full flex-1 overflow-x-hidden">
-	<div class="w-full">
 		{#if exhibitionImage.length > 0}
 			<Carousel
-				divClass="w-full"
 				slideClass="w-full"
+				divClass="w-full"
 				images={exhibitionImage}
 				loop
 				transitionType="fade"
@@ -80,11 +78,10 @@
 				duration={5000}
 			/>
 		{/if}
-	</div>
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
-				<div class="w-full py-8 mb-20">
+				<div class="w-full">
 					<div class="py-8 flex justify-center">
 						<TitleUi text={$LL.reservation.title()} />
 					</div>
