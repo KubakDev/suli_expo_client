@@ -35,6 +35,17 @@
 			}).eq("uid",data?.session?.user.id)
 			.then(() => {
 				currentUser.set(userData);
+				// goto(localStorage.getItem('redirect') ?? '/');
+			});
+
+			await data.supabase
+			.from('company')
+			.update({
+				type: userData.type,
+				logo_url: userData.logo_url,
+                phone_number: userData.phone_number
+			}).eq("uid",data?.session?.user.id)
+			.then(() => {
 				goto(localStorage.getItem('redirect') ?? '/');
 			});
 	}
