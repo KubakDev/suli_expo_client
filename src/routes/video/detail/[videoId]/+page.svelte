@@ -22,9 +22,7 @@
 		video = await videoStore.getSingle($locale, data.supabase, $page.params.videoId);
 		videoStore.get($locale, data.supabase, '1', 8, false);
 
-		thumbnailUrl = $videoStore.data.map((item) => {
-			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});
+		await thumbnailChanging();
 	}
 
 	$: {
@@ -33,9 +31,23 @@
 		}
 	}
 
+	$:{
+		if($videoStore?.data){
+			thumbnailChanging();
+		}
+	}
+
 	onMount(() => {
 		getVideos();
 	});
+
+	async function thumbnailChanging() {
+		if ($videoStore?.data) {
+			thumbnailUrl = $videoStore.data.map((item) => {
+				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
+			});
+		}
+	}
 
 	// get the YouTube ID from the URL
 	function getYouTubeId(url: string): string | null {
@@ -67,7 +79,7 @@
 					<RecentItems
 						title={$LL.videos()}
 						items={$videoStore.data.map((video) => modelToItemModel(video))}
-						pageType={'videos'}
+						pageType={'video'}
 						youtubeThumbnail={thumbnailUrl}
 					/>
 				</div>
