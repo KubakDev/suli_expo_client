@@ -20,7 +20,7 @@
 	export let data: any;
 	let CardComponent: any;
 	let asc: boolean = false;
-	let thumbnailUrl: string[];
+	let thumbnailUrl: string[] = [];
 	let isLoading = true;
 
 	const youtubeRegex =
@@ -46,8 +46,14 @@
 		}
 	}
 
+	$:{
+		if($videoStore?.data){
+			thumbnailChanging();
+		}
+	}
+
 	onMount(async () => {
-		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		await videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
 
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
@@ -56,11 +62,12 @@
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		thumbnailChanging();
+		await thumbnailChanging(); // if thumbnailChanging becomes asynchronous in the future
+
 		isLoading = false;
 	});
 
-	function thumbnailChanging() {
+	async function thumbnailChanging() {
 		if ($videoStore?.data) {
 			thumbnailUrl = $videoStore.data.map((item) => {
 				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
@@ -87,7 +94,6 @@
 	// get the YouTube ID from the URL
 	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
-
 		return match ? match[1] : null;
 	}
 </script>
@@ -135,7 +141,7 @@
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
-	{#if $videoStore}
+	{#if $videoStore && thumbnailUrl.length > 0}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore.data as item, index}
 				{#if CardComponent && !isLoading}
@@ -148,7 +154,7 @@
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
-							thumbnail={item?.thumbnail ?? thumbnailUrl[index] ?? ''}
+							thumbnail={thumbnailUrl[index] ?? ''}
 						/>
 					</div>
 				{/if}
