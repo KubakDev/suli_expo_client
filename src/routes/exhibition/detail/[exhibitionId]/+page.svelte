@@ -39,6 +39,7 @@
 
 	onMount(async () => {
 		await getExhibition();
+
 		if (exhibition!.images.length) {
 			exhibitionImage = exhibition!.images.map((image, index) => {
 				return {
@@ -61,23 +62,22 @@
 	}
 </script>
 
-
 <section class="w-full flex-1 overflow-x-hidden">
-		{#if exhibitionImage.length > 0}
-			<Carousel
-				slideClass="w-full"
-				divClass="w-full"
-				images={exhibitionImage}
-				loop
-				transitionType="fade"
-				transitionParams={{ duration: 2000 }}
-				showCaptions={false}
-				showThumbs={false}
-				slideControls={false}
-				showIndicators={false}
-				duration={5000}
-			/>
-		{/if}
+	{#if exhibitionImage.length > 0}
+		<Carousel
+			slideClass="w-full"
+			divClass="w-full"
+			images={exhibitionImage}
+			loop
+			transitionType="fade"
+			transitionParams={{ duration: 2000 }}
+			showCaptions={false}
+			showThumbs={false}
+			slideControls={false}
+			showIndicators={false}
+			duration={5000}
+		/>
+	{/if}
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
@@ -236,10 +236,3 @@
 		{/if}
 	</div>
 </section>
-<style>
-	img, video {
-		width: 100%;
-		max-width: 100%;
-		height: auto;
-	}
-</style>
