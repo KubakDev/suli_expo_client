@@ -9,6 +9,7 @@ export const actions = {
         const formData = await request.formData();
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
+        
         if (!email) {
             const errors = 'email required';
             return {
@@ -56,6 +57,8 @@ export const actions = {
                 errors
             };
         } else {
+            console.log('data', data);
+            
             throw redirect(303, 'company-registration');
 
         }

@@ -14,18 +14,18 @@
 
 <div class="wrapper">
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div class="scenes rounded-xl" tabindex="0">
+	<div class="scenes lg:min-h-150 md:min-h-[400px] min-h-[300px] rounded-xl transition-all" tabindex="0">
 		<div class="scene-1 rounded-xl" style={`background-image: url(${exhibition?.image_map});`} />
 		<div class="scene-2 rounded-xl">
 			<div
 				class="w-full flex flex-col justify-center items-center h-full"
 				style="background-color: rgba(41, 46, 54,0.95);"
 			>
-				<div class="w-full h-[300px] flex flex-col justify-center items-center">
+				<div class="w-full h-full flex flex-col justify-center items-center">
 					{#if $currentUser?.id}
 						<h1 class="my-2 text-white font-bold">
 							{$LL.reservation.welcome()}
-							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
+							<span class="text-[#b18c25]">{$currentUser?.first_name?.toUpperCase()}</span>
 						</h1>
 						<h2 class="text-xl mb-5 text-white">
 							{$LL.reservation.logged_in_description()}
@@ -52,7 +52,6 @@
 <style>
 	.scenes {
 		position: relative;
-		min-height: 600px;
 		cursor: pointer;
 	}
 	.wrapper {

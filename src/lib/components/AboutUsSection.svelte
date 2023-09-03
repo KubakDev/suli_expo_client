@@ -39,7 +39,7 @@
 			<!-- short description  -->
 			<!-- <Saos animation="from-bottom 1.2s cubic-bezier(0.500, 0.5, 0.1, 1) both"> -->
 			<p
-				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor"
+				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-lightOverlayPrimaryColor dark:text-darkOverlaySecondaryColor"
 			>
 				{$aboutSectionStore.short_description}
 			</p>

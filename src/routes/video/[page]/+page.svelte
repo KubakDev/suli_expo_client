@@ -16,9 +16,12 @@
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle } from '../../../stores/darkMode';
+	import { ascStore } from '../../../stores/ascStore';
+	import Filters from '$lib/components/Filters.svelte';
+
 	export let data: any;
 	let CardComponent: any;
-	let asc: boolean = false;
+	let asc = ascStore;
 	let thumbnailUrl: string[];
 	let isLoading = true;
 
@@ -40,13 +43,27 @@
 	$: {
 		if ($locale) {
 			const currentPage = $page.params.page;
-			videoStore.get($locale, data.supabase, currentPage, undefined, asc);
+			videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
+			thumbnailChanging();
+		}
+	}
+
+	$:{
+		if(asc){
+			const currentPage = $page.params.page;
+            videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
+            thumbnailChanging();
+		}
+	}
+
+	$:{
+		if($videoStore?.data){
 			thumbnailChanging();
 		}
 	}
 
 	onMount(async () => {
-		videoStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		videoStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
 
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
@@ -76,13 +93,6 @@
 	function changePage(page: number) {
 		goto(`/video/${page}`);
 	}
-
-	function changeOrder() {
-		asc = !asc;
-		videoStore.get($locale, data?.supabase, $page.params.page, undefined, asc);
-		thumbnailChanging();
-	}
-
 	// get the YouTube ID from the URL
 	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
@@ -93,38 +103,7 @@
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
-		<div class="p-2 text-center w-full">
-			{#if asc}
-				<button
-					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
-				>
-					<ArrowUp
-						size="30"
-						class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
-					/>
-
-					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
-						>Old - New</span
-					>
-				</button>
-			{:else}
-				<button
-					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-videoLightPrimaryColor dark:bg-videoDarkPrimaryColor"
-				>
-					<ArrowDown
-						size="30"
-						class="transition-all hover:animate-pulse text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
-					/>
-					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-videoLightBackgroundColor dark:text-videoDarkBackgroundColor"
-						>New - Old</span
-					>
-				</button>
-			{/if}
-		</div>
+	<Filters />
 		<div
 			class="flex justify-center w-full px-2"
 			in:fade={{ duration: 800 }}
@@ -147,7 +126,7 @@
 								Constants.main_theme.lightOverlayPrimary}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
-							thumbnail={item?.thumbnail ?? thumbnailUrl[index] ?? ''}
+							thumbnail={thumbnailUrl[index] ?? ''}
 						/>
 					</div>
 				{/if}

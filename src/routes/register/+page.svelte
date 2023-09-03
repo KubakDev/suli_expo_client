@@ -1,44 +1,58 @@
 <script lang="ts">
-	import { Button, Input, Label, Spinner } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Spinner } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import { currentUser } from '../../stores/currentUser';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import LoginIcon from '../login/loginIcon.json';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { LL } from '$lib/i18n/i18n-svelte';
+	import type { ActionData } from './$types.js';
 
-	export let form;
+	export let form: ActionData;
 	export let data;
 	let loading = false;
+	let showModal = false;
 
-	onMount(async () => {
-		const response: any = await data.supabase.auth.getUser();
-		if (response?.data?.user) {
-			data.supabase
-				.from('company')
-				.select('*')
-				.eq('uid', response.data.user.id)
-				.single()
-				.then((res) => {
-					if (res.data) {
-						currentUser.set(res.data);
-						goto(localStorage.getItem('redirect') ?? '/');
-					} else {
-						goto('/company-registration');
-					}
-				});
+	let userInfo:{
+		email: string,
+		uid: string,
+	}
+
+	$: if(form){
+		userInfo = {
+			email: form?.email as string,
+			uid: form?.uid as string,
 		}
-	});
+
+		console.log('form', form);
+		console.log('userInfo', userInfo);
+		
+
+		onSubmit();
+	};
+
 	function onSubmit() {
 		loading = true;
+		
+		console.log('Submit Data ');
+		
+		if(userInfo && userInfo?.email && userInfo?.uid){
+			console.log('User is logged in', data?.session?.user);
+			console.log('submit', form);
+			loading = false;
+			showModal = true;
+		}
 	}
 </script>
 
-<div class="w-full flex justify-center items-center">
+<Modal title="Confirmation Message" open={showModal}>
+	<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">An Email Has Been Sent To The Folowing Email Address {form?.email}</p>
+  </Modal>
+
+<div class="w-full flex justify-center items-center" dir="ltr">
 	<form
-		action="?/signin"
+		action="?/register"
 		method="POST"
 		class="flex h-screen justify-center items-center w-3/4 max-w-[1500px]"
 		use:enhance

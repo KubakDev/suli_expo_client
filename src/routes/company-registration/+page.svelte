@@ -7,63 +7,66 @@
 	import * as yup from 'yup';
 
 	export let data: PageData;
-	let companyData: any = {
-		company_name: '',
-		email: '',
+	let userData: any = {
+		first_name: '',
+		last_name: '',
 		phone_number: '',
-		type: ''
+		type: '',
+		logo_url: '',
 	};
 	let schema: any = yup.object().shape({
-		company_name: yup.string().required(),
-		email: yup.string().required().email(),
+		first_name: yup.string().required(),
+		last_name: yup.string().required(),
 		phone_number: yup.string().required(),
-		type: yup.string().required()
+		type: yup.string().required(),
+        logo_url: yup.string(),
 	});
 	let formSubmitted = false;
-	let uid = '';
-	let exhibitionId = localStorage.getItem('redirect');
 
-	onMount(async () => {
-		const response: any = await data.supabase.auth.getUser();
-		uid = response.data.user.id;
-		if (!response?.data?.user) {
-			goto('/login');
-		} else {
+	onMount(() => {
+		if (data?.session?.user) {
 			data.supabase
-				.from('company')
+				.from('users')
 				.select('*')
-				.eq('uid', response.data.user.id)
+				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
-					if (res.data) {
-						currentUser.set(res.data);
-						goto(localStorage.getItem('redirect') ?? '/');
-					}
+					userData = res;
+					goto(localStorage.getItem('redirect') ?? '/');
 				});
 		}
 	});
 
 	async function submitForm() {
 		formSubmitted = true;
-		if (!schema.isValidSync(companyData)) return;
+		if (!schema.isValidSync(userData)) return;
 		await data.supabase
-			.from('company')
-			.insert({
-				uid: uid,
-				company_name: companyData.company_name,
-				email: companyData.email,
-				phone_number: companyData.phoneNumber,
-				type: companyData.type
-			})
+			.from('users')
+			.update({
+				first_name: userData.first_name,
+				last_name: userData.last_name,
+                phone_number: userData.phone_number
+			}).eq("uid",data?.session?.user.id)
 			.then(() => {
-				currentUser.set(companyData);
+				currentUser.set(userData);
+				// goto(localStorage.getItem('redirect') ?? '/');
+			});
+
+			await data.supabase
+			.from('company')
+			.update({
+				type: userData.type,
+				logo_url: userData.logo_url,
+                phone_number: userData.phone_number
+			}).eq("uid",data?.session?.user.id)
+			.then(() => {
 				goto(localStorage.getItem('redirect') ?? '/');
 			});
 	}
 	function inValidField(field: string) {
 		let invalid = false;
 		try {
-			const fieldValue = companyData[field];
+			const fieldValue = userData[field];
 			schema.fields[field].validateSync(fieldValue);
 			invalid = false;
 		} catch (error) {
@@ -100,18 +103,18 @@
 				/>
 			</svg>
 		</div>
-		<div class="grid gap-6 mb-6 md:grid-cols-2">
-			{#each Object.keys(companyData) as companyField}
+		<div class="grid gap-6 mb-6 md:grid-cols-2" dir="ltr">
+			{#each Object.keys(userData) as user}
 				<div>
-					<Label for="first_name" class="mb-2">{companyField}</Label>
+					<Label for="first_name" class="mb-2">{user}</Label>
 					<Input
 						type="text"
 						id="first_name"
 						placeholder="John"
-						bind:value={companyData[companyField]}
+						bind:value={userData[user]}
 					/>
-					{#if inValidField(companyField) && formSubmitted}
-						<span class="text-red-700">{companyField} is required</span>
+					{#if inValidField(user) && formSubmitted}
+						<span class="text-red-700">{user} is required</span>
 					{/if}
 				</div>
 			{/each}

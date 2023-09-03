@@ -31,8 +31,6 @@
 		)) as ExhibitionModel;
 	}
 
-	let currentImageIndex = 0;
-
 	$: {
 		if ($locale) {
 			getExhibition();
@@ -41,6 +39,7 @@
 
 	onMount(async () => {
 		await getExhibition();
+
 		if (exhibition!.images.length) {
 			exhibitionImage = exhibition!.images.map((image, index) => {
 				return {
@@ -55,6 +54,8 @@
 
 	function openPdfFile(pdfLink: string) {
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
+		console.log(completePdfLink);
+		
 
 		const newWindow = window.open();
 		if (newWindow !== null) {
@@ -64,27 +65,25 @@
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
-	<div class="w-full">
-		{#if exhibitionImage.length > 0}
-			<Carousel
-				divClass="w-full"
-				slideClass="w-full"
-				images={exhibitionImage}
-				loop
-				transitionType="fade"
-				transitionParams={{ duration: 2000 }}
-				showCaptions={false}
-				showThumbs={false}
-				slideControls={false}
-				showIndicators={false}
-				duration={5000}
-			/>
-		{/if}
-	</div>
+	{#if exhibitionImage.length > 0}
+		<Carousel
+			slideClass="w-full"
+			divClass="w-full"
+			images={exhibitionImage}
+			loop
+			transitionType="fade"
+			transitionParams={{ duration: 2000 }}
+			showCaptions={false}
+			showThumbs={false}
+			slideControls={false}
+			showIndicators={false}
+			duration={5000}
+		/>
+	{/if}
 	<div>
 		<div class="{Constants.page_max_width} mx-auto w-full">
 			<div class=" items-start flex flex-col justify-around">
-				<div class="w-full py-8 mb-20">
+				<div class="w-full">
 					<div class="py-8 flex justify-center">
 						<TitleUi text={$LL.reservation.title()} />
 					</div>
@@ -239,10 +238,3 @@
 		{/if}
 	</div>
 </section>
-<style>
-	img, video {
-		width: 100%;
-		max-width: 100%;
-		height: auto;
-	}
-</style>

@@ -1,5 +1,4 @@
 // src/hooks.server.ts
-
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Handle } from '@sveltejs/kit';
 

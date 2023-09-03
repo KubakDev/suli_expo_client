@@ -121,7 +121,7 @@
 											);
 											if (servicePrice) {
 												if (+number.detail == 0) {
-													servicesPrice = servicesPrice.filter(
+													servicesPrice = servicesPrice.filterByExhibition(
 														(service) => service.serviceId != paidService?.serviceDetail?.id
 													);
 												} else {

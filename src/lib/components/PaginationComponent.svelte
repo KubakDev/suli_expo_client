@@ -25,7 +25,7 @@
 		total = Number(total);
 		let start = Math.max(1, current - 1);
 		let end = Math.min(total, current + 1);
-		let pages = [];
+		let pages:any = [];
 		if (end === total) {
 			start--;
 		} else if (start === 1) {
@@ -36,7 +36,7 @@
 			pages.push(i);
 		}
 		// filter out any zeros from the array
-		pages = pages.filter((page) => page > 0 && page <= total);
+		pages = pages.filter((page:any) => page > 0 && page <= total);
 		return pages;
 	}
 </script>

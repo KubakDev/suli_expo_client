@@ -18,6 +18,7 @@
 	import { getNameRegex } from '../utils/urlRegexName';
 	import { themeToggle, setTheme } from '../stores/darkMode';
 	import { currentUser } from '../stores/currentUser';
+	import { invalidateAll } from '$app/navigation';
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -37,27 +38,37 @@
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
 
-	onMount(async () => {
+	onMount( () => {
 		setTheme();
 		supabase = data.supabase;
-
-		const response: any = await data.supabase.auth.getUser();
-		if (response?.data?.user) {
+		activeThemeStore.getActiveTheme(supabase);
+		changeLanguage(data.locale);
+		pageBuilderStore.get(supabase);
+		
+		const {data: { subscription } } = data.supabase.auth.onAuthStateChange(() => {
+			invalidateAll();
+		});
+		
+		console.log('layout', data?.session?.user);
+		
+		if (data?.session?.user) {
 			data.supabase
-				.from('company')
+				.from('users')
 				.select('*')
-				.eq('uid', response.data.user.id)
+				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
 					if (res.data) {
 						currentUser.set(res.data);
+						console.log("User data",$currentUser);
+						
 					}
 				});
-		}
-
-		await activeThemeStore.getActiveTheme(supabase);
-		changeLanguage(data.locale);
-		await pageBuilderStore.get(data.supabase);
+			}
+			
+			return ()=>{
+				subscription.unsubscribe();
+			}
 	});
 
 	function scale(

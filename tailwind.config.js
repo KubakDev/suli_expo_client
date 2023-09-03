@@ -5,12 +5,14 @@ module.exports = {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}',
-		'./node_modules/kubak-svelte-component/**/*.{html,js,svelte}'
+		'./node_modules/kubak-svelte-component/**/*.{html,js,svelte}',
+		"./node_modules/tw-elements/dist/js/**/*.js"
 	],
 
 	plugins: [
 		require('flowbite/plugin'),
-	require('tailwind-scrollbar')({ nocompatible: true })
+	require('tailwind-scrollbar')({ nocompatible: true }),
+	require("tw-elements/dist/plugin.cjs")
 ],
 
 	darkMode: 'class',

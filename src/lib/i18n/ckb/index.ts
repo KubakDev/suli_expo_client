@@ -32,7 +32,10 @@ const ckb = {
 		Exhibition_PDF: 'فایلی پێشانگا (PDF)'
 	},
 	promo: 'پرۆمۆ',
-	filter: 'فیلتەر',
+	filterByExhibition: 'فیلتەر بەپێی پێشانگا',
+	filterByDate: 'فیلتەر بەپێی بەروار',
+	ascending: 'کۆن - نوێ',
+	descending: 'نوێ - کۆن',
 	seeAll: 'هەموو ببینە',
 	marketing: 'بازاڕکردن',
 	relations: 'پەیوەندییەکان',

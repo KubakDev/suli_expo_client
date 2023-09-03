@@ -85,13 +85,13 @@
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
 		"@syncfusion/ej2-calendars": "^22.1.38",
-		"bootstrap": "^5.3.1",
 		"cheerio": "^1.0.0-rc.12",
 		"cors": "^2.8.5",
 		"date-picker-svelte": "^2.6.0",
-		"daterangepicker": "^3.1.0",
 		"express": "^4.18.2",
+		"flatpickr": "^4.6.13",
 		"html-to-text": "^9.0.5",
+		"jimp": "^0.22.10",
 		"moment": "^2.29.4",
 		"nodemailer": "^6.9.4",
 		"prettier": "^2.8.8",
@@ -99,11 +99,14 @@
 		"react-modal-image": "^2.6.0",
 		"svelte-collapsible": "^0.2.2",
 		"svelte-date-range-select": "^1.0.4",
+		"svelte-daterangepicker": "^13.2.0",
 		"svelte-email": "^0.0.4",
 		"svelte-fast-marquee": "^0.4.1",
+		"svelte-flatpickr": "^3.3.3",
 		"svelte-image": "^0.2.9",
 		"svelte-pdf": "^1.0.19",
 		"svelte-select": "^5.6.1",
-		"svelte-zoom": "^1.0.16"
+		"svelte-zoom": "^1.0.16",
+		"tw-elements": "^1.0.0-rc.1"
 	}
 }
