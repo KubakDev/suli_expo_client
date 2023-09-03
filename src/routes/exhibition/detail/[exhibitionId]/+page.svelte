@@ -36,6 +36,7 @@
 			getExhibition();
 		}
 	}
+	
 
 	onMount(async () => {
 		await getExhibition();
@@ -54,8 +55,6 @@
 
 	function openPdfFile(pdfLink: string) {
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
-		 
-		
 
 		const newWindow = window.open();
 		if (newWindow !== null) {
