@@ -72,7 +72,7 @@ export const actions: Actions = {
 			// User with this email already exists
 			return {
 				errors:
-					'User exists with this email. If you recognize this email, <a href="/login">click here</a> to login.'
+					'User exists with this email. If you recognize this email, Click on the login button.'
 			};
 		}
 
@@ -86,7 +86,7 @@ export const actions: Actions = {
 		});
 
 		if (err) {
-			console.log(err);
+			 
 			if (err instanceof AuthApiError && err.status === 400) {
 				return {
 					errors: 'Invalid Email or Password'

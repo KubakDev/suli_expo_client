@@ -97,6 +97,14 @@ const ckb = {
 			email: 'ئیمەیڵ',
 			password: 'وشەی نهێنی',
 		}
+	},
+	loggin:{
+		login:"داخڵ بوون",
+		register:"تۆماربوون",
+		Modal:{
+			successMsg:"حیسابەکەت بە سەرکەوتوویی دروستکرا",
+			msg:"ئیمەیڵێک نێردراوە بۆ ئەم ئیمەیڵەی "
+		}
 	}
 } satisfies Translation;
 

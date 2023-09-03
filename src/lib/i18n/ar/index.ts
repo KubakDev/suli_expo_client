@@ -97,6 +97,14 @@ const ar = {
 			email: 'البريد الإلكتروني',
 			password: 'كلمه السر',
 		}
+	},
+	loggin:{
+		login:"تسجيل الدخول",
+		register:"تسجيل",
+		Modal:{
+			successMsg:"تم تسجيل الحساب بنجاح",
+			msg:"تم إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني التالي "
+		}
 	}
 } satisfies Translation;
 

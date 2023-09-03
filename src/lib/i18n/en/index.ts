@@ -96,7 +96,14 @@ const en = {
 			email: 'Email',
 			password: 'Password',
 		},
-
+	},
+	loggin:{
+		login:"Login",
+		register:"Register",
+		Modal:{
+			successMsg:"Account is registered",
+			msg:"An Email Has Been Sent To The Folowing Email Address: "
+		}
 	}
 } satisfies BaseTranslation;
 

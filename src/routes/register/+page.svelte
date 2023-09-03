@@ -23,31 +23,26 @@
 		userInfo = {
 			email: form?.email as string,
 			uid: form?.uid as string,
-		}
-
-		console.log('form', form);
-		console.log('userInfo', userInfo);
-		
-
+		}		
 		onSubmit();
 	};
 
 	function onSubmit() {
 		loading = true;
 		
-		console.log('Submit Data ');
+		 
 		
 		if(userInfo && userInfo?.email && userInfo?.uid){
-			console.log('User is logged in', data?.session?.user);
-			console.log('submit', form);
+			 
+			 
 			loading = false;
 			showModal = true;
 		}
 	}
 </script>
 
-<Modal title="Confirmation Message" open={showModal}>
-	<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">An Email Has Been Sent To The Folowing Email Address {form?.email}</p>
+<Modal title="{$LL.loggin.Modal.successMsg()}" open={showModal}>
+	<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">{$LL.loggin.Modal.msg()} {form?.email}</p>
   </Modal>
 
 <div class="w-full flex justify-center items-center" dir="ltr">
@@ -56,6 +51,7 @@
 		method="POST"
 		class="flex h-screen justify-center items-center w-3/4 max-w-[1500px]"
 		use:enhance
+		dir="ltr"
 	>
 		<div class="shadow-md rounded-md p-8 w-1/2" style="background-color: var(secondaryColor);">
 			<div class="w-full flex justify-center">
@@ -99,11 +95,11 @@
 				>
 				<Button
 					on:click={() => {
-						goto('/register');
+						goto('/login');
 					}}
 					type="button"
 					class=" mt-10"
-					outline>login</Button
+					outline>{$LL.loggin.login()}</Button
 				>
 			</div>
 		</div>

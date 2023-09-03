@@ -31,8 +31,19 @@
 				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
-					userData = res;
-					goto(localStorage.getItem('redirect') ?? '/');
+					if (res.data) {
+						// Check if first_name, last_name, or phonenumber is null or empty
+						if (!res.data.first_name || !res.data.last_name || !res.data.phone_number) {
+							 
+							
+							goto('/company-registration'); // Redirect to a page where user can complete their info
+						} else {
+							currentUser.set(res.data);
+							goto(localStorage.getItem('redirect') ?? '/');
+						}
+					} else {
+						goto('/company-registration');
+					}
 				});
 		}
 	});

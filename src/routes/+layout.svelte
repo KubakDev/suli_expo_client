@@ -48,8 +48,7 @@
 		const {data: { subscription } } = data.supabase.auth.onAuthStateChange(() => {
 			invalidateAll();
 		});
-		
-		console.log('layout', data?.session?.user);
+	
 		
 		if (data?.session?.user) {
 			data.supabase
@@ -60,8 +59,6 @@
 				.then((res) => {
 					if (res.data) {
 						currentUser.set(res.data);
-						console.log("User data",$currentUser);
-						
 					}
 				});
 			}

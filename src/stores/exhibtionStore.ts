@@ -29,7 +29,7 @@ const createExhibitionStore = () => {
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
-				// console.log(exhibition);
+				//  
 				
 
 				if (exhibition.brochure) {
@@ -38,7 +38,7 @@ const createExhibitionStore = () => {
 					exhibition.brochure = undefined;
 				}
 
-				console.log("Exhibition ",exhibition);
+				 
 				
 
 				return exhibition;

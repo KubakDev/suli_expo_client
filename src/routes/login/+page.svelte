@@ -23,7 +23,7 @@
 				.then((res) => {
 					if (res.data) {
 						// Check if first_name, last_name, or phonenumber is null or empty
-						if (!res.data.first_name || !res.data.last_name || !res.data.phonenumber) {
+						if (!res.data.first_name || !res.data.last_name || !res.data.phone_number) {
 							goto('/company-registration'); // Redirect to a page where user can complete their info
 						} else {
 							currentUser.set(res.data);
@@ -46,6 +46,7 @@
 		method="POST"
 		class="flex h-screen justify-center items-center w-3/4 max-w-[1000px]"
 		use:enhance
+		dir="ltr"
 	>
 		<div class="shadow-md rounded-md w-1/2 z-50" style="background-color:white">
 			<div
@@ -86,19 +87,21 @@
 				{#if form?.errors}
 					<span class="py-2 px-1 text-red-400">{form?.errors}</span>
 				{/if}
-				<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2">
-					{#if loading}
-						<Spinner class="mr-3" size="4" />
-					{/if}{$LL.buttons.submit()}</Button
-				>
-				<Button
-					on:click={() => {
-						goto('/register');
-					}}
-					type="button"
-					class=" mt-10"
-					outline>Register</Button
-				>
+				<div class="w-full grid grid-cols-3 gap-2">
+					<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2 ">
+						{#if loading}
+							<Spinner class="mr-3" size="4" />
+						{/if}{$LL.buttons.submit()}</Button
+					>
+					<Button
+						on:click={() => {
+							goto('/register');
+						}}
+						type="button"
+						class=" mt-10"
+						outline>{$LL.loggin.register()}</Button
+					>
+				</div>
 			</div>
 		</div>
 	</form>

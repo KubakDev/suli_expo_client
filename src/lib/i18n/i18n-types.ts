@@ -347,6 +347,26 @@ type RootTranslation = {
 			password: string
 		}
 	}
+	loggin: {
+		/**
+		 * L​o​g​i​n
+		 */
+		login: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		register: string
+		Modal: {
+			/**
+			 * A​c​c​o​u​n​t​ ​i​s​ ​r​e​g​i​s​t​e​r​e​d
+			 */
+			successMsg: string
+			/**
+			 * A​n​ ​E​m​a​i​l​ ​H​a​s​ ​B​e​e​n​ ​S​e​n​t​ ​T​o​ ​T​h​e​ ​F​o​l​o​w​i​n​g​ ​E​m​a​i​l​ ​A​d​d​r​e​s​s​:​ 
+			 */
+			msg: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -678,6 +698,26 @@ export type TranslationFunctions = {
 			 * Password
 			 */
 			password: () => LocalizedString
+		}
+	}
+	loggin: {
+		/**
+		 * Login
+		 */
+		login: () => LocalizedString
+		/**
+		 * Register
+		 */
+		register: () => LocalizedString
+		Modal: {
+			/**
+			 * Account is registered
+			 */
+			successMsg: () => LocalizedString
+			/**
+			 * An Email Has Been Sent To The Folowing Email Address: 
+			 */
+			msg: () => LocalizedString
 		}
 	}
 }

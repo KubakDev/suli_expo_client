@@ -57,7 +57,7 @@ export const actions = {
                 errors
             };
         } else {
-            console.log('data', data);
+             
             
             throw redirect(303, 'company-registration');
 
