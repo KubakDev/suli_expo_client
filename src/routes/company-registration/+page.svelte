@@ -5,38 +5,35 @@
 	import { currentUser } from '../../stores/currentUser';
 	import { Button, Input, Label } from 'flowbite-svelte';
 	import * as yup from 'yup';
+	import { LL } from '$lib/i18n/i18n-svelte';
 
 	export let data: PageData;
 	let userData: any = {
 		first_name: '',
 		last_name: '',
 		phone_number: '',
-		type: '',
-		logo_url: '',
+		type: ''
 	};
 	let schema: any = yup.object().shape({
 		first_name: yup.string().required(),
 		last_name: yup.string().required(),
 		phone_number: yup.string().required(),
 		type: yup.string().required(),
-        logo_url: yup.string(),
+		logo_url: yup.string()
 	});
 	let formSubmitted = false;
 
 	onMount(() => {
 		if (data?.session?.user) {
 			data.supabase
-				.from('users')
+				.from('company')
 				.select('*')
 				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
 					if (res.data) {
-						// Check if first_name, last_name, or phonenumber is null or empty
 						if (!res.data.first_name || !res.data.last_name || !res.data.phone_number) {
-							 
-							
-							goto('/company-registration'); // Redirect to a page where user can complete their info
+							goto('/company-registration');
 						} else {
 							currentUser.set(res.data);
 							goto(localStorage.getItem('redirect') ?? '/');
@@ -52,25 +49,19 @@
 		formSubmitted = true;
 		if (!schema.isValidSync(userData)) return;
 		await data.supabase
-			.from('users')
-			.update({
-				first_name: userData.first_name,
-				last_name: userData.last_name,
-                phone_number: userData.phone_number
-			}).eq("uid",data?.session?.user.id)
-			.then(() => {
-				currentUser.set(userData);
-				// goto(localStorage.getItem('redirect') ?? '/');
-			});
-
-			await data.supabase
 			.from('company')
-			.update({
+			.insert({
 				type: userData.type,
 				logo_url: userData.logo_url,
-                phone_number: userData.phone_number
-			}).eq("uid",data?.session?.user.id)
-			.then(() => {
+				phone_number: userData.phone_number,
+				first_name: userData.first_name,
+				last_name: userData.last_name,
+				uid: data?.session?.user.id
+			})
+			.select()
+			.single()
+			.then((response) => {
+				currentUser.set(response.data);
 				goto(localStorage.getItem('redirect') ?? '/');
 			});
 	}
@@ -117,11 +108,11 @@
 		<div class="grid gap-6 mb-6 md:grid-cols-2" dir="ltr">
 			{#each Object.keys(userData) as user}
 				<div>
-					<Label for="first_name" class="mb-2">{user}</Label>
+					<Label for="first_name" class="mb-2  ">{`${$LL.company_info[user]()}`}</Label>
 					<Input
 						type="text"
 						id="first_name"
-						placeholder="John"
+						placeholder={`${$LL.company_info[user]()}`}
 						bind:value={userData[user]}
 					/>
 					{#if inValidField(user) && formSubmitted}
@@ -131,7 +122,7 @@
 			{/each}
 		</div>
 		<div class="w-full flex justify-end">
-			<Button on:click={submitForm} type="button">Submit</Button>
+			<Button on:click={submitForm} type="button">{$LL.buttons.submit()}</Button>
 		</div>
 	</div>
 </form>

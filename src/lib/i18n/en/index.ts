@@ -33,8 +33,8 @@ const en = {
 	promo: 'Promo',
 	filterByExhibition: 'Filter By Exhibition',
 	filterByDate: "Filter By Date",
-	ascending:"Old - New",
-	descending:"New - Old",
+	ascending: "Old - New",
+	descending: "New - Old",
 	seeAll: 'See all',
 	marketing: 'Marketing',
 	relations: 'Relations',
@@ -97,13 +97,21 @@ const en = {
 			password: 'Password',
 		},
 	},
-	loggin:{
-		login:"Login",
-		register:"Register",
-		Modal:{
-			successMsg:"Account is registered",
-			msg:"An Email Has Been Sent To The Folowing Email Address: "
-		}
+	loggin: {
+		login: "Login",
+		register: "Register",
+		Modal: {
+			successMsg: "Your account has been created successfully",
+			msg: "Verify your email address to activate your account"
+		},
+		error: "invalid email or password"
+
+	},
+	company_info: {
+		first_name: "First Name",
+		last_name: "Last Name",
+		phone_number: "Phone Number",
+		type: "Description about company",
 	}
 } satisfies BaseTranslation;
 

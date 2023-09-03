@@ -15,15 +15,14 @@
 	onMount(async () => {
 		if (data?.session?.user.id) {
 			data.supabase
-				.from('users')
+				.from('company')
 				.select('*')
 				.eq('uid', data?.session?.user.id)
 				.single()
 				.then((res) => {
 					if (res.data) {
-						// Check if first_name, last_name, or phonenumber is null or empty
 						if (!res.data.first_name || !res.data.last_name || !res.data.phone_number) {
-							goto('/company-registration'); // Redirect to a page where user can complete their info
+							goto('/company-registration');
 						} else {
 							currentUser.set(res.data);
 							goto(localStorage.getItem('redirect') ?? '/');
@@ -54,17 +53,7 @@
 			background-size: cover; `}
 			/>
 			<div class="px-8 pt-32 pb-10">
-				<div class="w-full flex justify-center">
-					<!-- <LottiePlayer
-						src={LoginIcon}
-						autoplay={true}
-						loop={true}
-						renderer="svg"
-						background="transparent"
-						height={300}
-						width={300}
-					/> -->
-				</div>
+				<div class="w-full flex justify-center" />
 				<div class="w-full pb-8">
 					<Input
 						type="text"
@@ -84,13 +73,13 @@
 					/>
 				</div>
 				{#if form?.errors}
-					<span class="py-2 px-1 text-red-400">{form?.errors}</span>
+					<span class="py-2 px-1 text-red-400">
+						{form?.errors == 'Invalid login credentials' ? $LL.loggin.error() : form?.errors}</span
+					>
 				{/if}
 				<div class="w-full grid grid-cols-3 gap-2">
 					<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2 ">
-						{#if loading}
-							<Spinner class="mr-3" size="4" />
-						{/if}{$LL.buttons.submit()}</Button
+						{$LL.buttons.submit()}</Button
 					>
 					<Button
 						on:click={() => {

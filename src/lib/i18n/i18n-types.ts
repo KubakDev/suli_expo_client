@@ -358,14 +358,36 @@ type RootTranslation = {
 		register: string
 		Modal: {
 			/**
-			 * A​c​c​o​u​n​t​ ​i​s​ ​r​e​g​i​s​t​e​r​e​d
+			 * Y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
 			 */
 			successMsg: string
 			/**
-			 * A​n​ ​E​m​a​i​l​ ​H​a​s​ ​B​e​e​n​ ​S​e​n​t​ ​T​o​ ​T​h​e​ ​F​o​l​o​w​i​n​g​ ​E​m​a​i​l​ ​A​d​d​r​e​s​s​:​ 
+			 * V​e​r​i​f​y​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s​ ​t​o​ ​a​c​t​i​v​a​t​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t
 			 */
 			msg: string
 		}
+		/**
+		 * i​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
+		 */
+		error: string
+	}
+	company_info: {
+		/**
+		 * F​i​r​s​t​ ​N​a​m​e
+		 */
+		first_name: string
+		/**
+		 * L​a​s​t​ ​N​a​m​e
+		 */
+		last_name: string
+		/**
+		 * P​h​o​n​e​ ​N​u​m​b​e​r
+		 */
+		phone_number: string
+		/**
+		 * D​e​s​c​r​i​p​t​i​o​n​ ​a​b​o​u​t​ ​c​o​m​p​a​n​y
+		 */
+		type: string
 	}
 }
 
@@ -711,14 +733,36 @@ export type TranslationFunctions = {
 		register: () => LocalizedString
 		Modal: {
 			/**
-			 * Account is registered
+			 * Your account has been created successfully
 			 */
 			successMsg: () => LocalizedString
 			/**
-			 * An Email Has Been Sent To The Folowing Email Address: 
+			 * Verify your email address to activate your account
 			 */
 			msg: () => LocalizedString
 		}
+		/**
+		 * invalid email or password
+		 */
+		error: () => LocalizedString
+	}
+	company_info: {
+		/**
+		 * First Name
+		 */
+		first_name: () => LocalizedString
+		/**
+		 * Last Name
+		 */
+		last_name: () => LocalizedString
+		/**
+		 * Phone Number
+		 */
+		phone_number: () => LocalizedString
+		/**
+		 * Description about company
+		 */
+		type: () => LocalizedString
 	}
 }
 

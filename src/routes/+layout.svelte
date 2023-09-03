@@ -38,21 +38,22 @@
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
 
-	onMount( () => {
+	onMount(() => {
 		setTheme();
 		supabase = data.supabase;
 		activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
 		pageBuilderStore.get(supabase);
-		
-		const {data: { subscription } } = data.supabase.auth.onAuthStateChange(() => {
+
+		const {
+			data: { subscription }
+		} = data.supabase.auth.onAuthStateChange(() => {
 			invalidateAll();
 		});
-	
-		
+
 		if (data?.session?.user) {
 			data.supabase
-				.from('users')
+				.from('company')
 				.select('*')
 				.eq('uid', data?.session?.user.id)
 				.single()
@@ -61,11 +62,11 @@
 						currentUser.set(res.data);
 					}
 				});
-			}
-			
-			return ()=>{
-				subscription.unsubscribe();
-			}
+		}
+
+		return () => {
+			subscription.unsubscribe();
+		};
 	});
 
 	function scale(

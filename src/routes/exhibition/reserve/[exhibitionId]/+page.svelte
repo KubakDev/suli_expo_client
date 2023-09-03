@@ -35,6 +35,7 @@
 	});
 	async function reserveSeat() {
 		seatReserved = true;
+		console.log(reserveSeatData);
 		data.supabase
 			.from('seat_reservation')
 			.insert(reserveSeatData)

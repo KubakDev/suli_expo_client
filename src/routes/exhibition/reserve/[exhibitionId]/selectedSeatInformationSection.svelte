@@ -29,7 +29,7 @@
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
-	 
+
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
@@ -121,7 +121,7 @@
 											);
 											if (servicePrice) {
 												if (+number.detail == 0) {
-													servicesPrice = servicesPrice.filterByExhibition(
+													servicesPrice = servicesPrice.filter(
 														(service) => service.serviceId != paidService?.serviceDetail?.id
 													);
 												} else {
