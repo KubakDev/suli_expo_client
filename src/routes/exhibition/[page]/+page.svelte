@@ -20,7 +20,6 @@
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore.js';
 
-
 	export let data: any;
 	let CardComponent: any;
 	let exhibitions: ExhibitionPaginatedModel;
@@ -45,8 +44,10 @@
 		}
 	}
 
-	$:{
-		if(asc){
+	$: {
+		if (asc) {
+			console.log($asc);
+			
 			getExhibitions();
 		}
 	}
@@ -81,6 +82,8 @@
 		)) as ExhibitionPaginatedModel;
 
 		loading = false;
+
+		return exhibitions;
 	}
 </script>
 
@@ -90,7 +93,7 @@
 </svelte:head>
 
 {#if loading}
-<div class="spinner"></div>
+	<div class="spinner" />
 {:else if exhibitions?.data && exhibitions.data.length > 0}
 	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
 		<div class="flex justify-between items-center mb-12 w-full">
