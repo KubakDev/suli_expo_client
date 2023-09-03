@@ -27,9 +27,9 @@ export function convertModel<T>(data: any, isNewsModel: boolean = false) {
 				if (!data[prop]) continue;
 				obj[prop] = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data[prop];
 			} else if (prop === 'pdf_files') {
-				obj[prop] = data[prop].map((e: string) => {
-				  return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
-				});
+					obj[prop] = data[prop].map((e: string) => {
+					  return import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + e;
+					});
 			  }else {
 				obj[prop] = data[prop];
 			}

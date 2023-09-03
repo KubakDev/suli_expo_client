@@ -32,7 +32,10 @@ const ar = {
 		Exhibition_PDF: "فایل المعرض (PDF)"
 	},
 	promo: 'ترويجي',
-	filter: 'منقي',
+	filterByExhibition: 'تصفية حسب المعرض',
+	filterByDate: 'تصفية حسب التاريخ',
+	ascending: 'قديم - جديد',
+	descending: 'جديد - قديم',
 	seeAll: 'اظهار الكل',
 	marketing: 'التسويق',
 	relations: 'الاتصال',

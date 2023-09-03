@@ -114,9 +114,21 @@ type RootTranslation = {
 	 */
 	promo: string
 	/**
-	 * F​i​l​t​e​r
+	 * F​i​l​t​e​r​ ​B​y​ ​E​x​h​i​b​i​t​i​o​n
 	 */
-	filter: string
+	filterByExhibition: string
+	/**
+	 * F​i​l​t​e​r​ ​B​y​ ​D​a​t​e
+	 */
+	filterByDate: string
+	/**
+	 * O​l​d​ ​-​ ​N​e​w
+	 */
+	ascending: string
+	/**
+	 * N​e​w​ ​-​ ​O​l​d
+	 */
+	descending: string
 	/**
 	 * S​e​e​ ​a​l​l
 	 */
@@ -435,9 +447,21 @@ export type TranslationFunctions = {
 	 */
 	promo: () => LocalizedString
 	/**
-	 * Filter
+	 * Filter By Exhibition
 	 */
-	filter: () => LocalizedString
+	filterByExhibition: () => LocalizedString
+	/**
+	 * Filter By Date
+	 */
+	filterByDate: () => LocalizedString
+	/**
+	 * Old - New
+	 */
+	ascending: () => LocalizedString
+	/**
+	 * New - Old
+	 */
+	descending: () => LocalizedString
 	/**
 	 * See all
 	 */

@@ -16,14 +16,16 @@
 	import { stringToEnum } from '../../../utils/enumToString.js';
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { themeToggle } from '../../../stores/darkMode.js';
+	import Filters from '$lib/components/Filters.svelte';
+	import { ascStore } from '../../../stores/ascStore.js';
+
 
 	export let data: any;
 	let CardComponent: any;
-	let asc: boolean = true;
 	let exhibitions: ExhibitionPaginatedModel;
 	let loading = true;
+	let asc = ascStore;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -39,6 +41,12 @@
 
 	$: {
 		if ($locale) {
+			getExhibitions();
+		}
+	}
+
+	$:{
+		if(asc){
 			getExhibitions();
 		}
 	}
@@ -69,14 +77,10 @@
 			data?.supabase,
 			$page.params.page,
 			undefined,
-			asc
+			$asc
 		)) as ExhibitionPaginatedModel;
 
 		loading = false;
-	}
-
-	async function changeOrder() {
-		asc = !asc;
 	}
 </script>
 
@@ -90,38 +94,7 @@
 {:else if exhibitions?.data && exhibitions.data.length > 0}
 	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
 		<div class="flex justify-between items-center mb-12 w-full">
-			<div class="p-2 text-center w-full">
-				{#if asc}
-					<button
-						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full bg-exhibitionLightPrimaryColor dark:bg-exhibitionDarkPrimaryColor"
-					>
-						<ArrowUp
-							size="30"
-							class="transition-all hover:animate-pulse text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-						/>
-
-						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-							>Old - New</span
-						>
-					</button>
-				{:else}
-					<button
-						on:click={changeOrder}
-						class="flex flex-row items-center justify-center p-2 rounded-full bg-exhibitionLightPrimaryColor dark:bg-exhibitionDarkPrimaryColor"
-					>
-						<ArrowDown
-							size="30"
-							class="transition-all hover:animate-pulse text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-						/>
-						<span
-							class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-							>New - Old</span
-						>
-					</button>
-				{/if}
-			</div>
+			<Filters />
 			<div
 				in:fade={{ duration: 800 }}
 				out:fade={{ duration: 400 }}

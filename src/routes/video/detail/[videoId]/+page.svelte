@@ -14,9 +14,9 @@
 	export let data;
 	let video: VideoModel | undefined | null;
 	let thumbnailUrl: string[];
-
+	
 	const youtubeRegex =
-		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 	async function getVideos() {
 		video = await videoStore.getSingle($locale, data.supabase, $page.params.videoId);
@@ -33,6 +33,12 @@
 		}
 	}
 
+	$:{
+		if($videoStore?.data){
+			thumbnailChanging();
+		}
+	}
+
 	onMount(() => {
 		getVideos();
 	});
@@ -42,6 +48,14 @@
 		const match = youtubeRegex.exec(url);
 
 		return match ? match[1] : null;
+	}
+
+	async function thumbnailChanging() {
+		if ($videoStore?.data) {
+			thumbnailUrl = $videoStore.data.map((item) => {
+				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
+			});
+		}
 	}
 </script>
 

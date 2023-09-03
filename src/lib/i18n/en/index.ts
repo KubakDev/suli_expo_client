@@ -31,7 +31,10 @@ const en = {
 		Exhibition_PDF: "Exhibition PDF'S"
 	},
 	promo: 'Promo',
-	filter: 'Filter',
+	filterByExhibition: 'Filter By Exhibition',
+	filterByDate: "Filter By Date",
+	ascending:"Old - New",
+	descending:"New - Old",
 	seeAll: 'See all',
 	marketing: 'Marketing',
 	relations: 'Relations',
