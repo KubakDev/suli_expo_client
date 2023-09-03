@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
-	import LoginIcon from './loginIcon.json';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { LL } from '$lib/i18n/i18n-svelte';

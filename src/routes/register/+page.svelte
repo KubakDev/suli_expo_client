@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { goto, invalidateAll } from '$app/navigation';
 	import LoginIcon from '../login/loginIcon.json';
+	import { currentUser } from '../../stores/currentUser';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { LL } from '$lib/i18n/i18n-svelte';
@@ -26,11 +27,31 @@
 		}		
 		onSubmit();
 	};
+	onMount(async () => {
+		if (data?.session?.user.id) {
+			data.supabase
+				.from('users')
+				.select('*')
+				.eq('uid', data?.session?.user.id)
+				.single()
+				.then((res) => {
+					if (res.data) {
+						// Check if first_name, last_name, or phonenumber is null or empty
+						if (!res.data.first_name || !res.data.last_name || !res.data.phone_number) {
+							goto('/company-registration'); // Redirect to a page where user can complete their info
+						} else {
+							currentUser.set(res.data);
+							goto(localStorage.getItem('redirect') ?? '/');
+						}
+					} else {
+						goto('/company-registration');
+					}
+				});
+		}
+	});
 
 	function onSubmit() {
 		loading = true;
-		
-		 
 		
 		if(userInfo && userInfo?.email && userInfo?.uid){
 			 
