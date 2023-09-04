@@ -33,10 +33,12 @@
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
+		quantity?: number;
 	}[] = [];
 
 	function countTotalPrice() {
 		totalPrice = +objectDetail?.price;
+		console.log(servicesPrice);
 		for (let price of servicesPrice) {
 			totalPrice += price.totalPrice;
 		}
@@ -119,6 +121,7 @@
 											let servicePrice = servicesPrice.find(
 												(service) => service.serviceId == paidService?.serviceDetail?.id
 											);
+											console.log(+number.detail);
 											if (servicePrice) {
 												if (+number.detail == 0) {
 													servicesPrice = servicesPrice.filter(
@@ -127,11 +130,13 @@
 												} else {
 													servicePrice.totalPrice =
 														+number.detail * +paidService?.serviceDetail?.price;
+													servicePrice.quantity = +number.detail;
 												}
 											} else {
 												servicesPrice.push({
 													serviceId: paidService?.serviceDetail?.id,
-													totalPrice: +number.detail * +paidService?.serviceDetail?.price
+													totalPrice: +number.detail * +paidService?.serviceDetail?.price,
+													quantity: +number.detail
 												});
 												servicesPrice = [...servicesPrice];
 											}
