@@ -56,7 +56,7 @@
 	}
 </script>
 
-<div class="h-full w-full">
+<div class="h-full w-full" style="overflow-y: auto;">
 	{#if $seatDataLoading}
 		<div class="h-full w-full flex justify-center items-center">
 			<Spinner size={'20'} />
@@ -146,7 +146,7 @@
 									/>
 								</div>
 								<div
-									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex flex-col justify-center items-center"
+									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex flex-col justify-center items-center w-full my-3"
 								>
 									{#if paidService?.serviceDetail?.discount}
 										<p class="text-sm" style="text-decoration: line-through;">
