@@ -13,7 +13,6 @@
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
 
-
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
@@ -176,18 +175,18 @@
 			object?.objectDetail?.selectable &&
 			!object?.objectDetail?.reserve
 		) {
-			object.set('stroke', '#8d93a5');
-			object.set('strokeWidth', 3);
+			// object.set('stroke', '#8d93a5');
+			// object.set('strokeWidth', 3);
 			object.hoverCursor = 'pointer';
 			canvas.renderAll();
 		}
 	};
 	const handleMouseOut = (event: any) => {
-		const object = event.target;
-		if (!selectedObject && !object?.objectDetail?.reserve) {
-			object?.set('stroke', '');
-			canvas.renderAll();
-		}
+		// const object = event.target;
+		// if (!selectedObject && !object?.objectDetail?.reserve) {
+		// 	object?.set('stroke', '');
+		// 	canvas.renderAll();
+		// }
 	};
 	function clearSelectedDesign() {
 		canvas.forEachObject((obj: any) => {
