@@ -36,7 +36,7 @@
 	}
 
 	function sendEmail() {
-		fetch("/api/email", {
+		fetch("/api/contact/email", {
 			method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
