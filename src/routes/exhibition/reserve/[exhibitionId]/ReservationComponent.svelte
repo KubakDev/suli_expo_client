@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { fabric } from 'fabric';
-	import type { Canvas } from 'fabric/fabric-impl';
+	import type { Canvas } from 'canvas';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
@@ -18,7 +18,7 @@
 	export let locale: string;
 
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas;
+	let canvas: any;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
