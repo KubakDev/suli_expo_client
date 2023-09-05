@@ -9,16 +9,16 @@
 	import SelectedSeatInformationSection from './selectedSeatInformationSection.svelte';
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
-	import { Button, Modal, Toast } from 'flowbite-svelte';
+	import { Button, Checkbox, Modal, Toast } from 'flowbite-svelte';
 	import { fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
-	import { currentUser } from '../../../../stores/currentUser';
 
 	export let data: any;
 
+	let acceptedPrivacyPolicy = false;
 	let defaultModal = false;
 	let reserveSeatData: any;
 	let exhibition: ExhibitionModel;
@@ -32,6 +32,9 @@
 	}
 
 	onMount(async () => {
+		if (!data?.session?.user) {
+			goto('/login');
+		}
 		await getExhibition();
 	});
 	async function reserveSeat() {
@@ -136,8 +139,19 @@
 		{:else}
 			<div>
 				<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-					{getDescriptionDependOnLanguage()}
+					{getDescriptionDependOnLanguage() ??
+						'lorem ipsum dolor sit a met consectetur adipisicing elit'}
 				</p>
+				<div class="mt-4 flex">
+					<Checkbox
+						class="cursor-pointer"
+						checked={acceptedPrivacyPolicy}
+						on:change={() => {
+							acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
+						}}
+					/>
+					<span class="text-sm"> i've read the privacy and privacy policy </span>
+				</div>
 			</div>
 		{/if}
 
@@ -152,9 +166,10 @@
 				</div>
 			{:else}
 				<div class=" w-full flex justify-end items-center">
-					<Button on:click={reserveSeat}>{$LL.reservation.privacy_policy.accept()}</Button>
+					<Button on:click={reserveSeat} disabled={!acceptedPrivacyPolicy}
+						>{$LL.reservation.privacy_policy.accept()}</Button
+					>
 					<div class="w-[2px]" />
-					<Button color="alternative">{$LL.reservation.privacy_policy.decline()}</Button>
 				</div>
 			{/if}
 		</svelte:fragment>

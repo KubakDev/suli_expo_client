@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Spinner } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Spinner } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
 	import { currentUser } from '../../stores/currentUser';
@@ -10,8 +10,10 @@
 	import Test from './test.png';
 	export let form;
 	export let data;
-	let loading = false;
 
+	let loading = false;
+	let resetPasswordModal = false;
+	let resetEmail = '';
 	onMount(async () => {
 		if (data?.session?.user.id) {
 			data.supabase
@@ -36,8 +38,28 @@
 	function onSubmit() {
 		loading = true;
 	}
+	async function resetPassword() {
+		await data.supabase.auth.resetPasswordForEmail(resetEmail, {
+			redirectTo: 'https://suli-expo-client-seven.vercel.app/reset-password'
+		});
+	}
 </script>
 
+<Modal title={$LL.reservation.privacy_policy.title()} bind:open={resetPasswordModal}>
+	<h1>reset password</h1>
+	<div class="w-full pb-8">
+		<Input
+			type="text"
+			id="email"
+			placeholder="example@example.com"
+			name="email"
+			bind:value={resetEmail}
+		/>
+	</div>
+	<div class="w-full flex justify-end">
+		<Button on:click={resetPassword}>Send Email</Button>
+	</div>
+</Modal>
 <div class="w-full flex justify-center items-center">
 	<form
 		action="?/signin"
@@ -46,7 +68,7 @@
 		use:enhance
 		dir="ltr"
 	>
-		<div class="shadow-md rounded-md w-1/2 z-50" style="background-color:white">
+		<div class="shadow-md rounded-md w-1/2 z-30" style="background-color:white">
 			<div
 				class="w-full h-[100px] rounded-t-md"
 				style={`background-image: url(${Test});  background-repeat: no-repeat;
@@ -89,6 +111,18 @@
 						class=" mt-10"
 						outline>{$LL.loggin.register()}</Button
 					>
+				</div>
+				<div class="mt-2 text-end">
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+					<p
+						class="cursor-pointer hover:text-gray-400"
+						on:click={() => {
+							resetPasswordModal = true;
+						}}
+					>
+						forgot password?
+					</p>
 				</div>
 			</div>
 		</div>
