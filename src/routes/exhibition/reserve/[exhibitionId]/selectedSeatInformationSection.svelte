@@ -18,7 +18,9 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let supabase: SupabaseClient;
-
+	$: {
+		console.log($selectedPaidSeatServices);
+	}
 	const dispatch = createEventDispatcher();
 	let reserveSeatData: ReserveSeatModel = {
 		company_id: 0,
@@ -116,12 +118,12 @@
 									{paidService?.serviceDetail?.languages[0]?.title}
 								</p>
 								<div class="w-[150px]">
+									<!-- {#if paidService?.serviceDetail.type == 'singular'} -->
 									<InputNumberButton
 										on:numberChanged={(number) => {
 											let servicePrice = servicesPrice.find(
 												(service) => service.serviceId == paidService?.serviceDetail?.id
 											);
-											console.log(+number.detail);
 											if (servicePrice) {
 												if (+number.detail == 0) {
 													servicesPrice = servicesPrice.filter(
@@ -144,6 +146,7 @@
 										}}
 										serviceQuantity={paidService?.serviceDetail?.quantity}
 									/>
+									<!-- {/if} -->
 								</div>
 								<div
 									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex flex-col justify-center items-center w-full my-3"

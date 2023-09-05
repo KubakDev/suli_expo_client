@@ -4,21 +4,21 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { createTransport, type Transporter } from 'nodemailer';
 
 let transport: Transporter;
-const email:string = import.meta.env.VITE_PRIVATE_EMAIL;
-const password:string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD
+const email: string = import.meta.env.VITE_PRIVATE_EMAIL;
+const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD
 
-export const POST = (async ({locals, params, request}) => {
- 
+export const POST = (async ({ locals, params, request }) => {
+
   const { emailUser, name, message } = await request.json();
-  if(!transport) {
+  if (!transport) {
     transport = createTransport({
       service: 'gmail',
       port: 465,
-       auth: {
+      auth: {
         user: email,
         pass: password
-       },
-       tls: {
+      },
+      tls: {
         rejectUnauthorized: false
       }
     });

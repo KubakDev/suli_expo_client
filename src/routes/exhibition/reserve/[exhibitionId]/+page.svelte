@@ -10,14 +10,15 @@
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
 	import { Button, Modal, Toast } from 'flowbite-svelte';
-	import { fade, fly } from 'svelte/transition';
-	import { Check } from 'svelte-heros-v2';
+	import { fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
+	import { currentUser } from '../../../../stores/currentUser';
 
 	export let data: any;
+
 	let defaultModal = false;
 	let reserveSeatData: any;
 	let exhibition: ExhibitionModel;
@@ -35,20 +36,39 @@
 	});
 	async function reserveSeat() {
 		seatReserved = true;
-		console.log(reserveSeatData);
-		data.supabase
-			.from('seat_reservation')
-			.insert(reserveSeatData)
-			.then((result: any) => {
-				selectedSeat.set(null);
-				setTimeout(() => {
-					goto('/exhibition/1');
-				}, 3000);
-			});
+		console.log(data?.session?.user?.email);
+		fetch('/api/seat/purchase', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				emailUser: 'bnar.paskandy@gmail.com',
+				name: 'bnarrr',
+				message: 'hellloooo'
+			})
+		}).then(() => {
+			console.log('success');
+		});
+		// data.supabase
+		// 	.from('seat_reservation')
+		// 	.insert(reserveSeatData)
+		// 	.then((result: any) => {
+		// 		selectedSeat.set(null);
+		// 		setTimeout(() => {
+		// 			goto('/exhibition/1');
+		// 		}, 3000);
+		// 	});
 	}
 	onDestroy(() => {
 		localStorage.removeItem('redirect');
 	});
+
+	function getDescriptionDependOnLanguage() {
+		return exhibition?.seat_layout[0]?.seat_privacy_policy_lang.find(
+			(x: any) => x.language == $locale
+		)?.description;
+	}
 </script>
 
 <div class="absolute w-full flex justify-end p-3" />
@@ -116,8 +136,7 @@
 		{:else}
 			<div>
 				<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-					{exhibition?.seat_layout[0]?.seat_privacy_policy_lang.find((x) => x.language == $locale)
-						?.description ?? ''}
+					{getDescriptionDependOnLanguage()}
 				</p>
 			</div>
 		{/if}
