@@ -13,5 +13,5 @@
 </script>
 
 <div>
-	<Button on:change={changePassword}>changePassword</Button>
+	<Button on:click={changePassword}>changePassword</Button>
 </div>
