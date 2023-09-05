@@ -5,10 +5,13 @@
 	export let data: PageData;
 
 	async function changePassword() {
+		console.log('clicked');
 		await data.supabase.auth.updateUser({
 			password: '123456789'
 		});
 	}
 </script>
 
-<Button on:change={changePassword}>changePassword</Button>
+<div>
+	<Button on:change={changePassword}>changePassword</Button>
+</div>
