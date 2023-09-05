@@ -32,8 +32,8 @@ export const POST = (async ({locals, params, request}) => {
   });
 
   const worked = await transport.sendMail({
-    from: emailUser,
-    to: email,
+    from: email,
+    to: emailUser,
     subject: name,
     text: message,
     html: emailHtml,
