@@ -22,6 +22,10 @@
 		seatLayout = await seatStore.get(data.supabase);
 		exhibitionSection = (await UiStore.getPage(data.supabase, 'exhibition')) as boolean;
 		newsSection = (await UiStore.getPage(data.supabase, 'news')) as boolean;
+
+		await data.supabase.auth.resetPasswordForEmail('rovarkamil0003@gmail.com', {
+			redirectTo: 'https://suli-expo-client-seven.vercel.app/news'
+		});
 	});
 </script>
 
