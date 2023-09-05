@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { fabric } from 'fabric';
-	import type { Canvas } from 'fabric/fabric-impl';
+	import { fabric } from 'fabric-pure-browser';
+	import type { Canvas } from 'fabric-pure-browser';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
