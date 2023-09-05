@@ -1,4 +1,4 @@
 {
-	"outputDirectory": ".",
+	"public":true,
 	"regions": ["fra1"]
 }
