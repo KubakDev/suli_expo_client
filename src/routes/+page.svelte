@@ -12,6 +12,7 @@
 	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { UiStore } from '../stores/ui/Ui';
 	import { currentUser } from '../stores/currentUser';
+	import { incrementSulExpoViewer, viewAdded_sulyExpo } from '../stores/viewersStore';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -22,6 +23,13 @@
 		seatLayout = await seatStore.get(data.supabase);
 		exhibitionSection = (await UiStore.getPage(data.supabase, 'exhibition')) as boolean;
 		newsSection = (await UiStore.getPage(data.supabase, 'news')) as boolean;
+	});
+
+	// count viewers
+	onMount(() => {
+		if (!$viewAdded_sulyExpo) {
+			incrementSulExpoViewer(data.supabase);
+		}
 	});
 </script>
 

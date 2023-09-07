@@ -19,6 +19,7 @@
 	import { themeToggle } from '../../../stores/darkMode.js';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore.js';
+	import { incrementExhibitionViewer, viewAdded_exhibition } from '../../../stores/viewersStore';
 
 	export let data: any;
 	let CardComponent: any;
@@ -47,7 +48,7 @@
 	$: {
 		if (asc) {
 			console.log($asc);
-			
+
 			getExhibitions();
 		}
 	}
@@ -85,6 +86,13 @@
 
 		return exhibitions;
 	}
+
+	// count viewers
+	onMount(() => {
+		if (!$viewAdded_exhibition) {
+			incrementExhibitionViewer(data.supabase);
+		}
+	});
 </script>
 
 <svelte:head>
