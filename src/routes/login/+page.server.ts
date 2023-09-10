@@ -58,10 +58,7 @@ export const actions = {
                 errorCode
             };
         } else {
-
-
             throw redirect(303, 'company-registration');
-
         }
     },
 

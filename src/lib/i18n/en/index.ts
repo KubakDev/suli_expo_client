@@ -78,6 +78,7 @@ const en = {
 			free_services: "Free Services",
 			paid_services: "Services",
 		},
+		total_company_reserve: "Total companies that have requested to reserve a seat",
 		total_price: "Total Price",
 		reserve: "Reserve",
 		seat_types: {
@@ -112,6 +113,32 @@ const en = {
 		last_name: "Last Name",
 		phone_number: "Phone Number",
 		type: "Description about company",
+	},
+	email_template: {
+		dear: "Dear",
+		thanks: "Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.",
+		detail: {
+			title: "Here are the details of your reservation:",
+			date_time: "Reservation Date and Time:",
+			event: "Exhibition: ",
+			note: "Special Requests or Notes:",
+		},
+		pending: "Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.",
+		help: {
+			header: "In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at",
+			footer: "Our dedicated team is here to assist you and ensure your experience with us is exceptional"
+		},
+		thanks_waiting: "Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request",
+		regards: "Warm regards,",
+		signature: "Suly Expo",
+		contact: {
+			marketing: "Marketing: ",
+			relations: "Relations: ",
+			technical: "Technical: ",
+			administration: "Administration: ",
+			website: "Website: ",
+		}
+
 	}
 } satisfies BaseTranslation;
 

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Spinner } from 'flowbite-svelte';
-	import { enhance } from '$app/forms';
-	import { onMount } from 'svelte';
-	import { currentUser } from '../../stores/currentUser';
+	import { Button, Input } from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
@@ -13,9 +10,6 @@
 
 	let loading = false;
 	let newPassword = '';
-	function onSubmit() {
-		loading = true;
-	}
 	async function changePassword() {
 		await data.supabase.auth
 			.updateUser({

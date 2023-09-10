@@ -6,7 +6,8 @@
 		seatDataLoading,
 		selectedFreeSeatServices,
 		selectedPaidSeatServices,
-		selectedSeat
+		selectedSeat,
+		totalReservedSeat
 	} from './seatReservationStore';
 	import { currentUser } from '../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
@@ -18,9 +19,7 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let supabase: SupabaseClient;
-	$: {
-		console.log($selectedPaidSeatServices);
-	}
+
 	const dispatch = createEventDispatcher();
 	let reserveSeatData: ReserveSeatModel = {
 		company_id: 0,
@@ -36,11 +35,11 @@
 		serviceId: number;
 		totalPrice: number;
 		quantity?: number;
+		serviceDetail?: any;
 	}[] = [];
 
 	function countTotalPrice() {
 		totalPrice = +objectDetail?.price;
-		console.log(servicesPrice);
 		for (let price of servicesPrice) {
 			totalPrice += price.totalPrice;
 		}
@@ -54,11 +53,23 @@
 		reserveSeatData.company_id = $currentUser.id;
 		reserveSeatData.services = servicesPrice;
 		reserveSeatData.object_id = $selectedSeat.id;
+
 		dispatch('reserveSeat', reserveSeatData);
+	}
+	function descriptionLanguage() {
+		return $selectedSeat?.objectDetail?.descriptionLanguages?.find(
+			(x: any) => x.language == $locale ?? 'en'
+		)?.description;
 	}
 </script>
 
 <div class="h-full w-full" style="overflow-y: auto;">
+	{#if $totalReservedSeat}
+		<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
+			{$LL.reservation.total_company_reserve()}
+		</p>
+		<p class="text-center my-2 text-[#e1b147] font-bold text-xl mb-6">{$totalReservedSeat}</p>
+	{/if}
 	{#if $seatDataLoading}
 		<div class="h-full w-full flex justify-center items-center">
 			<Spinner size={'20'} />
@@ -80,10 +91,7 @@
 					{$LL.reservation.description()}
 				</p>
 				<p class="py-4 text-center">
-					{$selectedSeat?.objectDetail?.description ??
-						$selectedSeat?.objectDetail?.descriptionLanguages?.find((x) => x.language == $locale)
-							?.description ??
-						''}
+					{$selectedSeat?.objectDetail?.description ?? descriptionLanguage() ?? ''}
 				</p>
 				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.comment()}
@@ -118,47 +126,76 @@
 									{paidService?.serviceDetail?.languages[0]?.title}
 								</p>
 								<div class="w-[150px]">
-									<!-- {#if paidService?.serviceDetail.type == 'singular'} -->
 									<InputNumberButton
 										on:numberChanged={(number) => {
 											let servicePrice = servicesPrice.find(
 												(service) => service.serviceId == paidService?.serviceDetail?.id
 											);
+											let priceResult = paidService.serviceDetail.discount
+												? +paidService.serviceDetail.discount
+												: +paidService.serviceDetail.price;
+											let freeCountResult = paidService.maxFreeCount ?? 0;
+											let countPaidService = +number.detail - freeCountResult;
+											if (countPaidService <= 0) countPaidService = 0;
 											if (servicePrice) {
 												if (+number.detail == 0) {
 													servicesPrice = servicesPrice.filter(
 														(service) => service.serviceId != paidService?.serviceDetail?.id
 													);
 												} else {
-													servicePrice.totalPrice =
-														+number.detail * +paidService?.serviceDetail?.price;
+													servicePrice.totalPrice = paidService.unlimitedFree
+														? 0
+														: priceResult * countPaidService;
 													servicePrice.quantity = +number.detail;
 												}
 											} else {
+												let serviceDetailData = {
+													discount: paidService.serviceDetail.discount,
+													price: paidService.serviceDetail.price,
+													quantity: paidService.serviceDetail.quantity,
+													title: paidService.serviceDetail.languages[0].title,
+													description: paidService.serviceDetail.languages[0].description
+												};
 												servicesPrice.push({
 													serviceId: paidService?.serviceDetail?.id,
-													totalPrice: +number.detail * +paidService?.serviceDetail?.price,
-													quantity: +number.detail
+													totalPrice: paidService.unlimitedFree
+														? 0
+														: priceResult * countPaidService,
+													quantity: +number.detail,
+													serviceDetail: serviceDetailData
 												});
 												servicesPrice = [...servicesPrice];
 											}
+
 											countTotalPrice();
 										}}
 										serviceQuantity={paidService?.serviceDetail?.quantity}
+										maxQuantityPerUser={paidService?.maxQuantityPerUser}
 									/>
-									<!-- {/if} -->
 								</div>
 								<div
-									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex flex-col justify-center items-center w-full my-3"
+									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex justify-between px-2 items-center w-full my-3"
 								>
-									{#if paidService?.serviceDetail?.discount}
-										<p class="text-sm" style="text-decoration: line-through;">
-											{paidService.serviceDetail.price}IQD
-										</p>
-										<p class="text-xl font-bold">{paidService.serviceDetail.discount}IQD</p>
-									{:else}
-										<p class="text-xl font-bold">{paidService.serviceDetail.price}IQD</p>
-									{/if}
+									<div class="flex flex-col justify-center items-center">
+										{#if paidService?.serviceDetail?.discount}
+											<p class="text-sm" style="text-decoration: line-through;">
+												{paidService.serviceDetail.price}IQD
+											</p>
+											<p class="text-xl font-bold">{paidService.serviceDetail.discount}IQD</p>
+										{:else}
+											<p class="text-xl font-bold">{paidService.serviceDetail.price}IQD</p>
+										{/if}
+									</div>
+									<div>
+										{#if paidService.maxFreeCount > 0}
+											<p class=" ">
+												less <span class="text-[#e1b168] font-bold text-2xl mx-1">
+													{paidService.maxFreeCount + 1}
+												</span>
+												is free
+											</p>
+										{/if}
+									</div>
 								</div>
 							</div>
 						{/each}

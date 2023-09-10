@@ -15,7 +15,8 @@
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
-
+	import { currentUser } from '../../../../stores/currentUser';
+	import MailTemplate from '$lib/components/MailTemplate.svelte';
 	export let data: any;
 
 	let acceptedPrivacyPolicy = false;
@@ -47,21 +48,22 @@
 			},
 			body: JSON.stringify({
 				emailUser: 'bnar.paskandy@gmail.com',
-				name: 'bnarrr',
-				message: 'hellloooo'
+				name: '',
+				message: '',
+				exhibition: exhibition,
+				companyData: $currentUser,
+				reserveSeatData: reserveSeatData
 			})
-		}).then(() => {
-			console.log('success');
-		});
+		}).then(() => {});
 		// data.supabase
-		// 	.from('seat_reservation')
-		// 	.insert(reserveSeatData)
-		// 	.then((result: any) => {
-		// 		selectedSeat.set(null);
-		// 		setTimeout(() => {
-		// 			goto('/exhibition/1');
-		// 		}, 3000);
-		// 	});
+		// .from('seat_reservation')
+		// .insert(reserveSeatData)
+		// .then((result: any) => {
+		// 	selectedSeat.set(null);
+		// 	setTimeout(() => {
+		// 		goto('/exhibition/1');
+		// 	}, 3000);
+		// });
 	}
 	onDestroy(() => {
 		localStorage.removeItem('redirect');

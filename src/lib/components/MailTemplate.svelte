@@ -1,90 +1,97 @@
 <script lang="ts">
+	import moment from 'moment';
+	import type { ExhibitionModel } from '../../models/exhibitionModel';
+	import type { CompanyModel } from '../../routes/company-registration/models/company';
+	import type { ReserveSeatModel } from '../../models/reserveSeat';
+	import { contactInfoSectionStore } from '../../stores/contactInfo';
+	import { locale, LL } from '$lib/i18n/i18n-svelte';
+
+	export let exhibition: ExhibitionModel;
+	export let companyData: CompanyModel;
+	export let reserveSeatData: ReserveSeatModel;
 </script>
 
-<div style="width: 100vw; padding: 10px;">
-	<div
-		class="image-container"
-		style="width: 100%;
-	height: 400px;
-	background-image: url('https://unibox.co.uk/wp-content/uploads/Merrell-3-1.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 20px;"
-	>
-		<div
-			class="image-filter"
-			style="background-color: #181818;
-		opacity: 0.75;
-		border-radius: 20px;
-		height: 100%;
-		width: 100%;"
-		>
-			<h1
-				style="color: white;
-			text-align: center;
-			padding-top: 150px;
-			font-size: 60px;"
-			>
-				SULY EXPO
-			</h1>
-		</div>
-	</div>
-	<div
-		class="body"
-		style="	background-color: white;
-	border-radius: 20px;width: 100%;height: calc(100vh - 400px);margin-top: 10px;padding: 50px;  display: inline-grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 3px;
-  justify-items: center;
-  align-items: center;"
-	>
-		<img
-			src="https://static-00.iconduck.com/assets.00/success-icon-512x512-qdg1isa0.png"
-			alt=""
-			style="height: 300px;width: 300px;"
-		/>
-		<h1 style="margin: 10px 0;font-size: 40px; font-weight: bold;">RESERVATION SUCCESSED</h1>
-		<p style="max-width:800px; text-align: center; font-size: 20px ;line-height: 30px;">
-			Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque quaerat voluptatem excepturi
-			inventore enim necessitatibus perspiciatis possimus atque debitis ut amet quae aspernatur
-			reiciendis, quasi alias quidem nihil assumenda soluta!
-		</p>
-	</div>
-</div>
+<div style={$locale == 'ar' || $locale == 'ckb' ? 'direction: rtl' : ''}>
+	<p>
+		{$LL.email_template.dear()}
+		<span style="color:#e1b168;font-weight: bold;">{companyData?.company_name?.toUpperCase()}</span>
+	</p>
 
-<style>
-	.image-container {
-		width: 100%;
-		height: 400px;
-		background-image: url('https://unibox.co.uk/wp-content/uploads/Merrell-3-1.jpg');
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-		border-radius: 20px;
-	}
-	.image-filter {
-		background-color: #181818;
-		opacity: 0.75;
-		border-radius: 20px;
-		height: 100%;
-		width: 100%;
-	}
-	.image-filter h1 {
-		color: white;
-		text-align: center;
-		padding-top: 150px;
-		font-size: 60px;
-	}
-	.body {
-		background-color: white;
-		border-radius: 20px;
-		width: 100%;
-		height: calc(100vh - 400px);
-		margin-top: 10px;
-		display: flex;
-		flex-direction: column;
-		padding: 50px;
-		align-items: center;
-	}
-</style>
+	<p>
+		{$LL.email_template.thanks()}
+	</p>
+
+	<p>{$LL.email_template.detail.title()}</p>
+	<ul>
+		<li>
+			<span style="font-weight: bold;">{$LL.email_template.detail.date_time()} </span>
+			{moment(new Date()).format('DD-MM-YYYY  HH:SS:MM')}
+		</li>
+		<li>
+			<span style="font-weight: bold;">{$LL.email_template.detail.event()}</span>
+			{exhibition?.title}
+		</li>
+		<li>
+			<span style="font-weight: bold;"
+				>{$LL.email_template.detail.note()}
+			</span>{reserveSeatData.comment}
+		</li>
+	</ul>
+
+	<p>
+		{$LL.email_template.pending()}
+	</p>
+
+	<p>
+		{$LL.email_template.help.header()}
+		<span style="color:#e1b168; font-weight:bold">
+			{$contactInfoSectionStore[0]?.email}
+		</span>
+		,
+		<span style="color:#e1b168; font-weight:bold">
+			{$contactInfoSectionStore[0]?.phoneNumber_marketing}
+		</span>
+		{$LL.email_template.help.footer()}
+	</p>
+
+	<p>
+		{$LL.email_template.thanks_waiting()}
+	</p>
+
+	<p>{$LL.email_template.regards()}</p>
+	<p>{$LL.email_template.signature()}</p>
+	{#if $contactInfoSectionStore}
+		{#each $contactInfoSectionStore as info}
+			<div>
+				<li>
+					<span style="color:#e1b168; font-weight:bold">
+						{$LL.email_template.contact.marketing()}
+					</span>
+					{info.phoneNumber_marketing}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.relations()}
+					</span>
+					{info.phoneNumber_relations}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.technical()}
+					</span>
+					{info.phoneNumber_Technical}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.administration()}</span
+					>
+					{info.phoneNumber_Administration}
+				</li>
+			</div>
+		{/each}
+	{/if}
+	<p>
+		{$LL.email_template.contact.website()}
+		<a href={import.meta.env.VITE_BASE_URL}>{import.meta.env.VITE_BASE_URL}</a>
+	</p>
+</div>

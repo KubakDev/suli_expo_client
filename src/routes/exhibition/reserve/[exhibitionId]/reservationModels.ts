@@ -4,6 +4,9 @@ export interface SelectedSeatService {
   id: number;
   isFree: boolean;
   serviceDetail: ServiceDetail;
+  maxQuantityPerUser: number;
+  unlimitedFree: boolean;
+  maxFreeCount: number;
 }
 export interface ServiceDetail {
   id: number;
