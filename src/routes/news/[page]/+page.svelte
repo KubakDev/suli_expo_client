@@ -19,6 +19,7 @@
 	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
 	import { Button, Checkbox, Chevron, Dropdown, Label } from 'flowbite-svelte';
 	import NewsFilters from '$lib/components/NewsFilters.svelte';
+	import { incrementNewsViewer, viewAdded_news } from '../../../stores/viewersStore';
 
 	export let data;
 	let CardComponent: any;
@@ -64,6 +65,13 @@
 	function changePage(page: number) {
 		goto(`/news/${page}`);
 	}
+
+	// count viewers
+	onMount(() => {
+		if (!$viewAdded_news) {
+			incrementNewsViewer(data.supabase);
+		}
+	});
 </script>
 
 <section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
@@ -75,8 +83,13 @@
 			</div>
 			<div class="justify-end flex z-10 w-full" />
 		</div>
-		<NewsFilters supabase={data.supabase} page={$page.params.page} selectedExhibition={selectedExhibition} exhibitionData={$exhibitionStore} />
-		
+		<NewsFilters
+			supabase={data.supabase}
+			page={$page.params.page}
+			{selectedExhibition}
+			exhibitionData={$exhibitionStore}
+		/>
+
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $newsStore.data as item, i}
 				<button
