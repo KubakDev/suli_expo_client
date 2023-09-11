@@ -65,6 +65,7 @@ const ckb = {
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	reservation: {
+
 		title: "خشتەی پێشانگا",
 		welcome: 'بەخێربێیت',
 		logged_in_description: 'بۆ گرتنی شوێن و وەرگرتنی زانیاری لەسەر هەر بەشێک ، وردەکاری شوێنگرتن بکەرەوە',
@@ -86,6 +87,10 @@ const ckb = {
 			selected: 'دەستنیشانکراو',
 			reserved: 'بەکرێ گیراو',
 			pending: 'لە چاوەڕوانی',
+		},
+		available_area: "شوێنە بەردەستەکان",
+		measure: {
+			m: "مەتر"
 		},
 		unselect_seat_desc: "شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری",
 		privacy_policy: {
