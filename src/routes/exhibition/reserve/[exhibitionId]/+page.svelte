@@ -15,6 +15,7 @@
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
+	import { currentUser } from '../../../../stores/currentUser';
 
 	export let data: any;
 
@@ -23,12 +24,15 @@
 	let reserveSeatData: any;
 	let exhibition: ExhibitionModel;
 	let seatReserved = false;
+
 	async function getExhibition() {
 		exhibition = (await exhibitionStore.getSingle(
 			$locale,
 			data.supabase,
 			$page.params.exhibitionId
 		)) as ExhibitionModel;
+
+		// console.log(exhibition);
 	}
 
 	onMount(async () => {
@@ -36,6 +40,7 @@
 			goto('/login');
 		}
 		await getExhibition();
+		await getData();
 	});
 	async function reserveSeat() {
 		seatReserved = true;
@@ -71,6 +76,36 @@
 		return exhibition?.seat_layout[0]?.seat_privacy_policy_lang.find(
 			(x: any) => x.language == $locale
 		)?.description;
+	}
+
+	async function getData() {
+		if (exhibition) {
+			try {
+				let response = await data.supabase
+					.from('required_company_fields_exhibition')
+					.select('*')
+					.eq('exhibition_id', exhibition.id);
+
+				let requiredFields = response.data[0].fields; // This assumes that there's always one entry for the exhibition
+				console.log('Required Fields:', requiredFields);
+				console.log($currentUser);
+
+				let allFieldsPresent = requiredFields.every((field: any) => {
+					return $currentUser[field] && $currentUser[field].trim() !== ''; // checks if the field exists and is not an empty string
+				});
+
+				if (allFieldsPresent) {
+					console.log('All required fields are present in currentUser');
+				} else {
+					console.log('Missing or empty required fields in currentUser');
+					let id = $currentUser.id;
+
+					goto(`/exhibition/reserve/register/${id}`);
+				}
+			} catch (error) {
+				console.error('Error fetching required fields:', error);
+			}
+		}
 	}
 </script>
 

@@ -247,6 +247,10 @@ type RootTranslation = {
 		 */
 		title: string
 		/**
+		 * V​i​e​w​ ​P​D​F​ ​C​o​n​t​r​a​c​t
+		 */
+		contract: string
+		/**
 		 * W​e​l​c​o​m​e
 		 */
 		welcome: string
@@ -373,21 +377,41 @@ type RootTranslation = {
 	}
 	company_info: {
 		/**
-		 * F​i​r​s​t​ ​N​a​m​e
+		 * C​o​m​p​a​n​y​ ​t​y​p​e
 		 */
-		first_name: string
+		type: string
 		/**
-		 * L​a​s​t​ ​N​a​m​e
+		 * U​p​l​o​a​d​ ​l​o​g​o
 		 */
-		last_name: string
+		logo_url: string
 		/**
-		 * P​h​o​n​e​ ​N​u​m​b​e​r
+		 * P​h​o​n​e​ ​n​u​m​b​e​r
 		 */
 		phone_number: string
 		/**
-		 * D​e​s​c​r​i​p​t​i​o​n​ ​a​b​o​u​t​ ​c​o​m​p​a​n​y
+		 * C​o​m​p​a​n​y​ ​n​a​m​e
 		 */
-		type: string
+		company_name: string
+		/**
+		 * E​m​a​i​l​ ​a​d​d​r​e​s​s
+		 */
+		email: string
+		/**
+		 * W​o​r​k​i​n​g​ ​f​i​e​l​d
+		 */
+		working_field: string
+		/**
+		 * M​a​n​a​g​e​r​ ​n​a​m​e
+		 */
+		manager_name: string
+		/**
+		 * P​a​s​s​p​o​r​t​ ​n​u​m​b​e​r
+		 */
+		passport_number: string
+		/**
+		 * A​d​d​r​e​s​s
+		 */
+		address: string
 	}
 }
 
@@ -622,6 +646,10 @@ export type TranslationFunctions = {
 		 */
 		title: () => LocalizedString
 		/**
+		 * View PDF Contract
+		 */
+		contract: () => LocalizedString
+		/**
 		 * Welcome
 		 */
 		welcome: () => LocalizedString
@@ -748,21 +776,41 @@ export type TranslationFunctions = {
 	}
 	company_info: {
 		/**
-		 * First Name
+		 * Company type
 		 */
-		first_name: () => LocalizedString
+		type: () => LocalizedString
 		/**
-		 * Last Name
+		 * Upload logo
 		 */
-		last_name: () => LocalizedString
+		logo_url: () => LocalizedString
 		/**
-		 * Phone Number
+		 * Phone number
 		 */
 		phone_number: () => LocalizedString
 		/**
-		 * Description about company
+		 * Company name
 		 */
-		type: () => LocalizedString
+		company_name: () => LocalizedString
+		/**
+		 * Email address
+		 */
+		email: () => LocalizedString
+		/**
+		 * Working field
+		 */
+		working_field: () => LocalizedString
+		/**
+		 * Manager name
+		 */
+		manager_name: () => LocalizedString
+		/**
+		 * Passport number
+		 */
+		passport_number: () => LocalizedString
+		/**
+		 * Address
+		 */
+		address: () => LocalizedString
 	}
 }
 

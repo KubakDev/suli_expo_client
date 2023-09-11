@@ -4,10 +4,10 @@ const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want
 	HI: 'سڵاو {name}! تکایە ستارەیەک بەرز بدە، کاتێک پرۆژەکە لە دڵخوازەکاند',
 	validation: {
-		required: '{field} is required',
+		required: '{field} is required'
 	},
 	buttons: {
-		submit: 'ناردن',
+		submit: 'ناردن'
 	},
 	home: 'سەرەکی',
 	about: 'دەربارە',
@@ -65,53 +65,61 @@ const ckb = {
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	reservation: {
-		title: "خشتەی پێشانگا",
+		title: 'خشتەی پێشانگا',
+		contract: ' زانیاری گرێبەست',
 		welcome: 'بەخێربێیت',
-		logged_in_description: 'بۆ گرتنی شوێن و وەرگرتنی زانیاری لەسەر هەر بەشێک ، وردەکاری شوێنگرتن بکەرەوە',
-		not_logged_in_description: 'بۆ گرتنی شوێن و وەرگرتنی زانیاری لەسەر هەر بەشێک ،  تکایە تۆماربوون بکەرەوە',
-		logged_in_button: "وردەکاری شوێنگرتن",
-		not_logged_in_button: "تۆماربوون",
-		description: "وردەکاری",
-		comment: "سەرنج",
-		comment_placeholder: "تکایە سەرنجەکەت بنووسە",
+		logged_in_description:
+			'بۆ گرتنی شوێن و وەرگرتنی زانیاری لەسەر هەر بەشێک ، وردەکاری شوێنگرتن بکەرەوە',
+		not_logged_in_description:
+			'بۆ گرتنی شوێن و وەرگرتنی زانیاری لەسەر هەر بەشێک ،  تکایە تۆماربوون بکەرەوە',
+		logged_in_button: 'وردەکاری شوێنگرتن',
+		not_logged_in_button: 'تۆماربوون',
+		description: 'وردەکاری',
+		comment: 'سەرنج',
+		comment_placeholder: 'تکایە سەرنجەکەت بنووسە',
 		services: {
-			title: "خزمەتگوزاریەکان",
-			free_services: "خزمەتگوزارییە بێ بەرامبەرەکان",
-			paid_services: "خزمەتگوزاریەکان",
+			title: 'خزمەتگوزاریەکان',
+			free_services: 'خزمەتگوزارییە بێ بەرامبەرەکان',
+			paid_services: 'خزمەتگوزاریەکان'
 		},
-		total_price: "کۆی گشتی",
-		reserve: "بەکرێ گرتن",
+		total_price: 'کۆی گشتی',
+		reserve: 'بەکرێ گرتن',
 		seat_types: {
 			selected: 'دەستنیشانکراو',
 			reserved: 'بەکرێ گیراو',
-			pending: 'لە چاوەڕوانی',
+			pending: 'لە چاوەڕوانی'
 		},
-		unselect_seat_desc: "شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری",
+		unselect_seat_desc: 'شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری',
 		privacy_policy: {
 			title: 'مەرجەکانی بە کرێگرتن',
 			accept: 'ڕازیم',
-			decline: 'رازینیم',
+			decline: 'رازینیم'
 		},
 		login: {
 			title: 'چوونەژوورەوە',
 			email: 'ئیمەیڵ',
-			password: 'وشەی نهێنی',
+			password: 'وشەی نهێنی'
 		}
 	},
 	loggin: {
-		login: "داخڵ بوون",
-		register: "تۆماربوون",
+		login: 'داخڵ بوون',
+		register: 'تۆماربوون',
 		Modal: {
-			successMsg: "بە سەرکەوتوویی هەژمارەکەت دروستکرا",
-			msg: "تکایە نامەی ئەلکترۆنیت پشتڕاست بکەرەوە بۆ کاراکردنی هەژمارەکەت"
+			successMsg: 'بە سەرکەوتوویی هەژمارەکەت دروستکرا',
+			msg: 'تکایە نامەی ئەلکترۆنیت پشتڕاست بکەرەوە بۆ کاراکردنی هەژمارەکەت'
 		},
-		error: "ئیمەڵ یاخود وشەی نهێنیت هەڵەیە"
+		error: 'ئیمەڵ یاخود وشەی نهێنیت هەڵەیە'
 	},
 	company_info: {
-		first_name: "ناوی یەکەم",
-		last_name: "ناوی کۆتا",
-		phone_number: "ژمارەی مۆبایل",
-		type: "وردەکاری کۆمپانیا",
+		type: 'جۆری كۆمپانیا',
+		logo_url: 'لۆگۆ',
+		phone_number: 'ژمارەی تەلەفۆن',
+		company_name: 'ناوی کۆمپانیا',
+		email: 'ناونیشانی ئیمەیڵ',
+		working_field: 'بوارەکانی کارکردن',
+		manager_name: 'ناوی بەڕێوەبەر',
+		passport_number: 'ژمارەی پاسپۆرت',
+		address: 'ناونیشان'
 	}
 } satisfies Translation;
 

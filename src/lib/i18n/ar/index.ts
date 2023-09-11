@@ -4,10 +4,10 @@ const ar = {
 	// arabic language translation
 	HI: 'مرحبا {name}! يرجى تقديم نجمة ، وقت الاستجابة للمشاريع في الطوابق السفلية',
 	validation: {
-		required: '{field} مطلوب',
+		required: '{field} مطلوب'
 	},
 	buttons: {
-		submit: 'إرسال',
+		submit: 'إرسال'
 	},
 	home: 'الرئيسية',
 	about: 'حول',
@@ -19,17 +19,17 @@ const ar = {
 	exhibition: 'معرض',
 	exhibition_mini_data: {
 		Reservation: {
-			title: "حجز",
-			place: "العراق - السليمانية",
+			title: 'حجز',
+			place: 'العراق - السليمانية'
 		},
-		Companies: "الشركات",
-		Countries: "بلدان",
-		Brochure: "كراسة المعرض",
-		Fair: "معرض السليمانية الدولي",
-		Map_Title: "خريطة المعرض",
-		Exhibition_Sponsors: "رعاة المعرض",
-		Exhibition_Seats: "مقاعد المعرض",
-		Exhibition_PDF: "فایل المعرض (PDF)"
+		Companies: 'الشركات',
+		Countries: 'بلدان',
+		Brochure: 'كراسة المعرض',
+		Fair: 'معرض السليمانية الدولي',
+		Map_Title: 'خريطة المعرض',
+		Exhibition_Sponsors: 'رعاة المعرض',
+		Exhibition_Seats: 'مقاعد المعرض',
+		Exhibition_PDF: 'فایل المعرض (PDF)'
 	},
 	promo: 'ترويجي',
 	filterByExhibition: 'تصفية حسب المعرض',
@@ -65,46 +65,59 @@ const ar = {
 	MoreInGallery: 'المزيد في المعرض',
 	moreVideos: 'المزيد من مقاطع الفيديو',
 	reservation: {
-		title: "مقاعد المعرض",
+		title: 'مقاعد المعرض',
+		contract: 'عرض العقد',
 		welcome: 'مرحبا بكم',
 		logged_in_description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
 		not_logged_in_description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
 		logged_in_button: 'تسجيل الدخول',
 		not_logged_in_button: 'تسجيل الدخول',
-		description: "لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً",
+		description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
 		comment: 'تعليق',
 		comment_placeholder: 'يرجى كتابة تعليقك',
 		services: {
 			title: 'الخدمات',
 			free_services: 'خدمات مجانية',
-			paid_services: 'خدمات',
+			paid_services: 'خدمات'
 		},
 		total_price: 'السعر الكلي',
 		reserve: 'حجز',
 		seat_types: {
 			selected: 'مختار',
 			reserved: '	محجوز',
-			pending: 'قيد الانتظار',
+			pending: 'قيد الانتظار'
 		},
 		unselect_seat_desc: 'حدد مقعدًا للحصول على معلومات حوله',
 		privacy_policy: {
 			title: 'شروط الحجز',
 			accept: 'أوافق',
-			decline: 'رفض',
+			decline: 'رفض'
 		},
 		login: {
 			title: 'تسجيل الدخول',
 			email: 'البريد الإلكتروني',
-			password: 'كلمه السر',
+			password: 'كلمه السر'
 		}
 	},
-	loggin:{
-		login:"تسجيل الدخول",
-		register:"تسجيل",
-		Modal:{
-			successMsg:"تم تسجيل الحساب بنجاح",
-			msg:"تم إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني التالي "
+	loggin: {
+		login: 'تسجيل الدخول',
+		register: 'تسجيل',
+		Modal: {
+			successMsg: 'تم تسجيل الحساب بنجاح',
+			msg: 'تم إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني التالي '
 		}
+	},
+
+	company_info: {
+		type: ' نوع الشركة',
+		logo_url: 'تحميل الشعار',
+		phone_number: ' رقم الهاتف',
+		company_name: ' اسم الشركة',
+		email: 'عنوان البريد الإلكتروني',
+		working_field: 'مجال العمل',
+		manager_name: 'اسم المدير',
+		passport_number: 'رقم جواز السفر',
+		address: 'عنوان'
 	}
 } satisfies Translation;
 

@@ -3,10 +3,10 @@ import type { BaseTranslation } from '../i18n-types';
 const en = {
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
-		required: '{field} is required',
+		required: '{field} is required'
 	},
 	buttons: {
-		submit: 'Submit',
+		submit: 'Submit'
 	},
 	home: 'Home',
 	about: 'About',
@@ -32,9 +32,9 @@ const en = {
 	},
 	promo: 'Promo',
 	filterByExhibition: 'Filter By Exhibition',
-	filterByDate: "Filter By Date",
-	ascending: "Old - New",
-	descending: "New - Old",
+	filterByDate: 'Filter By Date',
+	ascending: 'Old - New',
+	descending: 'New - Old',
 	seeAll: 'See all',
 	marketing: 'Marketing',
 	relations: 'Relations',
@@ -64,54 +64,61 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
-		title: "Exhibition Seats",
+		title: 'Exhibition Seats',
+		contract: 'View PDF Contract',
 		welcome: 'Welcome',
-		logged_in_description: 'To reserve a seat and get information about each one , click goto reservation page',
-		not_logged_in_description: 'To reserve a seat and get information about each one ,you have to logging before',
-		logged_in_button: "goto reservation page",
-		not_logged_in_button: "goto login page",
-		description: "Description",
-		comment: "Comment",
-		comment_placeholder: "Please write your comment",
+		logged_in_description:
+			'To reserve a seat and get information about each one , click goto reservation page',
+		not_logged_in_description:
+			'To reserve a seat and get information about each one ,you have to logging before',
+		logged_in_button: 'goto reservation page',
+		not_logged_in_button: 'goto login page',
+		description: 'Description',
+		comment: 'Comment',
+		comment_placeholder: 'Please write your comment',
 		services: {
-			title: "Services",
-			free_services: "Free Services",
-			paid_services: "Services",
+			title: 'Services',
+			free_services: 'Free Services',
+			paid_services: 'Services'
 		},
-		total_price: "Total Price",
-		reserve: "Reserve",
+		total_price: 'Total Price',
+		reserve: 'Reserve',
 		seat_types: {
 			selected: 'SELECTED',
 			reserved: 'RESERVED',
-			pending: 'PENDING',
+			pending: 'PENDING'
 		},
-		unselect_seat_desc: "Select a seat to get information about it",
+		unselect_seat_desc: 'Select a seat to get information about it',
 		privacy_policy: {
 			title: 'Terms of Reservation',
 			accept: 'I accept',
-			decline: 'Decline',
+			decline: 'Decline'
 		},
 		login: {
 			title: 'Login',
 			email: 'Email',
-			password: 'Password',
-		},
+			password: 'Password'
+		}
 	},
 	loggin: {
-		login: "Login",
-		register: "Register",
+		login: 'Login',
+		register: 'Register',
 		Modal: {
-			successMsg: "Your account has been created successfully",
-			msg: "Verify your email address to activate your account"
+			successMsg: 'Your account has been created successfully',
+			msg: 'Verify your email address to activate your account'
 		},
-		error: "invalid email or password"
-
+		error: 'invalid email or password'
 	},
 	company_info: {
-		first_name: "First Name",
-		last_name: "Last Name",
-		phone_number: "Phone Number",
-		type: "Description about company",
+		type: 'Company type',
+		logo_url: 'Upload logo',
+		phone_number: 'Phone number',
+		company_name: 'Company name',
+		email: 'Email address',
+		working_field: 'Working field',
+		manager_name: 'Manager name',
+		passport_number: 'Passport number',
+		address: 'Address'
 	}
 } satisfies BaseTranslation;
 

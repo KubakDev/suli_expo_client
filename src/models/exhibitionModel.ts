@@ -17,6 +17,7 @@ export interface ExhibitionModel {
 	company_number: number;
 	seat_layout?: any;
 	pdf_files: string;
+	contract_file: string;
 	start_date?: Date;
 	end_date?: Date;
 	story?: string;
@@ -27,7 +28,6 @@ export interface ExhibitionModel {
 	brochure?: string;
 	map_title?: string;
 	deleted_status: string | null;
-	image_map?: string;
 }
 
 export interface ExhibitionPaginatedModel {

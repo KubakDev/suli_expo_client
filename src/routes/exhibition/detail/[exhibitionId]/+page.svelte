@@ -36,7 +36,6 @@
 			getExhibition();
 		}
 	}
-	
 
 	onMount(async () => {
 		await getExhibition();

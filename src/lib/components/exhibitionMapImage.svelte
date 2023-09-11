@@ -3,6 +3,7 @@
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
 	import { LL } from '$lib/i18n/i18n-svelte';
+	import { onMount } from 'svelte';
 
 	export let exhibition: any = { image_map: '' };
 
@@ -10,11 +11,27 @@
 		localStorage.setItem('redirect', '/exhibition/reserve/' + exhibition.id);
 		goto('/login');
 	}
+
+	function openPdfFile(pdfLink: string) {
+		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
+
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
+		}
+	}
+
+	$: {
+		console.log($currentUser);
+	}
 </script>
 
 <div class="wrapper">
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div class="scenes lg:min-h-150 md:min-h-[400px] min-h-[300px] rounded-xl transition-all" tabindex="0">
+	<div
+		class="scenes lg:min-h-150 md:min-h-[400px] min-h-[300px] rounded-xl transition-all"
+		tabindex="0"
+	>
 		<div class="scene-1 rounded-xl" style={`background-image: url(${exhibition?.image_map});`} />
 		<div class="scene-2 rounded-xl">
 			<div
@@ -25,11 +42,12 @@
 					{#if $currentUser?.id}
 						<h1 class="my-2 text-white font-bold">
 							{$LL.reservation.welcome()}
-							<span class="text-[#b18c25]">{$currentUser?.first_name?.toUpperCase()}</span>
+							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
 						</h1>
 						<h2 class="text-xl mb-5 text-white">
 							{$LL.reservation.logged_in_description()}
 						</h2>
+
 						<Button
 							on:click={() => {
 								goto('/exhibition/reserve/' + exhibition.id);
@@ -41,8 +59,17 @@
 						<h2 class="text-xl font-bold mb-5 text-white">
 							{$LL.reservation.not_logged_in_description()}
 						</h2>
+
 						<Button on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button>
 					{/if}
+					<Button
+						class="mt-5"
+						on:click={() => {
+							openPdfFile(exhibition?.contract_file);
+						}}
+					>
+						{$LL.reservation.contract()}
+					</Button>
 				</div>
 			</div>
 		</div>
