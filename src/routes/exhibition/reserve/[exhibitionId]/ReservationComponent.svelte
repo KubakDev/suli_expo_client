@@ -9,7 +9,8 @@
 		addSelectedSeat,
 		addSelectedPaidSeatServices,
 		addSelectedFreeSeatServices,
-		setSeatDataLoading
+		setSeatDataLoading,
+		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
 
@@ -43,8 +44,8 @@
 	});
 
 	const adjustCanvasSize = () => {
-		const width = data[0].design.width;
-		const height = data[0].design.height;
+		const width = data[0]?.design?.width;
+		const height = data[0]?.design?.height;
 		const aspectRatio = width / height;
 		const containerWidth = container?.offsetWidth;
 		container.style.height = `${containerWidth / aspectRatio}px`;
@@ -66,7 +67,7 @@
 				selection: false
 			});
 			adjustCanvasSize();
-			if(canvas){
+			if (canvas) {
 				const width = data[0].design.width;
 				const height = data[0].design.height;
 				const containerWidth = container?.offsetWidth;
@@ -78,7 +79,7 @@
 						obj.set('selectable', false);
 						obj.set('lockMovementX', true);
 						obj.set('lockMovementY', true);
-	
+
 						obj.setCoords();
 					});
 					canvas.on('mouse:down', handleMouseDown);
@@ -107,9 +108,16 @@
 		getPreviousReserveSeatData();
 	};
 	const handleMouseDown = (event: any) => {
+		console.log(event.target?._objects[0].id);
+		console.log(event.target?._objects[1].id);
 		selectedObject = undefined;
 		addSelectedSeat(undefined);
-		if (previousReserveSeatData.some((x: any) => x.object_id == event.target?.id)) return;
+		if (
+			previousReserveSeatData.some(
+				(x: any) => x.object_id == event.target?.id && x.status == 'accept'
+			)
+		)
+			return;
 		selectedObject = event.target?.objectDetail;
 		clearSelectedDesign();
 		if (selectedObject) {
@@ -217,6 +225,7 @@
 			.eq('exhibition_id', +$page.params.exhibitionId)
 			.then((response) => {
 				previousReserveSeatData = response.data;
+				addPreviousReserveSeatData(previousReserveSeatData);
 				for (let reservedSeat of previousReserveSeatData) {
 					checkIfTheSeatSold(reservedSeat);
 				}
@@ -227,12 +236,14 @@
 			if (object?.id == reservedSeat?.object_id) {
 				canvas.forEachObject((obj: any) => {
 					if (obj.id == object.id) {
-						obj.set({
-							objectDetail: {
-								...object.objectDetail,
-								reserve: true
-							}
-						});
+						if (reservedSeat.status == 'accept') {
+							obj.set({
+								objectDetail: {
+									...object.objectDetail,
+									reserve: true
+								}
+							});
+						}
 						if (reservedSeat.status == 'pending') {
 							obj.set('fill', '#A0B0C2');
 							obj.set('backgroundColor', '#A0B0C2');

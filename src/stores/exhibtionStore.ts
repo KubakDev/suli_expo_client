@@ -23,6 +23,7 @@ const createExhibitionStore = () => {
 				.eq('id', id)
 				.is('deleted_status', null)
 				.single();
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
@@ -30,7 +31,7 @@ const createExhibitionStore = () => {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
 				//  
-				
+
 
 				if (exhibition.brochure) {
 					exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
@@ -38,8 +39,8 @@ const createExhibitionStore = () => {
 					exhibition.brochure = undefined;
 				}
 
-				 
-				
+
+
 
 				return exhibition;
 			}

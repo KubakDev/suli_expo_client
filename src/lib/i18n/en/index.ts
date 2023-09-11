@@ -88,6 +88,10 @@ const en = {
 			reserved: 'RESERVED',
 			pending: 'PENDING'
 		},
+		available_area: 'Available Area',
+		measure: {
+			m: 'M'
+		},
 		unselect_seat_desc: 'Select a seat to get information about it',
 		privacy_policy: {
 			title: 'Terms of Reservation',

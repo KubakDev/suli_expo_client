@@ -8,8 +8,7 @@ const email: string = import.meta.env.VITE_PRIVATE_EMAIL;
 const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD
 
 export const POST = (async ({ locals, params, request }) => {
-
-  const { emailUser, name, message } = await request.json();
+  const { emailUser, name, message, companyData, exhibition, reserveSeatData, locale } = await request.json();
   if (!transport) {
     transport = createTransport({
       service: 'gmail',
@@ -27,17 +26,19 @@ export const POST = (async ({ locals, params, request }) => {
   const emailHtml = render({
     template: MailTemplate,
     props: {
-      description: message,
+      companyData,
+      exhibition,
+      reserveSeatData
+
     }
   });
 
   const worked = await transport.sendMail({
     from: email,
     to: emailUser,
-    subject: name,
+    subject: "Your Seat Reservation Request",
     text: message,
     html: emailHtml,
   });
-  console.log(worked)
   return new Response(worked.response);
 }) satisfies RequestHandler;

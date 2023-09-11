@@ -319,6 +319,16 @@ type RootTranslation = {
 			pending: string
 		}
 		/**
+		 * A​v​a​i​l​a​b​l​e​ ​A​r​e​a
+		 */
+		available_area: string
+		measure: {
+			/**
+			 * M
+			 */
+			m: string
+		}
+		/**
 		 * S​e​l​e​c​t​ ​a​ ​s​e​a​t​ ​t​o​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​i​t
 		 */
 		unselect_seat_desc: string
@@ -716,6 +726,16 @@ export type TranslationFunctions = {
 			 * PENDING
 			 */
 			pending: () => LocalizedString
+		}
+		/**
+		 * Available Area
+		 */
+		available_area: () => LocalizedString
+		measure: {
+			/**
+			 * M
+			 */
+			m: () => LocalizedString
 		}
 		/**
 		 * Select a seat to get information about it

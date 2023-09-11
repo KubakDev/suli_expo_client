@@ -4,6 +4,7 @@
 	import { Plus, Minus } from 'svelte-heros-v2';
 
 	export let serviceQuantity: number = 0;
+	export let maxQuantityPerUser: number = 0;
 	let invalid: boolean = false;
 	let number: number = 0;
 	const dispatch = createEventDispatcher();
@@ -33,7 +34,7 @@
 		<Button
 			class="p-2"
 			on:click={() => {
-				if (number < serviceQuantity) {
+				if (number < serviceQuantity && number < maxQuantityPerUser) {
 					number++;
 				} else {
 					invalid = true;

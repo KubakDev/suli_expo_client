@@ -26,9 +26,10 @@
 
 	let formSubmitted = false;
 
-	onMount(() => {
+	let loaded = false;
+	onMount(async () => {
 		if (data?.session?.user) {
-			data.supabase
+			await data.supabase
 				.from('company')
 				.select('*')
 				.eq('uid', data?.session?.user.id)
@@ -55,6 +56,7 @@
 						goto('/company-registration');
 					}
 				});
+			loaded = true;
 		}
 	});
 
@@ -81,6 +83,7 @@
 			.select()
 			.single()
 			.then((response) => {
+				if (response.error) return;
 				currentUser.set(response.data);
 				goto(localStorage.getItem('redirect') ?? '/');
 			});
