@@ -24,7 +24,6 @@ export const POST = (async (event) => {
 }) satisfies RequestHandler;
 
 
-
 // export const POST = (async (event) => {
  
 //   // Extract the imageURL from the request query

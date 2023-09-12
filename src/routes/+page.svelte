@@ -13,6 +13,7 @@
 	import { UiStore } from '../stores/ui/Ui';
 	import { currentUser } from '../stores/currentUser';
 	import { incrementSulExpoViewer, viewAdded_sulyExpo } from '../stores/viewersStore';
+	import { TwicImg } from '@twicpics/components/sveltekit'
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -66,6 +67,11 @@
 			<SeatReservation {seatLayout} />
 		{/if}
 		<!-- </Parallax> -->
+		
+
+		<main>
+			<TwicImg src="https://cdn.cloudtek.vn/images/2023/06/30/hocmarketing-org-og-18481-breaking-news-explosive-secrets-unveiled-in-oshi-no-ko-season-2-announcement.jpg?tr=w-770,h-433"></TwicImg>
+		  </main>
 	</div>
 </div>
 
