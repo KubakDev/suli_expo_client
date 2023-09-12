@@ -23,6 +23,7 @@
 
 	export let data: any;
 
+    let allFieldsPresent = false;
 	let acceptedPrivacyPolicy = false;
 	let defaultModal = false;
 	let reserveSeatData: any;
@@ -123,7 +124,7 @@
 				console.log('Required Fields:', requiredFields);
 				console.log($currentUser);
 
-				let allFieldsPresent = requiredFields.every((field) => {
+				 allFieldsPresent = requiredFields.every((field) => {
 					return $currentUser[field] && $currentUser[field].trim() !== '';
 				});
 
@@ -141,7 +142,7 @@
 		}
 	}
 </script>
-
+{#if allFieldsPresent}
 <div class="absolute w-full flex justify-end p-3" />
 {#if exhibition?.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS}
 	<section class="w-full flex-1 overflow-x-hidden">
@@ -334,4 +335,5 @@
 			</svelte:fragment>
 		</Modal>
 	</section>
+{/if}
 {/if}

@@ -138,15 +138,6 @@
 				currentUser.set(response.data);
 				goto(`/exhibition/reserve/${$exhibitionID}`);
 			});
-
-		$: {
-			console.log($exhibitionID);
-		}
-		// setTimeout(() => {
-		// 	goto(`/exhibition/reserve/${result?.id}`);
-		// }, 3000);
-
-		// fetchData();
 	}
 </script>
 
