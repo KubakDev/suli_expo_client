@@ -19,12 +19,6 @@
 	import { themeToggle, setTheme } from '../stores/darkMode';
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
-	import { installTwicPics } from '@twicpics/components/sveltekit';
-	import '@twicpics/components/style.css';
-
-	installTwicPics({
-		domain: `https://suli-expo-client-seven.vercel.app.twic.pics`
-	});
 
 	register();
 	export let data;
