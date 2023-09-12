@@ -19,6 +19,8 @@
 	import { SeatsLayoutTypeEnum } from './models/seatsLayoutTypeEnum';
 	import ReserveByFieldComponent from './reserveByField.svelte';
 	import { ReservationStatusEnum } from '../../../../models/reserveSeat';
+	import { setExhibitionID, setRequiredFields } from '../../../../stores/requiredFieldStore';
+
 	export let data: any;
 
 	let acceptedPrivacyPolicy = false;
@@ -113,12 +115,16 @@
 					.select('*')
 					.eq('exhibition_id', exhibition.id);
 
-				let requiredFields = response.data[0].fields; // This assumes that there's always one entry for the exhibition
+				let requiredFields = response.data[0].fields;
+
+				setRequiredFields(requiredFields);
+				setExhibitionID(response.data[0].exhibition_id);
+
 				console.log('Required Fields:', requiredFields);
 				console.log($currentUser);
 
-				let allFieldsPresent = requiredFields.every((field: any) => {
-					return $currentUser[field] && $currentUser[field].trim() !== ''; // checks if the field exists and is not an empty string
+				let allFieldsPresent = requiredFields.every((field) => {
+					return $currentUser[field] && $currentUser[field].trim() !== '';
 				});
 
 				if (allFieldsPresent) {

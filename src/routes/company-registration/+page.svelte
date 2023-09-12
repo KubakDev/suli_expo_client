@@ -9,6 +9,7 @@
 
 	let imageFile: File | undefined;
 	let fileName: string;
+	let currentImageFile = false;
 
 	export let data: PageData;
 
@@ -90,6 +91,7 @@
 	}
 
 	export async function handleFileUpload(e: Event) {
+		currentImageFile = true;
 		const fileInput = e.target as HTMLInputElement;
 		const file = fileInput.files![0];
 
@@ -132,9 +134,9 @@
 	<div class="shadow-md rounded-md p-8 w-1/2" style="background-color: var(secondaryColor);">
 		<div class="flex justify-center items-center pb-10">
 			<img
-				src={userData.logo_url
+				src={currentImageFile
 					? userData.logo_url
-					: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nicepng.com%2Fourpic%2Fu2q8o0a9t4o0r5t4_pin-businessman-clipart-png-flat-user-icon%2F&psig=AOvVaw10w8etKkouHxcDuo31yrep&ust=1694517837643000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCNiayPy4ooEDFQAAAAAdAAAAABAK'}
+					: 'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png'}
 				alt="logo"
 				class="w-44 h-44 rounded-full border bg-white"
 			/>
