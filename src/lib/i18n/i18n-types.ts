@@ -391,6 +391,10 @@ type RootTranslation = {
 		 */
 		reset_password: string
 		/**
+		 * C​h​a​n​g​e​ ​p​a​s​s​w​o​r​d
+		 */
+		change_password: string
+		/**
 		 * S​e​n​d​ ​e​m​a​i​l
 		 */
 		send_email: string
@@ -404,6 +408,10 @@ type RootTranslation = {
 			 */
 			msg: string
 		}
+		/**
+		 * N​e​w​ ​p​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​i​d​e​n​t​i​c​a​l​ ​t​o​ ​o​l​d​ ​o​n​e
+		 */
+		duplicate_password: string
 		/**
 		 * i​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
 		 */
@@ -446,6 +454,83 @@ type RootTranslation = {
 		 * A​d​d​r​e​s​s
 		 */
 		address: string
+		string: string
+	}
+	email_template: {
+		/**
+		 * D​e​a​r
+		 */
+		dear: string
+		/**
+		 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​c​h​o​o​s​i​n​g​ ​t​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​t​h​r​o​u​g​h​ ​o​u​r​ ​w​e​b​s​i​t​e​.​ ​W​e​ ​a​r​e​ ​d​e​l​i​g​h​t​e​d​ ​t​h​a​t​ ​y​o​u​ ​h​a​v​e​ ​c​o​n​s​i​d​e​r​e​d​ ​S​u​l​y​ ​E​x​p​o​ ​f​o​r​ ​y​o​u​r​ ​u​p​c​o​m​i​n​g​ ​p​l​a​n​s​.​ ​T​h​i​s​ ​e​m​a​i​l​ ​i​s​ ​t​o​ ​c​o​n​f​i​r​m​ ​t​h​a​t​ ​w​e​ ​h​a​v​e​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​r​e​q​u​e​s​t​.
+		 */
+		thanks: string
+		detail: {
+			/**
+			 * H​e​r​e​ ​a​r​e​ ​t​h​e​ ​d​e​t​a​i​l​s​ ​o​f​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​:
+			 */
+			title: string
+			/**
+			 * R​e​s​e​r​v​a​t​i​o​n​ ​D​a​t​e​ ​a​n​d​ ​T​i​m​e​:
+			 */
+			date_time: string
+			/**
+			 * E​x​h​i​b​i​t​i​o​n​:​ 
+			 */
+			event: string
+			/**
+			 * S​p​e​c​i​a​l​ ​R​e​q​u​e​s​t​s​ ​o​r​ ​N​o​t​e​s​:
+			 */
+			note: string
+		}
+		/**
+		 * P​l​e​a​s​e​ ​n​o​t​e​ ​t​h​a​t​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​i​s​ ​c​u​r​r​e​n​t​l​y​ ​p​e​n​d​i​n​g​ ​c​o​n​f​i​r​m​a​t​i​o​n​.​ ​O​u​r​ ​t​e​a​m​ ​w​i​l​l​ ​c​a​r​e​f​u​l​l​y​ ​r​e​v​i​e​w​ ​y​o​u​r​ ​r​e​q​u​e​s​t​,​ ​a​n​d​ ​w​e​ ​w​i​l​l​ ​n​o​t​i​f​y​ ​y​o​u​ ​a​s​ ​s​o​o​n​ ​a​s​ ​p​o​s​s​i​b​l​e​ ​r​e​g​a​r​d​i​n​g​ ​t​h​e​ ​s​t​a​t​u​s​ ​o​f​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​.
+		 */
+		pending: string
+		help: {
+			/**
+			 * I​n​ ​t​h​e​ ​m​e​a​n​t​i​m​e​,​ ​i​f​ ​y​o​u​ ​h​a​v​e​ ​a​n​y​ ​q​u​e​s​t​i​o​n​s​ ​o​r​ ​n​e​e​d​ ​t​o​ ​m​a​k​e​ ​c​h​a​n​g​e​s​ ​t​o​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​,​ ​p​l​e​a​s​e​ ​d​o​ ​n​o​t​ ​h​e​s​i​t​a​t​e​ ​t​o​ ​c​o​n​t​a​c​t​ ​u​s​ ​a​t
+			 */
+			header: string
+			/**
+			 * O​u​r​ ​d​e​d​i​c​a​t​e​d​ ​t​e​a​m​ ​i​s​ ​h​e​r​e​ ​t​o​ ​a​s​s​i​s​t​ ​y​o​u​ ​a​n​d​ ​e​n​s​u​r​e​ ​y​o​u​r​ ​e​x​p​e​r​i​e​n​c​e​ ​w​i​t​h​ ​u​s​ ​i​s​ ​e​x​c​e​p​t​i​o​n​a​l
+			 */
+			footer: string
+		}
+		/**
+		 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​c​h​o​o​s​i​n​g​ ​S​u​l​y​ ​E​x​p​o​.​ ​W​e​ ​l​o​o​k​ ​f​o​r​w​a​r​d​ ​t​o​ ​t​h​e​ ​p​o​s​s​i​b​i​l​i​t​y​ ​o​f​ ​h​o​s​t​i​n​g​ ​y​o​u​ ​a​n​d​ ​p​r​o​v​i​d​i​n​g​ ​y​o​u​ ​w​i​t​h​ ​a​n​ ​u​n​f​o​r​g​e​t​t​a​b​l​e​ ​e​x​p​e​r​i​e​n​c​e​.​ ​Y​o​u​r​ ​s​a​t​i​s​f​a​c​t​i​o​n​ ​i​s​ ​o​u​r​ ​t​o​p​ ​p​r​i​o​r​i​t​y​,​ ​a​n​d​ ​w​e​ ​w​i​l​l​ ​d​o​ ​o​u​r​ ​u​t​m​o​s​t​ ​t​o​ ​a​c​c​o​m​m​o​d​a​t​e​ ​y​o​u​r​ ​r​e​q​u​e​s​t
+		 */
+		thanks_waiting: string
+		/**
+		 * W​a​r​m​ ​r​e​g​a​r​d​s​,
+		 */
+		regards: string
+		/**
+		 * S​u​l​y​ ​E​x​p​o
+		 */
+		signature: string
+		contact: {
+			/**
+			 * M​a​r​k​e​t​i​n​g​:​ 
+			 */
+			marketing: string
+			/**
+			 * R​e​l​a​t​i​o​n​s​:​ 
+			 */
+			relations: string
+			/**
+			 * T​e​c​h​n​i​c​a​l​:​ 
+			 */
+			technical: string
+			/**
+			 * A​d​m​i​n​i​s​t​r​a​t​i​o​n​:​ 
+			 */
+			administration: string
+			/**
+			 * W​e​b​s​i​t​e​:​ 
+			 */
+			website: string
+		}
 	}
 }
 
@@ -824,6 +909,10 @@ export type TranslationFunctions = {
 		 */
 		reset_password: () => LocalizedString
 		/**
+		 * Change password
+		 */
+		change_password: () => LocalizedString
+		/**
 		 * Send email
 		 */
 		send_email: () => LocalizedString
@@ -837,6 +926,10 @@ export type TranslationFunctions = {
 			 */
 			msg: () => LocalizedString
 		}
+		/**
+		 * New password must be identical to old one
+		 */
+		duplicate_password: () => LocalizedString
 		/**
 		 * invalid email or password
 		 */
@@ -879,6 +972,83 @@ export type TranslationFunctions = {
 		 * Address
 		 */
 		address: () => LocalizedString
+		string: () => LocalizedString
+	}
+	email_template: {
+		/**
+		 * Dear
+		 */
+		dear: () => LocalizedString
+		/**
+		 * Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.
+		 */
+		thanks: () => LocalizedString
+		detail: {
+			/**
+			 * Here are the details of your reservation:
+			 */
+			title: () => LocalizedString
+			/**
+			 * Reservation Date and Time:
+			 */
+			date_time: () => LocalizedString
+			/**
+			 * Exhibition: 
+			 */
+			event: () => LocalizedString
+			/**
+			 * Special Requests or Notes:
+			 */
+			note: () => LocalizedString
+		}
+		/**
+		 * Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.
+		 */
+		pending: () => LocalizedString
+		help: {
+			/**
+			 * In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at
+			 */
+			header: () => LocalizedString
+			/**
+			 * Our dedicated team is here to assist you and ensure your experience with us is exceptional
+			 */
+			footer: () => LocalizedString
+		}
+		/**
+		 * Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request
+		 */
+		thanks_waiting: () => LocalizedString
+		/**
+		 * Warm regards,
+		 */
+		regards: () => LocalizedString
+		/**
+		 * Suly Expo
+		 */
+		signature: () => LocalizedString
+		contact: {
+			/**
+			 * Marketing: 
+			 */
+			marketing: () => LocalizedString
+			/**
+			 * Relations: 
+			 */
+			relations: () => LocalizedString
+			/**
+			 * Technical: 
+			 */
+			technical: () => LocalizedString
+			/**
+			 * Administration: 
+			 */
+			administration: () => LocalizedString
+			/**
+			 * Website: 
+			 */
+			website: () => LocalizedString
+		}
 	}
 }
 

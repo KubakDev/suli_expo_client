@@ -112,12 +112,14 @@ const en = {
 		register: 'Register',
 		forgot_password: 'Forgot password?',
 		reset_password: 'Reset password',
+		change_password: "Change password",
 		send_email: 'Send email',
 
 		Modal: {
 			successMsg: 'Your account has been created successfully',
 			msg: 'Verify your email address to activate your account'
 		},
+		duplicate_password: 'New password must be identical to old one',
 		error: 'invalid email or password'
 	},
 	company_info: {
@@ -129,7 +131,34 @@ const en = {
 		working_field: 'Working field',
 		manager_name: 'Manager name',
 		passport_number: 'Passport number',
-		address: 'Address'
+		address: 'Address',
+		string: ""
+	},
+	email_template: {
+		dear: "Dear",
+		thanks: "Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.",
+		detail: {
+			title: "Here are the details of your reservation:",
+			date_time: "Reservation Date and Time:",
+			event: "Exhibition: ",
+			note: "Special Requests or Notes:",
+		},
+		pending: "Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.",
+		help: {
+			header: "In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at",
+			footer: "Our dedicated team is here to assist you and ensure your experience with us is exceptional"
+		},
+		thanks_waiting: "Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request",
+		regards: "Warm regards,",
+		signature: "Suly Expo",
+		contact: {
+			marketing: "Marketing: ",
+			relations: "Relations: ",
+			technical: "Technical: ",
+			administration: "Administration: ",
+			website: "Website: ",
+		}
+
 	}
 } satisfies BaseTranslation;
 

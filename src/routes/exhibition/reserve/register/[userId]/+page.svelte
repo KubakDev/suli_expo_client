@@ -8,7 +8,7 @@
 	import { currentUser } from '../../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
 
-	export let data;
+	export let data: any;
 	let imageFile: File | undefined;
 	let fileName: string;
 	let prevLogo_url: string = '';
@@ -44,6 +44,12 @@
 	}
 
 	onMount(() => {
+		if (!data.session && !data.session?.user) {
+			setTimeout(() => {
+				goto('/login');
+			}, 100);
+			return;
+		}
 		fetchData();
 	});
 
@@ -131,7 +137,7 @@
 			.eq('id', result?.id)
 			.select()
 			.single()
-			.then((response) => {
+			.then((response: any) => {
 				if (response.error) return;
 				currentUser.set(response.data);
 				goto(`/exhibition/reserve/${$exhibitionID}`);
@@ -176,32 +182,37 @@
 			</div>
 
 			<div>
-				{#if $requiredFields.includes('company_name')}<span class="text-red-500">*</span>{/if}
-				<Label for="" class="mb-2">{`${$LL.company_info['company_name']()}`}</Label>
-
+				<div class="flex gap-2">
+					{#if $requiredFields.includes('company_name')}<span class="text-red-500">*</span>{/if}
+					<Label for="" class="mb-2">{`${$LL.company_info['company_name']()}`}</Label>
+				</div>
 				<Input type="text" bind:value={result.company_name} />
 			</div>
 			<div>
-				{#if $requiredFields.includes('email')}<span class="text-red-500">*</span>{/if}
-				<Label for="" class="mb-2">{`${$LL.company_info['email']()}`}</Label>
+				<div class="flex gap-2">
+					{#if $requiredFields.includes('email')}<span class="text-red-500">*</span>{/if}
+					<Label for="" class="mb-2">{`${$LL.company_info['email']()}`}</Label>
+				</div>
 				<Input type="email" bind:value={result.email} />
 			</div>
 
 			<div>
-				{#if $requiredFields.includes('working_field')}<span class="text-red-500">*</span>{/if}
-				<Label for="" class="mb-2">{`${$LL.company_info['working_field']()}`}</Label>
-
+				<div class="flex gap-2">
+					{#if $requiredFields.includes('working_field')}<span class="text-red-500">*</span>{/if}
+					<Label for="" class="mb-2">{`${$LL.company_info['working_field']()}`}</Label>
+				</div>
 				<Input type="text" bind:value={result.working_field} />
 			</div>
 			<div>
-				{#if $requiredFields.includes('manager_name')}<span class="text-red-500">*</span>{/if}
-				<Label for="" class="mb-2">{`${$LL.company_info['manager_name']()}`}</Label>
-
+				<div class="flex gap-2">
+					{#if $requiredFields.includes('manager_name')}<span class="text-red-500">*</span>{/if}
+					<Label for="" class="mb-2">{`${$LL.company_info['manager_name']()}`}</Label>
+				</div>
 				<Input type="text" bind:value={result.manager_name} />
 			</div>
 
 			<div>
-				<div class="grid-cols-1 lg:grid-cols-2 gap-2">
+				<div class="flex gap-2">
 					{#if $requiredFields.includes('passport_number')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['passport_number']()}`}</Label>
 				</div>

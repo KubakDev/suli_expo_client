@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
-	import { exhibitionStore } from '../../../../stores/exhibtionStore';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	//@ts-ignore
 	import ReservationComponent from './ReservationComponent.svelte';
@@ -47,8 +46,11 @@
 	}
 
 	onMount(async () => {
-		if (!data?.session?.user) {
-			goto('/login');
+		if (!data.session && !data.session?.user) {
+			setTimeout(() => {
+				goto('/login');
+			}, 100);
+			return;
 		}
 		await getExhibition();
 		await getData();
@@ -140,7 +142,6 @@
 				if (allFieldsPresent) {
 				} else {
 					let id = $currentUser.id;
-
 					goto(`/exhibition/reserve/register/${id}`);
 				}
 			} catch (error) {

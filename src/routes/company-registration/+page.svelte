@@ -6,12 +6,13 @@
 	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
+	import type { LocalizedString } from 'typesafe-i18n';
 
 	let imageFile: File | undefined;
 	let fileName: string;
 	let currentImageFile = false;
 
-	export let data: PageData;
+	export let data: any;
 
 	let userData: any = {
 		logo_url: '',
@@ -29,36 +30,23 @@
 
 	let loaded = false;
 	onMount(async () => {
-		if (data?.session?.user) {
-			await data.supabase
-				.from('company')
-				.select('*')
-				.eq('uid', data?.session?.user.id)
-				.single()
-				.then((res) => {
-					if (res.data) {
-						if (
-							!res.data.logo_url ||
-							!res.data.phone_number ||
-							!res.data.company_name ||
-							!res.data.email ||
-							!res.data.working_field ||
-							!res.data.manager_name ||
-							!res.data.passport_number ||
-							!res.data.address ||
-							!res.data.type
-						) {
-							goto('/company-registration');
-						} else {
-							currentUser.set(res.data);
-							goto(localStorage.getItem('redirect') ?? '/');
-						}
-					} else {
-						goto('/company-registration');
-					}
-				});
-			loaded = true;
+		if (!data.session && !data.session?.user) {
+			setTimeout(() => {
+				goto('/login');
+			}, 100);
+			return;
 		}
+		await data.supabase
+			.from('company')
+			.select('*')
+			.eq('uid', data?.session?.user.id)
+			.single()
+			.then((res: any) => {
+				if (res.data) {
+					goto(localStorage.getItem('redirect') ?? '/exhibition/1');
+				}
+			});
+		loaded = true;
 	});
 
 	async function submitForm() {
@@ -82,7 +70,7 @@
 			})
 			.select()
 			.single()
-			.then((response) => {
+			.then((response: any) => {
 				if (response.error) return;
 				currentUser.set(response.data);
 				goto(localStorage.getItem('redirect') ?? '/');
@@ -127,6 +115,11 @@
 	function setFileName(name: string) {
 		fileName = name;
 	}
+
+	function returnLocaleMessage(field: any) {
+		let result: any = $LL.company_info;
+		return result[field]();
+	}
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
@@ -145,7 +138,7 @@
 				<div class="grid grid-cols-2">
 					{#if user === 'logo_url'}
 						<div class="col-span-2 w-full">
-							<Label for={user} class="mb-2">{`${$LL.company_info[user]()}`}</Label>
+							<Label for={user} class="mb-2">{`${returnLocaleMessage(user)}`}</Label>
 							<Fileupload
 								on:change={handleFileUpload}
 								accept=".png,.jpg,.jpeg,.gif"
@@ -155,11 +148,11 @@
 						</div>
 					{:else}
 						<div class="col-span-2 w-full">
-							<Label for={user} class="mb-2">{$LL.company_info[user]()}</Label>
+							<Label for={user} class="mb-2">{returnLocaleMessage(user)}</Label>
 							<Input
 								type="text"
 								id={user}
-								placeholder={$LL.company_info[user]()}
+								placeholder={returnLocaleMessage(user)}
 								bind:value={userData[user]}
 							/>
 						</div>

@@ -1,7 +1,7 @@
 // customStore.js
 import { writable } from 'svelte/store';
 
-export const requiredFields = writable([]);
+export const requiredFields = writable<string[]>([]);
 export const exhibitionID = writable();
 
 export function setRequiredFields(fields: any) {
