@@ -66,7 +66,6 @@
 
 		const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
 		userData.logo_url = response.data?.path || '';
-		console.log(userData);
 		await data.supabase
 			.from('company')
 			.insert({
@@ -130,8 +129,8 @@
 	}
 </script>
 
-<form class="flex h-screen justify-center items-center w-full">
-	<div class="shadow-md rounded-md p-8 w-1/2" style="background-color: var(secondaryColor);">
+<form class="flex min-h-screen justify-center items-center w-full p-8">
+	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color: #f3f3f3">
 		<div class="flex justify-center items-center pb-10">
 			<img
 				src={currentImageFile
@@ -141,7 +140,7 @@
 				class="w-44 h-44 rounded-full border bg-white"
 			/>
 		</div>
-		<div class="grid gap-6 mb-6 md:grid-cols-2" dir="ltr">
+		<div class="grid gap-6 mb-6 md:grid-cols-2">
 			{#each Object.keys(userData) as user}
 				<div class="grid grid-cols-2">
 					{#if user === 'logo_url'}

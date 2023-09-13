@@ -4,6 +4,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button } from 'flowbite-svelte';
+	import UploadFile from './uploadFile.svelte';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -22,6 +23,7 @@
 			quantity: number;
 		}[];
 		comment: string;
+		file?: File;
 	} = {
 		area: [],
 		comment: ''
@@ -51,6 +53,9 @@
 				quantity: number
 			});
 		}
+	}
+	function handleFileUpload(file: { detail: File }) {
+		reservedSeatData.file = file.detail;
 	}
 </script>
 
@@ -89,7 +94,10 @@
 		bind:value={reservedSeatData.comment}
 	/>
 	<div class="flex justify-end w-full mt-8">
-		<Button on:click={reserveSeat}>
+		<div>
+			<UploadFile on:fileUpload={handleFileUpload} />
+		</div>
+		<Button on:click={reserveSeat} class="mx-2">
 			{$LL.reservation.reserve()}
 		</Button>
 	</div>

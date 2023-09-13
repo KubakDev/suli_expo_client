@@ -32,6 +32,10 @@ type RootTranslation = {
 		 * S​u​b​m​i​t
 		 */
 		submit: string
+		/**
+		 * U​p​l​o​a​d​ ​S​h​e​e​t
+		 */
+		upload_sheet: string
 	}
 	/**
 	 * H​o​m​e
@@ -243,6 +247,10 @@ type RootTranslation = {
 	moreVideos: string
 	reservation: {
 		/**
+		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
+		 */
+		reserved: string
+		/**
 		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
 		 */
 		title: string
@@ -324,7 +332,7 @@ type RootTranslation = {
 		available_area: string
 		measure: {
 			/**
-			 * M
+			 * M​e​t​e​r
 			 */
 			m: string
 		}
@@ -345,6 +353,10 @@ type RootTranslation = {
 			 * D​e​c​l​i​n​e
 			 */
 			decline: string
+			/**
+			 * I​ ​h​a​v​e​ ​r​e​a​d​ ​ ​t​o​ ​t​h​e​ ​t​e​r​m​s​ ​a​n​d​ ​c​o​n​d​i​t​i​o​n​s
+			 */
+			checked: string
 		}
 		login: {
 			/**
@@ -370,6 +382,18 @@ type RootTranslation = {
 		 * R​e​g​i​s​t​e​r
 		 */
 		register: string
+		/**
+		 * F​o​r​g​o​t​ ​p​a​s​s​w​o​r​d​?
+		 */
+		forgot_password: string
+		/**
+		 * R​e​s​e​t​ ​p​a​s​s​w​o​r​d
+		 */
+		reset_password: string
+		/**
+		 * S​e​n​d​ ​e​m​a​i​l
+		 */
+		send_email: string
 		Modal: {
 			/**
 			 * Y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
@@ -441,6 +465,10 @@ export type TranslationFunctions = {
 		 * Submit
 		 */
 		submit: () => LocalizedString
+		/**
+		 * Upload Sheet
+		 */
+		upload_sheet: () => LocalizedString
 	}
 	/**
 	 * Home
@@ -652,6 +680,10 @@ export type TranslationFunctions = {
 	moreVideos: () => LocalizedString
 	reservation: {
 		/**
+		 * Your request has been successfully received, please wait for our contact
+		 */
+		reserved: () => LocalizedString
+		/**
 		 * Exhibition Seats
 		 */
 		title: () => LocalizedString
@@ -733,7 +765,7 @@ export type TranslationFunctions = {
 		available_area: () => LocalizedString
 		measure: {
 			/**
-			 * M
+			 * Meter
 			 */
 			m: () => LocalizedString
 		}
@@ -754,6 +786,10 @@ export type TranslationFunctions = {
 			 * Decline
 			 */
 			decline: () => LocalizedString
+			/**
+			 * I have read  to the terms and conditions
+			 */
+			checked: () => LocalizedString
 		}
 		login: {
 			/**
@@ -779,6 +815,18 @@ export type TranslationFunctions = {
 		 * Register
 		 */
 		register: () => LocalizedString
+		/**
+		 * Forgot password?
+		 */
+		forgot_password: () => LocalizedString
+		/**
+		 * Reset password
+		 */
+		reset_password: () => LocalizedString
+		/**
+		 * Send email
+		 */
+		send_email: () => LocalizedString
 		Modal: {
 			/**
 			 * Your account has been created successfully

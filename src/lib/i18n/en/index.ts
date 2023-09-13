@@ -6,7 +6,8 @@ const en = {
 		required: '{field} is required'
 	},
 	buttons: {
-		submit: 'Submit'
+		submit: 'Submit',
+		upload_sheet: "Upload Sheet"
 	},
 	home: 'Home',
 	about: 'About',
@@ -64,6 +65,7 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
+		reserved: "Your request has been successfully received, please wait for our contact",
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
@@ -90,13 +92,14 @@ const en = {
 		},
 		available_area: 'Available Area',
 		measure: {
-			m: 'M'
+			m: 'Meter'
 		},
 		unselect_seat_desc: 'Select a seat to get information about it',
 		privacy_policy: {
 			title: 'Terms of Reservation',
 			accept: 'I accept',
-			decline: 'Decline'
+			decline: 'Decline',
+			checked: "I have read  to the terms and conditions"
 		},
 		login: {
 			title: 'Login',
@@ -107,6 +110,10 @@ const en = {
 	loggin: {
 		login: 'Login',
 		register: 'Register',
+		forgot_password: 'Forgot password?',
+		reset_password: 'Reset password',
+		send_email: 'Send email',
+
 		Modal: {
 			successMsg: 'Your account has been created successfully',
 			msg: 'Verify your email address to activate your account'

@@ -108,8 +108,6 @@
 		getPreviousReserveSeatData();
 	};
 	const handleMouseDown = (event: any) => {
-		console.log(event.target?._objects[0].id);
-		console.log(event.target?._objects[1].id);
 		selectedObject = undefined;
 		addSelectedSeat(undefined);
 		if (

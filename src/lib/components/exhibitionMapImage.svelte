@@ -20,10 +20,6 @@
 			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
 		}
 	}
-
-	$: {
-		console.log($currentUser);
-	}
 </script>
 
 <div class="wrapper">

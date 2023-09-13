@@ -89,7 +89,7 @@
 		use:enhance
 		dir="ltr"
 	>
-		<div class="shadow-md rounded-md p-8 w-1/2" style="background-color: var(secondaryColor);">
+		<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color:#f3f3f3">
 			<div class="w-full flex justify-center">
 				<LottiePlayer
 					src={LoginIcon}

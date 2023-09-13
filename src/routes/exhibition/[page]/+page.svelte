@@ -47,8 +47,6 @@
 
 	$: {
 		if (asc) {
-			console.log($asc);
-
 			getExhibitions();
 		}
 	}

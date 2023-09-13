@@ -45,8 +45,7 @@
 	}
 </script>
 
-<Modal title={$LL.reservation.privacy_policy.title()} bind:open={resetPasswordModal}>
-	<h1>reset password</h1>
+<Modal title={$LL.loggin.reset_password()} bind:open={resetPasswordModal}>
 	<div class="w-full pb-8">
 		<Input
 			type="text"
@@ -57,7 +56,7 @@
 		/>
 	</div>
 	<div class="w-full flex justify-end">
-		<Button on:click={resetPassword}>Send Email</Button>
+		<Button on:click={resetPassword}>{$LL.loggin.send_email()}</Button>
 	</div>
 </Modal>
 <div class="w-full flex justify-center items-center">
@@ -68,7 +67,7 @@
 		use:enhance
 		dir="ltr"
 	>
-		<div class="shadow-md rounded-md w-1/2 z-30" style="background-color:white">
+		<div class="shadow-md rounded-md w-full lg:w-1/2 z-30" style="background-color:white">
 			<div
 				class="w-full h-[100px] rounded-t-md"
 				style={`background-image: url(${Test});  background-repeat: no-repeat;
@@ -121,7 +120,7 @@
 							resetPasswordModal = true;
 						}}
 					>
-						forgot password?
+						{$LL.loggin.forgot_password()}
 					</p>
 				</div>
 			</div>

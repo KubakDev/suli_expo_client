@@ -15,12 +15,8 @@
 			.updateUser({
 				password: newPassword
 			})
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.then((res) => {})
+			.catch((err) => {});
 	}
 </script>
 

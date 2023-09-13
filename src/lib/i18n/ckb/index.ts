@@ -7,7 +7,8 @@ const ckb = {
 		required: '{field} is required'
 	},
 	buttons: {
-		submit: 'ناردن'
+		submit: 'ناردن',
+		upload_sheet: 'بارکردنی شیت'
 	},
 	home: 'سەرەکی',
 	about: 'دەربارە',
@@ -65,6 +66,7 @@ const ckb = {
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	reservation: {
+		reserved: "داواکاریەکەت بە سەرکەوتووی وەرگیرا ، تکایە چاوروان بە تاکوو پەیوەندیت پێوە دەکەین",
 		title: 'خشتەی پێشانگا',
 		contract: ' زانیاری گرێبەست',
 		welcome: 'بەخێربێیت',
@@ -89,11 +91,16 @@ const ckb = {
 			reserved: 'بەکرێ گیراو',
 			pending: 'لە چاوەڕوانی'
 		},
+		available_area: "روبەری پێویست",
+		measure: {
+			m: "مەتر",
+		},
 		unselect_seat_desc: 'شوێنێک دەستنیشان بکە بۆ بەدەستهێنانی زانیاری لە سەری',
 		privacy_policy: {
 			title: 'مەرجەکانی بە کرێگرتن',
-			accept: 'ڕازیم',
-			decline: 'رازینیم'
+			accept: 'مەرجەکان پەسەند دەکەم',
+			decline: 'رازینیم',
+			checked: "بە وردی مەرج و ڕێنماییەکانم خوێندوەتەوە"
 		},
 		login: {
 			title: 'چوونەژوورەوە',
@@ -104,6 +111,9 @@ const ckb = {
 	loggin: {
 		login: 'داخڵ بوون',
 		register: 'تۆماربوون',
+		forgot_password: 'وشەی نهێنیت لەبیرکردووە؟',
+		reset_password: "تازەکردنەوەی وشەی نهێنی",
+		send_email: 'ناردنی ئیمەیڵ',
 		Modal: {
 			successMsg: 'بە سەرکەوتوویی هەژمارەکەت دروستکرا',
 			msg: 'تکایە نامەی ئەلکترۆنیت پشتڕاست بکەرەوە بۆ کاراکردنی هەژمارەکەت'
