@@ -17,25 +17,31 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*)',
-					{ count: 'exact' }
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*,seat_privacy_policy_lang(*))', { count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
 				.is('deleted_status', null)
 				.single();
+
 			if (result.error) {
 				//.error(result.error);
 				return null;
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
-				if(exhibition.brochure){
+				//  
+
+
+				if (exhibition.brochure) {
 					exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
-				}else{
+				} else {
 					exhibition.brochure = undefined;
 				}
-				
+
+
+
+
 				return exhibition;
 			}
 		},

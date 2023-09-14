@@ -18,6 +18,8 @@
 	import { getNameRegex } from '../utils/urlRegexName';
 	import { themeToggle, setTheme } from '../stores/darkMode';
 	import { currentUser } from '../stores/currentUser';
+	import { invalidateAll } from '$app/navigation';
+
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -37,12 +39,35 @@
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
 
-	onMount(async () => {
+	onMount(() => {
 		setTheme();
 		supabase = data.supabase;
-		await activeThemeStore.getActiveTheme(supabase);
+		activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
-		await pageBuilderStore.get(data.supabase);
+		pageBuilderStore.get(supabase);
+
+		const {
+			data: { subscription }
+		} = data.supabase.auth.onAuthStateChange(() => {
+			invalidateAll();
+		});
+
+		if (data?.session?.user) {
+			data.supabase
+				.from('company')
+				.select('*')
+				.eq('uid', data?.session?.user.id)
+				.single()
+				.then((res) => {
+					if (res.data) {
+						currentUser.set(res.data);
+					}
+				});
+		}
+
+		return () => {
+			subscription.unsubscribe();
+		};
 	});
 
 	function scale(
@@ -140,7 +165,6 @@
 		flex-direction: column;
 		min-height: 100vh;
 	}
-
 	main {
 		flex: 1;
 		display: flex;

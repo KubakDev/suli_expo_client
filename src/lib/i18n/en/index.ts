@@ -1,8 +1,14 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
-	// TODO: your translations go here
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
+	validation: {
+		required: '{field} is required'
+	},
+	buttons: {
+		submit: 'Submit',
+		upload_sheet: "Upload Sheet"
+	},
 	home: 'Home',
 	about: 'About',
 	contact: 'Contact',
@@ -26,7 +32,10 @@ const en = {
 		Exhibition_PDF: "Exhibition PDF'S"
 	},
 	promo: 'Promo',
-	filter: 'Filter',
+	filterByExhibition: 'Filter By Exhibition',
+	filterByDate: 'Filter By Date',
+	ascending: 'Old - New',
+	descending: 'New - Old',
 	seeAll: 'See all',
 	marketing: 'Marketing',
 	relations: 'Relations',
@@ -54,7 +63,104 @@ const en = {
 	gallery: 'Gallery',
 	videos: 'Videos',
 	MoreInGallery: 'More in Gallery',
-	moreVideos: 'More Videos'
+	moreVideos: 'More Videos',
+	reservation: {
+		reserved: "Your request has been successfully received, please wait for our contact",
+		title: 'Exhibition Seats',
+		contract: 'View PDF Contract',
+		welcome: 'Welcome',
+		logged_in_description:
+			'To reserve a seat and get information about each one , click goto reservation page',
+		not_logged_in_description:
+			'To reserve a seat and get information about each one ,you have to logging before',
+		logged_in_button: 'goto reservation page',
+		not_logged_in_button: 'goto login page',
+		description: 'Description',
+		comment: 'Comment',
+		comment_placeholder: 'Please write your comment',
+		services: {
+			title: 'Services',
+			free_services: 'Free Services',
+			paid_services: 'Services'
+		},
+		total_price: 'Total Price',
+		price_per_each_meter: 'Price Per Each Meter',
+		reserve: 'Reserve',
+		seat_types: {
+			selected: 'SELECTED',
+			reserved: 'RESERVED',
+			pending: 'PENDING'
+		},
+		available_area: 'Available Area',
+		measure: {
+			m: 'Meter'
+		},
+		unselect_seat_desc: 'Select a seat to get information about it',
+		privacy_policy: {
+			title: 'Terms of Reservation',
+			accept: 'I accept',
+			decline: 'Decline',
+			checked: "I have read  to the terms and conditions"
+		},
+		login: {
+			title: 'Login',
+			email: 'Email',
+			password: 'Password'
+		}
+	},
+	loggin: {
+		login: 'Login',
+		register: 'Register',
+		forgot_password: 'Forgot password?',
+		reset_password: 'Reset password',
+		change_password: "Change password",
+		send_email: 'Send email',
+
+		Modal: {
+			successMsg: 'Your account has been created successfully',
+			msg: 'Verify your email address to activate your account'
+		},
+		duplicate_password: 'New password must be identical to old one',
+		error: 'invalid email or password'
+	},
+	company_info: {
+		type: 'Company type',
+		logo_url: 'Upload logo',
+		phone_number: 'Phone number',
+		company_name: 'Company name',
+		email: 'Email address',
+		working_field: 'Working field',
+		manager_name: 'Manager name',
+		passport_number: 'Passport number',
+		address: 'Address',
+		string: ""
+	},
+	email_template: {
+		dear: "Dear",
+		thanks: "Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.",
+		detail: {
+			title: "Here are the details of your reservation:",
+			date_time: "Reservation Date and Time:",
+			event: "Exhibition: ",
+			note: "Special Requests or Notes:",
+		},
+		pending: "Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.",
+		help: {
+			header: "In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at",
+			footer: "Our dedicated team is here to assist you and ensure your experience with us is exceptional"
+		},
+		thanks_waiting: "Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request",
+		regards: "Warm regards,",
+		signature: "Suly Expo",
+		contact: {
+			marketing: "Marketing: ",
+			relations: "Relations: ",
+			technical: "Technical: ",
+			administration: "Administration: ",
+			website: "Website: ",
+		}
+
+	}
 } satisfies BaseTranslation;
 
 export default en;

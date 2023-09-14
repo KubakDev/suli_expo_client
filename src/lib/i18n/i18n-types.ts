@@ -20,6 +20,23 @@ type RootTranslation = {
 	 * @param {string} name
 	 */
 	HI: RequiredParams<'name'>
+	validation: {
+		/**
+		 * {​f​i​e​l​d​}​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 * @param {unknown} field
+		 */
+		required: RequiredParams<'field'>
+	}
+	buttons: {
+		/**
+		 * S​u​b​m​i​t
+		 */
+		submit: string
+		/**
+		 * U​p​l​o​a​d​ ​S​h​e​e​t
+		 */
+		upload_sheet: string
+	}
 	/**
 	 * H​o​m​e
 	 */
@@ -101,9 +118,21 @@ type RootTranslation = {
 	 */
 	promo: string
 	/**
-	 * F​i​l​t​e​r
+	 * F​i​l​t​e​r​ ​B​y​ ​E​x​h​i​b​i​t​i​o​n
 	 */
-	filter: string
+	filterByExhibition: string
+	/**
+	 * F​i​l​t​e​r​ ​B​y​ ​D​a​t​e
+	 */
+	filterByDate: string
+	/**
+	 * O​l​d​ ​-​ ​N​e​w
+	 */
+	ascending: string
+	/**
+	 * N​e​w​ ​-​ ​O​l​d
+	 */
+	descending: string
 	/**
 	 * S​e​e​ ​a​l​l
 	 */
@@ -216,6 +245,297 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
+	reservation: {
+		/**
+		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
+		 */
+		reserved: string
+		/**
+		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
+		 */
+		title: string
+		/**
+		 * V​i​e​w​ ​P​D​F​ ​C​o​n​t​r​a​c​t
+		 */
+		contract: string
+		/**
+		 * W​e​l​c​o​m​e
+		 */
+		welcome: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​ ​c​l​i​c​k​ ​g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_description: string
+		/**
+		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​y​o​u​ ​h​a​v​e​ ​t​o​ ​l​o​g​g​i​n​g​ ​b​e​f​o​r​e
+		 */
+		not_logged_in_description: string
+		/**
+		 * g​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 */
+		logged_in_button: string
+		/**
+		 * g​o​t​o​ ​l​o​g​i​n​ ​p​a​g​e
+		 */
+		not_logged_in_button: string
+		/**
+		 * D​e​s​c​r​i​p​t​i​o​n
+		 */
+		description: string
+		/**
+		 * C​o​m​m​e​n​t
+		 */
+		comment: string
+		/**
+		 * P​l​e​a​s​e​ ​w​r​i​t​e​ ​y​o​u​r​ ​c​o​m​m​e​n​t
+		 */
+		comment_placeholder: string
+		services: {
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			title: string
+			/**
+			 * F​r​e​e​ ​S​e​r​v​i​c​e​s
+			 */
+			free_services: string
+			/**
+			 * S​e​r​v​i​c​e​s
+			 */
+			paid_services: string
+		}
+		/**
+		 * T​o​t​a​l​ ​P​r​i​c​e
+		 */
+		total_price: string
+		/**
+		 * P​r​i​c​e​ ​P​e​r​ ​E​a​c​h​ ​M​e​t​e​r
+		 */
+		price_per_each_meter: string
+		/**
+		 * R​e​s​e​r​v​e
+		 */
+		reserve: string
+		seat_types: {
+			/**
+			 * S​E​L​E​C​T​E​D
+			 */
+			selected: string
+			/**
+			 * R​E​S​E​R​V​E​D
+			 */
+			reserved: string
+			/**
+			 * P​E​N​D​I​N​G
+			 */
+			pending: string
+		}
+		/**
+		 * A​v​a​i​l​a​b​l​e​ ​A​r​e​a
+		 */
+		available_area: string
+		measure: {
+			/**
+			 * M​e​t​e​r
+			 */
+			m: string
+		}
+		/**
+		 * S​e​l​e​c​t​ ​a​ ​s​e​a​t​ ​t​o​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​i​t
+		 */
+		unselect_seat_desc: string
+		privacy_policy: {
+			/**
+			 * T​e​r​m​s​ ​o​f​ ​R​e​s​e​r​v​a​t​i​o​n
+			 */
+			title: string
+			/**
+			 * I​ ​a​c​c​e​p​t
+			 */
+			accept: string
+			/**
+			 * D​e​c​l​i​n​e
+			 */
+			decline: string
+			/**
+			 * I​ ​h​a​v​e​ ​r​e​a​d​ ​ ​t​o​ ​t​h​e​ ​t​e​r​m​s​ ​a​n​d​ ​c​o​n​d​i​t​i​o​n​s
+			 */
+			checked: string
+		}
+		login: {
+			/**
+			 * L​o​g​i​n
+			 */
+			title: string
+			/**
+			 * E​m​a​i​l
+			 */
+			email: string
+			/**
+			 * P​a​s​s​w​o​r​d
+			 */
+			password: string
+		}
+	}
+	loggin: {
+		/**
+		 * L​o​g​i​n
+		 */
+		login: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		register: string
+		/**
+		 * F​o​r​g​o​t​ ​p​a​s​s​w​o​r​d​?
+		 */
+		forgot_password: string
+		/**
+		 * R​e​s​e​t​ ​p​a​s​s​w​o​r​d
+		 */
+		reset_password: string
+		/**
+		 * C​h​a​n​g​e​ ​p​a​s​s​w​o​r​d
+		 */
+		change_password: string
+		/**
+		 * S​e​n​d​ ​e​m​a​i​l
+		 */
+		send_email: string
+		Modal: {
+			/**
+			 * Y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			successMsg: string
+			/**
+			 * V​e​r​i​f​y​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s​ ​t​o​ ​a​c​t​i​v​a​t​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t
+			 */
+			msg: string
+		}
+		/**
+		 * N​e​w​ ​p​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​i​d​e​n​t​i​c​a​l​ ​t​o​ ​o​l​d​ ​o​n​e
+		 */
+		duplicate_password: string
+		/**
+		 * i​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
+		 */
+		error: string
+	}
+	company_info: {
+		/**
+		 * C​o​m​p​a​n​y​ ​t​y​p​e
+		 */
+		type: string
+		/**
+		 * U​p​l​o​a​d​ ​l​o​g​o
+		 */
+		logo_url: string
+		/**
+		 * P​h​o​n​e​ ​n​u​m​b​e​r
+		 */
+		phone_number: string
+		/**
+		 * C​o​m​p​a​n​y​ ​n​a​m​e
+		 */
+		company_name: string
+		/**
+		 * E​m​a​i​l​ ​a​d​d​r​e​s​s
+		 */
+		email: string
+		/**
+		 * W​o​r​k​i​n​g​ ​f​i​e​l​d
+		 */
+		working_field: string
+		/**
+		 * M​a​n​a​g​e​r​ ​n​a​m​e
+		 */
+		manager_name: string
+		/**
+		 * P​a​s​s​p​o​r​t​ ​n​u​m​b​e​r
+		 */
+		passport_number: string
+		/**
+		 * A​d​d​r​e​s​s
+		 */
+		address: string
+		string: string
+	}
+	email_template: {
+		/**
+		 * D​e​a​r
+		 */
+		dear: string
+		/**
+		 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​c​h​o​o​s​i​n​g​ ​t​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​t​h​r​o​u​g​h​ ​o​u​r​ ​w​e​b​s​i​t​e​.​ ​W​e​ ​a​r​e​ ​d​e​l​i​g​h​t​e​d​ ​t​h​a​t​ ​y​o​u​ ​h​a​v​e​ ​c​o​n​s​i​d​e​r​e​d​ ​S​u​l​y​ ​E​x​p​o​ ​f​o​r​ ​y​o​u​r​ ​u​p​c​o​m​i​n​g​ ​p​l​a​n​s​.​ ​T​h​i​s​ ​e​m​a​i​l​ ​i​s​ ​t​o​ ​c​o​n​f​i​r​m​ ​t​h​a​t​ ​w​e​ ​h​a​v​e​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​r​e​q​u​e​s​t​.
+		 */
+		thanks: string
+		detail: {
+			/**
+			 * H​e​r​e​ ​a​r​e​ ​t​h​e​ ​d​e​t​a​i​l​s​ ​o​f​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​:
+			 */
+			title: string
+			/**
+			 * R​e​s​e​r​v​a​t​i​o​n​ ​D​a​t​e​ ​a​n​d​ ​T​i​m​e​:
+			 */
+			date_time: string
+			/**
+			 * E​x​h​i​b​i​t​i​o​n​:​ 
+			 */
+			event: string
+			/**
+			 * S​p​e​c​i​a​l​ ​R​e​q​u​e​s​t​s​ ​o​r​ ​N​o​t​e​s​:
+			 */
+			note: string
+		}
+		/**
+		 * P​l​e​a​s​e​ ​n​o​t​e​ ​t​h​a​t​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​i​s​ ​c​u​r​r​e​n​t​l​y​ ​p​e​n​d​i​n​g​ ​c​o​n​f​i​r​m​a​t​i​o​n​.​ ​O​u​r​ ​t​e​a​m​ ​w​i​l​l​ ​c​a​r​e​f​u​l​l​y​ ​r​e​v​i​e​w​ ​y​o​u​r​ ​r​e​q​u​e​s​t​,​ ​a​n​d​ ​w​e​ ​w​i​l​l​ ​n​o​t​i​f​y​ ​y​o​u​ ​a​s​ ​s​o​o​n​ ​a​s​ ​p​o​s​s​i​b​l​e​ ​r​e​g​a​r​d​i​n​g​ ​t​h​e​ ​s​t​a​t​u​s​ ​o​f​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​.
+		 */
+		pending: string
+		help: {
+			/**
+			 * I​n​ ​t​h​e​ ​m​e​a​n​t​i​m​e​,​ ​i​f​ ​y​o​u​ ​h​a​v​e​ ​a​n​y​ ​q​u​e​s​t​i​o​n​s​ ​o​r​ ​n​e​e​d​ ​t​o​ ​m​a​k​e​ ​c​h​a​n​g​e​s​ ​t​o​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​,​ ​p​l​e​a​s​e​ ​d​o​ ​n​o​t​ ​h​e​s​i​t​a​t​e​ ​t​o​ ​c​o​n​t​a​c​t​ ​u​s​ ​a​t
+			 */
+			header: string
+			/**
+			 * O​u​r​ ​d​e​d​i​c​a​t​e​d​ ​t​e​a​m​ ​i​s​ ​h​e​r​e​ ​t​o​ ​a​s​s​i​s​t​ ​y​o​u​ ​a​n​d​ ​e​n​s​u​r​e​ ​y​o​u​r​ ​e​x​p​e​r​i​e​n​c​e​ ​w​i​t​h​ ​u​s​ ​i​s​ ​e​x​c​e​p​t​i​o​n​a​l
+			 */
+			footer: string
+		}
+		/**
+		 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​c​h​o​o​s​i​n​g​ ​S​u​l​y​ ​E​x​p​o​.​ ​W​e​ ​l​o​o​k​ ​f​o​r​w​a​r​d​ ​t​o​ ​t​h​e​ ​p​o​s​s​i​b​i​l​i​t​y​ ​o​f​ ​h​o​s​t​i​n​g​ ​y​o​u​ ​a​n​d​ ​p​r​o​v​i​d​i​n​g​ ​y​o​u​ ​w​i​t​h​ ​a​n​ ​u​n​f​o​r​g​e​t​t​a​b​l​e​ ​e​x​p​e​r​i​e​n​c​e​.​ ​Y​o​u​r​ ​s​a​t​i​s​f​a​c​t​i​o​n​ ​i​s​ ​o​u​r​ ​t​o​p​ ​p​r​i​o​r​i​t​y​,​ ​a​n​d​ ​w​e​ ​w​i​l​l​ ​d​o​ ​o​u​r​ ​u​t​m​o​s​t​ ​t​o​ ​a​c​c​o​m​m​o​d​a​t​e​ ​y​o​u​r​ ​r​e​q​u​e​s​t
+		 */
+		thanks_waiting: string
+		/**
+		 * W​a​r​m​ ​r​e​g​a​r​d​s​,
+		 */
+		regards: string
+		/**
+		 * S​u​l​y​ ​E​x​p​o
+		 */
+		signature: string
+		contact: {
+			/**
+			 * M​a​r​k​e​t​i​n​g​:​ 
+			 */
+			marketing: string
+			/**
+			 * R​e​l​a​t​i​o​n​s​:​ 
+			 */
+			relations: string
+			/**
+			 * T​e​c​h​n​i​c​a​l​:​ 
+			 */
+			technical: string
+			/**
+			 * A​d​m​i​n​i​s​t​r​a​t​i​o​n​:​ 
+			 */
+			administration: string
+			/**
+			 * W​e​b​s​i​t​e​:​ 
+			 */
+			website: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -223,6 +543,22 @@ export type TranslationFunctions = {
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
 	 */
 	HI: (arg: { name: string }) => LocalizedString
+	validation: {
+		/**
+		 * {field} is required
+		 */
+		required: (arg: { field: unknown }) => LocalizedString
+	}
+	buttons: {
+		/**
+		 * Submit
+		 */
+		submit: () => LocalizedString
+		/**
+		 * Upload Sheet
+		 */
+		upload_sheet: () => LocalizedString
+	}
 	/**
 	 * Home
 	 */
@@ -304,9 +640,21 @@ export type TranslationFunctions = {
 	 */
 	promo: () => LocalizedString
 	/**
-	 * Filter
+	 * Filter By Exhibition
 	 */
-	filter: () => LocalizedString
+	filterByExhibition: () => LocalizedString
+	/**
+	 * Filter By Date
+	 */
+	filterByDate: () => LocalizedString
+	/**
+	 * Old - New
+	 */
+	ascending: () => LocalizedString
+	/**
+	 * New - Old
+	 */
+	descending: () => LocalizedString
 	/**
 	 * See all
 	 */
@@ -419,6 +767,297 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
+	reservation: {
+		/**
+		 * Your request has been successfully received, please wait for our contact
+		 */
+		reserved: () => LocalizedString
+		/**
+		 * Exhibition Seats
+		 */
+		title: () => LocalizedString
+		/**
+		 * View PDF Contract
+		 */
+		contract: () => LocalizedString
+		/**
+		 * Welcome
+		 */
+		welcome: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one , click goto reservation page
+		 */
+		logged_in_description: () => LocalizedString
+		/**
+		 * To reserve a seat and get information about each one ,you have to logging before
+		 */
+		not_logged_in_description: () => LocalizedString
+		/**
+		 * goto reservation page
+		 */
+		logged_in_button: () => LocalizedString
+		/**
+		 * goto login page
+		 */
+		not_logged_in_button: () => LocalizedString
+		/**
+		 * Description
+		 */
+		description: () => LocalizedString
+		/**
+		 * Comment
+		 */
+		comment: () => LocalizedString
+		/**
+		 * Please write your comment
+		 */
+		comment_placeholder: () => LocalizedString
+		services: {
+			/**
+			 * Services
+			 */
+			title: () => LocalizedString
+			/**
+			 * Free Services
+			 */
+			free_services: () => LocalizedString
+			/**
+			 * Services
+			 */
+			paid_services: () => LocalizedString
+		}
+		/**
+		 * Total Price
+		 */
+		total_price: () => LocalizedString
+		/**
+		 * Price Per Each Meter
+		 */
+		price_per_each_meter: () => LocalizedString
+		/**
+		 * Reserve
+		 */
+		reserve: () => LocalizedString
+		seat_types: {
+			/**
+			 * SELECTED
+			 */
+			selected: () => LocalizedString
+			/**
+			 * RESERVED
+			 */
+			reserved: () => LocalizedString
+			/**
+			 * PENDING
+			 */
+			pending: () => LocalizedString
+		}
+		/**
+		 * Available Area
+		 */
+		available_area: () => LocalizedString
+		measure: {
+			/**
+			 * Meter
+			 */
+			m: () => LocalizedString
+		}
+		/**
+		 * Select a seat to get information about it
+		 */
+		unselect_seat_desc: () => LocalizedString
+		privacy_policy: {
+			/**
+			 * Terms of Reservation
+			 */
+			title: () => LocalizedString
+			/**
+			 * I accept
+			 */
+			accept: () => LocalizedString
+			/**
+			 * Decline
+			 */
+			decline: () => LocalizedString
+			/**
+			 * I have read  to the terms and conditions
+			 */
+			checked: () => LocalizedString
+		}
+		login: {
+			/**
+			 * Login
+			 */
+			title: () => LocalizedString
+			/**
+			 * Email
+			 */
+			email: () => LocalizedString
+			/**
+			 * Password
+			 */
+			password: () => LocalizedString
+		}
+	}
+	loggin: {
+		/**
+		 * Login
+		 */
+		login: () => LocalizedString
+		/**
+		 * Register
+		 */
+		register: () => LocalizedString
+		/**
+		 * Forgot password?
+		 */
+		forgot_password: () => LocalizedString
+		/**
+		 * Reset password
+		 */
+		reset_password: () => LocalizedString
+		/**
+		 * Change password
+		 */
+		change_password: () => LocalizedString
+		/**
+		 * Send email
+		 */
+		send_email: () => LocalizedString
+		Modal: {
+			/**
+			 * Your account has been created successfully
+			 */
+			successMsg: () => LocalizedString
+			/**
+			 * Verify your email address to activate your account
+			 */
+			msg: () => LocalizedString
+		}
+		/**
+		 * New password must be identical to old one
+		 */
+		duplicate_password: () => LocalizedString
+		/**
+		 * invalid email or password
+		 */
+		error: () => LocalizedString
+	}
+	company_info: {
+		/**
+		 * Company type
+		 */
+		type: () => LocalizedString
+		/**
+		 * Upload logo
+		 */
+		logo_url: () => LocalizedString
+		/**
+		 * Phone number
+		 */
+		phone_number: () => LocalizedString
+		/**
+		 * Company name
+		 */
+		company_name: () => LocalizedString
+		/**
+		 * Email address
+		 */
+		email: () => LocalizedString
+		/**
+		 * Working field
+		 */
+		working_field: () => LocalizedString
+		/**
+		 * Manager name
+		 */
+		manager_name: () => LocalizedString
+		/**
+		 * Passport number
+		 */
+		passport_number: () => LocalizedString
+		/**
+		 * Address
+		 */
+		address: () => LocalizedString
+		string: () => LocalizedString
+	}
+	email_template: {
+		/**
+		 * Dear
+		 */
+		dear: () => LocalizedString
+		/**
+		 * Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.
+		 */
+		thanks: () => LocalizedString
+		detail: {
+			/**
+			 * Here are the details of your reservation:
+			 */
+			title: () => LocalizedString
+			/**
+			 * Reservation Date and Time:
+			 */
+			date_time: () => LocalizedString
+			/**
+			 * Exhibition: 
+			 */
+			event: () => LocalizedString
+			/**
+			 * Special Requests or Notes:
+			 */
+			note: () => LocalizedString
+		}
+		/**
+		 * Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.
+		 */
+		pending: () => LocalizedString
+		help: {
+			/**
+			 * In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at
+			 */
+			header: () => LocalizedString
+			/**
+			 * Our dedicated team is here to assist you and ensure your experience with us is exceptional
+			 */
+			footer: () => LocalizedString
+		}
+		/**
+		 * Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request
+		 */
+		thanks_waiting: () => LocalizedString
+		/**
+		 * Warm regards,
+		 */
+		regards: () => LocalizedString
+		/**
+		 * Suly Expo
+		 */
+		signature: () => LocalizedString
+		contact: {
+			/**
+			 * Marketing: 
+			 */
+			marketing: () => LocalizedString
+			/**
+			 * Relations: 
+			 */
+			relations: () => LocalizedString
+			/**
+			 * Technical: 
+			 */
+			technical: () => LocalizedString
+			/**
+			 * Administration: 
+			 */
+			administration: () => LocalizedString
+			/**
+			 * Website: 
+			 */
+			website: () => LocalizedString
+		}
+	}
 }
 
 export type Formatters = {}

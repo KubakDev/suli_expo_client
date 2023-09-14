@@ -1,37 +1,99 @@
-<!-- MailTemplate.svelte -->
-<script lang="ts">
-	import moment from "moment";
 
-  export let description: string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis mollitia accusantium voluptatum ipsam provident quo ut labore. Molestiae quaerat, mollitia perferendis nobis iste fugiat optio, quod nostrum id distinctio rem!";
-  export let dates: Date = new Date();
+<script lang="ts">
+	import moment from 'moment';
+	import type { ExhibitionModel } from '../../models/exhibitionModel';
+	import type { CompanyModel } from '../../routes/company-registration/models/company';
+	import type { ReserveSeatModel } from '../../models/reserveSeat';
+	import { contactInfoSectionStore } from '../../stores/contactInfo';
+	import { locale, LL } from '$lib/i18n/i18n-svelte';
+
+	export let exhibition: ExhibitionModel;
+	export let companyData: CompanyModel;
+	export let reserveSeatData: ReserveSeatModel;
 </script>
 
-<style>
-  /* Add custom styles or override Tailwind CSS classes here */
-</style>
+<div style={$locale == 'ar' || $locale == 'ckb' ? 'direction: rtl' : ''}>
+	<p>
+		{$LL.email_template.dear()}
+		<span style="color:#e1b168;font-weight: bold;">{companyData?.company_name?.toUpperCase()}</span>
+	</p>
 
-<div class="bg-gray-200 shadow-md rounded p-8 mb-4 flex flex-col h-full ">
-  <!-- Header -->
-  <div class="mb-4">
-    <h1 class="block text-primary-600 font-bold mb-2 text-4xl">Suly Expo</h1>
-  </div>
+	<p>
+		{$LL.email_template.thanks()}
+	</p>
 
-  <!-- Picture and Description -->
-  <div class="mb-6 flex items-start h-[30vh] w-full flex-1 ">
-    <img src="../../../images/suliexpo.jpg" alt="Picture" class="w-64 h-[30vh] object-cover rounded-lg mr-4">
-    <div class="w-full flex-1 bg-slate-100 p-2 rounded-md">
-      <p class="text-gray-800 text-lg text-justify">{description} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt impedit eius optio ullam, 
-        asperiores velit ratione. Libero, illo distinctio quae dignissimos asperiores obcaecati accusantium provident laborum minima, dolorum quasi iusto? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Amet consequatur velit omnis veritatis provident magnam minima assumenda nobis impedit quibusdam, quae illum ut neque harum eveniet sequi incidunt cum aut?</p>
-    </div>
-  </div>
+	<p>{$LL.email_template.detail.title()}</p>
+	<ul>
+		<li>
+			<span style="font-weight: bold;">{$LL.email_template.detail.date_time()} </span>
+			{moment(new Date()).format('DD-MM-YYYY  HH:SS:MM')}
+		</li>
+		<li>
+			<span style="font-weight: bold;">{$LL.email_template.detail.event()}</span>
+			{exhibition?.title}
+		</li>
+		<li>
+			<span style="font-weight: bold;"
+				>{$LL.email_template.detail.note()}
+			</span>{reserveSeatData.comment}
+		</li>
+	</ul>
 
-  <!-- Footer with sorted dates and icons -->
-  <div class="flex items-center justify-between bg-slate-900 w-full h-full">
-    <div class="flex items-center space-x-2">
-      <!-- Add your footer icons here -->
-      <span class="text-gray-600 text-lg">📅</span>
-      <p class="text-gray-600 text-xs">{moment(dates).format('DD MMMM YYYY, h:mm:ss')}</p>
-    </div>
-  </div>
+	<p>
+		{$LL.email_template.pending()}
+	</p>
+
+	<p>
+		{$LL.email_template.help.header()}
+		<span style="color:#e1b168; font-weight:bold">
+			{$contactInfoSectionStore[0]?.email}
+		</span>
+		,
+		<span style="color:#e1b168; font-weight:bold">
+			{$contactInfoSectionStore[0]?.phoneNumber_marketing}
+		</span>
+		{$LL.email_template.help.footer()}
+	</p>
+
+	<p>
+		{$LL.email_template.thanks_waiting()}
+	</p>
+
+	<p>{$LL.email_template.regards()}</p>
+	<p>{$LL.email_template.signature()}</p>
+	{#if $contactInfoSectionStore}
+		{#each $contactInfoSectionStore as info}
+			<div>
+				<li>
+					<span style="color:#e1b168; font-weight:bold">
+						{$LL.email_template.contact.marketing()}
+					</span>
+					{info.phoneNumber_marketing}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.relations()}
+					</span>
+					{info.phoneNumber_relations}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.technical()}
+					</span>
+					{info.phoneNumber_Technical}
+				</li>
+				<li>
+					<span style="color:#e1b168; font-weight:bold"
+						>{$LL.email_template.contact.administration()}</span
+					>
+					{info.phoneNumber_Administration}
+				</li>
+			</div>
+		{/each}
+	{/if}
+	<p>
+		{$LL.email_template.contact.website()}
+		<a href={import.meta.env.VITE_BASE_URL}>{import.meta.env.VITE_BASE_URL}</a>
+	</p>
 </div>
+

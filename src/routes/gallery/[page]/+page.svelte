@@ -16,9 +16,12 @@
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { themeToggle } from '../../../stores/darkMode';
+	import Filters from '$lib/components/Filters.svelte';
+	import { ascStore } from '../../../stores/ascStore';
+
 	export let data: any;
 	let CardComponent: any;
-	let asc: boolean = false;
+	let asc = ascStore;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -35,8 +38,15 @@
 	$: {
 		if ($locale) {
 			const currentPage = $page.params.page;
-			galleryStore.get($locale, data.supabase, currentPage, undefined, asc);
+			galleryStore.get($locale, data.supabase, currentPage, undefined, $asc);
 		}
+	}
+
+	$:{
+		if (asc) {
+            const currentPage = $page.params.page;
+            galleryStore.get($locale, data.supabase, currentPage, undefined, $asc);
+        }
 	}
 
 	onMount(async () => {
@@ -48,7 +58,7 @@
 			galleryUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		await galleryStore.get($locale, data.supabase, $page.params.page, undefined, asc);
+		await galleryStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
 	});
 
 	// Navigate to newsDetail page
@@ -60,43 +70,11 @@
 	function changePage(page: number) {
 		goto(`/gallery/${page}`);
 	}
-	async function changeOrder() {
-		asc = !asc;
-		galleryStore.get($locale, data.supabase, $page.params.page, undefined, asc);
-	}
 </script>
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-start mb-12">
-		<div class="p-2 text-center w-full">
-			{#if asc}
-				<button
-					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-galleryLightPrimaryColor dark:bg-galleryDarkPrimaryColor"
-				>
-					<ArrowUp size="30" class="transition-all hover:animate-pulse text-galleryLightBackgroundColor dark:text-galleryDarkBackgroundColor" />
-
-					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-galleryLightBackgroundColor dark:text-galleryDarkBackgroundColor"
-						>Old - New</span
-					>
-				</button>
-			{:else}
-				<button
-					on:click={changeOrder}
-					class="flex flex-row items-center justify-center p-2 rounded-full bg-galleryLightPrimaryColor dark:bg-galleryDarkPrimaryColor"
-				>
-					<ArrowDown
-						size="30"
-						class="transition-all hover:animate-pulse text-galleryLightBackgroundColor dark:text-galleryDarkBackgroundColor"
-					/>
-					<span
-						class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-galleryLightBackgroundColor dark:text-galleryDarkBackgroundColor"
-						>New - Old</span
-					>
-				</button>
-			{/if}
-		</div>
+		<Filters />
 		<div
 			in:fade={{ duration: 800 }}
 			out:fade={{ duration: 400 }}

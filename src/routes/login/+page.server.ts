@@ -9,6 +9,7 @@ export const actions = {
         const formData = await request.formData();
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
+
         if (!email) {
             const errors = 'email required';
             return {
@@ -39,7 +40,6 @@ export const actions = {
             email,
             password
         });
-
         if (error) {
             if (error instanceof AuthApiError && error.status === 400) {
                 const errors = error.message;
@@ -50,14 +50,15 @@ export const actions = {
                 };
             }
             const errors = error.message;
+            const errorCode = error.code;
             return {
                 email,
                 password,
-                errors
+                errors,
+                errorCode
             };
         } else {
             throw redirect(303, 'company-registration');
-
         }
     },
 

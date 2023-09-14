@@ -1,8 +1,6 @@
 // src/routes/+layout.server.ts
 import { redirect } from '@sveltejs/kit';
-import { page } from '$app/stores';
 const langParam = 'lang';
-
 import type { LayoutServerLoad } from './$types';
 import { detectLocale } from '$lib/i18n/i18n-util';
 export const load: LayoutServerLoad = async ({ locals: { getSession }, url, cookies }) => {

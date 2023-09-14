@@ -1,5 +1,4 @@
 // src/hooks.server.ts
-
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Handle } from '@sveltejs/kit';
 
@@ -20,6 +19,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
     return session;
   };
+  
 
   return resolve(event, {
     filterSerializedResponseHeaders(name) {
