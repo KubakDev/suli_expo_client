@@ -16,6 +16,8 @@
 		area: string;
 		quantity: number;
 	}[] = [];
+	let totalPrice = 0;
+	let pricePerMeter: number = 0;
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -30,6 +32,7 @@
 	};
 
 	onMount(() => {
+		pricePerMeter = data.seat_layout[0].price_per_meter;
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
@@ -53,6 +56,11 @@
 				quantity: number
 			});
 		}
+		reservedSeatData = { ...reservedSeatData };
+		totalPrice = 0;
+		reservedSeatData.area.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +pricePerMeter * +seatArea.area;
+		});
 	}
 	function handleFileUpload(file: { detail: File }) {
 		reservedSeatData.file = file.detail;
@@ -65,24 +73,41 @@
 		alt="not found"
 		class="w-full h-[500px] object-cover rounded-lg"
 	/>
-	<p class="mt-8 text-3xl mb-4">{$LL.reservation.available_area()}</p>
-	{#each areas as availableSeatArea, index}
-		<div class="flex flex-wrap items-center my-2">
-			<p class="min-w-[120px] text-start text-2xl font-medium">
-				{availableSeatArea.area}
-				{$LL.reservation.measure.m()}
-			</p>
-			<div class="mx-6">
-				<InputNumberButton
-					on:numberChanged={(number) => {
-						addAreaToReservedSeatData(index, +number.detail);
-					}}
-					serviceQuantity={availableSeatArea.quantity}
-					maxQuantityPerUser={availableSeatArea.quantity}
-				/>
-			</div>
+	<div>
+		<div class="w-full flex items-center my-8 justify-between">
+			<p class=" text-3xl">{$LL.reservation.available_area()}</p>
+			<p class="mx-6 text-xl">price per each meter :{pricePerMeter}</p>
 		</div>
-	{/each}
+		{#each areas as availableSeatArea, index}
+			<div class="flex flex-wrap items-center my-2">
+				<p class="min-w-[120px] text-start text-2xl font-medium my-2">
+					{availableSeatArea.area}
+					{$LL.reservation.measure.m()}
+				</p>
+				<div class="mx-6 my-2">
+					<InputNumberButton
+						on:numberChanged={(number) => {
+							addAreaToReservedSeatData(index, +number.detail);
+						}}
+						serviceQuantity={availableSeatArea.quantity}
+						maxQuantityPerUser={availableSeatArea.quantity}
+					/>
+				</div>
+				<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
+					{+pricePerMeter * +availableSeatArea.area} $
+				</p>
+				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+					{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
+						(+pricePerMeter * +availableSeatArea.area)}$
+				</p>
+			</div>
+		{/each}
+		<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
+			<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
+				{$LL.reservation.total_price()} : {totalPrice}$
+			</p>
+		</div>
+	</div>
 	<p class="text-3xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
 		{$LL.reservation.comment()}
 	</p>
