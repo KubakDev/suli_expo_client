@@ -142,6 +142,7 @@
 				if (allFieldsPresent) {
 				} else {
 					let id = $currentUser.id;
+					console.log('id', $currentUser);
 					goto(`/exhibition/reserve/register/${id}`);
 				}
 			} catch (error) {

@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import moment from 'moment';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
@@ -95,3 +96,4 @@
 		<a href={import.meta.env.VITE_BASE_URL}>{import.meta.env.VITE_BASE_URL}</a>
 	</p>
 </div>
+

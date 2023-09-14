@@ -14,7 +14,7 @@
 	export let data;
 	let video: VideoModel | undefined | null;
 	let thumbnailUrl: string[];
-	
+
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
@@ -22,9 +22,7 @@
 		video = await videoStore.getSingle($locale, data.supabase, $page.params.videoId);
 		videoStore.get($locale, data.supabase, '1', 8, false);
 
-		thumbnailUrl = $videoStore.data.map((item) => {
-			return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
-		});
+		await thumbnailChanging();
 	}
 
 	$: {
@@ -33,8 +31,8 @@
 		}
 	}
 
-	$:{
-		if($videoStore?.data){
+	$: {
+		if ($videoStore?.data) {
 			thumbnailChanging();
 		}
 	}
@@ -43,19 +41,19 @@
 		getVideos();
 	});
 
-	// get the YouTube ID from the URL
-	function getYouTubeId(url: string): string | null {
-		const match = youtubeRegex.exec(url);
-
-		return match ? match[1] : null;
-	}
-
 	async function thumbnailChanging() {
 		if ($videoStore?.data) {
 			thumbnailUrl = $videoStore.data.map((item) => {
 				return `https://img.youtube.com/vi/${getYouTubeId(item?.link ?? '')}/hqdefault.jpg`;
 			});
 		}
+	}
+
+	// get the YouTube ID from the URL
+	function getYouTubeId(url: string): string | null {
+		const match = youtubeRegex.exec(url);
+
+		return match ? match[1] : null;
 	}
 </script>
 
@@ -81,7 +79,7 @@
 					<RecentItems
 						title={$LL.videos()}
 						items={$videoStore.data.map((video) => modelToItemModel(video))}
-						pageType={'videos'}
+						pageType={'video'}
 						youtubeThumbnail={thumbnailUrl}
 					/>
 				</div>

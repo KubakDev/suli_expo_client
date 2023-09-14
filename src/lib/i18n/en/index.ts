@@ -84,6 +84,7 @@ const en = {
 			paid_services: 'Services'
 		},
 		total_price: 'Total Price',
+		price_per_each_meter: 'Price Per Each Meter',
 		reserve: 'Reserve',
 		seat_types: {
 			selected: 'SELECTED',

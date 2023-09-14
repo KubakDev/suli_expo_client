@@ -240,6 +240,5 @@
 		<div class="w-full flex justify-end mt-2">
 			<Button on:click={handleUpdate} type="button">{$LL.buttons.submit()}</Button>
 		</div>
-		<!-- </div> -->
 	</div>
 </form>

@@ -43,6 +43,7 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
+					currentUser.set(res.data);
 					goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 				}
 			});
