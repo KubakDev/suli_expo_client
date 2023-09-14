@@ -18,6 +18,7 @@ export interface ExhibitionModel {
 	seat_layout?: any;
 	pdf_files: string;
 	contract_file: string;
+
 	start_date?: Date;
 	end_date?: Date;
 	story?: string;
