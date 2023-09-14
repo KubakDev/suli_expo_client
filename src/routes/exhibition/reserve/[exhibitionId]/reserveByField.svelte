@@ -76,7 +76,7 @@
 	<div>
 		<div class="w-full flex items-center my-8 justify-between">
 			<p class=" text-3xl">{$LL.reservation.available_area()}</p>
-			<p class="mx-6 text-xl">price per each meter :{pricePerMeter}</p>
+			<p class="mx-6 text-xl">{$LL.reservation.price_per_each_meter()}:{pricePerMeter}</p>
 		</div>
 		{#each areas as availableSeatArea, index}
 			<div class="flex flex-wrap items-center my-2">

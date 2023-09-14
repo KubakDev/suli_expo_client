@@ -309,6 +309,10 @@ type RootTranslation = {
 		 */
 		total_price: string
 		/**
+		 * P​r​i​c​e​ ​P​e​r​ ​E​a​c​h​ ​M​e​t​e​r
+		 */
+		price_per_each_meter: string
+		/**
 		 * R​e​s​e​r​v​e
 		 */
 		reserve: string
@@ -826,6 +830,10 @@ export type TranslationFunctions = {
 		 * Total Price
 		 */
 		total_price: () => LocalizedString
+		/**
+		 * Price Per Each Meter
+		 */
+		price_per_each_meter: () => LocalizedString
 		/**
 		 * Reserve
 		 */

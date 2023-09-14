@@ -85,6 +85,7 @@ const ckb = {
 			paid_services: 'خزمەتگوزاریەکان'
 		},
 		total_price: 'کۆی گشتی',
+		price_per_each_meter: "نرخی هەر مەترێک",
 		reserve: 'بەکرێ گرتن',
 		seat_types: {
 			selected: 'دەستنیشانکراو',
