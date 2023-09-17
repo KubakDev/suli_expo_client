@@ -29,6 +29,7 @@ export const actions: Actions = {
 			};
 		}
 		console.log('existingUsersdf dsfg sdg ')
+		console.log("baseurl",import.meta.env.VITE_BASE_URL)
 		const { data, error: err } = await locals.supabase.auth.signUp({
 			email: body.email as string,
 			password: body.password as string,
