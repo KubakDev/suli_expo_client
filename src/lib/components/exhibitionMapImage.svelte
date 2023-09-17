@@ -4,8 +4,9 @@
 	import { goto } from '$app/navigation';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { onMount } from 'svelte';
+	import type { ExhibitionModel } from '../../models/exhibitionModel';
 
-	export let exhibition: any = { image_map: '' };
+	export let exhibition: ExhibitionModel;
 
 	function gotoLogin() {
 		localStorage.setItem('redirect', '/exhibition/reserve/' + exhibition.id);
@@ -43,7 +44,13 @@
 						<h2 class="text-xl mb-5 text-white">
 							{$LL.reservation.logged_in_description()}
 						</h2>
-
+						{#if exhibition?.seat_layout.length == 0}
+						<Button
+							disabled
+						>
+							{$LL.reservation.logged_in_button()}
+						</Button>
+						{:else}
 						<Button
 							on:click={() => {
 								goto('/exhibition/reserve/' + exhibition.id);
@@ -51,6 +58,7 @@
 						>
 							{$LL.reservation.logged_in_button()}
 						</Button>
+						{/if}
 					{:else}
 						<h2 class="text-xl font-bold mb-5 text-white">
 							{$LL.reservation.not_logged_in_description()}
@@ -58,6 +66,7 @@
 
 						<Button on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button>
 					{/if}
+					{#if exhibition.contract_file}
 					<Button
 						class="mt-5"
 						on:click={() => {
@@ -66,6 +75,14 @@
 					>
 						{$LL.reservation.contract()}
 					</Button>
+					{:else}
+					<Button
+					disabled
+						class="mt-5"
+					>
+						{$LL.reservation.contract()}
+					</Button>
+					{/if}
 				</div>
 			</div>
 		</div>

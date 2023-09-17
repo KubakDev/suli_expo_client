@@ -64,6 +64,7 @@ const en = {
 	videos: 'Videos',
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
+	total_company_reserve: 'Total Company Reserve',
 	reservation: {
 		reserved: "Your request has been successfully received, please wait for our contact",
 		title: 'Exhibition Seats',

@@ -245,6 +245,10 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
+	/**
+	 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
+	 */
+	total_company_reserve: string
 	reservation: {
 		/**
 		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
@@ -767,6 +771,10 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
+	/**
+	 * Total Company Reserve
+	 */
+	total_company_reserve: () => LocalizedString
 	reservation: {
 		/**
 		 * Your request has been successfully received, please wait for our contact
