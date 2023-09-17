@@ -141,8 +141,8 @@
 
 			let requiredFields: string[] = response.data[0].fields;
 
-			// setRequiredFields(requiredFields);
-			// setExhibitionID(response.data[0].exhibition_id);
+			setRequiredFields(requiredFields);
+			setExhibitionID(response.data[0].exhibition_id);
 
 			 allFieldsPresent = requiredFields.every((field: any) => {
 				return $currentUser[field] && $currentUser[field].trim() !== '';
