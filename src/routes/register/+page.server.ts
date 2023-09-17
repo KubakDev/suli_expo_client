@@ -30,14 +30,16 @@ export const actions: Actions = {
 		}
 		console.log('existingUsersdf dsfg sdg ')
 		console.log("baseurl",import.meta.env.VITE_BASE_URL)
+		console.log("email",body.email)
+		console.log("password",body.password)
+		console.log("locals",locals)
+		console.log("request",request)
 		try{
 
 			const { data, error: err } = await locals.supabase.auth.signUp({
 				email: body.email as string,
 				password: body.password as string,
-				options: {
-					emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
-				}
+				
 			});
 			console.log('email is kak rovar', data) 
 			console.log('email is kak rovar error', err) 
