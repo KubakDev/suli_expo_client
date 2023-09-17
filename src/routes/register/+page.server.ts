@@ -1,7 +1,6 @@
-
 import { AuthApiError } from '@supabase/supabase-js';
 import { fail, type Actions, redirect } from '@sveltejs/kit';
-
+import { response } from 'express';
 
 export const actions: Actions = {
 	register: async ({ request, locals }) => {
@@ -14,8 +13,8 @@ export const actions: Actions = {
 			.eq('email', body.email as string)
 			.limit(1);
 
-		console.log('existingUser', existingUser)
-		console.log('userError', userError)
+		console.log('existingUser', existingUser);
+		console.log('userError', userError);
 		if (userError) {
 			return fail(500, {
 				errors: 'this user exist already'
@@ -28,22 +27,26 @@ export const actions: Actions = {
 					'User exists with this email. If you recognize this email, Click on the login button.'
 			};
 		}
-		console.log('existingUsersdf dsfg sdg ')
-		console.log("baseurl",import.meta.env.VITE_BASE_URL)
-		console.log("email",body.email)
-		console.log("password",body.password)
-		console.log("locals",locals)
-		try{
-
+		console.log('existingUsersdf dsfg sdg ');
+		console.log('baseurl', import.meta.env.VITE_BASE_URL);
+		console.log('email', body.email);
+		console.log('password', body.password);
+		console.log('locals', locals);
+		await locals.supabase.auth
+			.signUp({ email: body.email as string, password: body.password as string })
+			.then(response=>{
+				console.log('responseeee', response);
+			}).catch((error)=>{
+				console.log("errorrr",error)
+			})
+		try {
 			const { data, error: err } = await locals.supabase.auth.signUp({
 				email: body.email as string,
-				password: body.password as string,
-				
+				password: body.password as string
 			});
-			console.log('email is kak rovar', data) 
-			console.log('email is kak rovar error', err) 
+			console.log('email is kak rovar', data);
+			console.log('email is kak rovar error', err);
 			if (err) {
-	
 				if (err instanceof AuthApiError && err.status === 400) {
 					return {
 						errors: 'Invalid Email or Password'
@@ -55,11 +58,8 @@ export const actions: Actions = {
 				password: body.password,
 				uid: data?.user?.id
 			};
+		} catch (e) {
+			console.log('e', e);
 		}
-		catch(e){
-			console.log('e',e)
-		}
-
-		
 	}
 };
