@@ -31,7 +31,7 @@ export const actions: Actions = {
 		console.log('baseurl', import.meta.env.VITE_BASE_URL);
 		console.log('email', body.email);
 		console.log('password', body.password);
-		console.log('locals', locals);
+		console.log('locals');
 		await locals.supabase.auth
 			.signUp({ email: body.email as string, password: body.password as string })
 			.then(response=>{
