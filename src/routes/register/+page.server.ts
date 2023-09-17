@@ -29,6 +29,7 @@ export const actions: Actions = {
 			};
 		}
 		console.log('existingUsersdf dsfg sdg ')
+		console.log("baseurl",import.meta.env.VITE_BASE_URL)
 		const { data, error: err } = await locals.supabase.auth.signUp({
 			email: body.email as string,
 			password: body.password as string,
@@ -36,6 +37,8 @@ export const actions: Actions = {
 				emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
 			}
 		});
+		console.log('email is kak rovar', data) 
+		console.log('email is kak rovar error', err) 
 		if (err) {
 
 			if (err instanceof AuthApiError && err.status === 400) {
