@@ -64,6 +64,7 @@ const ar = {
 	videos: 'مقاطع الفيديو',
 	MoreInGallery: 'المزيد في المعرض',
 	moreVideos: 'المزيد من مقاطع الفيديو',
+	total_company_reserve: 'إجمالي حجز الشركة',
 	reservation: {
 		title: 'مقاعد المعرض',
 		contract: 'عرض العقد',

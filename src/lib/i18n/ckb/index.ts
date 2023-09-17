@@ -65,6 +65,7 @@ const ckb = {
 	videos: 'ڤیدیۆکان',
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
+	total_company_reserve: 'کۆی گشتیی حیجزەکان',
 	reservation: {
 		reserved: "داواکاریەکەت بە سەرکەوتووی وەرگیرا ، تکایە چاوروان بە تاکوو پەیوەندیت پێوە دەکەین",
 		title: 'خشتەی پێشانگا',

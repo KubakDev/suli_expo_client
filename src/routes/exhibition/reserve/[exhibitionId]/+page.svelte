@@ -141,10 +141,10 @@
 
 			let requiredFields: string[] = response.data[0].fields;
 
-			setRequiredFields(requiredFields);
-			setExhibitionID(response.data[0].exhibition_id);
+			// setRequiredFields(requiredFields);
+			// setExhibitionID(response.data[0].exhibition_id);
 
-			let allFieldsPresent = requiredFields.every((field: any) => {
+			 allFieldsPresent = requiredFields.every((field: any) => {
 				return $currentUser[field] && $currentUser[field].trim() !== '';
 			});
 
@@ -164,7 +164,7 @@
 }
 
 </script>
-
+<h1>hfg</h1>
 {#if allFieldsPresent}
 	<div class="absolute w-full flex justify-end p-3" />
 	{#if exhibition?.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS}
