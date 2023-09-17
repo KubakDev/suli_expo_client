@@ -30,28 +30,35 @@ export const actions: Actions = {
 		}
 		console.log('existingUsersdf dsfg sdg ')
 		console.log("baseurl",import.meta.env.VITE_BASE_URL)
-		const { data, error: err } = await locals.supabase.auth.signUp({
-			email: body.email as string,
-			password: body.password as string,
-			options: {
-				emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
-			}
-		});
-		console.log('email is kak rovar', data) 
-		console.log('email is kak rovar error', err) 
-		if (err) {
+		try{
 
-			if (err instanceof AuthApiError && err.status === 400) {
-				return {
-					errors: 'Invalid Email or Password'
-				};
+			const { data, error: err } = await locals.supabase.auth.signUp({
+				email: body.email as string,
+				password: body.password as string,
+				options: {
+					emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
+				}
+			});
+			console.log('email is kak rovar', data) 
+			console.log('email is kak rovar error', err) 
+			if (err) {
+	
+				if (err instanceof AuthApiError && err.status === 400) {
+					return {
+						errors: 'Invalid Email or Password'
+					};
+				}
 			}
+			return {
+				email: body.email,
+				password: body.password,
+				uid: data?.user?.id
+			};
+		}
+		catch(e){
+			console.log('e',e)
 		}
 
-		return {
-			email: body.email,
-			password: body.password,
-			uid: data?.user?.id
-		};
+		
 	}
 };
