@@ -123,33 +123,46 @@
 	}
 
 	async function getData() {
-		if (exhibition) {
-			try {
-				let response = await data.supabase
-					.from('required_company_fields_exhibition')
-					.select('*')
-					.eq('exhibition_id', exhibition.id);
+	if (exhibition) {
+		try {
+			let response = await data.supabase
+				.from('required_company_fields_exhibition')
+				.select('*')
+				.eq('exhibition_id', exhibition.id);
 
-				let requiredFields = response.data[0].fields;
-
-				setRequiredFields(requiredFields);
-				setExhibitionID(response.data[0].exhibition_id);
-
-				allFieldsPresent = requiredFields.every((field: any) => {
-					return $currentUser[field] && $currentUser[field].trim() !== '';
-				});
-
-				if (allFieldsPresent) {
-				} else {
-					let id = $currentUser.id;
-					console.log('id', $currentUser);
-					goto(`/exhibition/reserve/register/${id}`);
-				}
-			} catch (error) {
-				console.error('Error fetching required fields:', error);
+			// Check if response has data and it's not empty
+			if (!response.data || response.data.length === 0) {
+				goto(`/exhibition/detail/${exhibition.id}`);
+				return;  // exit the function after redirection
 			}
+
+			console.log('response', exhibition);
+			
+
+			let requiredFields: string[] = response.data[0].fields;
+
+			setRequiredFields(requiredFields);
+			setExhibitionID(response.data[0].exhibition_id);
+
+			let allFieldsPresent = requiredFields.every((field: any) => {
+				return $currentUser[field] && $currentUser[field].trim() !== '';
+			});
+
+			if (!allFieldsPresent) {
+				let id = $currentUser.id;
+				console.log('id', $currentUser);
+				goto(`/exhibition/reserve/register/${id}`);
+			}
+
+			if(exhibition.seat_layout.length == 0){
+				goto(`/exhibition/detail/${exhibition.id}`);
+			}
+		} catch (error) {
+			console.error('Error fetching required fields:', error);
 		}
 	}
+}
+
 </script>
 
 {#if allFieldsPresent}
