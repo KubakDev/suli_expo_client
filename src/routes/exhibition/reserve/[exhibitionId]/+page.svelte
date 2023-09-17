@@ -164,7 +164,6 @@
 }
 
 </script>
-<h1>hfg</h1>
 {#if allFieldsPresent}
 	<div class="absolute w-full flex justify-end p-3" />
 	{#if exhibition?.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS}
