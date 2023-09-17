@@ -33,7 +33,6 @@ export const actions: Actions = {
 		console.log("email",body.email)
 		console.log("password",body.password)
 		console.log("locals",locals)
-		console.log("request",request)
 		try{
 
 			const { data, error: err } = await locals.supabase.auth.signUp({
