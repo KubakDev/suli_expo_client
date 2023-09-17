@@ -32,7 +32,7 @@ export const actions: Actions = {
 		console.log('email', body.email);
 		console.log('password', body.password);
 		console.log('locals');
-		await locals.supabase.auth
+		 locals.supabase.auth
 			.signUp({ email: body.email as string, password: body.password as string })
 			.then(response=>{
 				console.log('responseeee', response);
