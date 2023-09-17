@@ -36,6 +36,8 @@ export const actions: Actions = {
 				emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
 			}
 		});
+		console.log('email is kak rovar', data) 
+		console.log('email is kak rovar error', err) 
 		if (err) {
 
 			if (err instanceof AuthApiError && err.status === 400) {
