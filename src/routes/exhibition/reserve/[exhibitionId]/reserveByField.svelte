@@ -18,6 +18,7 @@
 	}[] = [];
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
+	let discountedPrice: number = 0;
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -32,7 +33,8 @@
 	};
 
 	onMount(() => {
-		pricePerMeter = data.seat_layout[0].price_per_meter;
+		pricePerMeter = data.seat_layout[0]?.price_per_meter;
+		discountedPrice = data.seat_layout[0]?.discounted_price;
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
@@ -59,7 +61,7 @@
 		reservedSeatData = { ...reservedSeatData };
 		totalPrice = 0;
 		reservedSeatData.area.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +pricePerMeter * +seatArea.area;
+			totalPrice += +seatArea.quantity * +discountedPrice * +seatArea.area;
 		});
 	}
 	function handleFileUpload(file: { detail: File }) {
@@ -94,17 +96,21 @@
 					/>
 				</div>
 				<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
-					{+pricePerMeter * +availableSeatArea.area} $
+					{+pricePerMeter * +availableSeatArea.area} IQD
 				</p>
 				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
 					{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-						(+pricePerMeter * +availableSeatArea.area)}$
+						(+pricePerMeter * +availableSeatArea.area)}IQD
+				</p>
+				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+					{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
+						(+discountedPrice * +availableSeatArea.area)}IQD
 				</p>
 			</div>
 		{/each}
 		<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 			<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-				{$LL.reservation.total_price()} : {totalPrice}$
+				{$LL.reservation.total_price()} : {totalPrice}IQD
 			</p>
 		</div>
 	</div>
