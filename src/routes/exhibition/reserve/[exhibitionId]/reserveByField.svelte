@@ -4,7 +4,6 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
-	import UploadFile from './uploadFile.svelte';
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
@@ -89,14 +88,10 @@
 		reservedSeatData = { ...reservedSeatData };
 		totalPrice = 0;
 		reservedSeatData.area.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +discountedPrice * +seatArea.area;
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 	}
 
-	function handleFileUpload(file: { detail: File }) {
-		console.log(file.detail);
-		reservedSeatData.file = file.detail;
-	}
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
 			let result = {
@@ -160,10 +155,7 @@
 	function handleAddClick() {
 		if (selectedFile) {
 			reservedSeatData.file = selectedFile;
-			console.log('File added to reservedSeatData:', reservedSeatData);
-			// Here you can add further logic if needed after adding the file to reservedSeatData
 		} else {
-			console.log('No file selected!');
 		}
 	}
 </script>
