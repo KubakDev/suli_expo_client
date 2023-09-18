@@ -21,9 +21,9 @@ export function addSelectedFreeSeatServices(seatServices: any) {
 export function addSelectedPaidSeatServices(seatServices: any) {
   selectedPaidSeatServices.set(seatServices);
 }
-export function setSeatDataLoading(value: boolean) {
-  seatDataLoading.set(value);
-}
+// export function setSeatDataLoading(value: boolean) {
+//   seatDataLoading.set(value);
+// }
 
 export const totalReservedSeat = derived(
   [previousReserveSeatData, selectedSeat],

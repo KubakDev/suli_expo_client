@@ -9,7 +9,7 @@
 		addSelectedSeat,
 		addSelectedPaidSeatServices,
 		addSelectedFreeSeatServices,
-		setSeatDataLoading,
+		// setSeatDataLoading,
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
@@ -152,7 +152,7 @@
 		paidServices = [];
 		addSelectedFreeSeatServices([]);
 		addSelectedPaidSeatServices([]);
-		setSeatDataLoading(true);
+		// setSeatDataLoading(true);
 		await supabase
 			.from('seat_services')
 			.select('*,languages:seat_services_languages!inner(*)')
@@ -174,7 +174,7 @@
 				});
 				selectedObject = { ...selectedObject };
 			});
-		setSeatDataLoading(false);
+		// setSeatDataLoading(false);
 	}
 	const handleMouseOver = (event: any) => {
 		const object = event.target;
