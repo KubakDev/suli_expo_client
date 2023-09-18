@@ -43,7 +43,6 @@
 			.is('deleted_status', null)
 			.single();
 		exhibition = response.data;
-		console.log(exhibition);
 	}
 
 	onMount(async () => {
@@ -59,6 +58,7 @@
 	async function reserveSeat() {
 		let fileUrl = '';
 		seatReserved = true;
+		defaultModal = false;
 		if (reserveSeatData.file) {
 			const response = await data.supabase.storage
 				.from('file')
@@ -68,20 +68,7 @@
 				);
 			fileUrl = response.data.path;
 		}
-		fetch('/api/seat/purchase', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				emailUser: data?.session?.user?.email,
-				name: '',
-				message: '',
-				exhibition: exhibition,
-				companyData: $currentUser,
-				reserveSeatData: reserveSeatData
-			})
-		}).then(() => {});
+
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
 			data.supabase
 				.from('seat_reservation')
@@ -100,6 +87,21 @@
 					setTimeout(() => {
 						goto('/exhibition/1');
 					}, 3000);
+					fetch('/api/seat/purchase', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							emailUser: data?.session?.user?.email,
+							name: '',
+							message: '',
+							exhibition: exhibition,
+							companyData: $currentUser,
+							reserveSeatData: reserveSeatData
+						})
+					}).then(() => {});
+					defaultModal = true;
 				});
 		} else {
 			data.supabase
@@ -131,11 +133,9 @@
 					.select('*')
 					.eq('exhibition_id', exhibition.id);
 
-				// Check if response has data and it's not empty
-
 				if (!response.data || response.data.length < 0) {
 					goto(`/exhibition/detail/${exhibition.id}`);
-					return; // exit the function after redirection
+					return;
 				}
 
 				let requiredFields: string[] = response.data[0]?.fields;

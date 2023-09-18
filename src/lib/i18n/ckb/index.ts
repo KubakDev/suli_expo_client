@@ -80,6 +80,7 @@ const ckb = {
 		description: 'وردەکاری',
 		comment: 'سەرنج',
 		comment_placeholder: 'تکایە سەرنجەکەت بنووسە',
+		manual_area: "لێرەدا دەتوانی ڕوبەر دیاری بکەیت",
 		services: {
 			title: 'خزمەتگوزاریەکان',
 			free_services: 'خزمەتگوزارییە بێ بەرامبەرەکان',
@@ -88,6 +89,7 @@ const ckb = {
 		total_price: 'کۆی گشتی',
 		price_per_each_meter: "نرخی هەر مەترێک",
 		reserve: 'بەکرێ گرتن',
+		preview_contract: 'پێشبینینی گرێبەست',
 		seat_types: {
 			selected: 'دەستنیشانکراو',
 			reserved: 'بەکرێ گیراو',

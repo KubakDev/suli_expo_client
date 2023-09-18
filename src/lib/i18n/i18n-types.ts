@@ -294,6 +294,10 @@ type RootTranslation = {
 		 * P​l​e​a​s​e​ ​w​r​i​t​e​ ​y​o​u​r​ ​c​o​m​m​e​n​t
 		 */
 		comment_placeholder: string
+		/**
+		 * y​o​u​ ​c​a​n​ ​a​d​d​ ​a​r​e​a​ ​m​a​n​u​a​l​l​y​ ​h​e​r​e
+		 */
+		manual_area: string
 		services: {
 			/**
 			 * S​e​r​v​i​c​e​s
@@ -320,6 +324,10 @@ type RootTranslation = {
 		 * R​e​s​e​r​v​e
 		 */
 		reserve: string
+		/**
+		 * C​o​n​t​r​a​c​t​ ​P​r​e​v​i​e​w
+		 */
+		preview_contract: string
 		seat_types: {
 			/**
 			 * S​E​L​E​C​T​E​D
@@ -820,6 +828,10 @@ export type TranslationFunctions = {
 		 * Please write your comment
 		 */
 		comment_placeholder: () => LocalizedString
+		/**
+		 * you can add area manually here
+		 */
+		manual_area: () => LocalizedString
 		services: {
 			/**
 			 * Services
@@ -846,6 +858,10 @@ export type TranslationFunctions = {
 		 * Reserve
 		 */
 		reserve: () => LocalizedString
+		/**
+		 * Contract Preview
+		 */
+		preview_contract: () => LocalizedString
 		seat_types: {
 			/**
 			 * SELECTED

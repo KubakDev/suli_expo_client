@@ -79,6 +79,7 @@ const en = {
 		description: 'Description',
 		comment: 'Comment',
 		comment_placeholder: 'Please write your comment',
+		manual_area: "you can add area manually here",
 		services: {
 			title: 'Services',
 			free_services: 'Free Services',
@@ -87,6 +88,7 @@ const en = {
 		total_price: 'Total Price',
 		price_per_each_meter: 'Price Per Each Meter',
 		reserve: 'Reserve',
+		preview_contract: "Contract Preview",
 		seat_types: {
 			selected: 'SELECTED',
 			reserved: 'RESERVED',
