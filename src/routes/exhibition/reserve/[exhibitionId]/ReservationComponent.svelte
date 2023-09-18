@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import type { Canvas } from 'fabric/fabric-impl';
+
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
@@ -12,7 +12,10 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
+
+	import type { Canvas } from 'fabric/fabric-impl';
 	const fabric = require("fabric").fabric;
+	
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -41,6 +44,8 @@
 		if (data) {
 			await loadSeats();
 		}
+		canvas.dispose();
+		
 	});
 
 	const adjustCanvasSize = () => {

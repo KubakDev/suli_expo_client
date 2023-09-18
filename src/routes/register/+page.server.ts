@@ -5,7 +5,6 @@ import { fail, type Actions, redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
 	register: async ({ request, locals }) => {
-		console.log('registering');
 		const body = Object.fromEntries(await request.formData());
 
 		const { data: existingUser, error: userError } = await locals.supabase
@@ -14,8 +13,6 @@ export const actions: Actions = {
 			.eq('email', body.email as string)
 			.limit(1);
 
-		console.log('existingUser', existingUser)
-		console.log('userError', userError)
 		if (userError) {
 			return fail(500, {
 				errors: 'this user exist already'
@@ -28,8 +25,6 @@ export const actions: Actions = {
 					'User exists with this email. If you recognize this email, Click on the login button.'
 			};
 		}
-		console.log('existingUsersdf dsfg sdg ')
-		console.log("baseurl",import.meta.env.VITE_BASE_URL)
 		try{
 
 			const { data, error: err } = await locals.supabase.auth.signUp({
@@ -39,8 +34,6 @@ export const actions: Actions = {
 					emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/login`
 				}
 			});
-			console.log('email is kak rovar', data) 
-			console.log('email is kak rovar error', err) 
 			if (err) {
 	
 				if (err instanceof AuthApiError && err.status === 400) {
