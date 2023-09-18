@@ -60,51 +60,51 @@
 		canvas.renderAll();
 	};
 	const loadSeats = async () => {
-		if (fabric) {
-			const canvasElement: any = document.getElementById('canvas');
-			canvas = new fabric.Canvas(canvasElement, {
-				hoverCursor: 'default',
-				selection: false
-			});
-			adjustCanvasSize();
-			if (canvas) {
-				const width = data[0].design.width;
-				const height = data[0].design.height;
-				const containerWidth = container?.offsetWidth;
-				const containerHeight = container?.offsetHeight;
-				const widthRatio = containerWidth / width;
-				const heightRatio = containerHeight / height;
-				canvas.loadFromJSON(data[0].design, async () => {
-					canvas.forEachObject((obj: any) => {
-						obj.set('selectable', false);
-						obj.set('lockMovementX', true);
-						obj.set('lockMovementY', true);
+		// if (fabric) {
+		// 	const canvasElement: any = document.getElementById('canvas');
+		// 	canvas = new fabric.Canvas(canvasElement, {
+		// 		hoverCursor: 'default',
+		// 		selection: false
+		// 	});
+		// 	adjustCanvasSize();
+		// 	if (canvas) {
+		// 		const width = data[0].design.width;
+		// 		const height = data[0].design.height;
+		// 		const containerWidth = container?.offsetWidth;
+		// 		const containerHeight = container?.offsetHeight;
+		// 		const widthRatio = containerWidth / width;
+		// 		const heightRatio = containerHeight / height;
+		// 		canvas.loadFromJSON(data[0].design, async () => {
+		// 			canvas.forEachObject((obj: any) => {
+		// 				obj.set('selectable', false);
+		// 				obj.set('lockMovementX', true);
+		// 				obj.set('lockMovementY', true);
 
-						obj.setCoords();
-					});
-					canvas.on('mouse:down', handleMouseDown);
-					canvas.on('mouse:over', handleMouseOver);
-					canvas.on('mouse:out', handleMouseOut);
-					await tick(); // wait for the next update cycle
-					canvas.forEachObject((obj: any) => {
-						const scaleX = obj.scaleX;
-						const scaleY = obj.scaleY;
-						const left = obj.left;
-						const top = obj.top;
-						const tempScaleX = scaleX * widthRatio;
-						const tempScaleY = scaleY * heightRatio;
-						const tempLeft = left * widthRatio;
-						const tempTop = top * heightRatio;
-						obj.scaleX = tempScaleX;
-						obj.scaleY = tempScaleY;
-						obj.left = tempLeft;
-						obj.top = tempTop;
-						obj.setCoords();
-					});
-					canvas.renderAll();
-				});
-			}
-		}
+		// 				obj.setCoords();
+		// 			});
+		// 			canvas.on('mouse:down', handleMouseDown);
+		// 			canvas.on('mouse:over', handleMouseOver);
+		// 			canvas.on('mouse:out', handleMouseOut);
+		// 			await tick(); // wait for the next update cycle
+		// 			canvas.forEachObject((obj: any) => {
+		// 				const scaleX = obj.scaleX;
+		// 				const scaleY = obj.scaleY;
+		// 				const left = obj.left;
+		// 				const top = obj.top;
+		// 				const tempScaleX = scaleX * widthRatio;
+		// 				const tempScaleY = scaleY * heightRatio;
+		// 				const tempLeft = left * widthRatio;
+		// 				const tempTop = top * heightRatio;
+		// 				obj.scaleX = tempScaleX;
+		// 				obj.scaleY = tempScaleY;
+		// 				obj.left = tempLeft;
+		// 				obj.top = tempTop;
+		// 				obj.setCoords();
+		// 			});
+		// 			canvas.renderAll();
+		// 		});
+		// 	}
+		// }
 		getPreviousReserveSeatData();
 	};
 	const handleMouseDown = (event: any) => {
