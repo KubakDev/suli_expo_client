@@ -41,6 +41,7 @@
 		if (data) {
 			await loadSeats();
 		}
+		canvas.dispose();
 	});
 
 	const adjustCanvasSize = () => {
