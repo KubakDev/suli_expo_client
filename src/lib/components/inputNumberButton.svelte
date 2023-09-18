@@ -5,6 +5,7 @@
 
 	export let serviceQuantity: number = 0;
 	export let maxQuantityPerUser: number = 0;
+	export let unlimited: boolean = false;
 	let invalid: boolean = false;
 	let number: number = 0;
 	const dispatch = createEventDispatcher();
@@ -34,6 +35,10 @@
 		<Button
 			class="p-2"
 			on:click={() => {
+				if (unlimited) {
+					number++;
+					return;
+				}
 				if (number < serviceQuantity && number < maxQuantityPerUser) {
 					number++;
 				} else {

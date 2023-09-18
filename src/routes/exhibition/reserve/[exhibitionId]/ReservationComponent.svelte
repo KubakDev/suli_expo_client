@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
@@ -11,9 +12,11 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
+
 	import type { Canvas } from 'fabric/fabric-impl';
 	const fabric = require("fabric").fabric;
 	
+
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
@@ -70,13 +73,15 @@
 			});
 			adjustCanvasSize();
 			if (canvas) {
-				const width = data[0].design.width;
-				const height = data[0].design.height;
+				const width = data[0]?.design?.width;
+				console.log(width);
+
+				const height = data[0]?.design?.height;
 				const containerWidth = container?.offsetWidth;
 				const containerHeight = container?.offsetHeight;
 				const widthRatio = containerWidth / width;
 				const heightRatio = containerHeight / height;
-				canvas.loadFromJSON(data[0].design, async () => {
+				canvas.loadFromJSON(data[0]?.design, async () => {
 					canvas.forEachObject((obj: any) => {
 						obj.set('selectable', false);
 						obj.set('lockMovementX', true);

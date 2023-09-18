@@ -58,6 +58,7 @@
 	async function reserveSeat() {
 		let fileUrl = '';
 		seatReserved = true;
+		defaultModal = false;
 		if (reserveSeatData.file) {
 			const response = await data.supabase.storage
 				.from('file')
@@ -67,20 +68,7 @@
 				);
 			fileUrl = response.data.path;
 		}
-		fetch('/api/seat/purchase', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				emailUser: data?.session?.user?.email,
-				name: '',
-				message: '',
-				exhibition: exhibition,
-				companyData: $currentUser,
-				reserveSeatData: reserveSeatData
-			})
-		}).then(() => {});
+
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
 			data.supabase
 				.from('seat_reservation')
@@ -99,6 +87,21 @@
 					setTimeout(() => {
 						goto('/exhibition/1');
 					}, 3000);
+					fetch('/api/seat/purchase', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							emailUser: data?.session?.user?.email,
+							name: '',
+							message: '',
+							exhibition: exhibition,
+							companyData: $currentUser,
+							reserveSeatData: reserveSeatData
+						})
+					}).then(() => {});
+					defaultModal = true;
 				});
 		} else {
 			data.supabase
@@ -123,50 +126,46 @@
 	}
 
 	async function getData() {
-	if (exhibition) {
-		try {
-			let response = await data.supabase
-				.from('required_company_fields_exhibition')
-				.select('*')
-				.eq('exhibition_id', exhibition.id);
+		if (exhibition) {
+			try {
+				let response = await data.supabase
+					.from('required_company_fields_exhibition')
+					.select('*')
+					.eq('exhibition_id', exhibition.id);
 
-			// Check if response has data and it's not empty
-			if (!response.data || response.data.length === 0) {
-				goto(`/exhibition/detail/${exhibition.id}`);
-				return;  // exit the function after redirection
-			}
+				if (!response.data || response.data.length < 0) {
+					goto(`/exhibition/detail/${exhibition.id}`);
+					return;
+				}
 
-			console.log('response', exhibition);
-			
+				let requiredFields: string[] = response.data[0]?.fields;
 
-			let requiredFields: string[] = response.data[0].fields;
+				setRequiredFields(requiredFields);
+				setExhibitionID(response.data[0]?.exhibition_id);
 
-			setRequiredFields(requiredFields);
-			setExhibitionID(response.data[0].exhibition_id);
+				allFieldsPresent = requiredFields?.every((field: any) => {
+					return $currentUser[field] && $currentUser[field].trim() !== '';
+				});
+				if (response.data[0]?.fields) {
+					if (response.data[0]?.fields && !allFieldsPresent) {
+						let id = $currentUser.id;
+						goto(`/exhibition/reserve/register/${id}`);
+					}
+				} else {
+					allFieldsPresent = true;
+				}
 
-			 allFieldsPresent = requiredFields.every((field: any) => {
-				return $currentUser[field] && $currentUser[field].trim() !== '';
-			});
-
-			if (!allFieldsPresent) {
-				let id = $currentUser.id;
-				console.log('id', $currentUser);
-				goto(`/exhibition/reserve/register/${id}`);
-			}
-
-			if(exhibition.seat_layout.length == 0){
-				goto(`/exhibition/detail/${exhibition.id}`);
-			}
-		} catch (error) {
-			console.error('Error fetching required fields:', error);
+				if (exhibition.seat_layout.length == 0) {
+					goto(`/exhibition/detail/${exhibition.id}`);
+				}
+			} catch (error) {}
 		}
 	}
-}
-
 </script>
+
 {#if allFieldsPresent}
 	<div class="absolute w-full flex justify-end p-3" />
-	{#if exhibition?.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS}
+	{#if exhibition?.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS}
 		<section class="w-full flex-1 overflow-x-hidden">
 			<div class="px-0 lg:px-32 3xl:px-72 w-full h-full">
 				<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap justify-center">
