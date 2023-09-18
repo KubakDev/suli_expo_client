@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	// import { fabric } from 'fabric';
+	import { fabric } from 'fabric';
 	import type { Canvas } from 'fabric/fabric-impl';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
@@ -262,7 +262,7 @@
 	}
 </script>
 
-<!-- {#if fabric} -->
+{#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<div class="w-full flex justify-center mt-10">
 			<div class="flex justify-center items-center">
@@ -281,4 +281,4 @@
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
-<!-- {/if} -->
+{/if}
