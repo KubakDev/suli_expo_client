@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { fabric } from 'fabric';
-	import type { Canvas } from 'fabric/fabric-impl';
+	// import type { Canvas } from 'canvas';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
@@ -9,7 +9,7 @@
 		addSelectedSeat,
 		addSelectedPaidSeatServices,
 		addSelectedFreeSeatServices,
-		// setSeatDataLoading,
+		setSeatDataLoading,
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
@@ -19,7 +19,7 @@
 	export let locale: string;
 
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas;
+	let canvas: any;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
@@ -152,7 +152,7 @@
 		paidServices = [];
 		addSelectedFreeSeatServices([]);
 		addSelectedPaidSeatServices([]);
-		// setSeatDataLoading(true);
+		setSeatDataLoading(true);
 		await supabase
 			.from('seat_services')
 			.select('*,languages:seat_services_languages!inner(*)')
@@ -174,7 +174,7 @@
 				});
 				selectedObject = { ...selectedObject };
 			});
-		// setSeatDataLoading(false);
+		setSeatDataLoading(false);
 	}
 	const handleMouseOver = (event: any) => {
 		const object = event.target;
