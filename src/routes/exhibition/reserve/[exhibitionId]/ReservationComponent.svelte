@@ -12,6 +12,7 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
+	var require: any;
 	const fabric = require('fabric').fabric;
 
 	export let data: any;
