@@ -25,7 +25,7 @@ export const actions: Actions = {
 					'User exists with this email. If you recognize this email, Click on the login button.'
 			};
 		}
-		try{
+		try {
 
 			const { data, error: err } = await locals.supabase.auth.signUp({
 				email: body.email as string,
@@ -35,7 +35,7 @@ export const actions: Actions = {
 				}
 			});
 			if (err) {
-	
+
 				if (err instanceof AuthApiError && err.status === 400) {
 					return {
 						errors: 'Invalid Email or Password'
@@ -48,10 +48,10 @@ export const actions: Actions = {
 				uid: data?.user?.id
 			};
 		}
-		catch(e){
-			console.log('e',e)
+		catch (e) {
+			console.log('e', e)
 		}
 
-		
+
 	}
 };

@@ -6,8 +6,11 @@
 	export let serviceQuantity: number = 0;
 	export let maxQuantityPerUser: number = 0;
 	export let unlimited: boolean = false;
+	export let number: number = 0;
+	export let disabled: boolean = false;
+
 	let invalid: boolean = false;
-	let number: number = 0;
+
 	const dispatch = createEventDispatcher();
 	$: {
 		dispatch('numberChanged', number);
@@ -23,6 +26,7 @@
 				if (number == 0) return;
 				number--;
 			}}
+			{disabled}
 		>
 			<Minus />
 		</Button>
@@ -33,6 +37,7 @@
 			disabled
 		/>
 		<Button
+			{disabled}
 			class="p-2"
 			on:click={() => {
 				if (unlimited) {

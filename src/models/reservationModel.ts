@@ -1,0 +1,22 @@
+import type { ExhibitionModel } from "./exhibitionModel";
+
+export interface Reservation {
+  comment: string;
+  company_id: number;
+  created_at: string;
+  exhibition: ExhibitionModel;
+  exhibition_id: number;
+  file_url: string;
+  id: number;
+  object_id: number;
+  reserved_area: string;
+  reserved_areas: string;
+  services: string;
+  status: ReservationStatus;
+
+}
+export enum ReservationStatus {
+  PENDING = 'pending',
+  ACCEPT = 'accept',
+  REJECT = 'reject'
+}

@@ -1,18 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { currentUser } from '../../stores/currentUser';
 	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
-	import { LL } from '$lib/i18n/i18n-svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
-	import type { LocalizedString } from 'typesafe-i18n';
 
 	let imageFile: File | undefined;
 	let fileName: string;
 	let currentImageFile = false;
 
+	let direction = 'ltr';
+	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
+
 	export let data: any;
+	$: {
+		console.log($currentUser);
+	}
 
 	let userData: any = {
 		logo_url: '',
@@ -36,6 +40,7 @@
 			}, 100);
 			return;
 		}
+
 		await data.supabase
 			.from('company')
 			.select('*')
@@ -43,10 +48,24 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
+					console.log(res.data);
 					currentUser.set(res.data);
-					goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 				}
 			});
+
+		console.log($currentUser);
+		userData = {
+			logo_url: $currentUser.logo_url,
+			phone_number: $currentUser.phone_number,
+			company_name: $currentUser.company_name,
+			email: $currentUser.email,
+			working_field: $currentUser.working_field,
+			manager_name: $currentUser.manager_name,
+			passport_number: $currentUser.passport_number,
+			address: $currentUser.address,
+			type: $currentUser.type
+		};
+
 		loaded = true;
 	});
 
@@ -55,27 +74,47 @@
 
 		const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
 		userData.logo_url = response.data?.path || '';
+
+		const { data: existingData } = await data.supabase
+			.from('company')
+			.select('*')
+			.eq('uid', data?.session?.user.id)
+			.single();
+
+		if (existingData) {
+			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
+		} else {
+			await data.supabase.from('company').insert({
+				...userData,
+				uid: data?.session?.user.id
+			});
+		}
+
+		// Immediately update currentUser store after inserting/updating the data
+		// currentUser.set({
+		// 	uid: data?.session?.user.id,
+		// 	logo_url: userData.logo_url,
+		// 	phone_number: userData.phone_number,
+		// 	company_name: userData.company_name,
+		// 	email: userData.email,
+		// 	working_field: userData.working_field,
+		// 	manager_name: userData.manager_name,
+		// 	passport_number: userData.passport_number,
+		// 	address: userData.address,
+		// 	type: userData.type
+		// });
 		await data.supabase
 			.from('company')
-			.insert({
-				type: userData.type,
-				logo_url: userData.logo_url,
-				phone_number: userData.phone_number,
-				company_name: userData.company_name,
-				email: userData.email,
-				working_field: userData.working_field,
-				manager_name: userData.manager_name,
-				passport_number: userData.passport_number,
-				address: userData.address,
-				uid: data?.session?.user.id
-			})
-			.select()
+			.select('*')
+			.eq('uid', data?.session?.user.id)
 			.single()
-			.then((response: any) => {
-				if (response.error) return;
-				currentUser.set(response.data);
-				goto(localStorage.getItem('redirect') ?? '/');
+			.then((res: any) => {
+				if (res.data) {
+					console.log(res.data);
+					currentUser.set(res.data);
+				}
 			});
+		goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 	}
 
 	export async function handleFileUpload(e: Event) {
@@ -127,9 +166,7 @@
 	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color: #f3f3f3">
 		<div class="flex justify-center items-center pb-10">
 			<img
-				src={currentImageFile
-					? userData.logo_url
-					: 'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png'}
+				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
 				alt="logo"
 				class="w-44 h-44 rounded-full border bg-white"
 			/>
@@ -139,7 +176,8 @@
 				<div class="grid grid-cols-2">
 					{#if user === 'logo_url'}
 						<div class="col-span-2 w-full">
-							<Label for={user} class="mb-2">{`${returnLocaleMessage(user)}`}</Label>
+							<Label dir={direction} for={user} class="mb-2">{`${returnLocaleMessage(user)}`}</Label
+							>
 							<Fileupload
 								on:change={handleFileUpload}
 								accept=".png,.jpg,.jpeg,.gif"
@@ -149,7 +187,7 @@
 						</div>
 					{:else}
 						<div class="col-span-2 w-full">
-							<Label for={user} class="mb-2">{returnLocaleMessage(user)}</Label>
+							<Label dir={direction} for={user} class="mb-2">{returnLocaleMessage(user)}</Label>
 							<Input
 								type="text"
 								id={user}

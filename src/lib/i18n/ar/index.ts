@@ -1,5 +1,4 @@
 import type { Translation } from '../i18n-types';
-
 const ar = {
 	// arabic language translation
 	HI: 'مرحبا {name}! يرجى تقديم نجمة ، وقت الاستجابة للمشاريع في الطوابق السفلية',
@@ -76,6 +75,11 @@ const ar = {
 		description: 'لحجز مقعد والحصول على معلومات حول كل مقعد ، يجب تسجيل الدخول أولاً',
 		comment: 'تعليق',
 		comment_placeholder: 'يرجى كتابة تعليقك',
+		manual_area: 'يمكنك إضافة منطقة يدويًا هنا',
+		add_file: 'إضافة',
+		cancel_file: 'إلغاء',
+		required_file: 'الملف المطلوب',
+		upload_file: 'إضافة ملف',
 		services: {
 			title: 'الخدمات',
 			free_services: 'خدمات مجانية',
@@ -85,7 +89,7 @@ const ar = {
 		reserve: 'حجز',
 		seat_types: {
 			selected: 'مختار',
-			reserved: '	محجوز',
+			reserved: ' محجوز',
 			pending: 'قيد الانتظار'
 		},
 		unselect_seat_desc: 'حدد مقعدًا للحصول على معلومات حوله',
@@ -101,6 +105,7 @@ const ar = {
 		}
 	},
 	loggin: {
+		message: 'يرجى التحقق من بريدك الإلكتروني لتغيير كلمة المرور الخاصة بك',
 		login: 'تسجيل الدخول',
 		register: 'تسجيل',
 		Modal: {
@@ -108,7 +113,6 @@ const ar = {
 			msg: 'تم إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني التالي '
 		}
 	},
-
 	company_info: {
 		type: ' نوع الشركة',
 		logo_url: 'تحميل الشعار',
@@ -121,5 +125,4 @@ const ar = {
 		address: 'عنوان'
 	}
 } satisfies Translation;
-
 export default ar;

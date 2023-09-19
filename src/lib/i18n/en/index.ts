@@ -1,13 +1,18 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
+	profile: {
+		title: "Profile",
+		reservation_history: 'Reservations'
+	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
 		required: '{field} is required'
 	},
 	buttons: {
 		submit: 'Submit',
-		upload_sheet: "Upload Sheet"
+		upload_sheet: "Upload Sheet",
+		update: "Update"
 	},
 	home: 'Home',
 	about: 'About',
@@ -66,7 +71,7 @@ const en = {
 	moreVideos: 'More Videos',
 	total_company_reserve: 'Total Company Reserve',
 	reservation: {
-		reserved: "Your request has been successfully received, please wait for our contact",
+		reserved: 'Your request has been successfully received, please wait for our contact',
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
@@ -79,7 +84,11 @@ const en = {
 		description: 'Description',
 		comment: 'Comment',
 		comment_placeholder: 'Please write your comment',
-		manual_area: "you can add area manually here",
+		manual_area: 'you can add area manually here',
+		add_file: 'Add',
+		cancel_file: 'cancel',
+		required_file: 'Required',
+		upload_file: 'Upload Excel File',
 		services: {
 			title: 'Services',
 			free_services: 'Free Services',
@@ -88,7 +97,7 @@ const en = {
 		total_price: 'Total Price',
 		price_per_each_meter: 'Price Per Each Meter',
 		reserve: 'Reserve',
-		preview_contract: "Contract Preview",
+		preview_contract: 'Contract Preview',
 		seat_types: {
 			selected: 'SELECTED',
 			reserved: 'RESERVED',
@@ -103,20 +112,27 @@ const en = {
 			title: 'Terms of Reservation',
 			accept: 'I accept',
 			decline: 'Decline',
-			checked: "I have read  to the terms and conditions"
+			checked: 'I have read  to the terms and conditions'
 		},
 		login: {
 			title: 'Login',
 			email: 'Email',
 			password: 'Password'
+		},
+		statuses: {
+			pending: "Pending",
+			accept: "Accepted",
+			reject: "Rejected",
+
 		}
 	},
 	loggin: {
+		message: 'Please Check Your Email for reset password',
 		login: 'Login',
 		register: 'Register',
 		forgot_password: 'Forgot password?',
 		reset_password: 'Reset password',
-		change_password: "Change password",
+		change_password: 'Change password',
 		send_email: 'Send email',
 
 		Modal: {
@@ -136,33 +152,37 @@ const en = {
 		manager_name: 'Manager name',
 		passport_number: 'Passport number',
 		address: 'Address',
-		string: ""
+		string: ''
 	},
 	email_template: {
-		dear: "Dear",
-		thanks: "Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.",
+		dear: 'Dear',
+		thanks:
+			'Thank you for choosing to reserve a seat through our website. We are delighted that you have considered Suly Expo for your upcoming plans. This email is to confirm that we have successfully received your reservation request.',
 		detail: {
-			title: "Here are the details of your reservation:",
-			date_time: "Reservation Date and Time:",
-			event: "Exhibition: ",
-			note: "Special Requests or Notes:",
+			title: 'Here are the details of your reservation:',
+			date_time: 'Reservation Date and Time:',
+			event: 'Exhibition: ',
+			note: 'Special Requests or Notes:'
 		},
-		pending: "Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.",
+		pending:
+			'Please note that your reservation is currently pending confirmation. Our team will carefully review your request, and we will notify you as soon as possible regarding the status of your reservation.',
 		help: {
-			header: "In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at",
-			footer: "Our dedicated team is here to assist you and ensure your experience with us is exceptional"
+			header:
+				'In the meantime, if you have any questions or need to make changes to your reservation, please do not hesitate to contact us at',
+			footer:
+				'Our dedicated team is here to assist you and ensure your experience with us is exceptional'
 		},
-		thanks_waiting: "Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request",
-		regards: "Warm regards,",
-		signature: "Suly Expo",
+		thanks_waiting:
+			'Thank you for choosing Suly Expo. We look forward to the possibility of hosting you and providing you with an unforgettable experience. Your satisfaction is our top priority, and we will do our utmost to accommodate your request',
+		regards: 'Warm regards,',
+		signature: 'Suly Expo',
 		contact: {
-			marketing: "Marketing: ",
-			relations: "Relations: ",
-			technical: "Technical: ",
-			administration: "Administration: ",
-			website: "Website: ",
+			marketing: 'Marketing: ',
+			relations: 'Relations: ',
+			technical: 'Technical: ',
+			administration: 'Administration: ',
+			website: 'Website: '
 		}
-
 	}
 } satisfies BaseTranslation;
 

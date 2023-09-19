@@ -136,7 +136,6 @@
 {#if supabase}
 	{#if $page}
 		<div class="app" use:applyTheme>
-			<Headerbar />
 			<Navbar {data} />
 			<main
 				style="background-color: var(--{tailVar}BackgroundColor);"

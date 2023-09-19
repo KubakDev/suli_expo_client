@@ -4,18 +4,24 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
-	import { currentUser } from '../../../../stores/currentUser';
-	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
+	import { currentUser } from '../../stores/currentUser';
+	import { generateDocx } from '../../utils/generateContract';
+	import type { Reservation } from '../../models/reservationModel';
+	import { ReservationStatus } from '../../models/reservationModel';
+
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
+	export let reservationData: Reservation;
+
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
 	let areas: {
 		area: string;
 		quantity: number;
 	}[] = [];
+
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
@@ -23,6 +29,7 @@
 	let customAreaMeter: number = 0;
 	let customAreaQuantity: number = 0;
 	let preview_url: string = '';
+
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -35,12 +42,15 @@
 		area: [],
 		comment: ''
 	};
+	let reservedAreas: any[] = [];
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
 		}`;
+
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
+
 		discountedDescription =
 			data.seat_layout[0]?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale
@@ -52,7 +62,28 @@
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
+		getCompanyReservedData();
 	});
+
+	async function getCompanyReservedData() {
+		reservedAreas = JSON.parse(reservationData.reserved_areas);
+		reservedSeatData = {
+			area: JSON.parse(reservationData.reserved_areas),
+			comment: reservationData.comment
+		};
+		let allReservedArea = reservedAreas.map((reservedArea) => {
+			return reservedArea.area;
+		});
+
+		allReservedArea.map((area) => {
+			let result = areas.find((x) => +x.area == +area);
+
+			if (!result) {
+				customAreaMeter = +area;
+				customAreaQuantity = reservedAreas.find((x) => x.area == area).quantity;
+			}
+		});
+	}
 	function reserveSeat() {
 		reservedSeatData.area.push({
 			id: areas.length,
@@ -61,7 +92,7 @@
 		});
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
-		dispatch('reserveSeat', reservedSeatData);
+		dispatch('updateReserveSeat', reservedSeatData);
 	}
 	function addAreaToReservedSeatData(index: number, number: number) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
@@ -84,6 +115,7 @@
 			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 	}
+
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
 			let result = {
@@ -118,7 +150,6 @@
 			id: $currentUser.id,
 			email: $currentUser.email
 		};
-		console.log(docxData);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
@@ -133,6 +164,7 @@
 	let selectedFile: any = null;
 	let fileName = '';
 	let fileError = false;
+
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
 		if (file) {
@@ -148,9 +180,7 @@
 	function handleAddClick() {
 		if (selectedFile) {
 			reservedSeatData.file = selectedFile;
-			console.log('File added to reservedSeatData:', reservedSeatData);
 		} else {
-			console.log('No file selected!');
 		}
 	}
 </script>
@@ -182,6 +212,8 @@
 								}}
 								serviceQuantity={availableSeatArea.quantity}
 								maxQuantityPerUser={availableSeatArea.quantity}
+								number={reservedAreas.find((area) => area.id == index)?.quantity ?? 0}
+								disabled={true}
 							/>
 						</div>
 						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -207,10 +239,6 @@
 				{/each}
 				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
 				<h2 class="text-lg">{$LL.reservation.manual_area()}</h2>
-				<p>
-					زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد..
-					)
-				</p>
 				<div class="flex flex-wrap items-center my-2">
 					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
@@ -223,6 +251,8 @@
 							on:numberChanged={(number) => {
 								addCustomArea(+number.detail);
 							}}
+							disabled={true}
+							number={customAreaQuantity}
 						/>
 					</div>
 					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -244,6 +274,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
 					{$LL.reservation.total_price()} : {totalPrice}$
@@ -263,10 +294,11 @@
 		rows="5"
 		class="my-3"
 		bind:value={reservedSeatData.comment}
+		disabled={true}
 	/>
 	<div class="flex justify-end w-full mt-8">
 		<div>
-			<Button on:click={() => (defaultModal = true)}>{$LL.reservation.upload_file()}</Button>
+			<Button on:click={() => (defaultModal = true)} disabled={true}>Upload File</Button>
 			<Modal title="Upload File" bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
@@ -298,24 +330,24 @@
 									d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
 								/>
 							</svg>
-							<span>{$LL.reservation.upload_file()}</span></label
+							<span>Upload excel file</span></label
 						>
 						{#if !reservedSeatData?.file}
-							<span class="text-red-600">{$LL.reservation.required_file()}</span>
+							<span class="text-red-600">required</span>
 						{/if}
+
 						<span> {fileName}</span>
 					</div>
 				</div>
 				<svelte:fragment slot="footer">
-					<Button on:click={handleAddClick}>
-						{$LL.reservation.add_file()}
-					</Button>
-					<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
+					<Button on:click={handleAddClick} disabled={true}>Add</Button>
+					<Button color="alternative" disabled={true}>Decline</Button>
 				</svelte:fragment>
 			</Modal>
 		</div>
-		<Button on:click={reserveSeat} class="mx-2">
-			{$LL.reservation.reserve()}
+
+		<Button on:click={reserveSeat} class="mx-2" disabled={true}>
+			{$LL.buttons.update()}
 		</Button>
 		<Button on:click={contractPreview} class="mx-2" color="alternative">
 			{$LL.reservation.preview_contract()}
@@ -331,6 +363,7 @@
 		justify-content: center;
 		min-height: 200px;
 	}
+
 	.file-input__input {
 		width: 0.1px;
 		height: 0.1px;
@@ -339,6 +372,7 @@
 		position: absolute;
 		z-index: -1;
 	}
+
 	.file-input__label {
 		cursor: pointer;
 		display: inline-flex;
@@ -352,6 +386,7 @@
 		background-color: #e1b168;
 		box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 	}
+
 	.file-input__label svg {
 		height: 16px;
 		margin-right: 4px;

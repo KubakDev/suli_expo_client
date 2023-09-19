@@ -10,7 +10,8 @@
 		DropdownItem,
 		Chevron,
 		Button,
-		DarkMode
+		DarkMode,
+		Avatar
 	} from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
@@ -23,6 +24,8 @@
 	import { onMount } from 'svelte';
 	import { themeToggle, toggleTheme } from '../../stores/darkMode';
 	import { Moon, Sun } from 'svelte-heros-v2';
+	import { currentUser } from '../../stores/currentUser';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -31,9 +34,9 @@
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
 
@@ -69,9 +72,6 @@
 </script>
 
 <div class=" w-full border-b border-b-neutral-800">
-	<!-- <div class="flex flex-row justify-center items-center dark:bg-black bg-white h-20">
-		<img src="/images/logo.png" class=" h-full" />
-	</div> -->
 	<Navbar
 		style="background-color: var(--{tailVar}SecondaryColor);"
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
@@ -89,18 +89,21 @@
 			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
-			
-			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0" >
+			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div on:click={()=>{
-					toggleTheme();				
-				}}>
+				<div
+					on:click={() => {
+						toggleTheme();
+					}}
+				>
 					<!-- <DarkMode class="right-10" /> -->
-					<div class="cursor-pointer border-solid text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10">
-						{#if currentTheme === "light"}
+					<div
+						class="cursor-pointer border-solid text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
+					>
+						{#if currentTheme === 'light'}
 							<Sun />
-							{:else}
+						{:else}
 							<Moon />
 						{/if}
 					</div>
@@ -167,6 +170,7 @@
 				href="/contact"
 				class="cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 			>
+
 			<div
 				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
 				style="margin:0 ;"
@@ -184,6 +188,29 @@
 					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 				</Dropdown>
 			</div>
+			{#if $currentUser.id}
+				<div
+					class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+					style="margin:0 ;"
+				>
+					<div class="flex space-x-4 items-center gap-2">
+						<Avatar
+							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + $currentUser.logo_url}
+						/>
+						<p class="text-[var(--lightOnForegroundColor)]">{$currentUser.company_name}</p>
+					</div>
+					<Dropdown id="">
+						<DropdownItem
+							on:click={() => {
+								goto('/company-registration');
+							}}>{$LL.profile.title()}</DropdownItem
+						>
+						<DropdownItem on:click={() => goto('/reservation_history')}
+							>{$LL.profile.reservation_history()}</DropdownItem
+						>
+					</Dropdown>
+				</div>
+			{/if}
 		</NavUl>
 	</Navbar>
 </div>
