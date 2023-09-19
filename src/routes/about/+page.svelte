@@ -34,7 +34,7 @@
 		</div>
 		<div class="">
 			{#if $aboutSectionStore}
-				<div class=" rounded-xl">
+				<div class="rounded-xl">
 					<About aboutSection={$aboutSectionStore} />
 				</div>
 			{/if}
