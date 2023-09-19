@@ -34,7 +34,6 @@
 
 	let loaded = false;
 	onMount(async () => {
-		console.log(data?.session?.user.id);
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
 				goto('/login');
@@ -49,7 +48,6 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
-					console.log(res.data);
 					currentUser.set({
 						uid: data?.session?.user.id,
 						logo_url: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${res?.data?.logo_url}`,
