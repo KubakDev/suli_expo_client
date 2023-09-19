@@ -148,8 +148,9 @@
 				});
 				if (response.data[0]?.fields) {
 					if (response.data[0]?.fields && !allFieldsPresent) {
-						let id = $currentUser.id;
-						goto(`/exhibition/reserve/register/${id}`);
+						let uid = $currentUser.uid;
+						// console.log('send id ', $currentUser);
+						goto(`/exhibition/reserve/register/${uid}`);
 					}
 				} else {
 					allFieldsPresent = true;

@@ -14,10 +14,9 @@
 	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 
 	export let data: any;
-
-	onMount(() => {
-		console.log($locale);
-	});
+	$: {
+		console.log($currentUser);
+	}
 
 	let userData: any = {
 		logo_url: '',
@@ -35,6 +34,7 @@
 
 	let loaded = false;
 	onMount(async () => {
+		console.log(data?.session?.user.id);
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
 				goto('/login');
@@ -49,7 +49,9 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
-					userData = {
+					console.log(res.data);
+					currentUser.set({
+						uid: data?.session?.user.id,
 						logo_url: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${res?.data?.logo_url}`,
 						phone_number: res?.data?.phone_number,
 						company_name: res?.data?.company_name,
@@ -59,9 +61,7 @@
 						passport_number: res?.data?.passport_number,
 						address: res?.data?.address,
 						type: res?.data?.type
-					};
-					currentUser.set(res.data);
-					console.log(userData.logo_url);
+					});
 				}
 			});
 		loaded = true;
@@ -79,18 +79,30 @@
 			.eq('uid', data?.session?.user.id)
 			.single();
 
-		// If user data exists, update the record in the database
 		if (existingData) {
 			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
-			goto(localStorage.getItem('redirect') ?? '/');
 		} else {
-			// If user data doesn't exist, insert a new record in the database
 			await data.supabase.from('company').insert({
 				...userData,
 				uid: data?.session?.user.id
 			});
-			goto(localStorage.getItem('redirect') ?? '/');
 		}
+
+		// Immediately update currentUser store after inserting/updating the data
+		currentUser.set({
+			uid: data?.session?.user.id,
+			logo_url: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`,
+			phone_number: userData.phone_number,
+			company_name: userData.company_name,
+			email: userData.email,
+			working_field: userData.working_field,
+			manager_name: userData.manager_name,
+			passport_number: userData.passport_number,
+			address: userData.address,
+			type: userData.type
+		});
+
+		goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 	}
 
 	export async function handleFileUpload(e: Event) {

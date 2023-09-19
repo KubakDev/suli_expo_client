@@ -142,10 +142,13 @@
 			selectedFile = null;
 		}
 	}
+
 	function handleAddClick() {
 		if (selectedFile) {
 			reservedSeatData.file = selectedFile;
+			console.log('File added to reservedSeatData:', reservedSeatData);
 		} else {
+			console.log('No file selected!');
 		}
 	}
 </script>
@@ -180,7 +183,7 @@
 							/>
 						</div>
 						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
-							{+pricePerMeter * +availableSeatArea.area} IQD
+							{+pricePerMeter * +availableSeatArea.area} $
 						</p>
 						<div class="lg:mx-4">
 							<p
@@ -189,12 +192,12 @@
 								}`}
 							>
 								{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-									(+pricePerMeter * +availableSeatArea.area)}IQD
+									(+pricePerMeter * +availableSeatArea.area)}$
 							</p>
 							{#if discountedPrice}
 								<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-										(+discountedPrice * +availableSeatArea.area)}IQD
+										(+discountedPrice * +availableSeatArea.area)}$
 								</p>
 							{/if}
 						</div>
@@ -217,7 +220,7 @@
 						/>
 					</div>
 					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
-						{+pricePerMeter * customAreaMeter} IQD
+						{+pricePerMeter * customAreaMeter} $
 					</p>
 					<div class="lg:mx-4">
 						<p
@@ -225,11 +228,11 @@
 								discountedPrice ? 'line-through' : ''
 							}`}
 						>
-							{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}IQD
+							{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}$
 						</p>
 						{#if discountedPrice}
 							<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
-								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}IQD
+								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
 						{/if}
 					</div>
@@ -237,7 +240,7 @@
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-					{$LL.reservation.total_price()} : {totalPrice}IQD
+					{$LL.reservation.total_price()} : {totalPrice}$
 				</p>
 			</div>
 		</div>
