@@ -34,7 +34,6 @@
 
 	let loaded = false;
 	onMount(async () => {
-		console.log(data?.session?.user.id);
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
 				goto('/login');

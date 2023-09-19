@@ -207,6 +207,10 @@
 				{/each}
 				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
 				<h2 class="text-lg">{$LL.reservation.manual_area()}</h2>
+				<p>
+					زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد..
+					)
+				</p>
 				<div class="flex flex-wrap items-center my-2">
 					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
