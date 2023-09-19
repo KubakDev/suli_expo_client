@@ -179,11 +179,11 @@
 									<div class="flex flex-col justify-center items-center">
 										{#if paidService?.serviceDetail?.discount}
 											<p class="text-sm" style="text-decoration: line-through;">
-												{paidService.serviceDetail.price}IQD
+												{paidService.serviceDetail.price}$
 											</p>
-											<p class="text-xl font-bold">{paidService.serviceDetail.discount}IQD</p>
+											<p class="text-xl font-bold">{paidService.serviceDetail.discount}$</p>
 										{:else}
-											<p class="text-xl font-bold">{paidService.serviceDetail.price}IQD</p>
+											<p class="text-xl font-bold">{paidService.serviceDetail.price}$</p>
 										{/if}
 									</div>
 									<div>
@@ -206,7 +206,7 @@
 				<div class="w-full h-[2px] bg-[var(--lightPrimaryColor)]" />
 				<div class="w-full flex justify-between">
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
-					<h1 class="text-2xl my-6 font-bold">{totalPrice} IQD</h1>
+					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
 				<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button>
 			</div>

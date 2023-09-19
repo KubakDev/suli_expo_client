@@ -1,13 +1,18 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
+	profile: {
+		title: "Profile",
+		reservation_history: 'Reservations'
+	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
 		required: '{field} is required'
 	},
 	buttons: {
 		submit: 'Submit',
-		upload_sheet: "Upload Sheet"
+		upload_sheet: "Upload Sheet",
+		update: "Update"
 	},
 	home: 'Home',
 	about: 'About',
@@ -109,6 +114,12 @@ const en = {
 			title: 'Login',
 			email: 'Email',
 			password: 'Password'
+		},
+		statuses: {
+			pending: "Pending",
+			accept: "Accepted",
+			reject: "Rejected",
+
 		}
 	},
 	loggin: {

@@ -2,13 +2,18 @@ import type { Translation } from '../i18n-types';
 
 const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want
+	profile: {
+		title: "پرۆفایل",
+		reservation_history: 'حجزکراوەکان'
+	},
 	HI: 'سڵاو {name}! تکایە ستارەیەک بەرز بدە، کاتێک پرۆژەکە لە دڵخوازەکاند',
 	validation: {
 		required: '{field} is required'
 	},
 	buttons: {
 		submit: 'ناردن',
-		upload_sheet: 'بارکردنی شیت'
+		upload_sheet: 'بارکردنی شیت',
+		update: 'نوێکردنەوە'
 	},
 	home: 'سەرەکی',
 	about: 'دەربارە',
@@ -110,6 +115,12 @@ const ckb = {
 			title: 'چوونەژوورەوە',
 			email: 'ئیمەیڵ',
 			password: 'وشەی نهێنی'
+		},
+		statuses: {
+			pending: "لە چاوەڕوانی",
+			accept: "پەسەندکراو",
+			reject: "ڕەتکراو",
+
 		}
 	},
 	loggin: {

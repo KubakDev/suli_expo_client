@@ -4,13 +4,16 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
-	import { currentUser } from '../../../../stores/currentUser';
-	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
+	import { currentUser } from '../../stores/currentUser';
+	import { generateDocx } from '../../utils/generateContract';
+	import type { Reservation } from '../../models/reservationModel';
+	import { ReservationStatus } from '../../models/reservationModel';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
+	export let reservationData: Reservation;
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
@@ -39,6 +42,7 @@
 		area: [],
 		comment: ''
 	};
+	let reservedAreas: any[] = [];
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
@@ -58,8 +62,28 @@
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
+		getCompanyReservedData();
 	});
 
+	async function getCompanyReservedData() {
+		reservedAreas = JSON.parse(reservationData.reserved_areas);
+		reservedSeatData = {
+			area: JSON.parse(reservationData.reserved_areas),
+			comment: reservationData.comment
+		};
+		let allReservedArea = reservedAreas.map((reservedArea) => {
+			return reservedArea.area;
+		});
+
+		allReservedArea.map((area) => {
+			let result = areas.find((x) => +x.area == +area);
+
+			if (!result) {
+				customAreaMeter = +area;
+				customAreaQuantity = reservedAreas.find((x) => x.area == area).quantity;
+			}
+		});
+	}
 	function reserveSeat() {
 		reservedSeatData.area.push({
 			id: areas.length,
@@ -68,7 +92,7 @@
 		});
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
-		dispatch('reserveSeat', reservedSeatData);
+		dispatch('updateReserveSeat', reservedSeatData);
 	}
 	function addAreaToReservedSeatData(index: number, number: number) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
@@ -126,7 +150,6 @@
 			id: $currentUser.id,
 			email: $currentUser.email
 		};
-		console.log(docxData);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
@@ -189,6 +212,8 @@
 								}}
 								serviceQuantity={availableSeatArea.quantity}
 								maxQuantityPerUser={availableSeatArea.quantity}
+								number={reservedAreas.find((area) => area.id == index)?.quantity ?? 0}
+								disabled={true}
 							/>
 						</div>
 						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -226,6 +251,8 @@
 							on:numberChanged={(number) => {
 								addCustomArea(+number.detail);
 							}}
+							disabled={true}
+							number={customAreaQuantity}
 						/>
 					</div>
 					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -267,10 +294,11 @@
 		rows="5"
 		class="my-3"
 		bind:value={reservedSeatData.comment}
+		disabled={true}
 	/>
 	<div class="flex justify-end w-full mt-8">
 		<div>
-			<Button on:click={() => (defaultModal = true)}>Upload File</Button>
+			<Button on:click={() => (defaultModal = true)} disabled={true}>Upload File</Button>
 			<Modal title="Upload File" bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
@@ -312,14 +340,14 @@
 					</div>
 				</div>
 				<svelte:fragment slot="footer">
-					<Button on:click={handleAddClick}>Add</Button>
-					<Button color="alternative">Decline</Button>
+					<Button on:click={handleAddClick} disabled={true}>Add</Button>
+					<Button color="alternative" disabled={true}>Decline</Button>
 				</svelte:fragment>
 			</Modal>
 		</div>
 
-		<Button on:click={reserveSeat} class="mx-2">
-			{$LL.reservation.reserve()}
+		<Button on:click={reserveSeat} class="mx-2" disabled={true}>
+			{$LL.buttons.update()}
 		</Button>
 		<Button on:click={contractPreview} class="mx-2" color="alternative">
 			{$LL.reservation.preview_contract()}

@@ -15,6 +15,16 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	profile: {
+		/**
+		 * P​r​o​f​i​l​e
+		 */
+		title: string
+		/**
+		 * R​e​s​e​r​v​a​t​i​o​n​s
+		 */
+		reservation_history: string
+	}
 	/**
 	 * H​i​ ​{​n​a​m​e​}​!​ ​P​l​e​a​s​e​ ​l​e​a​v​e​ ​a​ ​s​t​a​r​ ​i​f​ ​y​o​u​ ​l​i​k​e​ ​t​h​i​s​ ​p​r​o​j​e​c​t​:​ ​h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​i​v​a​n​h​o​f​e​r​/​t​y​p​e​s​a​f​e​-​i​1​8​n
 	 * @param {string} name
@@ -36,6 +46,10 @@ type RootTranslation = {
 		 * U​p​l​o​a​d​ ​S​h​e​e​t
 		 */
 		upload_sheet: string
+		/**
+		 * U​p​d​a​t​e
+		 */
+		update: string
 	}
 	/**
 	 * H​o​m​e
@@ -388,6 +402,20 @@ type RootTranslation = {
 			 */
 			password: string
 		}
+		statuses: {
+			/**
+			 * P​e​n​d​i​n​g
+			 */
+			pending: string
+			/**
+			 * A​c​c​e​p​t​e​d
+			 */
+			accept: string
+			/**
+			 * R​e​j​e​c​t​e​d
+			 */
+			reject: string
+		}
 	}
 	loggin: {
 		/**
@@ -551,6 +579,16 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
+	profile: {
+		/**
+		 * Profile
+		 */
+		title: () => LocalizedString
+		/**
+		 * Reservations
+		 */
+		reservation_history: () => LocalizedString
+	}
 	/**
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
 	 */
@@ -570,6 +608,10 @@ export type TranslationFunctions = {
 		 * Upload Sheet
 		 */
 		upload_sheet: () => LocalizedString
+		/**
+		 * Update
+		 */
+		update: () => LocalizedString
 	}
 	/**
 	 * Home
@@ -921,6 +963,20 @@ export type TranslationFunctions = {
 			 * Password
 			 */
 			password: () => LocalizedString
+		}
+		statuses: {
+			/**
+			 * Pending
+			 */
+			pending: () => LocalizedString
+			/**
+			 * Accepted
+			 */
+			accept: () => LocalizedString
+			/**
+			 * Rejected
+			 */
+			reject: () => LocalizedString
 		}
 	}
 	loggin: {

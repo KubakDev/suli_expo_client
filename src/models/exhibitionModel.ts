@@ -29,8 +29,24 @@ export interface ExhibitionModel {
 	brochure?: string;
 	map_title?: string;
 	deleted_status: string | null;
+	exhibition_languages: ExhibitionLanguagesModel[]
 }
 
+export interface ExhibitionLanguagesModel {
+	id: number;
+	language: string;
+	title: string;
+	description: string;
+	exhibition_id: number;
+	video_youtube_link: string;
+	story: string;
+	location: string;
+	location_title: string;
+	pdf_files: string;
+	brochure: string;
+	map_title: string;
+	contract_file: string;
+}
 export interface ExhibitionPaginatedModel {
 	data: ExhibitionModel[];
 	page: number;
