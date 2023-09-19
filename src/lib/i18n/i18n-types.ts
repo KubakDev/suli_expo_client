@@ -312,6 +312,22 @@ type RootTranslation = {
 		 * y​o​u​ ​c​a​n​ ​a​d​d​ ​a​r​e​a​ ​m​a​n​u​a​l​l​y​ ​h​e​r​e
 		 */
 		manual_area: string
+		/**
+		 * A​d​d
+		 */
+		add_file: string
+		/**
+		 * c​a​n​c​e​l
+		 */
+		cancel_file: string
+		/**
+		 * R​e​q​u​i​r​e​d
+		 */
+		required_file: string
+		/**
+		 * U​p​l​o​a​d​ ​E​x​c​e​l​ ​F​i​l​e
+		 */
+		upload_file: string
 		services: {
 			/**
 			 * S​e​r​v​i​c​e​s
@@ -418,6 +434,10 @@ type RootTranslation = {
 		}
 	}
 	loggin: {
+		/**
+		 * P​l​e​a​s​e​ ​C​h​e​c​k​ ​Y​o​u​r​ ​E​m​a​i​l​ ​f​o​r​ ​r​e​s​e​t​ ​p​a​s​s​w​o​r​d
+		 */
+		message: string
 		/**
 		 * L​o​g​i​n
 		 */
@@ -874,6 +894,22 @@ export type TranslationFunctions = {
 		 * you can add area manually here
 		 */
 		manual_area: () => LocalizedString
+		/**
+		 * Add
+		 */
+		add_file: () => LocalizedString
+		/**
+		 * cancel
+		 */
+		cancel_file: () => LocalizedString
+		/**
+		 * Required
+		 */
+		required_file: () => LocalizedString
+		/**
+		 * Upload Excel File
+		 */
+		upload_file: () => LocalizedString
 		services: {
 			/**
 			 * Services
@@ -980,6 +1016,10 @@ export type TranslationFunctions = {
 		}
 	}
 	loggin: {
+		/**
+		 * Please Check Your Email for reset password
+		 */
+		message: () => LocalizedString
 		/**
 		 * Login
 		 */

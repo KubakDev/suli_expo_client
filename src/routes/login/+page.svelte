@@ -10,6 +10,7 @@
 	import Test from './test.png';
 	export let form;
 	export let data;
+	import { get } from 'svelte/store';
 
 	let loading = false;
 	let resetPasswordModal = false;
@@ -38,15 +39,18 @@
 	function onSubmit() {
 		loading = true;
 	}
+
+	let message = '';
 	async function resetPassword() {
 		await data.supabase.auth.resetPasswordForEmail(resetEmail, {
 			redirectTo: 'https://suli-expo-client-seven.vercel.app/reset-password'
 		});
+		message = get(LL).loggin.message();
 	}
 </script>
 
 <Modal title={$LL.loggin.reset_password()} bind:open={resetPasswordModal}>
-	<div class="w-full pb-8">
+	<div class="w-full">
 		<Input
 			type="text"
 			id="email"
@@ -55,6 +59,10 @@
 			bind:value={resetEmail}
 		/>
 	</div>
+	{#if message}
+		<div class="ww-full text-center bg-green-200 rounded py-5 text-green-800">{message}</div>
+	{/if}
+
 	<div class="w-full flex justify-end">
 		<Button on:click={resetPassword}>{$LL.loggin.send_email()}</Button>
 	</div>

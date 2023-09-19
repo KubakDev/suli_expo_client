@@ -15,6 +15,7 @@
 	let currentImageFile = false;
 
 	const id = $page.params.userId;
+
 	let result = {
 		id: 0,
 		logo_url: '',
@@ -33,9 +34,9 @@
 		const { data: fetchedData, error } = await data.supabase
 			.from('company')
 			.select('*')
-			.eq('id', id)
+			.eq('uid', id)
 			.single();
-
+		console.log(data);
 		if (error) {
 			console.error('Error fetching data:', error.message);
 		} else {
