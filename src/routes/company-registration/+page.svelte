@@ -48,20 +48,24 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
-					currentUser.set({
-						uid: data?.session?.user.id,
-						logo_url: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${res?.data?.logo_url}`,
-						phone_number: res?.data?.phone_number,
-						company_name: res?.data?.company_name,
-						email: res?.data?.email,
-						working_field: res?.data?.working_field,
-						manager_name: res?.data?.manager_name,
-						passport_number: res?.data?.passport_number,
-						address: res?.data?.address,
-						type: res?.data?.type
-					});
+					console.log(res.data);
+					currentUser.set(res.data);
 				}
 			});
+
+		console.log($currentUser);
+		userData = {
+			logo_url: $currentUser.logo_url,
+			phone_number: $currentUser.phone_number,
+			company_name: $currentUser.company_name,
+			email: $currentUser.email,
+			working_field: $currentUser.working_field,
+			manager_name: $currentUser.manager_name,
+			passport_number: $currentUser.passport_number,
+			address: $currentUser.address,
+			type: $currentUser.type
+		};
+
 		loaded = true;
 	});
 
@@ -87,19 +91,29 @@
 		}
 
 		// Immediately update currentUser store after inserting/updating the data
-		currentUser.set({
-			uid: data?.session?.user.id,
-			logo_url: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`,
-			phone_number: userData.phone_number,
-			company_name: userData.company_name,
-			email: userData.email,
-			working_field: userData.working_field,
-			manager_name: userData.manager_name,
-			passport_number: userData.passport_number,
-			address: userData.address,
-			type: userData.type
-		});
-
+		// currentUser.set({
+		// 	uid: data?.session?.user.id,
+		// 	logo_url: userData.logo_url,
+		// 	phone_number: userData.phone_number,
+		// 	company_name: userData.company_name,
+		// 	email: userData.email,
+		// 	working_field: userData.working_field,
+		// 	manager_name: userData.manager_name,
+		// 	passport_number: userData.passport_number,
+		// 	address: userData.address,
+		// 	type: userData.type
+		// });
+		await data.supabase
+			.from('company')
+			.select('*')
+			.eq('uid', data?.session?.user.id)
+			.single()
+			.then((res: any) => {
+				if (res.data) {
+					console.log(res.data);
+					currentUser.set(res.data);
+				}
+			});
 		goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 	}
 
@@ -148,10 +162,15 @@
 	}
 </script>
 
+<!-- comment -->
 <form class="flex min-h-screen justify-center items-center w-full p-8">
 	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color: #f3f3f3">
 		<div class="flex justify-center items-center pb-10">
-			<img src={userData.logo_url} alt="logo" class="w-44 h-44 rounded-full border bg-white" />
+			<img
+				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
+				alt="logo"
+				class="w-44 h-44 rounded-full border bg-white"
+			/>
 		</div>
 		<div class="grid gap-6 mb-6 md:grid-cols-2">
 			{#each Object.keys(userData) as user}
