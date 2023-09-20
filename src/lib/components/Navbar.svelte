@@ -191,7 +191,7 @@
 		let:toggle
 	>
 		<NavHamburger on:click={toggle} />
-		<NavBrand class=" w-full h-full absolute px-4 md:px-20" href="#">
+		<NavBrand class=" block md:absolute px-4 md:px-20" href="#">
 			{#if $currentUser}
 				{#if $currentUser.id}
 					<div
@@ -256,6 +256,7 @@
 				{/if}
 			{/if}
 		</NavBrand>
+
 		<NavUl
 			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
