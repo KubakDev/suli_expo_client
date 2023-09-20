@@ -190,15 +190,15 @@
 	<img
 		src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data.image_map}
 		alt="not found"
-		class="w-full h-[500px] object-cover rounded-lg"
+		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
 	<div class="border-[1px] border-[#787e89] w-full my-6" />
 	<div class="w-full flex justify-center">
 		<div class="w-full lg:w-8/12">
-			<div class="w-full flex items-center my-8 justify-between">
-				<p class="text-lg md:text-3xl">{$LL.reservation.available_area()}</p>
-				<p class="mx-6 text-lg md:text-xl">
-					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}
+			<div class="w-full flex items-center my-2 justify-between">
+				<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
+				<p class="mx-6 text-sm md:text-xl">
+					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}$
 				</p>
 			</div>
 			<div>
@@ -224,15 +224,17 @@
 						</p>
 						<div class="lg:mx-4">
 							<p
-								class={` text-start text-sm md:text-xl font-medium justify-center flex my-2 ${
-									discountedPrice ? 'line-through' : ''
+								class={` text-start text-sm md:text-xl justify-center flex my-2 ${
+									discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
 								}`}
 							>
 								{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 									(+pricePerMeter * +availableSeatArea.area)}$
 							</p>
 							{#if discountedPrice}
-								<p class=" text-start text-sm md:text-xl font-medium justify-center flex my-2">
+								<p
+									class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
 								</p>
@@ -241,8 +243,8 @@
 					</div>
 				{/each}
 				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
-				<h2 class="text-lg">{$LL.reservation.manual_area()}</h2>
-				<p>
+				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
+				<p class="text-sm md:text-lg mt-1">
 					زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد..
 					)
 				</p>
@@ -273,14 +275,16 @@
 					</p>
 					<div class="lg:mx-4">
 						<p
-							class={` text-start text-sm md:text-xl font-medium justify-center flex my-2 ${
-								discountedPrice ? 'line-through' : ''
+							class={` text-start text-sm md:text-xl justify-center flex my-2 ${
+								discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
 							}`}
 						>
 							{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}$
 						</p>
 						{#if discountedPrice}
-							<p class=" text-start text-sm md:text-xl font-medium justify-center flex my-2">
+							<p
+								class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
 						{/if}
@@ -288,16 +292,23 @@
 				</div>
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-				<div class=" text-start text-xl font-medium justify-center flex items-center">
+				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
 					<div>
 						{$LL.reservation.total_price()} :
 					</div>
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
-							<p class="line-through">{totalRawPrice}$</p>
+							<p
+								class="text-start justify-center flex my-2 line-through text-xs md:text-xl
+							"
+							>
+								{totalRawPrice}$
+							</p>
 						{/if}
 
-						<p>
+						<p
+							class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+						>
 							{totalPrice}$
 						</p>
 					</div>
@@ -326,7 +337,7 @@
 			{/if}
 		</div>
 	</div>
-	<p class="text-3xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
+	<p class="text-md md:text-2xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
 		{$LL.reservation.comment()}
 	</p>
 	<Textarea

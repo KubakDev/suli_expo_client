@@ -347,7 +347,7 @@ type RootTranslation = {
 		 */
 		total_price: string
 		/**
-		 * P​r​i​c​e​ ​P​e​r​ ​E​a​c​h​ ​M​e​t​e​r
+		 * p​r​i​c​e​ ​p​e​r​ ​e​a​c​h​ ​m​e​t​e​r
 		 */
 		price_per_each_meter: string
 		/**
@@ -373,7 +373,7 @@ type RootTranslation = {
 			pending: string
 		}
 		/**
-		 * A​v​a​i​l​a​b​l​e​ ​A​r​e​a
+		 * a​v​a​i​l​a​b​l​e​ ​a​r​e​a
 		 */
 		available_area: string
 		measure: {
@@ -929,7 +929,7 @@ export type TranslationFunctions = {
 		 */
 		total_price: () => LocalizedString
 		/**
-		 * Price Per Each Meter
+		 * price per each meter
 		 */
 		price_per_each_meter: () => LocalizedString
 		/**
@@ -955,7 +955,7 @@ export type TranslationFunctions = {
 			pending: () => LocalizedString
 		}
 		/**
-		 * Available Area
+		 * available area
 		 */
 		available_area: () => LocalizedString
 		measure: {
