@@ -43,6 +43,7 @@
 			class={`p-[0.3rem] md:p-2 ${
 				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
 			} rounded-lg text-white`}
+
 			on:click={() => {
 				if (unlimited) {
 					number++;
