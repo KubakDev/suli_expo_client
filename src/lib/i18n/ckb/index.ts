@@ -2,8 +2,10 @@ import type { Translation } from '../i18n-types';
 const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want
 	profile: {
-		title: "پرۆفایل",
-		reservation_history: 'حجزکراوەکان'
+		logout: 'دەرچوون',
+		title: 'پرۆفایل',
+		reservation_history: 'حجزکراوەکان',
+		reservation_notification: 'ئاگادارکردنەوە'
 	},
 	HI: 'سڵاو {name}! تکایە ستارەیەک بەرز بدە، کاتێک پرۆژەکە لە دڵخوازەکاند',
 	validation: {
@@ -120,10 +122,9 @@ const ckb = {
 			password: 'وشەی نهێنی'
 		},
 		statuses: {
-			pending: "لە چاوەڕوانی",
-			accept: "پەسەندکراو",
-			reject: "ڕەتکراو",
-
+			pending: 'لە چاوەڕوانی',
+			accept: 'پەسەندکراو',
+			reject: 'ڕەتکراو'
 		}
 	},
 	loggin: {

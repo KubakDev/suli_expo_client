@@ -2,8 +2,10 @@ import type { BaseTranslation } from '../i18n-types';
 
 const en = {
 	profile: {
-		title: "Profile",
-		reservation_history: 'Reservations'
+		logout: 'Logout',
+		title: 'Profile',
+		reservation_history: 'Reservations',
+		reservation_notification: 'Notification'
 	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
@@ -11,8 +13,8 @@ const en = {
 	},
 	buttons: {
 		submit: 'Submit',
-		upload_sheet: "Upload Sheet",
-		update: "Update"
+		upload_sheet: 'Upload Sheet',
+		update: 'Update'
 	},
 	home: 'Home',
 	about: 'About',
@@ -120,10 +122,9 @@ const en = {
 			password: 'Password'
 		},
 		statuses: {
-			pending: "Pending",
-			accept: "Accepted",
-			reject: "Rejected",
-
+			pending: 'Pending',
+			accept: 'Accepted',
+			reject: 'Rejected'
 		}
 	},
 	loggin: {

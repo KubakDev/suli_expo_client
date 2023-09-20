@@ -11,7 +11,8 @@
 		Chevron,
 		Button,
 		DarkMode,
-		Avatar
+		Avatar,
+		Indicator
 	} from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
@@ -26,6 +27,7 @@
 	import { Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
+	import { EnvelopeSolid } from 'flowbite-svelte-icons';
 
 	export let data: PageData;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -69,6 +71,87 @@
 	themeToggle.subscribe((value) => {
 		currentTheme = value;
 	});
+
+	//  ***********************************
+
+	let reservations: any = [];
+	let acceptedReservationsCount = 0;
+
+	async function getExhibitionNameById(id: number) {
+		const { data: exhibitionData, error } = await data.supabase
+			.from('exhibition')
+			.select('exhibition_type')
+			.eq('id', id)
+			.single();
+
+		if (error || !exhibitionData) {
+			console.error('Error fetching exhibition type:', error);
+			return null;
+		}
+		return exhibitionData.exhibition_type;
+	}
+
+	const fetchSeatReservation = async () => {
+		if (!$currentUser || !$currentUser.id) {
+			console.log('User not available');
+			return;
+		}
+
+		const { data: data_currentCompany } = await data.supabase
+			.from('seat_reservation')
+			.select('*')
+			.eq('company_id', $currentUser.id);
+
+		if (!data_currentCompany || !data_currentCompany.length) {
+			console.log('No reservations found for the company');
+			return;
+		}
+
+		acceptedReservationsCount = data_currentCompany.filter(
+			(reservation) => reservation.status === 'accept'
+		).length;
+
+		reservations = data_currentCompany.filter((reservation) =>
+			['accept', 'reject'].includes(reservation.status)
+		);
+
+		for (let reservation of reservations) {
+			reservation.exhibition_type = await getExhibitionNameById(reservation.exhibition_id);
+		}
+	};
+
+	onMount(() => {
+		console.log('navbar ', $currentUser);
+		fetchSeatReservation();
+
+		data.supabase
+			.channel('table-db-changes')
+			.on(
+				'postgres_changes',
+				{
+					event: 'UPDATE',
+					schema: 'public',
+					table: 'seat_reservation'
+				},
+				(payload) => {
+					fetchSeatReservation();
+				}
+			)
+			.subscribe();
+	});
+
+	async function logoutFunction() {
+		try {
+			const { error } = await data.supabase.auth.signOut();
+			if (error) throw error;
+
+			console.log('User successfully logged out.');
+			currentUser.set(null);
+			goto('/');
+		} catch (err) {
+			console.error('Error during logout:', err);
+		}
+	}
 </script>
 
 <div class=" w-full border-b border-b-neutral-800">
@@ -188,28 +271,53 @@
 					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 				</Dropdown>
 			</div>
-			{#if $currentUser.id}
-				<div
-					class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
-					style="margin:0 ;"
-				>
-					<div class="flex space-x-4 items-center gap-2">
-						<Avatar
-							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + $currentUser.logo_url}
-						/>
-						<p class="text-[var(--lightOnForegroundColor)]">{$currentUser.company_name}</p>
+			{#if $currentUser}
+				{#if $currentUser.id}
+					<div
+						class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+						style="margin:0 ;"
+					>
+						<div class="flex space-x-4 items-center gap-2">
+							<div class="relative">
+								<Avatar src={$currentUser.logo_url} />
+
+								<span
+									class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
+								>
+									{acceptedReservationsCount}
+								</span>
+							</div>
+
+							<p class="text-[var(--lightOnForegroundColor)]">{$currentUser.company_name}</p>
+						</div>
+
+						<Dropdown id="">
+							<DropdownItem on:click={() => goto('/company-registration')}
+								>{$LL.profile.title()}</DropdownItem
+							>
+							<DropdownItem on:click={() => goto('/reservation_history')}
+								>{$LL.profile.reservation_history()}</DropdownItem
+							>
+
+							<DropdownItem on:click={() => logoutFunction()}>{$LL.profile.logout()}</DropdownItem>
+							<DropdownItem on:click={() => goto('/reservation_history')}>
+								<div>
+									<span>{$LL.profile.reservation_notification()}</span>
+									<span class="text-red-600 font-bold ml-3">{acceptedReservationsCount}</span>
+								</div>
+							</DropdownItem>
+							<hr />
+							{#each reservations as reservation}
+								<DropdownItem class="flex justify-between cursor-default hover:none">
+									{reservation.exhibition_type}
+									<span class={reservation.status === 'accept' ? 'text-green-500' : 'text-red-500'}>
+										{reservation.status}
+									</span>
+								</DropdownItem>
+							{/each}
+						</Dropdown>
 					</div>
-					<Dropdown id="">
-						<DropdownItem
-							on:click={() => {
-								goto('/company-registration');
-							}}>{$LL.profile.title()}</DropdownItem
-						>
-						<DropdownItem on:click={() => goto('/reservation_history')}
-							>{$LL.profile.reservation_history()}</DropdownItem
-						>
-					</Dropdown>
-				</div>
+				{/if}
 			{/if}
 		</NavUl>
 	</Navbar>
