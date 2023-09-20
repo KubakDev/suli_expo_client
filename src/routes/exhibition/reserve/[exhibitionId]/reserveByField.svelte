@@ -255,6 +255,9 @@
 								bind:value={customAreaMeter}
 								class="max-w-[60px] md:max-w-[100px]"
 								on:input={() => {
+									if (customAreaMeter < 0) {
+										customAreaMeter = 0;
+									}
 									calculateTotalPrice();
 								}}
 							/>

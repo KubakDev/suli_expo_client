@@ -72,6 +72,7 @@ const en = {
 	total_company_reserve: 'Total Company Reserve',
 	reservation: {
 		reserved: 'Your request has been successfully received, please wait for our contact',
+		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',

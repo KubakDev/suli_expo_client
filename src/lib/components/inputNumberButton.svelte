@@ -20,7 +20,9 @@
 <div>
 	<div class="w-full flex max-w-[150px]">
 		<button
-			class="p-[0.3rem] md:p-2 bg-[#e1b168] rounded-lg text-white"
+			class={`p-[0.3rem] md:p-2 ${
+				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
+			} rounded-lg text-white`}
 			on:click={() => {
 				invalid = false;
 				if (number == 0) return;
@@ -38,7 +40,9 @@
 		/>
 		<button
 			{disabled}
-			class="p-[0.3rem] md:p-2 bg-[#e1b168] rounded-lg text-white"
+			class={`p-[0.3rem] md:p-2 ${
+				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
+			} rounded-lg text-white`}
 			on:click={() => {
 				if (unlimited) {
 					number++;

@@ -269,6 +269,10 @@ type RootTranslation = {
 		 */
 		reserved: string
 		/**
+		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​u​p​d​a​t​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
+		 */
+		reserveUpdated: string
+		/**
 		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
 		 */
 		title: string
@@ -850,6 +854,10 @@ export type TranslationFunctions = {
 		 * Your request has been successfully received, please wait for our contact
 		 */
 		reserved: () => LocalizedString
+		/**
+		 * Your request has been successfully updated, please wait for our contact
+		 */
+		reserveUpdated: () => LocalizedString
 		/**
 		 * Exhibition Seats
 		 */

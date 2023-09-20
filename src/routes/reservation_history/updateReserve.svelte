@@ -44,6 +44,10 @@
 	};
 	let reservedAreas: any[] = [];
 	onMount(() => {
+		onMountData();
+	});
+
+	function onMountData() {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
 		}`;
@@ -63,8 +67,7 @@
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
 		getCompanyReservedData();
-	});
-
+	}
 	async function getCompanyReservedData() {
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
@@ -81,8 +84,13 @@
 			if (!result) {
 				customAreaMeter = +area;
 				customAreaQuantity = reservedAreas.find((x) => x.area == area).quantity;
+				setTimeout(() => {
+					reservedAreas = reservedAreas.filter((x) => x.area != area);
+					reservedSeatData.area = reservedSeatData.area.filter((x) => x.area != area);
+				}, 10);
 			}
 		});
+		calculateTotalPrice();
 	}
 	function reserveSeat() {
 		reservedSeatData.area.push({
@@ -90,9 +98,11 @@
 			area: customAreaMeter.toString(),
 			quantity: customAreaQuantity
 		});
-		customAreaQuantity = 0;
-		customAreaMeter = 0;
-		dispatch('updateReserveSeat', reservedSeatData);
+		dispatch('updateReserveSeat', { reservedSeatData, reservationData });
+
+		setTimeout(() => {
+			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
+		}, 10);
 	}
 	function addAreaToReservedSeatData(index: number, number: number) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
@@ -110,10 +120,7 @@
 			});
 		}
 		reservedSeatData = { ...reservedSeatData };
-		totalPrice = 0;
-		reservedSeatData.area.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
-		});
+		calculateTotalPrice();
 	}
 
 	async function contractPreview() {
@@ -160,6 +167,7 @@
 	}
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
+		calculateTotalPrice();
 	}
 	let selectedFile: any = null;
 	let fileName = '';
@@ -182,6 +190,13 @@
 			reservedSeatData.file = selectedFile;
 		} else {
 		}
+	}
+	function calculateTotalPrice() {
+		totalPrice = 0;
+		reservedSeatData.area.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
+		});
+		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
 	}
 </script>
 
@@ -213,7 +228,7 @@
 								serviceQuantity={availableSeatArea.quantity}
 								maxQuantityPerUser={availableSeatArea.quantity}
 								number={reservedAreas.find((area) => area.id == index)?.quantity ?? 0}
-								disabled={true}
+								disabled={reservationData.status != ReservationStatus.PENDING}
 							/>
 						</div>
 						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -242,7 +257,16 @@
 				<div class="flex flex-wrap items-center my-2">
 					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
-							<NumberInput bind:value={customAreaMeter} class="max-w-[100px]" />
+							<NumberInput
+								bind:value={customAreaMeter}
+								class="max-w-[100px]"
+								on:input={() => {
+									if (customAreaMeter < 0) {
+										customAreaMeter = 0;
+									}
+									calculateTotalPrice();
+								}}
+							/>
 						</div>
 					</div>
 					<div class="mx-6 my-2">
@@ -251,8 +275,8 @@
 							on:numberChanged={(number) => {
 								addCustomArea(+number.detail);
 							}}
-							disabled={true}
 							number={customAreaQuantity}
+							disabled={reservationData.status != ReservationStatus.PENDING}
 						/>
 					</div>
 					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
@@ -294,11 +318,13 @@
 		rows="5"
 		class="my-3"
 		bind:value={reservedSeatData.comment}
-		disabled={true}
 	/>
 	<div class="flex justify-end w-full mt-8">
 		<div>
-			<Button on:click={() => (defaultModal = true)} disabled={true}>Upload File</Button>
+			<Button
+				on:click={() => (defaultModal = true)}
+				disabled={reservationData.status != ReservationStatus.PENDING}>Upload File</Button
+			>
 			<Modal title="Upload File" bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
@@ -340,13 +366,22 @@
 					</div>
 				</div>
 				<svelte:fragment slot="footer">
-					<Button on:click={handleAddClick} disabled={true}>Add</Button>
-					<Button color="alternative" disabled={true}>Decline</Button>
+					<Button
+						on:click={handleAddClick}
+						disabled={reservationData.status != ReservationStatus.PENDING}>Add</Button
+					>
+					<Button color="alternative" disabled={reservationData.status != ReservationStatus.PENDING}
+						>Decline</Button
+					>
 				</svelte:fragment>
 			</Modal>
 		</div>
 
-		<Button on:click={reserveSeat} class="mx-2" disabled={true}>
+		<Button
+			on:click={reserveSeat}
+			class="mx-2"
+			disabled={reservationData.status != ReservationStatus.PENDING}
+		>
 			{$LL.buttons.update()}
 		</Button>
 		<Button on:click={contractPreview} class="mx-2" color="alternative">

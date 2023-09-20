@@ -8,9 +8,15 @@
 	import { PencilSquare, ChevronLeft, ChevronRight } from 'svelte-heros-v2';
 	import UpdateReserve from './updateReserve.svelte';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
+	import { ReservationStatusEnum } from '../../models/reserveSeat';
+	import { Modal } from 'flowbite-svelte';
+	//@ts-ignore
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
+	import SuccessLottieAnimation from '../exhibition/reserve/[exhibitionId]/successLottie.json';
 
 	export let data: PageData;
 
+	let successModal = false;
 	let reservations: Reservation[] = [];
 	let currentUserId = $currentUser.id;
 	let openEditModal = false;
@@ -51,8 +57,46 @@
 			: '';
 		return result;
 	}
+	async function updateReserveData(reservationData: any, reservedSeatData: any) {
+		data.supabase
+			.from('seat_reservation')
+			.update({
+				exhibition_id: reservationData.exhibition_id,
+				company_id: $currentUser.id,
+				object_id: new Date().getTime(),
+				comment: reservedSeatData.comment,
+				reserved_areas: JSON.stringify(reservedSeatData.area),
+				status: ReservationStatusEnum.PENDING,
+				type: reservationData?.exhibition?.seat_layout[0]?.type,
+				file_url: reservationData.file_url
+			})
+			.eq('id', reservationData.id)
+			.then(async (response: any) => {
+				await getAllReservationHistory();
+				if (response.error) {
+					alert('error ocuured');
+					return;
+				}
+				successModal = true;
+			});
+	}
 </script>
 
+<Modal bind:open={successModal}>
+	<div class="flex justify-center">
+		<LottiePlayer
+			src={SuccessLottieAnimation}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={300}
+			width={300}
+		/>
+	</div>
+	<div class="w-full flex justify-center items-center">
+		<p class="font-bold">{$LL.reservation.reserveUpdated()}</p>
+	</div>
+</Modal>
 {#if !openEditModal}
 	<div class="w-full flex justify-center items-center">
 		<div class="flex h-screen justify-center py-12 w-3/4 max-w-[1000px]">
@@ -118,7 +162,10 @@
 				supabase={data.supabase}
 				locale={$locale}
 				on:updateReserveSeat={(reserveData) => {
-					console.log(reserveData.detail);
+					updateReserveData(
+						reserveData.detail.reservationData,
+						reserveData.detail.reservedSeatData
+					);
 				}}
 				reservationData={selectedReservation}
 			/>
