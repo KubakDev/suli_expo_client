@@ -99,23 +99,25 @@
 </Modal>
 {#if !openEditModal}
 	<div class="w-full flex justify-center items-center">
-		<div class="flex h-screen justify-center py-12 w-3/4 max-w-[1000px]">
+		<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
 			<div class="w-full">
 				{#each reservations as reservation}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
-						class="w-10/12 border-2 border-gray-300 bg-white shadow-sm h-[80px] rounded-lg flex justify-between px-10 items-center gap-2 flex-wrap"
+						class="w-full md:w-10/12 border-2 border-gray-300 bg-white shadow-sm h-[80px] rounded-lg flex justify-between px-10 items-center gap-3"
 					>
-						<div>
+						<div class="text-sm md:text-lg">
 							{exhibitionName(reservation)}
 						</div>
-						<div class="flex flex-col justify-center items-center">
+						<div class="flex flex-col justify-center items-center text-sm md:text-lg">
 							{moment(reservation.created_at).format('DD/MM/YYYY')}
 							<div>
 								{moment(reservation.created_at).format('HH:MM:SS')}
 							</div>
 						</div>
-						<div class={`${reservation.status} py-2 px-6 rounded-full`}>
+						<div
+							class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white`}
+						>
 							{$LL.reservation.statuses[reservation.status]()}
 						</div>
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -137,9 +139,9 @@
 		</div>
 	</div>
 {:else}
-	<div class="w-full flex justify-center items-center">
+	<div class="w-full flex justify-center items-center px-4">
 		<div
-			class="flex flex-col min-h-screen justify-center items-center py-12 w-3/4 max-w-[1500px] my-12 bg-white rounded-md"
+			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 bg-white rounded-md"
 		>
 			<div class="flex justify-start w-full">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -296,8 +296,10 @@
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
-					<div>
-						{$LL.reservation.total_price()} :
+					<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
+						<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
+							{$LL.reservation.total_price()} : {totalPrice}$
+						</p>
 					</div>
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}

@@ -204,19 +204,21 @@
 	<img
 		src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data.image_map}
 		alt="not found"
-		class="w-full h-[500px] object-cover rounded-lg"
+		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
 	<div class="border-[1px] border-[#787e89] w-full my-6" />
 	<div class="w-full flex justify-center">
 		<div class="w-full lg:w-8/12">
-			<div class="w-full flex items-center my-8 justify-between">
-				<p class=" text-3xl">{$LL.reservation.available_area()}</p>
-				<p class="mx-6 text-xl">{$LL.reservation.price_per_each_meter()}:{pricePerMeter}</p>
+			<div class="w-full flex items-center my-2 justify-between">
+				<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
+				<p class="mx-6 text-sm md:text-xl">
+					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}$
+				</p>
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					<div class="flex flex-wrap items-center my-2">
-						<p class="min-w-[120px] text-start text-2xl font-medium my-2">
+					<div class="flex gap-2 justify-between items-center my-2">
+						<p class=" text-start text-md md:text-2xl font-medium my-2">
 							{availableSeatArea.area}
 							{$LL.reservation.measure.m()}
 						</p>
@@ -231,20 +233,24 @@
 								disabled={reservationData.status != ReservationStatus.PENDING}
 							/>
 						</div>
-						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
+						<p
+							class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+						>
 							{+pricePerMeter * +availableSeatArea.area} $
 						</p>
 						<div class="lg:mx-4">
 							<p
-								class={`min-w-[120px] text-start text-xl font-medium justify-center flex my-2 ${
-									discountedPrice ? 'line-through' : ''
+								class={` text-start text-sm md:text-xl justify-center flex my-2 ${
+									discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
 								}`}
 							>
 								{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 									(+pricePerMeter * +availableSeatArea.area)}$
 							</p>
 							{#if discountedPrice}
-								<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+								<p
+									class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
 								</p>
@@ -253,9 +259,9 @@
 					</div>
 				{/each}
 				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
-				<h2 class="text-lg">{$LL.reservation.manual_area()}</h2>
-				<div class="flex flex-wrap items-center my-2">
-					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
+				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
+				<div class="flex gap-2 justify-between items-center my-2">
+					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
 								bind:value={customAreaMeter}
@@ -269,7 +275,7 @@
 							/>
 						</div>
 					</div>
-					<div class="mx-6 my-2">
+					<div class="my-2">
 						<InputNumberButton
 							unlimited={true}
 							on:numberChanged={(number) => {
@@ -279,19 +285,23 @@
 							disabled={reservationData.status != ReservationStatus.PENDING}
 						/>
 					</div>
-					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
+					<p
+						class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+					>
 						{+pricePerMeter * customAreaMeter} $
 					</p>
 					<div class="lg:mx-4">
 						<p
-							class={`min-w-[120px] text-start text-xl font-medium justify-center flex my-2 ${
-								discountedPrice ? 'line-through' : ''
+							class={` text-start text-sm md:text-xl justify-center flex my-2 ${
+								discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
 							}`}
 						>
 							{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}$
 						</p>
 						{#if discountedPrice}
-							<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+							<p
+								class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
 						{/if}
@@ -306,10 +316,12 @@
 			</div>
 		</div>
 	</div>
-	<p class=" mt-8" style="color: var(--lightPrimaryColor);">
-		<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}
-	</p>
-	<p class="text-3xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
+	{#if discountedDescription}
+		<p style="color: var(--lightPrimaryColor);">
+			<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}
+		</p>
+	{/if}
+	<p class="text-md md:text-2xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
 		{$LL.reservation.comment()}
 	</p>
 	<Textarea
@@ -319,9 +331,10 @@
 		class="my-3"
 		bind:value={reservedSeatData.comment}
 	/>
-	<div class="flex justify-end w-full mt-8">
-		<div>
+	<div class="block md:flex justify-end w-full mt-8">
+		<div class="w-full md:w-auto">
 			<Button
+				class="w-full md:w-auto md:my-0 my-1"
 				on:click={() => (defaultModal = true)}
 				disabled={reservationData.status != ReservationStatus.PENDING}>Upload File</Button
 			>
@@ -379,12 +392,16 @@
 
 		<Button
 			on:click={reserveSeat}
-			class="mx-2"
+			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			disabled={reservationData.status != ReservationStatus.PENDING}
 		>
 			{$LL.buttons.update()}
 		</Button>
-		<Button on:click={contractPreview} class="mx-2" color="alternative">
+		<Button
+			on:click={contractPreview}
+			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+			color="alternative"
+		>
 			{$LL.reservation.preview_contract()}
 		</Button>
 	</div>
