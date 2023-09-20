@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { LL } from '$lib/i18n/i18n-svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import {
 		Navbar,
 		NavLi,
@@ -12,7 +12,8 @@
 		Button,
 		DarkMode,
 		Avatar,
-		Indicator
+		Indicator,
+		NavBrand
 	} from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
@@ -24,10 +25,10 @@
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { onMount } from 'svelte';
 	import { themeToggle, toggleTheme } from '../../stores/darkMode';
-	import { ArrowDownLeft, ArrowLongLeft, Moon, Sun } from 'svelte-heros-v2';
+	import { Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
-	import { AddressCardSolid, CalendarWeekSolid, UserSolid } from 'flowbite-svelte-icons';
+	import { EnvelopeSolid, UserSolid } from 'flowbite-svelte-icons';
 
 	export let data: PageData;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
@@ -43,6 +44,7 @@
 	}
 
 	let dropdownOpen = false;
+	let userProfileDropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 
 	// acgtive on route
@@ -50,7 +52,26 @@
 	$: {
 		activeUrl = $page.url.pathname;
 	}
-
+	$: {
+		setTimeout(async () => {
+			if (userProfileDropdownOpen) {
+				notifications.map((notification: any) => {
+					data.supabase
+						.from('notification')
+						.update({ seen: true })
+						.eq('unique_id', notification.unique_id)
+						.then((response) => {
+							console.log(response);
+						});
+				});
+			}
+		}, 5000);
+	}
+	$: {
+		$currentUser = $currentUser;
+		getAllNotification();
+	}
+	let notifications: any = [];
 	function updateActiveUrl(url: string) {
 		activeUrl = url;
 		previousPageStore.set($page.url.pathname);
@@ -85,7 +106,6 @@
 			.single();
 
 		if (error || !exhibitionData) {
-			console.error('Error fetching exhibition type:', error);
 			return null;
 		}
 		return exhibitionData.exhibition_type;
@@ -93,7 +113,6 @@
 
 	const fetchSeatReservation = async () => {
 		if (!$currentUser || !$currentUser.id) {
-			console.log('User not available');
 			return;
 		}
 
@@ -103,7 +122,6 @@
 			.eq('company_id', $currentUser.id);
 
 		if (!data_currentCompany || !data_currentCompany.length) {
-			console.log('No reservations found for the company');
 			return;
 		}
 
@@ -111,20 +129,29 @@
 			(reservation) => reservation.status === 'accept'
 		).length;
 
-		reservations = await Promise.all(
-			data_currentCompany.map(async (reservation) => {
-				const exhibition_type = await getExhibitionNameById(reservation.exhibition_id);
-				return { ...reservation, exhibition_type };
-			})
+		reservations = data_currentCompany.filter((reservation) =>
+			['accept', 'reject'].includes(reservation.status)
 		);
 
 		for (let reservation of reservations) {
 			reservation.exhibition_type = await getExhibitionNameById(reservation.exhibition_id);
 		}
 	};
-
+	async function getAllNotification() {
+		if (!$currentUser?.id) return;
+		notifications = [];
+		await data.supabase
+			.from('notification')
+			.select('*')
+			.eq('company_id', $currentUser.id)
+			.eq('language', $locale)
+			.neq('seen', true)
+			.then((response) => {
+				notifications = response.data;
+				notifications = [...notifications];
+			});
+	}
 	onMount(() => {
-		console.log('navbar ', $currentUser);
 		fetchSeatReservation();
 
 		data.supabase
@@ -132,12 +159,12 @@
 			.on(
 				'postgres_changes',
 				{
-					event: 'UPDATE',
+					event: 'INSERT',
 					schema: 'public',
-					table: 'seat_reservation'
+					table: 'notification'
 				},
 				(payload) => {
-					fetchSeatReservation();
+					getAllNotification();
 				}
 			)
 			.subscribe();
@@ -159,14 +186,136 @@
 
 <div class=" w-full border-b border-b-neutral-800">
 	<Navbar
-		style="background-color: var(--{tailVar}SecondaryColor);"
+		style="background-color: var(--{tailVar}SecondaryColor); "
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
-		navDivClass="mx-auto flex flex-wrap items-center max-w-full "
+		navDivClass="mx-auto flex flex-wrap items-center max-w-full py-4 md:py-0"
 		navClass=" px-2 sm:px-4 py-2.5   w-full z-20 top-0 left-0 border-b max-w-full relative"
 		let:hidden
 		let:toggle
 	>
 		<NavHamburger on:click={toggle} />
+		<NavBrand class=" block md:absolute px-4 md:px-20" href="#">
+			{#if $currentUser}
+				{#if $currentUser.id}
+					<div
+						class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0 cursor-pointer"
+						style="margin:0 ;"
+					>
+						<div class="flex space-x-4 items-center gap-1">
+							<div class="relative">
+								<Avatar src={$currentUser.logo_url} />
+								{#if notifications?.length > 0}
+									<span
+										class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
+									>
+										{notifications?.length}
+									</span>
+								{/if}
+							</div>
+							<p class="text-white">{$currentUser.company_name}</p>
+						</div>
+
+						<Dropdown id="" bind:open={userProfileDropdownOpen}>
+							<DropdownItem on:click={() => goto('/company-registration')}>
+								<div class="flex justify-start items-center">
+									<UserSolid class="h-5 w-5 text-[#dce1de] mr-2" />
+									{$LL.profile.title()}
+								</div>
+							</DropdownItem>
+							<DropdownItem on:click={() => goto('/reservation_history')}
+								><div class="flex justify-start items-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="#dce1de"
+										class="w-6 h-6 mr-2"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
+										/>
+									</svg>
+
+									{$LL.profile.reservation_history()}
+								</div></DropdownItem
+							>
+
+							<DropdownItem on:click={() => logoutFunction()}>
+								<div class="flex justify-start items-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="#dce1de"
+										class="w-6 h-6 mr-2"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+										/>
+									</svg>
+
+									{$LL.profile.logout()}
+								</div>
+							</DropdownItem>
+							<DropdownItem on:click={() => goto('/reservation_history')}>
+								<div>
+									<div class="flex justify-start items-center">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke-width="1.5"
+											stroke="#dce1de"
+											class="w-6 h-6 mr-2"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+											/>
+										</svg>
+										<div>
+											<span>{$LL.profile.reservation_notification()}</span>
+											<span class="text-red-600 font-bold ml-3">{notifications?.length}</span>
+										</div>
+									</div>
+								</div>
+							</DropdownItem>
+							<hr />
+							{#each notifications as notificationData}
+								<DropdownItem
+									class="flex justify-between cursor-default hover:none  shadow-sm my-3 rounded-md"
+								>
+									<div class="w-full">
+										<div class="flex justify-between mb-4">
+											<div>
+												{notificationData.exhibition_name}
+											</div>
+											<div
+												class={`${
+													notificationData.status === 'accept' ? 'bg-green-500' : 'bg-red-500'
+												}
+												px-2 py-1 rounded-full text-white flex justify-center items-center
+												`}
+											>
+												{$LL.reservation.statuses[notificationData.status]()}
+											</div>
+										</div>
+										<p>{notificationData.message ?? ''}</p>
+									</div>
+								</DropdownItem>
+							{/each}
+						</Dropdown>
+					</div>
+				{/if}
+			{/if}
+		</NavBrand>
 
 		<NavUl
 			divClass="w-full md:block  justify-center max-w-full items-center  p-0"
@@ -274,110 +423,6 @@
 					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
 				</Dropdown>
 			</div>
-			{#if $currentUser}
-				{#if $currentUser.id}
-					<div
-						class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
-						style="margin:0 ;"
-					>
-						<div class="flex space-x-4 items-center gap-2">
-							<div class="relative">
-								<Avatar src={$currentUser.logo_url} />
-
-								<span
-									class="absolute text-xs -top-2 right-0 w-5 h-5 text-white bg-red-500 rounded-full flex justify-center items-center"
-								>
-									{acceptedReservationsCount}
-								</span>
-							</div>
-
-							<p class="text-[var(--lightOnForegroundColor)]">{$currentUser.company_name}</p>
-						</div>
-
-						<Dropdown id="">
-							<DropdownItem on:click={() => goto('/company-registration')}>
-								<div class="flex justify-start items-center">
-									<UserSolid class="h-5 w-5 text-[#dce1de] mr-2" />
-									{$LL.profile.title()}
-								</div>
-							</DropdownItem>
-							<DropdownItem on:click={() => goto('/reservation_history')}>
-								<div class="flex justify-start items-center">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="#dce1de"
-										class="w-6 h-6 mr-2"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
-										/>
-									</svg>
-
-									{$LL.profile.reservation_history()}
-								</div>
-							</DropdownItem>
-
-							<DropdownItem on:click={() => logoutFunction()}>
-								<div class="flex justify-start items-center">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="#dce1de"
-										class="w-6 h-6 mr-2"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-										/>
-									</svg>
-
-									{$LL.profile.logout()}
-								</div>
-							</DropdownItem>
-							<DropdownItem on:click={() => goto('/reservation_history')}>
-								<div class="flex justify-start items-center">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="#dce1de"
-										class="w-6 h-6 mr-2"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-										/>
-									</svg>
-
-									<div>
-										<span>{$LL.profile.reservation_notification()}</span>
-										<span class="text-red-600 font-bold ml-3">{acceptedReservationsCount}</span>
-									</div>
-								</div>
-							</DropdownItem>
-							<hr />
-							{#each reservations as reservation}
-								<DropdownItem class="flex justify-between cursor-default hover:none">
-									{reservation.exhibition_type}
-									<span class={reservation.status === 'accept' ? 'text-green-500' : 'text-red-500'}>
-										{reservation.status}
-									</span>
-								</DropdownItem>
-							{/each}
-						</Dropdown>
-					</div>
-				{/if}
-			{/if}
 		</NavUl>
 	</Navbar>
 </div>
