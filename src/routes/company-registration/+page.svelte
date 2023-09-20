@@ -90,19 +90,7 @@
 			});
 		}
 
-		// Immediately update currentUser store after inserting/updating the data
-		// currentUser.set({
-		// 	uid: data?.session?.user.id,
-		// 	logo_url: userData.logo_url,
-		// 	phone_number: userData.phone_number,
-		// 	company_name: userData.company_name,
-		// 	email: userData.email,
-		// 	working_field: userData.working_field,
-		// 	manager_name: userData.manager_name,
-		// 	passport_number: userData.passport_number,
-		// 	address: userData.address,
-		// 	type: userData.type
-		// });
+
 		await data.supabase
 			.from('company')
 			.select('*')
@@ -167,7 +155,10 @@
 	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color: #f3f3f3">
 		<div class="flex justify-center items-center pb-10">
 			<img
-				src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
+				src={currentImageFile
+					? userData.logo_url
+					: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
+
 				alt="logo"
 				class="w-44 h-44 rounded-full border bg-white"
 			/>

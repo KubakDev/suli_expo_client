@@ -35,29 +35,27 @@
 				class="w-full flex flex-col justify-center items-center h-full"
 				style="background-color: rgba(41, 46, 54,0.95);"
 			>
-				<div class="w-full h-full flex flex-col justify-center items-center">
+				<div class="w-full h-full flex flex-col justify-center items-center px-8 text-center">
 					{#if $currentUser?.id}
 						<h1 class="my-2 text-white font-bold">
 							{$LL.reservation.welcome()}
 							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
 						</h1>
-						<h2 class="text-xl mb-5 text-white">
+						<p class="text-sm md:text-xl mb-5 text-white">
 							{$LL.reservation.logged_in_description()}
-						</h2>
+						</p>
 						{#if exhibition?.seat_layout.length == 0}
-						<Button
-							disabled
-						>
-							{$LL.reservation.logged_in_button()}
-						</Button>
+							<Button disabled>
+								{$LL.reservation.logged_in_button()}
+							</Button>
 						{:else}
-						<Button
-							on:click={() => {
-								goto('/exhibition/reserve/' + exhibition.id);
-							}}
-						>
-							{$LL.reservation.logged_in_button()}
-						</Button>
+							<Button
+								on:click={() => {
+									goto('/exhibition/reserve/' + exhibition.id);
+								}}
+							>
+								{$LL.reservation.logged_in_button()}
+							</Button>
 						{/if}
 					{:else}
 						<h2 class="text-xl font-bold mb-5 text-white">
@@ -67,21 +65,18 @@
 						<Button on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button>
 					{/if}
 					{#if exhibition.contract_file}
-					<Button
-						class="mt-5"
-						on:click={() => {
-							openPdfFile(exhibition?.contract_file);
-						}}
-					>
-						{$LL.reservation.contract()}
-					</Button>
+						<Button
+							class="mt-5"
+							on:click={() => {
+								openPdfFile(exhibition?.contract_file);
+							}}
+						>
+							{$LL.reservation.contract()}
+						</Button>
 					{:else}
-					<Button
-					disabled
-						class="mt-5"
-					>
-						{$LL.reservation.contract()}
-					</Button>
+						<Button disabled class="mt-5">
+							{$LL.reservation.contract()}
+						</Button>
 					{/if}
 				</div>
 			</div>

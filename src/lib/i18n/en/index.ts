@@ -2,8 +2,11 @@ import type { BaseTranslation } from '../i18n-types';
 
 const en = {
 	profile: {
-		title: "Profile",
-		reservation_history: 'Reservations'
+		logout: 'Logout',
+		title: 'Profile',
+		reservation_history: 'Reservations',
+		reservation_notification: 'Notification'
+
 	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
@@ -11,8 +14,9 @@ const en = {
 	},
 	buttons: {
 		submit: 'Submit',
-		upload_sheet: "Upload Sheet",
-		update: "Update"
+		upload_sheet: 'Upload Sheet',
+		update: 'Update'
+
 	},
 	home: 'Home',
 	about: 'About',
@@ -71,7 +75,11 @@ const en = {
 	moreVideos: 'More Videos',
 	total_company_reserve: 'Total Company Reserve',
 	reservation: {
+		short_message: 'Just allow to upload Excel file',
+		warning_message: 'Please upload a Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
+		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
+
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
@@ -95,7 +103,7 @@ const en = {
 			paid_services: 'Services'
 		},
 		total_price: 'Total Price',
-		price_per_each_meter: 'Price Per Each Meter',
+		price_per_each_meter: 'price per each meter',
 		reserve: 'Reserve',
 		preview_contract: 'Contract Preview',
 		seat_types: {
@@ -103,7 +111,7 @@ const en = {
 			reserved: 'RESERVED',
 			pending: 'PENDING'
 		},
-		available_area: 'Available Area',
+		available_area: 'available area',
 		measure: {
 			m: 'Meter'
 		},
@@ -120,9 +128,9 @@ const en = {
 			password: 'Password'
 		},
 		statuses: {
-			pending: "Pending",
-			accept: "Accepted",
-			reject: "Rejected",
+			pending: 'Pending',
+			accept: 'Accepted',
+			reject: 'Rejected'
 
 		}
 	},

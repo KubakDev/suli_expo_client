@@ -17,6 +17,11 @@ export type Translations = RootTranslation
 type RootTranslation = {
 	profile: {
 		/**
+		 * L​o​g​o​u​t
+		 */
+		logout: string
+		/**
+
 		 * P​r​o​f​i​l​e
 		 */
 		title: string
@@ -24,6 +29,11 @@ type RootTranslation = {
 		 * R​e​s​e​r​v​a​t​i​o​n​s
 		 */
 		reservation_history: string
+		/**
+		 * N​o​t​i​f​i​c​a​t​i​o​n
+		 */
+		reservation_notification: string
+
 	}
 	/**
 	 * H​i​ ​{​n​a​m​e​}​!​ ​P​l​e​a​s​e​ ​l​e​a​v​e​ ​a​ ​s​t​a​r​ ​i​f​ ​y​o​u​ ​l​i​k​e​ ​t​h​i​s​ ​p​r​o​j​e​c​t​:​ ​h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​i​v​a​n​h​o​f​e​r​/​t​y​p​e​s​a​f​e​-​i​1​8​n
@@ -265,9 +275,21 @@ type RootTranslation = {
 	total_company_reserve: string
 	reservation: {
 		/**
+		 * J​u​s​t​ ​a​l​l​o​w​ ​t​o​ ​u​p​l​o​a​d​ ​E​x​c​e​l​ ​f​i​l​e
+		 */
+		short_message: string
+		/**
+		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
+		 */
+		warning_message: string
+		/**
 		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
 		 */
 		reserved: string
+		/**
+		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​u​p​d​a​t​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
+		 */
+		reserveUpdated: string
 		/**
 		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
 		 */
@@ -347,7 +369,7 @@ type RootTranslation = {
 		 */
 		total_price: string
 		/**
-		 * P​r​i​c​e​ ​P​e​r​ ​E​a​c​h​ ​M​e​t​e​r
+		 * p​r​i​c​e​ ​p​e​r​ ​e​a​c​h​ ​m​e​t​e​r
 		 */
 		price_per_each_meter: string
 		/**
@@ -373,7 +395,7 @@ type RootTranslation = {
 			pending: string
 		}
 		/**
-		 * A​v​a​i​l​a​b​l​e​ ​A​r​e​a
+		 * a​v​a​i​l​a​b​l​e​ ​a​r​e​a
 		 */
 		available_area: string
 		measure: {
@@ -601,6 +623,12 @@ type RootTranslation = {
 export type TranslationFunctions = {
 	profile: {
 		/**
+
+		 * Logout
+		 */
+		logout: () => LocalizedString
+		/**
+
 		 * Profile
 		 */
 		title: () => LocalizedString
@@ -608,6 +636,12 @@ export type TranslationFunctions = {
 		 * Reservations
 		 */
 		reservation_history: () => LocalizedString
+
+		/**
+		 * Notification
+		 */
+		reservation_notification: () => LocalizedString
+
 	}
 	/**
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
@@ -847,9 +881,21 @@ export type TranslationFunctions = {
 	total_company_reserve: () => LocalizedString
 	reservation: {
 		/**
+		 * Just allow to upload Excel file
+		 */
+		short_message: () => LocalizedString
+		/**
+		 * Please upload a Excel File before reserving a seat.
+		 */
+		warning_message: () => LocalizedString
+		/**
 		 * Your request has been successfully received, please wait for our contact
 		 */
 		reserved: () => LocalizedString
+		/**
+		 * Your request has been successfully updated, please wait for our contact
+		 */
+		reserveUpdated: () => LocalizedString
 		/**
 		 * Exhibition Seats
 		 */
@@ -929,7 +975,7 @@ export type TranslationFunctions = {
 		 */
 		total_price: () => LocalizedString
 		/**
-		 * Price Per Each Meter
+		 * price per each meter
 		 */
 		price_per_each_meter: () => LocalizedString
 		/**
@@ -955,7 +1001,7 @@ export type TranslationFunctions = {
 			pending: () => LocalizedString
 		}
 		/**
-		 * Available Area
+		 * available area
 		 */
 		available_area: () => LocalizedString
 		measure: {

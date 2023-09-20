@@ -1,5 +1,11 @@
 import type { Translation } from '../i18n-types';
 const ar = {
+	profile: {
+		logout: 'خروج',
+		title: 'الملف الشخصي',
+		reservation_history: 'سجل_الحجز',
+		reservation_notification: 'إشعار'
+	},
 	// arabic language translation
 	HI: 'مرحبا {name}! يرجى تقديم نجمة ، وقت الاستجابة للمشاريع في الطوابق السفلية',
 	validation: {
@@ -65,6 +71,8 @@ const ar = {
 	moreVideos: 'المزيد من مقاطع الفيديو',
 	total_company_reserve: 'إجمالي حجز الشركة',
 	reservation: {
+		short_message: 'Excel فقط اسمح بتحميل ملف ',
+		warning_message: 'يُرجى تحميل ملف Excel قبل حجز المقعد.',
 		title: 'مقاعد المعرض',
 		contract: 'عرض العقد',
 		welcome: 'مرحبا بكم',

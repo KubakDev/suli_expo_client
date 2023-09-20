@@ -2,8 +2,11 @@ import type { Translation } from '../i18n-types';
 const ckb = {
 	// this is an example Translation, just rename or delete this folder if you want
 	profile: {
-		title: "پرۆفایل",
-		reservation_history: 'حجزکراوەکان'
+		logout: 'دەرچوون',
+		title: 'پرۆفایل',
+		reservation_history: 'حجزکراوەکان',
+		reservation_notification: 'ئاگادارکردنەوە'
+
 	},
 	HI: 'سڵاو {name}! تکایە ستارەیەک بەرز بدە، کاتێک پرۆژەکە لە دڵخوازەکاند',
 	validation: {
@@ -71,7 +74,12 @@ const ckb = {
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	total_company_reserve: 'کۆی گشتیی حیجزەکان',
 	reservation: {
+		short_message: ' تەنها ڕێگەت پێدەدرێت بە هاوپێچ کردنی فایلێکی ئێکسڵ',
+		warning_message: 'تکایە پێش حجزکردنی فایلێکی ئێکسڵ هاوپێج بکە.',
 		reserved: 'داواکاریەکەت بە سەرکەوتووی وەرگیرا ، تکایە چاوروان بە تاکوو پەیوەندیت پێوە دەکەین',
+		reserveUpdated:
+			'داواکاریەکەت بە سەرکەوتووی نوێکرایەوە ، تکایە چاوروان بە تاکوو پەیوەندیت پێوە دەکەین',
+
 		title: 'خشتەی پێشانگا',
 		contract: ' زانیاری گرێبەست',
 		welcome: 'بەخێربێیت',
@@ -120,9 +128,9 @@ const ckb = {
 			password: 'وشەی نهێنی'
 		},
 		statuses: {
-			pending: "لە چاوەڕوانی",
-			accept: "پەسەندکراو",
-			reject: "ڕەتکراو",
+			pending: 'لە چاوەڕوانی',
+			accept: 'پەسەندکراو',
+			reject: 'ڕەتکراو'
 
 		}
 	},

@@ -46,7 +46,7 @@
 		"fabric": "^5.3.0-browser",
 		"flowbite": "^1.7.0",
 		"flowbite-svelte": "^0.39.2",
-		"flowbite-svelte-icons": "^0.2.5",
+		"flowbite-svelte-icons": "^0.2.6",
 		"formik": "^2.4.2",
 		"hls.js": "^1.4.8",
 		"js-cookie": "^3.0.5",
