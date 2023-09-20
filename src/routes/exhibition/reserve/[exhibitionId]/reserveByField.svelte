@@ -196,13 +196,15 @@
 	<div class="w-full flex justify-center">
 		<div class="w-full lg:w-8/12">
 			<div class="w-full flex items-center my-8 justify-between">
-				<p class=" text-3xl">{$LL.reservation.available_area()}</p>
-				<p class="mx-6 text-xl">{$LL.reservation.price_per_each_meter()}:{pricePerMeter}</p>
+				<p class="text-lg md:text-3xl">{$LL.reservation.available_area()}</p>
+				<p class="mx-6 text-lg md:text-xl">
+					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}
+				</p>
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					<div class="flex flex-wrap items-center my-2">
-						<p class="min-w-[120px] text-start text-2xl font-medium my-2">
+					<div class="flex gap-2 justify-between items-center my-2">
+						<p class=" text-start text-md md:text-2xl font-medium my-2">
 							{availableSeatArea.area}
 							{$LL.reservation.measure.m()}
 						</p>
@@ -215,12 +217,14 @@
 								maxQuantityPerUser={availableSeatArea.quantity}
 							/>
 						</div>
-						<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
+						<p
+							class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+						>
 							{+pricePerMeter * +availableSeatArea.area} $
 						</p>
 						<div class="lg:mx-4">
 							<p
-								class={`min-w-[120px] text-start text-xl font-medium justify-center flex my-2 ${
+								class={` text-start text-sm md:text-xl font-medium justify-center flex my-2 ${
 									discountedPrice ? 'line-through' : ''
 								}`}
 							>
@@ -228,7 +232,7 @@
 									(+pricePerMeter * +availableSeatArea.area)}$
 							</p>
 							{#if discountedPrice}
-								<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+								<p class=" text-start text-sm md:text-xl font-medium justify-center flex my-2">
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
 								</p>
@@ -242,19 +246,19 @@
 					زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد..
 					)
 				</p>
-				<div class="flex flex-wrap items-center my-2">
-					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
+				<div class="flex gap-2 justify-between items-center my-2">
+					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
 								bind:value={customAreaMeter}
-								class="max-w-[100px]"
+								class="max-w-[60px] md:max-w-[100px]"
 								on:input={() => {
 									calculateTotalPrice();
 								}}
 							/>
 						</div>
 					</div>
-					<div class="mx-6 my-2">
+					<div class=" my-2">
 						<InputNumberButton
 							unlimited={true}
 							on:numberChanged={(number) => {
@@ -262,19 +266,21 @@
 							}}
 						/>
 					</div>
-					<p class="min-w-[120px] text-start text-xl font-medium lg:justify-center flex my-2">
+					<p
+						class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+					>
 						{+pricePerMeter * customAreaMeter} $
 					</p>
 					<div class="lg:mx-4">
 						<p
-							class={`min-w-[120px] text-start text-xl font-medium justify-center flex my-2 ${
+							class={` text-start text-sm md:text-xl font-medium justify-center flex my-2 ${
 								discountedPrice ? 'line-through' : ''
 							}`}
 						>
 							{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}$
 						</p>
 						{#if discountedPrice}
-							<p class="min-w-[120px] text-start text-xl font-medium justify-center flex my-2">
+							<p class=" text-start text-sm md:text-xl font-medium justify-center flex my-2">
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
 						{/if}
@@ -282,7 +288,7 @@
 				</div>
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-				<div class="min-w-[120px] text-start text-xl font-medium justify-center flex items-center">
+				<div class=" text-start text-xl font-medium justify-center flex items-center">
 					<div>
 						{$LL.reservation.total_price()} :
 					</div>
@@ -330,9 +336,11 @@
 		class="my-3"
 		bind:value={reservedSeatData.comment}
 	/>
-	<div class="flex justify-end w-full mt-8">
-		<div>
-			<Button on:click={() => (defaultModal = true)}>{$LL.reservation.upload_file()}</Button>
+	<div class="block md:flex justify-end w-full mt-8">
+		<div class="w-full md:w-auto">
+			<Button on:click={() => (defaultModal = true)} class="w-full md:w-auto md:my-0 my-1"
+				>{$LL.reservation.upload_file()}</Button
+			>
 			<Modal title="Upload File" bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
@@ -380,10 +388,14 @@
 				</svelte:fragment>
 			</Modal>
 		</div>
-		<Button on:click={reserveSeat} class="mx-2">
+		<Button on:click={reserveSeat} class="w-full md:w-auto md:mx-2 md:my-0 my-1">
 			{$LL.reservation.reserve()}
 		</Button>
-		<Button on:click={contractPreview} class="mx-2" color="alternative">
+		<Button
+			on:click={contractPreview}
+			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+			color="alternative"
+		>
 			{$LL.reservation.preview_contract()}
 		</Button>
 	</div>

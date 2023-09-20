@@ -190,7 +190,7 @@
 			</div>
 			{#if $currentUser.id}
 				<div
-					class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
+					class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0 cursor-pointer"
 					style="margin:0 ;"
 				>
 					<div class="flex space-x-4 items-center gap-2">
