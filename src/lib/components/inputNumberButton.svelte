@@ -19,8 +19,10 @@
 
 <div>
 	<div class="w-full flex max-w-[150px]">
-		<Button
-			class="p-2"
+		<button
+			class={`p-[0.3rem] md:p-2 ${
+				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
+			} rounded-lg text-white`}
 			on:click={() => {
 				invalid = false;
 				if (number == 0) return;
@@ -28,17 +30,19 @@
 			}}
 			{disabled}
 		>
-			<Minus />
-		</Button>
+			<Minus size="20" />
+		</button>
 		<Input
 			placeholder=""
-			class="mx-1 text-center cursor-not-allowed pointer-events-none"
+			class="mx-1 text-center cursor-not-allowed pointer-events-none max-w-[40px] md:max-w-[100px]"
 			bind:value={number}
 			disabled
 		/>
-		<Button
+		<button
 			{disabled}
-			class="p-2"
+			class={`p-[0.3rem] md:p-2 ${
+				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
+			} rounded-lg text-white`}
 			on:click={() => {
 				if (unlimited) {
 					number++;
@@ -51,8 +55,8 @@
 				}
 			}}
 		>
-			<Plus />
-		</Button>
+			<Plus size="20" />
+		</button>
 	</div>
 	{#if invalid}
 		<p>invalid</p>

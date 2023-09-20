@@ -74,6 +74,7 @@ const en = {
 	total_company_reserve: 'Total Company Reserve',
 	reservation: {
 		reserved: 'Your request has been successfully received, please wait for our contact',
+		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
@@ -97,7 +98,7 @@ const en = {
 			paid_services: 'Services'
 		},
 		total_price: 'Total Price',
-		price_per_each_meter: 'Price Per Each Meter',
+		price_per_each_meter: 'price per each meter',
 		reserve: 'Reserve',
 		preview_contract: 'Contract Preview',
 		seat_types: {
@@ -105,7 +106,7 @@ const en = {
 			reserved: 'RESERVED',
 			pending: 'PENDING'
 		},
-		available_area: 'Available Area',
+		available_area: 'available area',
 		measure: {
 			m: 'Meter'
 		},
