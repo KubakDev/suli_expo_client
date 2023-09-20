@@ -90,6 +90,7 @@
 			});
 		}
 
+
 		await data.supabase
 			.from('company')
 			.select('*')
@@ -157,6 +158,7 @@
 				src={currentImageFile
 					? userData.logo_url
 					: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
+
 				alt="logo"
 				class="w-44 h-44 rounded-full border bg-white"
 			/>

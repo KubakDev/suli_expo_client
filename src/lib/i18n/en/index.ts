@@ -6,6 +6,7 @@ const en = {
 		title: 'Profile',
 		reservation_history: 'Reservations',
 		reservation_notification: 'Notification'
+
 	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
@@ -15,6 +16,7 @@ const en = {
 		submit: 'Submit',
 		upload_sheet: 'Upload Sheet',
 		update: 'Update'
+
 	},
 	home: 'Home',
 	about: 'About',
@@ -77,6 +79,7 @@ const en = {
 		warning_message: 'Please upload a Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
+
 		title: 'Exhibition Seats',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
@@ -128,6 +131,7 @@ const en = {
 			pending: 'Pending',
 			accept: 'Accepted',
 			reject: 'Rejected'
+
 		}
 	},
 	loggin: {
