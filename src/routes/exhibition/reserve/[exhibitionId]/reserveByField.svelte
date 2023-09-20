@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox } from 'flowbite-svelte';
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
@@ -17,12 +17,18 @@
 		quantity: number;
 	}[] = [];
 	let totalPrice = 0;
+	let totalRawPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
 	let discountedDescription = '';
+	let extraDiscount = {
+		description: '',
+		price: 0
+	};
 	let customAreaMeter: number = 0;
 	let customAreaQuantity: number = 0;
 	let preview_url: string = '';
+	let extraDiscountChecked = false;
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -49,6 +55,17 @@
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
+		extraDiscount.description =
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == locale
+			).extra_discount_description ??
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == 'en'
+			).extra_discount_description ??
+			'';
+
+		extraDiscount.price = data.seat_layout[0]?.extra_discount;
+
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
 		}
@@ -79,10 +96,7 @@
 			});
 		}
 		reservedSeatData = { ...reservedSeatData };
-		totalPrice = 0;
-		reservedSeatData.area.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
-		});
+		calculateTotalPrice();
 	}
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
@@ -118,7 +132,6 @@
 			id: $currentUser.id,
 			email: $currentUser.email
 		};
-		console.log(docxData);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
@@ -129,6 +142,7 @@
 	}
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
+		calculateTotalPrice();
 	}
 	let selectedFile: any = null;
 	let fileName = '';
@@ -148,10 +162,27 @@
 	function handleAddClick() {
 		if (selectedFile) {
 			reservedSeatData.file = selectedFile;
-			console.log('File added to reservedSeatData:', reservedSeatData);
 		} else {
-			console.log('No file selected!');
 		}
+	}
+	function checkExtraDiscount() {
+		extraDiscountChecked = !extraDiscountChecked;
+		discountedPrice = extraDiscountChecked
+			? extraDiscount.price
+			: data.seat_layout[0]?.discounted_price;
+		calculateTotalPrice();
+	}
+	function calculateTotalPrice() {
+		totalPrice = 0;
+		reservedSeatData.area.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
+		});
+		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		totalRawPrice = 0;
+		reservedSeatData.area.map((seatArea) => {
+			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
+		});
+		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 </script>
 
@@ -214,7 +245,13 @@
 				<div class="flex flex-wrap items-center my-2">
 					<div class="min-w-[120px] text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
-							<NumberInput bind:value={customAreaMeter} class="max-w-[100px]" />
+							<NumberInput
+								bind:value={customAreaMeter}
+								class="max-w-[100px]"
+								on:input={() => {
+									calculateTotalPrice();
+								}}
+							/>
 						</div>
 					</div>
 					<div class="mx-6 my-2">
@@ -245,15 +282,44 @@
 				</div>
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-					{$LL.reservation.total_price()} : {totalPrice}$
-				</p>
+				<div class="min-w-[120px] text-start text-xl font-medium justify-center flex items-center">
+					<div>
+						{$LL.reservation.total_price()} :
+					</div>
+					<div class="mx-4">
+						{#if discountedPrice || extraDiscountChecked}
+							<p class="line-through">{totalRawPrice}$</p>
+						{/if}
+
+						<p>
+							{totalPrice}$
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<p class=" mt-8" style="color: var(--lightPrimaryColor);">
-		<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}
-	</p>
+	<div class="w-full flex justify-center items-center">
+		<div class="w-full lg:w-8/12 my-8">
+			{#if extraDiscount.description}
+				<div class="flex items-center mb-8">
+					<Checkbox
+						class="cursor-pointer"
+						on:change={checkExtraDiscount}
+						checked={extraDiscountChecked}
+					/>
+					<p style="color: var(--lightPrimaryColor);">
+						{extraDiscount.description}
+					</p>
+				</div>
+			{/if}
+			{#if discountedDescription}
+				<p style="color: var(--lightPrimaryColor);">
+					<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}
+				</p>
+			{/if}
+		</div>
+	</div>
 	<p class="text-3xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
 		{$LL.reservation.comment()}
 	</p>
