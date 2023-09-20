@@ -90,19 +90,6 @@
 			});
 		}
 
-		// Immediately update currentUser store after inserting/updating the data
-		// currentUser.set({
-		// 	uid: data?.session?.user.id,
-		// 	logo_url: userData.logo_url,
-		// 	phone_number: userData.phone_number,
-		// 	company_name: userData.company_name,
-		// 	email: userData.email,
-		// 	working_field: userData.working_field,
-		// 	manager_name: userData.manager_name,
-		// 	passport_number: userData.passport_number,
-		// 	address: userData.address,
-		// 	type: userData.type
-		// });
 		await data.supabase
 			.from('company')
 			.select('*')

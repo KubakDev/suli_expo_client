@@ -73,6 +73,8 @@ const en = {
 	moreVideos: 'More Videos',
 	total_company_reserve: 'Total Company Reserve',
 	reservation: {
+		short_message: 'Just allow to upload Excel file',
+		warning_message: 'Please upload a Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
 		title: 'Exhibition Seats',

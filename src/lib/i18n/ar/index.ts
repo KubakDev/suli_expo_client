@@ -71,6 +71,8 @@ const ar = {
 	moreVideos: 'المزيد من مقاطع الفيديو',
 	total_company_reserve: 'إجمالي حجز الشركة',
 	reservation: {
+		short_message: 'Excel فقط اسمح بتحميل ملف ',
+		warning_message: 'يُرجى تحميل ملف Excel قبل حجز المقعد.',
 		title: 'مقاعد المعرض',
 		contract: 'عرض العقد',
 		welcome: 'مرحبا بكم',

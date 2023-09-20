@@ -11,6 +11,11 @@
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
+	import { Toast } from 'flowbite-svelte';
+	import { CloseCircleSolid, FireOutline } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
+
+	let showNotification = false;
 	let defaultModal = false;
 	let areas: {
 		area: string;
@@ -71,15 +76,24 @@
 		}
 	});
 	function reserveSeat() {
+		if (!reservedSeatData?.file) {
+			showNotification = true;
+			setTimeout(() => {
+				showNotification = false;
+			}, 3000);
+			return;
+		}
 		reservedSeatData.area.push({
 			id: areas.length,
 			area: customAreaMeter.toString(),
 			quantity: customAreaQuantity
 		});
+
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);
 	}
+
 	function addAreaToReservedSeatData(index: number, number: number) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
 		if (reservedSeatArea) {
@@ -357,28 +371,28 @@
 			<Button on:click={() => (defaultModal = true)} class="w-full md:w-auto md:my-0 my-1"
 				>{$LL.reservation.upload_file()}</Button
 			>
-			<Modal title="Upload File" bind:open={defaultModal} autoclose>
+			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
-					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
+					<img src={preview_url} alt="preview" class="bg-red-400 w-2/3 h-56 object-cover rounded" />
 				</div>
-				<div>
-					<!-- <UploadFile on:fileUpload={handleFileUpload} /> -->
-					<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
-						<input
-							type="file"
-							name="file-input"
-							id="file-input"
-							class="file-input__input"
-							accept=".xlsx, .xls, .xlsm"
-							on:change={handleFileChange}
-						/>
-						<label class="file-input__label" for="file-input">
+
+				<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
+					<input
+						type="file"
+						name="file-input"
+						id="file-input"
+						class="file-input__input"
+						accept=".xlsx, .xls, .xlsm"
+						on:change={handleFileChange}
+					/>
+					<label class="file-input__label flex items-center gap-2 cursor-pointer" for="file-input">
+						<div class="flex flex-col gap-2 items-center justify-center w-full">
 							<svg
 								aria-hidden="true"
 								focusable="false"
 								data-prefix="fas"
 								data-icon="upload"
-								class="svg-inline--fa fa-upload fa-w-16"
+								class="svg-inline--fa fa-upload fa-w-6"
 								role="img"
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 512 512"
@@ -388,19 +402,26 @@
 									d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
 								/>
 							</svg>
-							<span>{$LL.reservation.upload_file()}</span></label
-						>
-						{#if !reservedSeatData?.file}
-							<span class="text-red-600">{$LL.reservation.required_file()}</span>
-						{/if}
-						<span> {fileName}</span>
-					</div>
+							<span class="text-gray-600">{$LL.reservation.upload_file()}</span>
+							<span class="text-sm text-gray-400 font-normal"
+								>{$LL.reservation.short_message()}</span
+							>
+							<span> {fileName}</span>
+						</div>
+					</label>
+
+					{#if !reservedSeatData?.file}
+						<span class="text-red-600">{$LL.reservation.required_file()}</span>
+					{/if}
 				</div>
+
 				<svelte:fragment slot="footer">
-					<Button on:click={handleAddClick}>
-						{$LL.reservation.add_file()}
-					</Button>
-					<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
+					<div class="flex gap-2">
+						<Button on:click={handleAddClick}>
+							{$LL.reservation.add_file()}
+						</Button>
+						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
+					</div>
 				</svelte:fragment>
 			</Modal>
 		</div>
@@ -417,14 +438,22 @@
 	</div>
 </div>
 
+{#if showNotification}
+	<Toast
+		color="red"
+		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
+		transition={fly}
+	>
+		<svelte:fragment slot="icon">
+			<CloseCircleSolid class="w-5 h-5" />
+			<span class="sr-only">Error icon</span>
+		</svelte:fragment>
+
+		{$LL.reservation.warning_message()}
+	</Toast>
+{/if}
+
 <style>
-	body {
-		font-family: sans-serif;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 200px;
-	}
 	.file-input__input {
 		width: 0.1px;
 		height: 0.1px;
@@ -447,7 +476,25 @@
 		box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 	}
 	.file-input__label svg {
-		height: 16px;
-		margin-right: 4px;
+		height: 30px;
+		color: #ccc;
+	}
+	.file-display,
+	.file-input__label {
+		cursor: pointer;
+		border: 2px dashed #ccc;
+		border-radius: 4px;
+		padding: 20px 22px;
+		background-color: #cccccc60;
+		text-align: center;
+		color: #333; /* Adjust as needed */
+		font-weight: 600;
+		width: 66.67%; /* 2/3 of parent width */
+		margin: 0 auto;
+		transition: background-color 0.3s;
+	}
+
+	.file-input__label:hover {
+		background-color: #f7f2f2;
 	}
 </style>

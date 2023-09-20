@@ -273,6 +273,14 @@ type RootTranslation = {
 	total_company_reserve: string
 	reservation: {
 		/**
+		 * J​u​s​t​ ​a​l​l​o​w​ ​t​o​ ​u​p​l​o​a​d​ ​E​x​c​e​l​ ​f​i​l​e
+		 */
+		short_message: string
+		/**
+		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
+		 */
+		warning_message: string
+		/**
 		 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​r​e​c​e​i​v​e​d​,​ ​p​l​e​a​s​e​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​c​o​n​t​a​c​t
 		 */
 		reserved: string
@@ -866,6 +874,14 @@ export type TranslationFunctions = {
 	 */
 	total_company_reserve: () => LocalizedString
 	reservation: {
+		/**
+		 * Just allow to upload Excel file
+		 */
+		short_message: () => LocalizedString
+		/**
+		 * Please upload a Excel File before reserving a seat.
+		 */
+		warning_message: () => LocalizedString
 		/**
 		 * Your request has been successfully received, please wait for our contact
 		 */
