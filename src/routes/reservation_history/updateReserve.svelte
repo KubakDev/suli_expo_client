@@ -40,7 +40,7 @@
 	let discountedPrice: number = 0;
 	let discountedDescription = '';
 	let customAreaMeter: number = 0;
-	let customAreaQuantity: number = 0;
+	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
 
 	let reservedSeatData: {

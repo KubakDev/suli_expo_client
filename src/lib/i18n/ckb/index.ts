@@ -93,6 +93,7 @@ const ckb = {
 		comment: 'سەرنج',
 		comment_placeholder: 'تکایە سەرنجەکەت بنووسە',
 		manual_area: 'لێرەدا دەتوانی ڕوبەر دیاری بکەیت',
+		manual_area_description: 'زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد.. )',
 		add_file: 'زیادکردن',
 		cancel_file: 'پاشگەزبونەوە',
 		required_file: 'پێویستە',
