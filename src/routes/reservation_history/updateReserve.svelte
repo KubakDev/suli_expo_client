@@ -9,11 +9,16 @@
 	import { generateDocx } from '../../utils/generateContract';
 	import type { Reservation } from '../../models/reservationModel';
 	import { ReservationStatus } from '../../models/reservationModel';
+	import { getRandomTextNumber } from '../../utils/getRandomText';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	export let reservationData: Reservation;
+
+	onMount(() => {
+		console.log(reservationData);
+	});
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
@@ -22,6 +27,14 @@
 		quantity: number;
 	}[] = [];
 
+	enum ImgSourceEnum {
+		local = 'local',
+		remote = 'remote',
+		PdfLocal = 'PdfLocal',
+		PdfRemote = 'PdfRemote'
+	}
+
+	let pdfSource = ImgSourceEnum.PdfRemote;
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
@@ -37,12 +50,18 @@
 			quantity: number;
 		}[];
 		comment: string;
-		file?: File;
+		file: string;
 	} = {
 		area: [],
-		comment: ''
+		comment: '',
+		file: ''
 	};
 	let reservedAreas: any[] = [];
+
+	onMount(() => {
+		console.log('first', reservedSeatData);
+	});
+
 	onMount(() => {
 		onMountData();
 	});
@@ -72,8 +91,11 @@
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
 			area: JSON.parse(reservationData.reserved_areas),
-			comment: reservationData.comment
+			comment: reservationData.comment,
+			file: reservationData.file_url
 		};
+		console.log('////////////////////', reservedSeatData.file);
+
 		let allReservedArea = reservedAreas.map((reservedArea) => {
 			return reservedArea.area;
 		});
@@ -92,7 +114,39 @@
 		});
 		calculateTotalPrice();
 	}
-	function reserveSeat() {
+
+	type FileNameType = {
+		lang: string;
+		fileName: string;
+	};
+
+	let selectedFile: any = null;
+	let fileName = '';
+	let fileError = false;
+	let imageFile_excel: File | undefined;
+
+	let fileName_excel: FileNameType[] | string = [];
+
+	function handleFileChange(event: any) {
+		const file = event.target.files[0];
+		console.log(file);
+		imageFile_excel = file;
+
+		const reader = new FileReader();
+
+		// reader.onloadend = () => {
+		// 	reservedSeatData.file = reader.result as '';
+		// };
+
+		const randomText = getRandomTextNumber();
+		fileName_excel = `${randomText}_${file.name}`;
+
+		reader.readAsDataURL(file);
+	}
+
+	async function reserveSeat() {
+		console.log('before submitting data /////////////', reservedSeatData.file);
+
 		reservedSeatData.area.push({
 			id: areas.length,
 			area: customAreaMeter.toString(),
@@ -104,6 +158,20 @@
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
 		}, 10);
 	}
+
+	async function handleAddClick() {
+		try {
+			const response = await supabase.storage
+				.from('file')
+				.upload(`reserve/${fileName_excel}`, imageFile_excel!);
+			reservationData.file_url = response.data?.path ?? '';
+
+			console.log(';;;;;;;', response);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
+	}
+
 	function addAreaToReservedSeatData(index: number, number: number) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
 		if (reservedSeatArea) {
@@ -169,34 +237,36 @@
 		customAreaQuantity = number;
 		calculateTotalPrice();
 	}
-	let selectedFile: any = null;
-	let fileName = '';
-	let fileError = false;
 
-	function handleFileChange(event: any) {
-		const file = event.target.files[0];
-		if (file) {
-			fileError = false;
-			selectedFile = file;
-			fileName = file.name;
-		} else {
-			fileError = true;
-			selectedFile = null;
-		}
-	}
-
-	function handleAddClick() {
-		if (selectedFile) {
-			reservedSeatData.file = selectedFile;
-		} else {
-		}
-	}
 	function calculateTotalPrice() {
 		totalPrice = 0;
 		reservedSeatData.area.map((seatArea) => {
 			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+	}
+
+	function exportFile(reservation: any) {
+		console.log('link ', reservation);
+
+		window.open(
+			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
+		);
+	}
+	export function decodeBase64(link: any) {
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.write('<iframe src="' + link + '" width="100%" height="100%"></iframe>');
+		}
+	}
+
+	export function openPdfFile(link: string) {
+		const completePdfLink = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${link}`;
+
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
+		}
 	}
 </script>
 
@@ -336,30 +406,37 @@
 			<Button
 				class="w-full md:w-auto md:my-0 my-1"
 				on:click={() => (defaultModal = true)}
-				disabled={reservationData.status != ReservationStatus.PENDING}>Upload File</Button
+				disabled={reservationData.status != ReservationStatus.PENDING}
+				>{$LL.reservation.upload_file()}</Button
 			>
-			<Modal title="Upload File" bind:open={defaultModal} autoclose>
+			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
-					<img src={preview_url} alt="preview" class="bg-red-400 w-44 h-44 object-cover" />
-				</div>
-				<div>
-					<!-- <UploadFile on:fileUpload={handleFileUpload} /> -->
-					<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
-						<input
-							type="file"
-							name="file-input"
-							id="file-input"
-							class="file-input__input"
-							accept=".xlsx, .xls, .xlsm"
-							on:change={handleFileChange}
+					{#if preview_url.length > 0}
+						<img
+							src={preview_url}
+							alt="preview"
+							class="bg-red-400 w-2/3 h-56 object-cover rounded"
 						/>
-						<label class="file-input__label" for="file-input">
+					{:else}{/if}
+				</div>
+
+				<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
+					<input
+						type="file"
+						name="file-input"
+						id="file-input"
+						class="file-input__input"
+						accept=".xlsx, .xls, .xlsm"
+						on:change={handleFileChange}
+					/>
+					<label class="file-input__label flex items-center gap-2 cursor-pointer" for="file-input">
+						<div class="flex flex-col gap-2 items-center justify-center w-full">
 							<svg
 								aria-hidden="true"
 								focusable="false"
 								data-prefix="fas"
 								data-icon="upload"
-								class="svg-inline--fa fa-upload fa-w-16"
+								class="svg-inline--fa fa-upload fa-w-6"
 								role="img"
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 512 512"
@@ -369,23 +446,28 @@
 									d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
 								/>
 							</svg>
-							<span>Upload excel file</span></label
-						>
-						{#if !reservedSeatData?.file}
-							<span class="text-red-600">required</span>
-						{/if}
+							<span class="text-gray-600">{$LL.reservation.upload_file()}</span>
+							<span class="text-sm text-gray-400 font-normal"
+								>{$LL.reservation.short_message()}</span
+							>
+							<span> {fileName}</span>
+						</div>
+					</label>
 
-						<span> {fileName}</span>
-					</div>
+					{#if selectedFile === null}
+						<span class="text-red-600">{$LL.reservation.required_file()}</span>
+					{/if}
+
+					<Button class="mx-2" on:click={() => exportFile(reservationData)}>download</Button>
 				</div>
+
 				<svelte:fragment slot="footer">
-					<Button
-						on:click={handleAddClick}
-						disabled={reservationData.status != ReservationStatus.PENDING}>Add</Button
-					>
-					<Button color="alternative" disabled={reservationData.status != ReservationStatus.PENDING}
-						>Decline</Button
-					>
+					<div class="flex gap-2">
+						<Button on:click={handleAddClick}>
+							{$LL.reservation.add_file()}
+						</Button>
+						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
+					</div>
 				</svelte:fragment>
 			</Modal>
 		</div>
@@ -408,14 +490,6 @@
 </div>
 
 <style>
-	body {
-		font-family: sans-serif;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 200px;
-	}
-
 	.file-input__input {
 		width: 0.1px;
 		height: 0.1px;
@@ -424,7 +498,6 @@
 		position: absolute;
 		z-index: -1;
 	}
-
 	.file-input__label {
 		cursor: pointer;
 		display: inline-flex;
@@ -438,9 +511,26 @@
 		background-color: #e1b168;
 		box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 	}
-
 	.file-input__label svg {
-		height: 16px;
-		margin-right: 4px;
+		height: 30px;
+		color: #ccc;
+	}
+	.file-display,
+	.file-input__label {
+		cursor: pointer;
+		border: 2px dashed #ccc;
+		border-radius: 4px;
+		padding: 20px 22px;
+		background-color: #cccccc60;
+		text-align: center;
+		color: #333; /* Adjust as needed */
+		font-weight: 600;
+		width: 66.67%; /* 2/3 of parent width */
+		margin: 0 auto;
+		transition: background-color 0.3s;
+	}
+
+	.file-input__label:hover {
+		background-color: #f7f2f2;
 	}
 </style>
