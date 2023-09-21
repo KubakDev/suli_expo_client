@@ -201,7 +201,11 @@
 						>
 							<div class="flex space-x-4 items-center gap-1">
 								<div class="relative">
-									<Avatar src={$currentUser.logo_url} />
+									<Avatar
+										src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
+											'/' +
+											$currentUser.logo_url}
+									/>
 									{#if notifications?.length > 0}
 										<span
 											class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
