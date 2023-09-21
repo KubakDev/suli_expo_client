@@ -44,6 +44,7 @@ export const POST = (async ({ locals, params, request }) => {
     text: message,
     html: emailHtml,
   });
+
   
   return new Response(worked.response);
 }) satisfies RequestHandler;

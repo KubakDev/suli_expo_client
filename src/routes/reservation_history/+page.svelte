@@ -104,9 +104,9 @@
 				{#each reservations as reservation}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
-						class="w-full md:w-10/12 border-2 border-gray-300 bg-white shadow-sm h-[80px] rounded-lg flex justify-between px-10 items-center gap-3"
+						class="my-2 py-2 w-full md:w-10/12 border-2 border-gray-300 bg-white shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
 					>
-						<div class="text-sm md:text-lg">
+						<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
 							{exhibitionName(reservation)}
 						</div>
 						<div class="flex flex-col justify-center items-center text-sm md:text-lg">
@@ -116,7 +116,7 @@
 							</div>
 						</div>
 						<div
-							class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white`}
+							class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
 						>
 							{$LL.reservation.statuses[reservation.status]()}
 						</div>
