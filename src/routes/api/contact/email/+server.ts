@@ -13,23 +13,24 @@ export const POST = (async ({locals, params, request}) => {
   const { emailUser, name, message } = await request.json();
   if(!transport) {
     transport = createTransport({
-      service: 'gmail',
+      host: "s808.sureserver.com",
       port: 465,
-       auth: {
+      secure: true,
+      auth: {
         user: email,
-        pass: password
-       },
+        pass: password,
+      },
        tls: {
         rejectUnauthorized: false
       }
     });
   }
 
+  console.log('emailUser', email);
+  
+
   const emailHtml = render({
-    template: MailTemplate,
-    props: {
-      description: message,
-    }
+    template: MailTemplate
   });
      
 
@@ -48,6 +49,9 @@ export const POST = (async ({locals, params, request}) => {
     text: message,
     html: emailHtml,
   });
+
+  console.log('worked', worked);
+  
 
   return new Response(worked.response);
 }) satisfies RequestHandler;
