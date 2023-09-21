@@ -31,7 +31,7 @@
 		price: 0
 	};
 	let customAreaMeter: number = 0;
-	let customAreaQuantity: number = 0;
+	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
 	let extraDiscountChecked = false;
 	let reservedSeatData: {
@@ -283,6 +283,7 @@
 							on:numberChanged={(number) => {
 								addCustomArea(+number.detail);
 							}}
+							number={customAreaQuantity}
 						/>
 					</div>
 					<p
