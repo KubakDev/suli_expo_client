@@ -44,9 +44,9 @@
 			.eq('seat_layout.is_active', true)
 			.is('deleted_status', null)
 			.single();
-		setTimeout(() => {
-			loaded = true;
-		}, 3300);
+		// setTimeout(() => {
+		loaded = true;
+		// }, 3300);
 		exhibition = response.data;
 	}
 
