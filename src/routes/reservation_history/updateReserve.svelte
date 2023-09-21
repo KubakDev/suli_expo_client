@@ -18,6 +18,7 @@
 
 	onMount(() => {
 		console.log(reservationData);
+		console.log(data);
 	});
 
 	const dispatch = createEventDispatcher();
@@ -27,14 +28,6 @@
 		quantity: number;
 	}[] = [];
 
-	enum ImgSourceEnum {
-		local = 'local',
-		remote = 'remote',
-		PdfLocal = 'PdfLocal',
-		PdfRemote = 'PdfRemote'
-	}
-
-	let pdfSource = ImgSourceEnum.PdfRemote;
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
@@ -67,10 +60,10 @@
 	});
 
 	function onMountData() {
-		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
-			data.seat_layout[0]?.excel_preview_url
-		}`;
+		console.log('llllllllll', data.seat_layout[0]?.excel_preview_url);
+		preview_url = data.seat_layout[0]?.excel_preview_url;
 
+		console.log(preview_url);
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
 
@@ -87,6 +80,7 @@
 		}
 		getCompanyReservedData();
 	}
+
 	async function getCompanyReservedData() {
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
@@ -122,26 +116,26 @@
 
 	let selectedFile: any = null;
 	let fileName = '';
-	let fileError = false;
 	let imageFile_excel: File | undefined;
 
 	let fileName_excel: FileNameType[] | string = [];
 
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
-		console.log(file);
+
 		imageFile_excel = file;
 
 		const reader = new FileReader();
-
-		// reader.onloadend = () => {
-		// 	reservedSeatData.file = reader.result as '';
-		// };
 
 		const randomText = getRandomTextNumber();
 		fileName_excel = `${randomText}_${file.name}`;
 
 		reader.readAsDataURL(file);
+		if (file) {
+			fileName = file.name;
+		} else {
+			selectedFile = null;
+		}
 	}
 
 	async function reserveSeat() {
@@ -252,21 +246,6 @@
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
-	}
-	export function decodeBase64(link: any) {
-		const newWindow = window.open();
-		if (newWindow !== null) {
-			newWindow.document.write('<iframe src="' + link + '" width="100%" height="100%"></iframe>');
-		}
-	}
-
-	export function openPdfFile(link: string) {
-		const completePdfLink = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${link}`;
-
-		const newWindow = window.open();
-		if (newWindow !== null) {
-			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
-		}
 	}
 </script>
 
@@ -413,8 +392,10 @@
 				<div class="flex justify-center items-center">
 					{#if preview_url.length > 0}
 						<img
-							src={preview_url}
-							alt="preview"
+							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
+								'/' +
+								data.seat_layout[0]?.excel_preview_url}
+							alt="thumbnail"
 							class="bg-red-400 w-2/3 h-56 object-cover rounded"
 						/>
 					{:else}{/if}
@@ -454,11 +435,28 @@
 						</div>
 					</label>
 
-					{#if selectedFile === null}
+					{#if reservationData.file_url === null}
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
 					{/if}
 
-					<Button class="mx-2" on:click={() => exportFile(reservationData)}>download</Button>
+					<button
+						class="mx-2 gap-2 bg-[#76BC58] p-2 rounded-xl flex justify-center items-center text-xs text-white"
+						on:click={() => exportFile(reservationData)}
+					>
+						Download
+
+						<svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white"
+							><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
+								id="SVGRepo_tracerCarrier"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/><g id="SVGRepo_iconCarrier"
+								><path
+									d="M24 12a5 5 0 0 1-5 5h-2v-1h2a3.99 3.99 0 0 0 .623-7.934l-.79-.124-.052-.798a5.293 5.293 0 0 0-10.214-1.57L8.17 6.59l-.977-.483A2.277 2.277 0 0 0 6.19 5.87a2.18 2.18 0 0 0-1.167.339 2.206 2.206 0 0 0-.98 1.395l-.113.505-.476.2A4 4 0 0 0 5 16h3v1H5a5 5 0 0 1-1.934-9.611 3.21 3.21 0 0 1 1.422-2.025 3.17 3.17 0 0 1 1.702-.493 3.268 3.268 0 0 1 1.446.34 6.293 6.293 0 0 1 12.143 1.867A4.988 4.988 0 0 1 24 12zm-11-1h-1v10.292l-2.646-2.646-.707.707 3.854 3.854 3.853-3.852-.707-.707L13 21.294z"
+								/><path fill="none" d="M0 0h24v24H0z" /></g
+							></svg
+						>
+					</button>
 				</div>
 
 				<svelte:fragment slot="footer">

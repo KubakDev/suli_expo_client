@@ -59,6 +59,9 @@
 		}
 		await getExhibition();
 		await getData();
+
+		
+		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
 	async function reserveSeat() {
 		let fileUrl = '';
@@ -71,10 +74,16 @@
 					`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
 					reserveSeatData.file!
 				);
-			fileUrl = response.data.path;
+			fileUrl = response?.data?.path;
+
+			console.log('reserveSeatData File', fileUrl);
+			
 		}
+		
 
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
+			console.log('reserveSeatData', reserveSeatData);
+			
 			data.supabase
 				.from('seat_reservation')
 				.insert({
@@ -105,7 +114,10 @@
 							companyData: $currentUser,
 							reserveSeatData: reserveSeatData
 						})
-					}).then(() => {});
+					}).then(() => {
+						console.log('email sent');
+						
+					});
 					defaultModal = true;
 				});
 		} else {
@@ -284,6 +296,7 @@
 									on:reserveSeat={(reserveData) => {
 										defaultModal = true;
 										reserveSeatData = reserveData.detail;
+										
 									}}
 								/>
 							{:else}

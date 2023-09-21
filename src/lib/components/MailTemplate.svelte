@@ -35,7 +35,7 @@
 		<li>
 			<span style="font-weight: bold;"
 				>{$LL.email_template.detail.note()}
-			</span>{reserveSeatData.comment}
+			</span>
 		</li>
 	</ul>
 
