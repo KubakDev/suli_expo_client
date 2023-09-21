@@ -35,6 +35,7 @@
 	let tailVar: string = 'light';
 
 	$: {
+		console.log($currentUser);
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
 			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
@@ -138,7 +139,7 @@
 		}
 	};
 	async function getAllNotification() {
-		if (!$currentUser.id) return;
+		if (!$currentUser?.id) return;
 		notifications = [];
 		await data.supabase
 			.from('notification')
@@ -214,7 +215,9 @@
 							</div>
 
 							<Dropdown id="" bind:open={userProfileDropdownOpen}>
-								<DropdownItem on:click={() => goto('/company-registration')}>
+								<DropdownItem
+									on:click={() => goto(`/exhibition/reserve/register/${$currentUser.uid}`)}
+								>
 									<div class="flex justify-start items-center">
 										<UserSolid class="h-5 w-5 text-[#dce1de] mr-2" />
 										{$LL.profile.title()}

@@ -14,6 +14,7 @@
 	import { Toast } from 'flowbite-svelte';
 	import { CloseCircleSolid, FireOutline } from 'flowbite-svelte-icons';
 	import { fly } from 'svelte/transition';
+	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -41,16 +42,17 @@
 			quantity: number;
 		}[];
 		comment: string;
-		file: string;
+		file_url: string;
 	} = {
 		area: [],
 		comment: '',
-		file: ''
+		file_url: ''
 	};
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
 		}`;
+		console.log(preview_url);
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
 		discountedDescription =
@@ -77,7 +79,7 @@
 		}
 	});
 	function reserveSeat() {
-		if (!reservedSeatData?.file) {
+		if (!reservedSeatData?.file_url) {
 			showNotification = true;
 			setTimeout(() => {
 				showNotification = false;
@@ -161,23 +163,42 @@
 	}
 	let selectedFile: any = null;
 	let fileName = '';
-	let fileError = false;
+	let imageFile_excel: File | undefined;
+
+	type FileNameType = {
+		lang: string;
+		fileName: string;
+	};
+	let fileName_excel: FileNameType[] | string = [];
+
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
+
+		imageFile_excel = file;
+
+		const reader = new FileReader();
+
+		const randomText = getRandomTextNumber();
+		fileName_excel = `${randomText}_${file.name}`;
+
+		reader.readAsDataURL(file);
 		if (file) {
-			fileError = false;
-			selectedFile = file;
 			fileName = file.name;
 		} else {
-			fileError = true;
 			selectedFile = null;
 		}
 	}
 
-	function handleAddClick() {
-		if (selectedFile) {
-			reservedSeatData.file = selectedFile;
-		} else {
+	async function handleAddClick() {
+		try {
+			const response = await supabase.storage
+				.from('file')
+				.upload(`reserve/${fileName_excel}`, imageFile_excel!);
+			reservedSeatData.file_url = response.data?.path ?? '';
+
+			console.log(';;;;;;;', response);
+		} catch (error) {
+			console.error('Error uploading file:', error);
 		}
 	}
 	function checkExtraDiscount() {
