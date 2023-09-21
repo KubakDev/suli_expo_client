@@ -333,6 +333,10 @@ type RootTranslation = {
 		 */
 		manual_area: string
 		/**
+		 * M​o​r​e​ ​t​h​a​n​ ​3​6​ ​m​e​t​e​r​ ​(​)
+		 */
+		manual_area_description: string
+		/**
 		 * A​d​d
 		 */
 		add_file: string
@@ -934,6 +938,10 @@ export type TranslationFunctions = {
 		 * you can add area manually here
 		 */
 		manual_area: () => LocalizedString
+		/**
+		 * More than 36 meter ()
+		 */
+		manual_area_description: () => LocalizedString
 		/**
 		 * Add
 		 */

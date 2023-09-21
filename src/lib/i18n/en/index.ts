@@ -93,6 +93,7 @@ const en = {
 		comment: 'Comment',
 		comment_placeholder: 'Please write your comment',
 		manual_area: 'you can add area manually here',
+		manual_area_description: 'More than 36 meter ()',
 		add_file: 'Add',
 		cancel_file: 'cancel',
 		required_file: 'Required',

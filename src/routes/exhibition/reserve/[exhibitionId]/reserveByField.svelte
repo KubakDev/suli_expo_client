@@ -232,11 +232,11 @@
 							/>
 						</div>
 						<p
-							class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+							class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2 min-w-[70px]"
 						>
 							{+pricePerMeter * +availableSeatArea.area} $
 						</p>
-						<div class="lg:mx-4">
+						<div class="lg:mx-4 min-w-[70px]">
 							<p
 								class={` text-start text-sm md:text-xl justify-center flex my-2 ${
 									discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
@@ -259,8 +259,7 @@
 				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
 				<p class="text-sm md:text-lg mt-1">
-					زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد..
-					)
+					{$LL.reservation.manual_area_description()}
 				</p>
 				<div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
@@ -287,11 +286,11 @@
 						/>
 					</div>
 					<p
-						class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+						class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2 min-w-[70px]"
 					>
 						{+pricePerMeter * customAreaMeter} $
 					</p>
-					<div class="lg:mx-4">
+					<div class="lg:mx-4 min-w-[70px]">
 						<p
 							class={` text-start text-sm md:text-xl justify-center flex my-2 ${
 								discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
@@ -341,7 +340,7 @@
 			{#if extraDiscount.description}
 				<div class="flex items-center mb-8">
 					<Checkbox
-						class="cursor-pointer"
+						class="cursor-pointer mx-1"
 						on:change={checkExtraDiscount}
 						checked={extraDiscountChecked}
 					/>

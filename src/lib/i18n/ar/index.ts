@@ -89,6 +89,7 @@ const ar = {
 		comment: 'التعليق',
 		comment_placeholder: 'من فضلك اكتب تعليق',
 		manual_area: 'يمكنك إضافة المساحة يدوياً هنا',
+		manual_area_description: '',
 		add_file: 'إضافة',
 		cancel_file: 'إلغاء',
 		required_file: 'مطلوب',
