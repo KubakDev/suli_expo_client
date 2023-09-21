@@ -89,7 +89,7 @@ const ar = {
 		comment: 'التعليق',
 		comment_placeholder: 'من فضلك اكتب تعليق',
 		manual_area: 'يمكنك إضافة المساحة يدوياً هنا',
-		manual_area_description: '',
+		manual_area_description: 'يجب أن تكون المنطقة من مضاعفات تسعة مثل (٤٥م ، ٥٤م ، ٦٣م إلخ)		',
 		add_file: 'إضافة',
 		cancel_file: 'إلغاء',
 		required_file: 'مطلوب',
