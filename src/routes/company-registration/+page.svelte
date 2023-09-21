@@ -14,9 +14,6 @@
 	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 
 	export let data: any;
-	$: {
-		console.log($currentUser);
-	}
 
 	let userData: any = {
 		logo_url: '',
@@ -39,6 +36,11 @@
 				goto('/login');
 			}, 100);
 			return;
+		}
+
+		if (currentUser) {
+			console.log('first');
+			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 		}
 
 		await data.supabase
@@ -89,7 +91,6 @@
 				uid: data?.session?.user.id
 			});
 		}
-
 
 		await data.supabase
 			.from('company')
@@ -158,7 +159,6 @@
 				src={currentImageFile
 					? userData.logo_url
 					: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${userData.logo_url}`}
-
 				alt="logo"
 				class="w-44 h-44 rounded-full border bg-white"
 			/>
