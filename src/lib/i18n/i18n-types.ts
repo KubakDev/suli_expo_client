@@ -21,7 +21,6 @@ type RootTranslation = {
 		 */
 		logout: string
 		/**
-
 		 * P​r​o​f​i​l​e
 		 */
 		title: string
@@ -33,7 +32,6 @@ type RootTranslation = {
 		 * N​o​t​i​f​i​c​a​t​i​o​n
 		 */
 		reservation_notification: string
-
 	}
 	/**
 	 * H​i​ ​{​n​a​m​e​}​!​ ​P​l​e​a​s​e​ ​l​e​a​v​e​ ​a​ ​s​t​a​r​ ​i​f​ ​y​o​u​ ​l​i​k​e​ ​t​h​i​s​ ​p​r​o​j​e​c​t​:​ ​h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​i​v​a​n​h​o​f​e​r​/​t​y​p​e​s​a​f​e​-​i​1​8​n
@@ -623,12 +621,10 @@ type RootTranslation = {
 export type TranslationFunctions = {
 	profile: {
 		/**
-
 		 * Logout
 		 */
 		logout: () => LocalizedString
 		/**
-
 		 * Profile
 		 */
 		title: () => LocalizedString
@@ -636,12 +632,10 @@ export type TranslationFunctions = {
 		 * Reservations
 		 */
 		reservation_history: () => LocalizedString
-
 		/**
 		 * Notification
 		 */
 		reservation_notification: () => LocalizedString
-
 	}
 	/**
 	 * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
