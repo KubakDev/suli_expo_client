@@ -41,10 +41,11 @@
 			quantity: number;
 		}[];
 		comment: string;
-		file?: File;
+		file: string;
 	} = {
 		area: [],
-		comment: ''
+		comment: '',
+		file: ''
 	};
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
@@ -373,7 +374,13 @@
 			>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
-					<img src={preview_url} alt="preview" class="bg-red-400 w-2/3 h-56 object-cover rounded" />
+					{#if preview_url.length > 0}
+						<img
+							src={preview_url}
+							alt="preview"
+							class="bg-red-400 w-2/3 h-56 object-cover rounded"
+						/>
+					{:else}{/if}
 				</div>
 
 				<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
@@ -410,7 +417,7 @@
 						</div>
 					</label>
 
-					{#if !reservedSeatData?.file}
+					{#if selectedFile === null}
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
 					{/if}
 				</div>
