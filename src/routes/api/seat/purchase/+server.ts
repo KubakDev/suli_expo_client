@@ -11,17 +11,21 @@ export const POST = (async ({ locals, params, request }) => {
   const { emailUser, name, message, companyData, exhibition, reserveSeatData, locale } = await request.json();
   if (!transport) {
     transport = createTransport({
-      service: 'gmail',
+      host: "s808.sureserver.com",
       port: 465,
+      secure: true,
       auth: {
         user: email,
-        pass: password
+        pass: password,
       },
-      tls: {
+       tls: {
         rejectUnauthorized: false
       }
     });
   }
+
+  console.log('emailUser', emailUser);
+  
 
   const emailHtml = render({
     template: MailTemplate,
@@ -40,5 +44,6 @@ export const POST = (async ({ locals, params, request }) => {
     text: message,
     html: emailHtml,
   });
+  
   return new Response(worked.response);
 }) satisfies RequestHandler;
