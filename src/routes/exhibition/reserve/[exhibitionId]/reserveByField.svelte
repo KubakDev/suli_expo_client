@@ -42,11 +42,11 @@
 			quantity: number;
 		}[];
 		comment: string;
-		file_url: string;
+		file: File | undefined;
 	} = {
 		area: [],
 		comment: '',
-		file_url: ''
+		file: undefined
 	};
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
@@ -79,7 +79,7 @@
 		}
 	});
 	function reserveSeat() {
-		if (!reservedSeatData?.file_url) {
+		if (!reservedSeatData?.file) {
 			showNotification = true;
 			setTimeout(() => {
 				showNotification = false;
@@ -95,6 +95,8 @@
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);
+
+		console.log('last result', reservedSeatData);
 	}
 
 	function addAreaToReservedSeatData(index: number, number: number) {
@@ -161,8 +163,7 @@
 		customAreaQuantity = number;
 		calculateTotalPrice();
 	}
-	let selectedFile: any = null;
-	let fileName = '';
+
 	let imageFile_excel: File | undefined;
 
 	type FileNameType = {
@@ -171,34 +172,25 @@
 	};
 	let fileName_excel: FileNameType[] | string = [];
 
+	let selectedFile: any = null;
+	let fileName = '';
+	let fileError = false;
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
-
-		imageFile_excel = file;
-
-		const reader = new FileReader();
-
-		const randomText = getRandomTextNumber();
-		fileName_excel = `${randomText}_${file.name}`;
-
-		reader.readAsDataURL(file);
 		if (file) {
+			fileError = false;
+			selectedFile = file;
 			fileName = file.name;
 		} else {
+			fileError = true;
 			selectedFile = null;
 		}
 	}
 
-	async function handleAddClick() {
-		try {
-			const response = await supabase.storage
-				.from('file')
-				.upload(`reserve/${fileName_excel}`, imageFile_excel!);
-			reservedSeatData.file_url = response.data?.path ?? '';
-
-			console.log(';;;;;;;', response);
-		} catch (error) {
-			console.error('Error uploading file:', error);
+	function handleAddClick() {
+		if (selectedFile) {
+			reservedSeatData.file = selectedFile;
+		} else {
 		}
 	}
 	function checkExtraDiscount() {
@@ -438,7 +430,7 @@
 						</div>
 					</label>
 
-					{#if selectedFile === null}
+					{#if imageFile_excel === null}
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
 					{/if}
 				</div>
