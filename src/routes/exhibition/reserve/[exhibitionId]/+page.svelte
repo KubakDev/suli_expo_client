@@ -4,7 +4,7 @@
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	//@ts-ignore
-	import ReservationComponent from './ReservationComponent.svelte';
+	// import ReservationComponent from './ReservationComponent.svelte';
 	import SelectedSeatInformationSection from './selectedSeatInformationSection.svelte';
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
@@ -267,13 +267,13 @@
 					<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap">
 						<div class="bg-[#f5f5f5] h-3/4 mx-2 rounded-xl w-full 2xl:w-[69%]">
 							<div class=" items-center sm:h-auto h-screen flex flex-col justify-around">
-								{#if exhibition?.seat_layout}
+								<!-- {#if exhibition?.seat_layout}
 									<ReservationComponent
 										data={exhibition?.seat_layout}
 										supabase={data.supabase}
 										locale={$locale}
 									/>
-								{/if}
+								{/if} -->
 							</div>
 						</div>
 
