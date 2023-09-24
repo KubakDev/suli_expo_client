@@ -49,7 +49,6 @@ export const actions: Actions = {
 			};
 		}
 		catch (e) {
-			console.log('e', e)
 		}
 
 
