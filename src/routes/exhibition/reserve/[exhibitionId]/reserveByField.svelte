@@ -12,9 +12,8 @@
 	export let locale: string;
 	const dispatch = createEventDispatcher();
 	import { Toast } from 'flowbite-svelte';
-	import { CloseCircleSolid, FireOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 	import { fly } from 'svelte/transition';
-	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -85,11 +84,13 @@
 			}, 3000);
 			return;
 		}
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
-		});
+		if (customAreaMeter) {
+			reservedSeatData.area.push({
+				id: areas.length,
+				area: customAreaMeter.toString(),
+				quantity: customAreaQuantity
+			});
+		}
 
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
@@ -162,10 +163,12 @@
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
 	}
+
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
 		calculateTotalPrice();

@@ -137,13 +137,11 @@
 		const currentTime = Math.floor(Date.now() / 1000);
 		const response = data.supabase.auth.getSession();
 		response.then(async (res) => {
-			console.log(res.data.session);
 			let user: any = res.data.session;
 			const timeToExpiration = user.expires_at - currentTime;
-			console.log(new Date(user.expires_at * 1000));
+
 			if (timeToExpiration <= 300) {
 				await data.supabase.auth.refreshSession();
-				console.log('JWT token refreshed');
 			}
 		});
 	}

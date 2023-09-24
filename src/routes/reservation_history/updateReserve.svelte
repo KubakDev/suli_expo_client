@@ -216,6 +216,7 @@
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});

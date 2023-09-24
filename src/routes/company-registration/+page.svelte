@@ -39,7 +39,6 @@
 		}
 
 		if (currentUser) {
-			console.log('first');
 			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 		}
 
@@ -50,12 +49,10 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
-					console.log(res.data);
 					currentUser.set(res.data);
 				}
 			});
 
-		console.log($currentUser);
 		userData = {
 			logo_url: $currentUser.logo_url,
 			phone_number: $currentUser.phone_number,
@@ -99,7 +96,6 @@
 			.single()
 			.then((res: any) => {
 				if (res.data) {
-					console.log(res.data);
 					currentUser.set(res.data);
 				}
 			});
