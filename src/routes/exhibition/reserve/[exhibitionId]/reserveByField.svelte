@@ -12,9 +12,8 @@
 	export let locale: string;
 	const dispatch = createEventDispatcher();
 	import { Toast } from 'flowbite-svelte';
-	import { CloseCircleSolid, FireOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 	import { fly } from 'svelte/transition';
-	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -160,14 +159,19 @@
 			totalRawPrice,
 			totalPrice
 		};
+		console.log(locale);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
+				// console.log(Response.data[0].decoded_file);
+				// console.log(docxData);
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
 	}
+
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
 		calculateTotalPrice();
