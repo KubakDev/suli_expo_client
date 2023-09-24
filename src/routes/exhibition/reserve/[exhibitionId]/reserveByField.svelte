@@ -85,11 +85,13 @@
 			}, 3000);
 			return;
 		}
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
-		});
+		if (customAreaMeter) {
+			reservedSeatData.area.push({
+				id: areas.length,
+				area: customAreaMeter.toString(),
+				quantity: customAreaQuantity
+			});
+		}
 
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
