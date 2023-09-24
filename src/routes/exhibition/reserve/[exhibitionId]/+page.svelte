@@ -59,9 +59,6 @@
 		}
 		await getExhibition();
 		await getData();
-
-		
-		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
 	async function reserveSeat() {
 		let fileUrl = '';
@@ -75,15 +72,9 @@
 					reserveSeatData.file!
 				);
 			fileUrl = response?.data?.path;
-
-			console.log('reserveSeatData File', fileUrl);
-			
 		}
-		
 
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
-			console.log('reserveSeatData', reserveSeatData);
-			
 			data.supabase
 				.from('seat_reservation')
 				.insert({
@@ -114,10 +105,7 @@
 							companyData: $currentUser,
 							reserveSeatData: reserveSeatData
 						})
-					}).then(() => {
-						console.log('email sent');
-						
-					});
+					}).then(() => {});
 					defaultModal = true;
 				});
 		} else {
@@ -166,7 +154,7 @@
 				if (response.data[0]?.fields) {
 					if (response.data[0]?.fields && !allFieldsPresent) {
 						let uid = $currentUser.uid;
-						// console.log('send id ', $currentUser);
+						//
 						goto(`/exhibition/reserve/register/${uid}`);
 					}
 				} else {
@@ -296,7 +284,6 @@
 									on:reserveSeat={(reserveData) => {
 										defaultModal = true;
 										reserveSeatData = reserveData.detail;
-										
 									}}
 								/>
 							{:else}

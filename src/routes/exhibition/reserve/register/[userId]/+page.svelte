@@ -36,7 +36,7 @@
 			.select('*')
 			.eq('uid', id)
 			.single();
-		console.log(data);
+
 		if (error) {
 			console.error('Error fetching data:', error.message);
 		} else {

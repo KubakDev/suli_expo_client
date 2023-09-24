@@ -69,7 +69,6 @@
 			adjustCanvasSize();
 			if (canvas) {
 				const width = data[0]?.design?.width;
-				console.log(width);
 
 				const height = data[0]?.design?.height;
 				const containerWidth = container?.offsetWidth;
