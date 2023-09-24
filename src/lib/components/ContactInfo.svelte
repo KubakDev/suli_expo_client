@@ -71,7 +71,7 @@
 			{/if}
 		</span>
 
-		<span class="flex justify-evenly text-lightBackgroundColor dark:text-darkBackgroundColor" dir="ltr">
+		<span class="flex justify-evenly text-lightBackgroundColor dark:text-darkBackgroundColor">
 
 
 			<div class="flex px-2">
