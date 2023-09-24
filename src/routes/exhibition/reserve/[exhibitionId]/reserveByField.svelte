@@ -52,7 +52,6 @@
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
 		}`;
-		console.log(preview_url);
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
 		discountedDescription =
@@ -95,12 +94,11 @@
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);
-
-		console.log('last result', reservedSeatData);
 	}
 
-	function addAreaToReservedSeatData(index: number, number: number) {
+	function addAreaToReservedSeatData(index: number, number: number, area: string) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
+
 		if (reservedSeatArea) {
 			if (number == 0) {
 				reservedSeatData.area = reservedSeatData.area.filter((area) => area.id != index);
@@ -124,12 +122,12 @@
 				area: data.area,
 				quantity: data.quantity,
 				pricePerMeter: pricePerMeter,
-				totalPrice: data.quantity * pricePerMeter,
+				totalPrice: data.quantity * pricePerMeter * +data.area,
 				discountedPrice: +data.area * (discountedPrice ?? pricePerMeter)
 			};
 			return result;
 		});
-		if (customAreaQuantity) {
+		if (customAreaMeter) {
 			reservedAreas.push({
 				id: areas.length,
 				area: customAreaMeter,
@@ -139,6 +137,11 @@
 				discountedPrice: customAreaMeter * (discountedPrice ?? pricePerMeter)
 			});
 		}
+		let totalArea = 0;
+
+		reservedAreas.map((area) => {
+			totalArea += +area.area * +area.quantity;
+		});
 		let docxData = {
 			company_name: $currentUser.company_name,
 			address: $currentUser.address,
@@ -149,7 +152,11 @@
 			areas: reservedAreas,
 			date: moment(new Date()).format('DD/MM/YYYY'),
 			id: $currentUser.id,
-			email: $currentUser.email
+			email: $currentUser.email,
+			pricePerMeter,
+			totalArea,
+			totalRawPrice,
+			totalPrice
 		};
 		await supabase
 			.from('contract_decode_files')
@@ -239,7 +246,7 @@
 						<div class="mx-6 my-2">
 							<InputNumberButton
 								on:numberChanged={(number) => {
-									addAreaToReservedSeatData(index, +number.detail);
+									addAreaToReservedSeatData(index, +number.detail, availableSeatArea.area);
 								}}
 								serviceQuantity={availableSeatArea.quantity}
 								maxQuantityPerUser={availableSeatArea.quantity}
@@ -324,11 +331,9 @@
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
-					<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-						<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-							{$LL.reservation.total_price()} : {totalPrice}$
-						</p>
-					</div>
+					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
+						{$LL.reservation.total_price()} :
+					</p>
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
 							<p
