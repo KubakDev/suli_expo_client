@@ -159,15 +159,12 @@
 			totalRawPrice,
 			totalPrice
 		};
-		console.log(locale);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
 			.eq('language', locale)
 			.then(async (Response: any) => {
-				// console.log(Response.data[0].decoded_file);
-				// console.log(docxData);
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
 	}
