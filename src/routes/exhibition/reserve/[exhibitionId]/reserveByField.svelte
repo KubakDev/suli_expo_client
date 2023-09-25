@@ -7,13 +7,15 @@
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
+	import { Toast } from 'flowbite-svelte';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
+	import { convertNumberToWord } from '../../../../utils/numberToWordLang';
+
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
-	import { Toast } from 'flowbite-svelte';
-	import { CloseCircleSolid } from 'flowbite-svelte-icons';
-	import { fly } from 'svelte/transition';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -47,6 +49,7 @@
 		comment: '',
 		file: undefined
 	};
+
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
@@ -157,7 +160,10 @@
 			pricePerMeter,
 			totalArea,
 			totalRawPrice,
-			totalPrice
+			totalPrice,
+			totalPriceText: convertNumberToWord(totalPrice, locale),
+			totalRawPriceText: convertNumberToWord(totalRawPrice, locale),
+			totalAreaText: convertNumberToWord(totalArea, locale)
 		};
 		await supabase
 			.from('contract_decode_files')
