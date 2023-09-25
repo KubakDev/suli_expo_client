@@ -1,7 +1,7 @@
 
 import n2words from 'n2words';
 import { convertNumber2ku } from './numberToKurdishWord';
-import { LanguageEnum } from '../../../suli_expo_panel/src/models/languageEnum';
+import { LanguageEnum } from '../models/languageEnum';
 
 export function convertNumberToWord(number: number, lang: string) {
   console.log(number)
