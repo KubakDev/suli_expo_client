@@ -119,7 +119,7 @@
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
 			let result = {
-				id: data.id++,
+				id: data.id,
 				area: data.area,
 				quantity: data.quantity,
 				pricePerMeter: pricePerMeter,
