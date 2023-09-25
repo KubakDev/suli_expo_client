@@ -15,7 +15,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"typesafe-i18n": "typesafe-i18n",
-		"vercel-build": "yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel"
+		"vercel-build": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.0.5",
