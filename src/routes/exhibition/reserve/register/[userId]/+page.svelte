@@ -36,9 +36,9 @@
 			.select('*')
 			.eq('uid', id)
 			.single();
-
 		if (error) {
 			console.error('Error fetching data:', error.message);
+			goto('/company-registration');
 		} else {
 			result = fetchedData;
 		}

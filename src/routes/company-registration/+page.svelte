@@ -23,8 +23,7 @@
 		working_field: '',
 		manager_name: '',
 		passport_number: '',
-		address: '',
-		type: ''
+		address: ''
 	};
 
 	let formSubmitted = false;
@@ -38,7 +37,7 @@
 			return;
 		}
 
-		if (currentUser) {
+		if ($currentUser.id) {
 			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 		}
 
@@ -61,8 +60,7 @@
 			working_field: $currentUser.working_field,
 			manager_name: $currentUser.manager_name,
 			passport_number: $currentUser.passport_number,
-			address: $currentUser.address,
-			type: $currentUser.type
+			address: $currentUser.address
 		};
 
 		loaded = true;
@@ -79,7 +77,7 @@
 			.select('*')
 			.eq('uid', data?.session?.user.id)
 			.single();
-
+		console.log(existingData);
 		if (existingData) {
 			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
 		} else {
