@@ -20,8 +20,7 @@
 		id: 0,
 		logo_url: '',
 		company_name: '',
-		phone_number: '',
-		type: '',
+		phone_number: '', 
 		email: '',
 		working_field: '',
 		manager_name: '',
@@ -125,8 +124,7 @@
 				id: result?.id,
 				company_name: result?.company_name,
 				logo_url: result?.logo_url,
-				phone_number: result?.phone_number,
-				type: result?.type,
+				phone_number: result?.phone_number, 
 				email: result?.email,
 				working_field: result?.working_field,
 				manager_name: result?.manager_name,
@@ -149,8 +147,8 @@
 	<div
 		class="border border-gray-200 shadow-md rounded-md p-8 w-full lg:w-1/2 bg-[#f3f3f3]"
 		style="background-color: var(secondaryColor);"
-	>
-		<div class="flex justify-center items-center pb-10">
+	> 
+		  <div class="flex justify-center items-center pb-10">
 			<img
 				src={currentImageFile
 					? result.logo_url
@@ -228,17 +226,11 @@
 				<Input type="text" bind:value={result.address} />
 			</div>
 
-			<div>
-				<div class="flex gap-2">
-					{#if $requiredFields?.includes('type')}<span class="text-red-500">*</span>{/if}
-					<Label for="" class="mb-2">{`${$LL.company_info['type']()}`}</Label>
-				</div>
-				<Input type="text" bind:value={result.type} />
-			</div>
-		</div>
+		 
+		</div> 
 
 		<div class="w-full flex justify-end mt-2">
 			<Button on:click={handleUpdate} type="button">{$LL.buttons.submit()}</Button>
-		</div>
+		</div> 
 	</div>
 </form>
