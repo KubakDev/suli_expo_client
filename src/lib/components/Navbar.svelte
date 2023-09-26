@@ -35,7 +35,6 @@
 	let tailVar: string = 'light';
 
 	$: {
-		console.log($currentUser);
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
 			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
@@ -61,9 +60,7 @@
 						.from('notification')
 						.update({ seen: true })
 						.eq('unique_id', notification.unique_id)
-						.then((response) => {
-							console.log(response);
-						});
+						.then((response) => {});
 				});
 			}
 		}, 5000);

@@ -4,7 +4,7 @@
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	//@ts-ignore
-	// import ReservationComponent from './ReservationComponent.svelte';
+	import ReservationComponent from './ReservationComponent.svelte';
 	import SelectedSeatInformationSection from './selectedSeatInformationSection.svelte';
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
@@ -59,9 +59,6 @@
 		}
 		await getExhibition();
 		await getData();
-
-		
-		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
 	async function reserveSeat() {
 		let fileUrl = '';
@@ -75,15 +72,9 @@
 					reserveSeatData.file!
 				);
 			fileUrl = response?.data?.path;
-
-			console.log('reserveSeatData File', fileUrl);
-			
 		}
-		
 
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
-			console.log('reserveSeatData', reserveSeatData);
-			
 			data.supabase
 				.from('seat_reservation')
 				.insert({
@@ -114,10 +105,7 @@
 							companyData: $currentUser,
 							reserveSeatData: reserveSeatData
 						})
-					}).then(() => {
-						console.log('email sent');
-						
-					});
+					}).then(() => {});
 					defaultModal = true;
 				});
 		} else {
@@ -166,7 +154,7 @@
 				if (response.data[0]?.fields) {
 					if (response.data[0]?.fields && !allFieldsPresent) {
 						let uid = $currentUser.uid;
-						// console.log('send id ', $currentUser);
+						//
 						goto(`/exhibition/reserve/register/${uid}`);
 					}
 				} else {
@@ -279,13 +267,13 @@
 					<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap">
 						<div class="bg-[#f5f5f5] h-3/4 mx-2 rounded-xl w-full 2xl:w-[69%]">
 							<div class=" items-center sm:h-auto h-screen flex flex-col justify-around">
-								<!-- {#if exhibition?.seat_layout}
+								{#if exhibition?.seat_layout}
 									<ReservationComponent
 										data={exhibition?.seat_layout}
 										supabase={data.supabase}
 										locale={$locale}
 									/>
-								{/if} -->
+								{/if}
 							</div>
 						</div>
 
@@ -296,7 +284,6 @@
 									on:reserveSeat={(reserveData) => {
 										defaultModal = true;
 										reserveSeatData = reserveData.detail;
-										
 									}}
 								/>
 							{:else}

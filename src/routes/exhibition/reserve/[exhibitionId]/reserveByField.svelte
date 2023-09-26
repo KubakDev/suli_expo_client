@@ -7,13 +7,15 @@
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
+	import { Toast } from 'flowbite-svelte';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
+	import { convertNumberToWord } from '../../../../utils/numberToWordLang';
+
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
-	import { Toast } from 'flowbite-svelte';
-	import { CloseCircleSolid } from 'flowbite-svelte-icons';
-	import { fly } from 'svelte/transition';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -47,6 +49,7 @@
 		comment: '',
 		file: undefined
 	};
+
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
@@ -84,11 +87,13 @@
 			}, 3000);
 			return;
 		}
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
-		});
+		if (customAreaMeter) {
+			reservedSeatData.area.push({
+				id: areas.length,
+				area: customAreaMeter.toString(),
+				quantity: customAreaQuantity
+			});
+		}
 
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
@@ -117,7 +122,7 @@
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
 			let result = {
-				id: data.id++,
+				id: data.id,
 				area: data.area,
 				quantity: data.quantity,
 				pricePerMeter: pricePerMeter,
@@ -155,17 +160,17 @@
 			pricePerMeter,
 			totalArea,
 			totalRawPrice,
-			totalPrice
+			totalPrice,
+			totalPriceText: convertNumberToWord(totalPrice, locale),
+			totalRawPriceText: convertNumberToWord(totalRawPrice, locale),
+			totalAreaText: convertNumberToWord(totalArea, locale)
 		};
-		console.log(locale);
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
 			.eq('language', locale)
 			.then(async (Response: any) => {
-				// console.log(Response.data[0].decoded_file);
-				// console.log(docxData);
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
 	}

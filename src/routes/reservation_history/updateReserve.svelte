@@ -10,6 +10,7 @@
 	import type { Reservation } from '../../models/reservationModel';
 	import { ReservationStatus } from '../../models/reservationModel';
 	import { getRandomTextNumber } from '../../utils/getRandomText';
+	import { convertNumberToWord } from '../../utils/numberToWordLang';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -210,12 +211,16 @@
 			pricePerMeter,
 			totalArea,
 			totalRawPrice,
-			totalPrice
+			totalPrice,
+			totalPriceText: convertNumberToWord(totalPrice, locale),
+			totalRawPriceText: convertNumberToWord(totalRawPrice, locale),
+			totalAreaText: convertNumberToWord(totalArea, locale)
 		};
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});

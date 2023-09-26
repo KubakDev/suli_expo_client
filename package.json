@@ -15,7 +15,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"typesafe-i18n": "typesafe-i18n",
-		"vercel-build": "yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel"
+		"vercel-build": "yum install zlib-devel && cp /lib64/libz.so.1 node_modules/canvas/build/Release/"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.0.5",
@@ -103,6 +103,7 @@
 		"jsdom": "^19.0.0",
 		"mammoth": "^1.6.0",
 		"moment": "^2.29.4",
+		"n2words": "^1.18.0",
 		"nodemailer": "^6.9.4",
 		"pdf-lib": "^1.17.1",
 		"pdfmake": "^0.2.7",
