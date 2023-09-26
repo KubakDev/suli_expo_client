@@ -350,7 +350,7 @@
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
 				href="/"
-				class="  cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg"
+				class="  cursor-pointer text-sm text-lightOverlaySecondary dark:text-darkOverlaySecondaryColor lg:text-lg"
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
