@@ -23,7 +23,10 @@
 		working_field: '',
 		manager_name: '',
 		passport_number: '',
-		address: ''
+		country: '',
+		address: '',
+		passport_image: '',
+		user_image: ''
 	};
 
 	$: {
@@ -43,7 +46,7 @@
 		}
 
 		console.log('email', data.session.user.email);
-		console.log('////////////////', $currentUser.id);
+		console.log('////////////////', $currentUser);
 
 		if ($currentUser && $currentUser.id) {
 			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
@@ -68,7 +71,10 @@
 			working_field: $currentUser.working_field,
 			manager_name: $currentUser.manager_name,
 			passport_number: $currentUser.passport_number,
-			address: $currentUser.address
+			country: $currentUser.country,
+			address: $currentUser.address,
+			passport_image: $currentUser.passport_image,
+			user_image: $currentUser.user_image
 		};
 
 		loaded = true;
