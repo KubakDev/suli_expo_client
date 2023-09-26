@@ -12,12 +12,13 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { fabric } from 'fabric';
+	// import { fabric } from 'fabric';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 
+	let fabricInstance: any;
 	let previousReserveSeatData: any = [];
 	let canvas: Canvas;
 	let container: any;
@@ -38,6 +39,11 @@
 		status: ReservationStatusEnum.PENDING
 	};
 	onMount(async () => {
+		setTimeout(async () => {
+			const { fabric } = await import('fabric');
+			fabricInstance = fabric;
+			// Now you can use fabricInstance as you would use the fabric package
+		}, 1000);
 		if (data) {
 			await loadSeats();
 		}
@@ -60,9 +66,9 @@
 		canvas.renderAll();
 	};
 	const loadSeats = async () => {
-		if (fabric) {
+		if (fabricInstance) {
 			const canvasElement: any = document.getElementById('canvas');
-			canvas = new fabric.Canvas(canvasElement, {
+			canvas = new fabricInstance.Canvas(canvasElement, {
 				hoverCursor: 'default',
 				selection: false
 			});
@@ -263,7 +269,7 @@
 	}
 </script>
 
-{#if fabric}
+{#if fabricInstance}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<div class="w-full flex justify-center mt-10">
 			<div class="flex justify-center items-center">
