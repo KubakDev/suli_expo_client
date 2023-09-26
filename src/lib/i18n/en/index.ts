@@ -6,7 +6,6 @@ const en = {
 		title: 'Profile',
 		reservation_history: 'Reservations',
 		reservation_notification: 'Notification'
-
 	},
 	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
 	validation: {
@@ -16,7 +15,6 @@ const en = {
 		submit: 'Submit',
 		upload_sheet: 'Upload Sheet',
 		update: 'Update'
-
 	},
 	home: 'Home',
 	about: 'About',
@@ -93,7 +91,8 @@ const en = {
 		comment: 'Comment',
 		comment_placeholder: 'Please write your comment',
 		manual_area: 'you can add area manually here',
-		manual_area_description: 'More than 36 meter (the area has to be a multiple of nine such as 45 , 54 m , 63m etc..	)',
+		manual_area_description:
+			'More than 36 meter (the area has to be a multiple of nine such as 45 , 54 m , 63m etc..	)',
 		add_file: 'Add',
 		cancel_file: 'cancel',
 		required_file: 'Required',
@@ -132,7 +131,6 @@ const en = {
 			pending: 'Pending',
 			accept: 'Accepted',
 			reject: 'Rejected'
-
 		}
 	},
 	loggin: {
@@ -152,7 +150,6 @@ const en = {
 		error: 'invalid email or password'
 	},
 	company_info: {
-		type: 'Company type',
 		logo_url: 'Upload logo',
 		phone_number: 'Phone number',
 		company_name: 'Company name',
@@ -161,6 +158,9 @@ const en = {
 		manager_name: 'Manager name',
 		passport_number: 'Passport number',
 		address: 'Address',
+		country: 'Country',
+		passport_image: 'Upload Passport',
+		user_image: 'Upload User Image',
 		string: ''
 	},
 	email_template: {

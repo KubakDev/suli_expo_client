@@ -403,11 +403,7 @@
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					{#if preview_url.length > 0}
-						<img
-							src={preview_url}
-							alt="preview"
-							class="bg-red-400 w-2/3 h-56 object-cover rounded"
-						/>
+						<img src={preview_url} alt="preview" class="border w-2/3 h-56 object-cover rounded" />
 					{:else}{/if}
 				</div>
 

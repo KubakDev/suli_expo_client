@@ -163,7 +163,7 @@
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('logo_url')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('logo_url')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['logo_url']()}`}</Label>
 				</div>
 				<Fileupload
@@ -175,7 +175,7 @@
 			</div>
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('phone_number')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('phone_number')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['phone_number']()}`}</Label>
 				</div>
 				<Input type="text" bind:value={result.phone_number} />
@@ -183,14 +183,14 @@
 
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('company_name')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('company_name')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['company_name']()}`}</Label>
 				</div>
 				<Input type="text" bind:value={result.company_name} />
 			</div>
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('email')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('email')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['email']()}`}</Label>
 				</div>
 				<Input type="email" bind:value={result.email} />
@@ -198,14 +198,14 @@
 
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('working_field')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('working_field')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['working_field']()}`}</Label>
 				</div>
 				<Input type="text" bind:value={result.working_field} />
 			</div>
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('manager_name')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('manager_name')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['manager_name']()}`}</Label>
 				</div>
 				<Input type="text" bind:value={result.manager_name} />
@@ -213,7 +213,7 @@
 
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('passport_number')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('passport_number')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['passport_number']()}`}</Label>
 				</div>
 
@@ -222,18 +222,10 @@
 
 			<div>
 				<div class="flex gap-2">
-					{#if $requiredFields.includes('address')}<span class="text-red-500">*</span>{/if}
+					{#if $requiredFields?.includes('address')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['address']()}`}</Label>
 				</div>
 				<Input type="text" bind:value={result.address} />
-			</div>
-
-			<div>
-				<div class="flex gap-2">
-					{#if $requiredFields.includes('type')}<span class="text-red-500">*</span>{/if}
-					<Label for="" class="mb-2">{`${$LL.company_info['type']()}`}</Label>
-				</div>
-				<Input type="text" bind:value={result.type} />
 			</div>
 		</div>
 

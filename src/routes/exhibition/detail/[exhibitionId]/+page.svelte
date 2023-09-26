@@ -54,18 +54,14 @@
 	});
 
 	function openPdfFile(pdfLink: string) {
-		console.log('////', pdfLink);
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-		if (isMobile) {
-			const viewerUrl = `/pdfjs-3.0.279-dist/web/viewer.html?file=${completePdfLink}`;
-			window.location.href = viewerUrl;
-		} else {
-			const newWindow = window.open();
-			if (newWindow !== null) {
-				newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
-			}
+
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
+
 		}
 	}
 </script>

@@ -507,10 +507,6 @@ type RootTranslation = {
 	}
 	company_info: {
 		/**
-		 * C​o​m​p​a​n​y​ ​t​y​p​e
-		 */
-		type: string
-		/**
 		 * U​p​l​o​a​d​ ​l​o​g​o
 		 */
 		logo_url: string
@@ -542,6 +538,18 @@ type RootTranslation = {
 		 * A​d​d​r​e​s​s
 		 */
 		address: string
+		/**
+		 * C​o​u​n​t​r​y
+		 */
+		country: string
+		/**
+		 * U​p​l​o​a​d​ ​P​a​s​s​p​o​r​t
+		 */
+		passport_image: string
+		/**
+		 * U​p​l​o​a​d​ ​U​s​e​r​ ​I​m​a​g​e
+		 */
+		user_image: string
 		string: string
 	}
 	email_template: {
@@ -1113,10 +1121,6 @@ export type TranslationFunctions = {
 	}
 	company_info: {
 		/**
-		 * Company type
-		 */
-		type: () => LocalizedString
-		/**
 		 * Upload logo
 		 */
 		logo_url: () => LocalizedString
@@ -1148,6 +1152,18 @@ export type TranslationFunctions = {
 		 * Address
 		 */
 		address: () => LocalizedString
+		/**
+		 * Country
+		 */
+		country: () => LocalizedString
+		/**
+		 * Upload Passport
+		 */
+		passport_image: () => LocalizedString
+		/**
+		 * Upload User Image
+		 */
+		user_image: () => LocalizedString
 		string: () => LocalizedString
 	}
 	email_template: {
