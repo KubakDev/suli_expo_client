@@ -10,9 +10,15 @@
 
 	export let data: any;
 	let imageFile: File | undefined;
+	let imageFile2: File | undefined;
+	let imageFile3: File | undefined;
 	let fileName: string;
+	let fileName2: string;
+	let fileName3: string;
 	let prevLogo_url: string = '';
 	let currentImageFile = false;
+	let currentImageFile2 = false;
+	let currentImageFile3 = false;
 
 	const id = $page.params.userId;
 
@@ -26,7 +32,10 @@
 		working_field: '',
 		manager_name: '',
 		passport_number: '',
+		country: '',
 		address: '',
+		passport_image: '',
+		user_image: '',
 		uid: ''
 	};
 
@@ -78,6 +87,56 @@
 		} catch (error) {}
 	}
 
+	export async function handleFileUpload2(e: Event) {
+		currentImageFile2 = true;
+		const fileInput = e.target as HTMLInputElement;
+		const file = fileInput.files![0];
+
+		const options = {
+			maxSizeMB: 2,
+			maxWidthOrHeight: 700,
+			useWebWorker: true
+		};
+		try {
+			const compressedFile = await imageCompression(file, options);
+
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				result.passport_image = reader.result as string;
+				const randomText = getRandomTextNumber();
+				const newFileName = `users/${randomText}_${compressedFile.name}`;
+				setImageFile2(compressedFile);
+				setFileName2(newFileName);
+			};
+			reader.readAsDataURL(compressedFile);
+		} catch (error) {}
+	}
+
+	export async function handleFileUpload3(e: Event) {
+		currentImageFile3 = true;
+		const fileInput = e.target as HTMLInputElement;
+		const file = fileInput.files![0];
+
+		const options = {
+			maxSizeMB: 2,
+			maxWidthOrHeight: 700,
+			useWebWorker: true
+		};
+		try {
+			const compressedFile = await imageCompression(file, options);
+
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				result.passport_image = reader.result as string;
+				const randomText = getRandomTextNumber();
+				const newFileName = `users/${randomText}_${compressedFile.name}`;
+				setImageFile3(compressedFile);
+				setFileName3(newFileName);
+			};
+			reader.readAsDataURL(compressedFile);
+		} catch (error) {}
+	}
+
 	// generate random number before image URl
 	export function getRandomTextNumber() {
 		const random =
@@ -92,6 +151,19 @@
 		fileName = name;
 	}
 
+	function setImageFile2(file: File) {
+		imageFile2 = file;
+	}
+	function setFileName2(name: string) {
+		fileName2 = name;
+	}
+
+	function setImageFile3(file: File) {
+		imageFile3 = file;
+	}
+	function setFileName3(name: string) {
+		fileName3 = name;
+	}
 	function isValid() {
 		for (let field of $requiredFields) {
 			if (!result[field] || result[field].trim() === '') {
@@ -119,6 +191,16 @@
 			result.logo_url = prevLogo_url;
 		}
 
+		if (imageFile2) {
+			if (result.passport_image) {
+				await data.supabase.storage.from('image').remove([result.passport_image]);
+			}
+			const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
+			result.passport_image = response.data?.path || '';
+		} else {
+			result.passport_image = prev;
+		}
+
 		await data.supabase
 			.from('company')
 			.update({
@@ -126,12 +208,14 @@
 				company_name: result?.company_name,
 				logo_url: result?.logo_url,
 				phone_number: result?.phone_number,
-				type: result?.type,
 				email: result?.email,
 				working_field: result?.working_field,
 				manager_name: result?.manager_name,
 				passport_number: result?.passport_number,
+				country: result?.country,
 				address: result?.address,
+				passport_image: result?.passport_image,
+				user_image: result?.user_image,
 				uid: result?.uid
 			})
 			.eq('id', result?.id)
@@ -143,6 +227,8 @@
 				goto(`/exhibition/reserve/${$exhibitionID}`);
 			});
 	}
+
+	let selectedCountry = 'Iraq';
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
@@ -219,26 +305,57 @@
 
 				<Input type="text" bind:value={result.passport_number} />
 			</div>
-
 			<div>
 				<div class="flex gap-2">
 					{#if $requiredFields?.includes('address')}<span class="text-red-500">*</span>{/if}
 					<Label for="" class="mb-2">{`${$LL.company_info['address']()}`}</Label>
+					{#if $requiredFields.includes('country')}<span class="text-red-500">*</span>{/if}
+					<label for="countrySelect" class="mb-2">{$LL.company_info['country']()}</label>
 				</div>
-				<Input type="text" bind:value={result.address} />
+
+				<select bind:value={selectedCountry} id="countrySelect" class="border rounded p-2 mb-2">
+					<option value="Iraq">Iraq</option>
+					<option value="Other">Other</option>
+				</select>
+
+				{#if selectedCountry === 'Other'}
+					<p class="text-gray-700">Hi</p>
+				{/if}
 			</div>
 
-			<div>
-				<div class="flex gap-2">
-					{#if $requiredFields?.includes('type')}<span class="text-red-500">*</span>{/if}
-					<Label for="" class="mb-2">{`${$LL.company_info['type']()}`}</Label>
-				</div>
-				<Input type="text" bind:value={result.type} />
-			</div>
-		</div>
+			{#if selectedCountry === 'Other'}
+				<div>
+					<div class="flex gap-2">
+						{#if $requiredFields?.includes('passport_image')}<span class="text-red-500">*</span
+							>{/if}
+						<Label for="" class="mb-2">{`${$LL.company_info['passport_image']()}`}</Label>
+					</div>
 
-		<div class="w-full flex justify-end mt-2">
-			<Button on:click={handleUpdate} type="button">{$LL.buttons.submit()}</Button>
+					<Fileupload
+						on:change={handleFileUpload2}
+						accept=".png,.jpg,.jpeg"
+						class="w-full p-2 border rounded-md mb-2"
+						placeholder="Upload"
+					/>
+				</div>
+
+				<div>
+					<div class="flex gap-2">
+						{#if $requiredFields?.includes('user_image')}<span class="text-red-500">*</span>{/if}
+						<Label for="" class="mb-2">{`${$LL.company_info['user_image']()}`}</Label>
+					</div>
+
+					<Fileupload
+						on:change={handleFileUpload3}
+						accept=".png,.jpg,.jpeg"
+						class="w-full p-2 border rounded-md mb-2"
+						placeholder="Upload"
+					/>
+				</div>
+			{/if}
+			<div class="w-full flex justify-end mt-10">
+				<Button on:click={handleUpdate} type="button">{$LL.buttons.submit()}</Button>
+			</div>
 		</div>
 	</div>
 </form>
