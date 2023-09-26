@@ -230,6 +230,7 @@
 	}
 </script>
 
+<!-- comment  -->
 <div class="w-full flex flex-col items-start p-10">
 	<img
 		src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data.image_map}
