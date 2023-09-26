@@ -43,7 +43,7 @@
 			const { fabric } = await import('fabric');
 			fabricInstance = fabric;
 			// Now you can use fabricInstance as you would use the fabric package
-		}, 5000);
+		}, 1000);
 		if (data) {
 			await loadSeats();
 		}
