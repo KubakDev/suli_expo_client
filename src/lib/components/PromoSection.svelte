@@ -6,6 +6,7 @@
 	import { promoStore } from '../../stores/promoStore';
 	import type { PromoLanguagesModel, PromoModel } from '../../models/promoModel';
 	import VideoSlider from './VideoSlider.svelte';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let supabase: any;
 
@@ -38,16 +39,19 @@
 					video_link: video.video_link,
 					thumbnail: video.thumbnail
 				};
-			})
+			});
 		}
-
 	};
 </script>
 
 {#if videos.length > 0}
 	<section class="{constants.section_padding_y} {constants.page_max_width} mx-auto" dir="ltr">
 		<div class="flex justify-center items-center pb-4">
-			<TitleUi text={$LL.promo()} />
+			<TitleUi
+				text={$LL.promo()}
+				borderColor={$currentMainThemeColors.primaryColor}
+				textColor={$currentMainThemeColors.overlayBackgroundColor}
+			/>
 		</div>
 		<div class="w-full h-full">
 			{#if videos.length > 0}

@@ -13,7 +13,12 @@
 	import { UiStore } from '../stores/ui/Ui';
 	import { currentUser } from '../stores/currentUser';
 	import { incrementSulExpoViewer, viewAdded_sulyExpo } from '../stores/viewersStore';
-	import { TwicImg, TwicView } from '@twicpics/components/sveltekit'
+	import { TwicImg, TwicView } from '@twicpics/components/sveltekit';
+	import {
+		currentMainThemeColors,
+		exhibitionCurrentMainThemeColors,
+		newsCurrentThemeColors
+	} from '../stores/darkMode';
 
 	export let data;
 	let seatLayout: SeatLayoutModel | undefined | null;
@@ -41,19 +46,18 @@
 <div class="flex-1 w-full h-full">
 	<HomeSwiper locale={$locale} supabase={data.supabase} />
 
-	<div class="m-auto w-full overflow-hidden px-2">
-		<!-- <Parallax sections={1.6}> -->
-		<!-- <ParallaxLayer class="bg-black"> -->
+	<div class="m-auto w-full overflow-hidden">
 		{#if exhibitionSection}
-			<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+			<div style="background-color:{$exhibitionCurrentMainThemeColors.backgroundColor} p-2">
+				<ExhibitionSection exhibitions={$exhibitionSectionStore} supabase={data.supabase} />
+			</div>
 		{/if}
 
 		{#if newsSection}
-			<NewsSection supabase={data.supabase} />
+			<div style="background-color:{$newsCurrentThemeColors.backgroundColor}; p-2">
+				<NewsSection supabase={data.supabase} />
+			</div>
 		{/if}
-		<!-- </ParallaxLayer> -->
-
-		<!-- <ParallaxLayer rate={0.95} offset={0.95} class="bg-orange-700"> -->
 		<div>
 			<PromoSection supabase={data.supabase} />
 		</div>
@@ -61,12 +65,10 @@
 		<div class=" w-full max-h-300 min-h-128 h-full flex justify-center">
 			<AboutUsSection supabase={data.supabase} />
 		</div>
-		<!-- </ParallaxLayer> -->
 
 		{#if seatLayout}
 			<SeatReservation {seatLayout} />
 		{/if}
-		<!-- </Parallax> -->
 	</div>
 </div>
 

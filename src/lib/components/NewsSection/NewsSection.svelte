@@ -17,20 +17,20 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
-	import { themeToggle } from '../../../stores/darkMode';
+	import { newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 
 	export let supabase: SupabaseClient;
 	let CardComponent: any;
-	export let exhibitionId:string = "";
+	export let exhibitionId: string = '';
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
 
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
 
@@ -42,9 +42,11 @@
 
 	onMount(async () => {
 		newsSectionStore.get($locale, supabase, exhibitionId);
-		let pageType = "News";
-		let newsUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
-		let cardType = newsUi?.component_type?.type?.charAt(0).toUpperCase() + newsUi?.component_type?.type?.slice(1);
+		let pageType = 'News';
+		let newsUi = (await UiStore.get(supabase, getPageType(pageType))) as UiModel;
+		let cardType =
+			newsUi?.component_type?.type?.charAt(0).toUpperCase() +
+			newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType);
 
 		if ($locale) {
@@ -66,10 +68,20 @@
 		<div class="flex justify-between items-center">
 			<div class="h-10 w-32" />
 			<div class="">
-				<TitleUi text={$LL.news()} />
+				<TitleUi
+					text={$LL.news()}
+					borderColor={$newsCurrentThemeColors.primaryColor}
+					textColor={$newsCurrentThemeColors.overlayBackgroundColor}
+				/>
 			</div>
 			<div class="flex justify-end w-32">
-				<SeeAllBtn onBtnClick={openNews} />
+				<SeeAllBtn
+					onBtnClick={openNews}
+					color={{
+						backgroundColor: $newsCurrentThemeColors.primaryColor ?? '',
+						textColor: $newsCurrentThemeColors.overlayPrimaryColor ?? ''
+					}}
+				/>
 			</div>
 		</div>
 		{#if $newsSectionStore.length === 0}
@@ -87,10 +99,12 @@
 						<Saos
 							animation="from-bottom {(i + 1) * 0.8 + 's'}  cubic-bezier(0.500, 0.5, 0.1, 1) both"
 						>
-						<!-- {#if CardComponent} -->
+							<!-- {#if CardComponent} -->
 							<ExpoCard
-								primaryColor={`var(--news${tailVar === "light" ? "Light" : "Dark"}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={`var(--news${tailVar === "light" ? "Light" : "Dark"}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
+								primaryColor={$newsCurrentThemeColors.secondaryColor ??
+									Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={$newsCurrentThemeColors.overlaySecondaryColor ??
+									Constants.main_theme.lightOverlayPrimary}
 								imageClass={Constants.image_card_layout}
 								cardType={CardComponent || CardType.Main}
 								title={n.title}
@@ -98,7 +112,7 @@
 								thumbnail={n.thumbnail}
 								date={n.created_at}
 							/>
-						<!-- {/if} -->
+							<!-- {/if} -->
 						</Saos>
 					</button>
 					<!-- {:else}
