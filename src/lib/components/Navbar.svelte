@@ -322,8 +322,8 @@
 
 		<NavUl
 			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
-			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
-			activeClass="dark:text-gray-50"
+			ulClass=" {Constants.page_max_width}  m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
+			activeClass="text-white bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
 			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
@@ -336,7 +336,7 @@
 					}}
 				>
 					<div
-						class="cursor-pointer border-solid text-[{$currentMainThemeColors.secondaryColor}] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
+						class="cursor-pointer border-solid text-darkOverlayPrimaryColor hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
 					>
 						{#if currentTheme === 'light'}
 							<Sun />
@@ -349,55 +349,55 @@
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
 				href="/"
-				class="  cursor-pointer text-sm  lg:text-lg"
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/news/1')}
 				href="/news/1"
-				class="  cursor-pointer text-sm  lg:text-lg "
+				class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg "
 				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibition/1')}
 				href="/exhibition/1"
-				class="  cursor-pointer text-sm  lg:text-lg"
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm lg:text-lg"
 				active={activeUrl.startsWith('/exhibition')}>{$LL.exhibition()}</NavLi
 			>
-			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg"
+			<NavLi id="media" class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi
 			>
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
 				<DropdownItem
-					defaultClass="dark:text-white text-secondary mb-1 text-base"
+					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/gallery/1"
 					on:click={() => updateActiveUrl('/gallery/1')}>{$LL.gallery()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="dark:text-white text-secondary mb-1 text-base"
+					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/magazine/1"
 					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="dark:text-white text-secondary mb-1 text-base"
+					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/publishing/1"
 					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="dark:text-white text-secondary mb-1 text-base"
+					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/video/1"
 					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
 			<NavLi
 				on:click={() => updateActiveUrl('/service')}
-				class="cursor-pointer text-sm  lg:text-lg"
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm lg:text-lg"
 				href="/service"
 				active={activeUrl == '/service'}>{$LL.services()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/about')}
-				class=" cursor-pointer text-sm  lg:text-lg"
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
 				href="/about"
 				active={activeUrl == '/about'}>{$LL.about()}</NavLi
 			>
@@ -405,7 +405,7 @@
 				on:click={() => updateActiveUrl('/contact')}
 				active={activeUrl == '/contact'}
 				href="/contact"
-				class="cursor-pointer text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 			>
 
 			<div
