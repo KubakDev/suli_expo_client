@@ -15,7 +15,11 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
-	import { themeToggle } from '../../../stores/darkMode';
+	import {
+		exhibitionCurrentMainThemeColors,
+		newsCurrentThemeColors,
+		themeToggle
+	} from '../../../stores/darkMode';
 	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
 	import { Button, Checkbox, Chevron, Dropdown, Label } from 'flowbite-svelte';
 	import NewsFilters from '$lib/components/NewsFilters.svelte';
@@ -74,57 +78,64 @@
 	});
 </script>
 
-<section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
-	{#if $newsStore}
-		<div class="flex justify-between items-center mb-12 w-full">
-			<div class="justify-end flex z-10 w-full" />
-			<div class="flex justify-center w-full px-2">
-				<TitleUi text={$LL.news()} />
+<div class="w-full" style=" background-color: {$newsCurrentThemeColors.backgroundColor};">
+	<section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
+		{#if $newsStore}
+			<div class="flex justify-between items-center mb-12 w-full">
+				<div class="justify-end flex z-10 w-full" />
+				<div class="flex justify-center w-full px-2">
+					<TitleUi
+						text={$LL.news()}
+						borderColor={$newsCurrentThemeColors.primaryColor}
+						textColor={$newsCurrentThemeColors.overlayBackgroundColor}
+					/>
+				</div>
+				<div class="justify-end flex z-10 w-full" />
 			</div>
-			<div class="justify-end flex z-10 w-full" />
-		</div>
-		<NewsFilters
-			supabase={data.supabase}
-			page={$page.params.page}
-			{selectedExhibition}
-			exhibitionData={$exhibitionStore}
-		/>
+			<NewsFilters
+				supabase={data.supabase}
+				page={$page.params.page}
+				{selectedExhibition}
+				exhibitionData={$exhibitionStore}
+			/>
 
-		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each $newsStore.data as item, i}
-				<button
-					on:click={() => {
-						goto(`/news/detail/${item.id}`);
-					}}
-					class="no-underline"
-				>
-					{#if CardComponent}
-						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
-								Constants.main_theme.lightOverlayPrimary}
-							cardType={CardComponent ?? CardType.Flat}
-							title={item.title}
-							thumbnail={item.thumbnail}
-							date={item.created_at ?? new Date()}
-							short_description={item.short_description}
-						/>
-					{/if}
-				</button>
-			{/each}
-		</div>
+			<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{#each $newsStore.data as item, i}
+					<button
+						on:click={() => {
+							goto(`/news/detail/${item.id}`);
+						}}
+						class="no-underline"
+					>
+						{#if CardComponent}
+							<ExpoCard
+								primaryColor={$newsCurrentThemeColors.secondaryColor ??
+									Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={$newsCurrentThemeColors.overlaySecondaryColor ??
+									Constants.main_theme.lightOverlayPrimary}
+								cardType={CardComponent ?? CardType.Flat}
+								title={item.title}
+								thumbnail={item.thumbnail}
+								date={item.created_at ?? new Date()}
+								short_description={item.short_description}
+							/>
+						{/if}
+					</button>
+				{/each}
+			</div>
 
-		<div dir="ltr" class="flex justify-center my-10">
-			{#if $newsStore.count > 9}
-				<PaginationComponent
-					total={$newsStore.pages}
-					page={parseInt($page.params.page)}
-					on:changePage={(value) => changePage(value.detail.page)}
-				/>
-			{/if}
-		</div>
-	{/if}
-</section>
+			<div dir="ltr" class="flex justify-center my-10">
+				{#if $newsStore.count > 9}
+					<PaginationComponent
+						total={$newsStore.pages}
+						page={parseInt($page.params.page)}
+						on:changePage={(value) => changePage(value.detail.page)}
+					/>
+				{/if}
+			</div>
+		{/if}
+	</section>
+</div>
 
 <style>
 	:root {
