@@ -9,7 +9,7 @@
 	let imageFile: File | undefined;
 	let fileName: string;
 	let currentImageFile = false;
-
+	// console.log("first")
 	let direction = 'ltr';
 	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 
