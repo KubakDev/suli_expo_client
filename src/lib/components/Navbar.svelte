@@ -184,7 +184,7 @@
 		let:hidden
 		let:toggle
 		navDivClass="mx-auto flex flex-wrap justify-between items-center max-w-full px-3 md:px-0 lg:px-3 xl:px-32 3xl:px-96 md:py-0 py-4"
-		style="background-color:{$currentMainThemeColors.secondaryColor}; "
+		style="background-color:--{tailVar}SecondaryColor; "
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
 		navClass=" px-2 sm:px-4 py-2.5   w-full z-20 top-0 left-0 border-b max-w-full relative"
 	>
@@ -413,7 +413,7 @@
 				style="margin:0 ;"
 			>
 				<button
-					style="background-color:{$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.secondaryColor}; "
+					style="background-color:--{tailVar}PrimaryColor;color:--{tailVar}SecondaryColor; "
 					class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0
 					border-[{$currentMainThemeColors.primaryColor}]"
 					dir="ltr"><Chevron>{selectedLang}</Chevron></button
