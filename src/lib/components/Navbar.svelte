@@ -350,19 +350,19 @@
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
 				href="/"
-				class="  cursor-pointer text-sm text-lightOverlaySecondary dark:text-darkOverlaySecondaryColor lg:text-lg"
+				class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg"
 				active={activeUrl == '/'}>{$LL.home()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/news/1')}
 				href="/news/1"
-				class="  cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg "
+				class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg"
 				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibition/1')}
 				href="/exhibition/1"
-				class="  cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor  lg:text-lg"
+				class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg"
 				active={activeUrl.startsWith('/exhibition')}>{$LL.exhibition()}</NavLi
 			>
 			<NavLi id="media" class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor  lg:text-lg"
@@ -370,22 +370,22 @@
 			>
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
 				<DropdownItem
-					class="dark:text-white text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					class="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/gallery/1"
 					on:click={() => updateActiveUrl('/gallery/1')}>{$LL.gallery()}</DropdownItem
 				>
 				<DropdownItem
-					class="dark:text-white text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					class="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/magazine/1"
 					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
-					class="dark:text-white text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					class="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/publishing/1"
 					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
-					class="dark:text-white text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					class="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
 					href="/video/1"
 					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
 				>
