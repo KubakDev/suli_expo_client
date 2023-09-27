@@ -23,7 +23,7 @@
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
-	let tailVar: string = 'light';
+	let tailVar: string = 'dark';
 
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
