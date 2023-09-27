@@ -16,7 +16,7 @@
 	import { stringToEnum } from '../../../utils/enumToString.js';
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { themeToggle } from '../../../stores/darkMode.js';
+	import { exhibitionCurrentMainThemeColors, themeToggle } from '../../../stores/darkMode.js';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore.js';
 	import { incrementExhibitionViewer, viewAdded_exhibition } from '../../../stores/viewersStore';
@@ -101,57 +101,65 @@
 {#if loading}
 	<div class="spinner" />
 {:else if exhibitions?.data && exhibitions.data.length > 0}
-	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
-		<div class="flex justify-between items-center mb-12 w-full">
-			<Filters />
-			<div
-				in:fade={{ duration: 800 }}
-				out:fade={{ duration: 400 }}
-				class="flex justify-center w-full px-2"
-			>
-				<TitleUi text={$LL.exhibition()} />
-			</div>
-			<div class="justify-end flex z-10 w-full" />
-		</div>
-
-		<div
-			class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
-		>
-			{#each exhibitions.data as exhibition, i}
-				<button
-					class="w-full"
-					on:click={() => {
-						openExhibition(exhibition.id || 0);
-					}}
+	<div
+		class="w-full"
+		style="background-color: {$exhibitionCurrentMainThemeColors.backgroundColor};"
+	>
+		<section class="py-12 {Constants.page_max_width} mx-auto w-full">
+			<div class="flex justify-between items-center mb-12 w-full">
+				<Filters />
+				<div
+					in:fade={{ duration: 800 }}
+					out:fade={{ duration: 400 }}
+					class="flex justify-center w-full px-2"
 				>
-					{#if CardComponent}
-						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
-								Constants.main_theme.lightOverlayPrimary}
-							title={exhibition.title}
-							thumbnail={exhibition.thumbnail}
-							short_description={exhibition.description}
-							startDate={exhibition.start_date}
-							endDate={exhibition.end_date}
-							cardType={CardComponent || CardType.Simple}
-						/>
-					{/if}
-				</button>
-			{/each}
-		</div>
-		<div dir="ltr" class="flex justify-center my-10">
-			{#if exhibitions.count > 10}
-				<PaginationComponent
-					total={exhibitions.pages}
-					page={parseInt($page.params.page)}
-					on:changePage={(value) => changePage(value.detail.page)}
-				/>
-			{/if}
-		</div>
-	</section>
+					<TitleUi
+						text={$LL.exhibition()}
+						borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+						textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
+					/>
+				</div>
+				<div class="justify-end flex z-10 w-full" />
+			</div>
 
-	<!-- Sekelaton -->
+			<div
+				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
+			>
+				{#each exhibitions.data as exhibition, i}
+					<button
+						class="w-full"
+						on:click={() => {
+							openExhibition(exhibition.id || 0);
+						}}
+					>
+						{#if CardComponent}
+							<ExpoCard
+								primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ??
+									Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ??
+									Constants.main_theme.lightOverlayPrimary}
+								title={exhibition.title}
+								thumbnail={exhibition.thumbnail}
+								short_description={exhibition.description}
+								startDate={exhibition.start_date}
+								endDate={exhibition.end_date}
+								cardType={CardComponent || CardType.Simple}
+							/>
+						{/if}
+					</button>
+				{/each}
+			</div>
+			<div dir="ltr" class="flex justify-center my-10">
+				{#if exhibitions.count > 10}
+					<PaginationComponent
+						total={exhibitions.pages}
+						page={parseInt($page.params.page)}
+						on:changePage={(value) => changePage(value.detail.page)}
+					/>
+				{/if}
+			</div>
+		</section>
+	</div>
 {:else}
 	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
 		<div

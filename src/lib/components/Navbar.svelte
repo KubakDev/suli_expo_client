@@ -24,7 +24,7 @@
 	import { previousPageStore } from '../../stores/navigationStore';
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { onMount } from 'svelte';
-	import { themeToggle, toggleTheme } from '../../stores/darkMode';
+	import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
 	import { Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
@@ -179,12 +179,12 @@
 	}
 </script>
 
-<div class=" w-full border-b border-b-neutral-800">
+<div class=" w-full">
 	<Navbar
 		let:hidden
 		let:toggle
 		navDivClass="mx-auto flex flex-wrap justify-between items-center max-w-full px-3 md:px-0 lg:px-3 xl:px-32 3xl:px-96 md:py-0 py-4"
-		style="background-color: var(--{tailVar}SecondaryColor); "
+		style="background-color:{$currentMainThemeColors.secondaryColor}; "
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
 		navClass=" px-2 sm:px-4 py-2.5   w-full z-20 top-0 left-0 border-b max-w-full relative"
 	>
@@ -195,7 +195,6 @@
 					{#if $currentUser.id}
 						<div
 							class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0 cursor-pointer"
-							style="background-color: var(--{tailVar}SecondaryColor); margin:0 ;"
 						>
 							<div class="flex space-x-4 items-center gap-1">
 								<div class="relative">
@@ -324,7 +323,7 @@
 		<NavUl
 			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
-			activeClass="text-white bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
+			activeClass="text-red-400 bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
 			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
@@ -337,7 +336,7 @@
 					}}
 				>
 					<div
-						class="cursor-pointer border-solid text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
+						class="cursor-pointer border-solid text-[{$currentMainThemeColors.secondaryColor}] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
 					>
 						{#if currentTheme === 'light'}
 							<Sun />
@@ -392,7 +391,7 @@
 			</Dropdown>
 			<NavLi
 				on:click={() => updateActiveUrl('/service')}
-				class="  cursor-pointer text-sm  lg:text-lg"
+				class="cursor-pointer text-sm  lg:text-lg"
 				href="/service"
 				active={activeUrl == '/service'}>{$LL.services()}</NavLi
 			>
@@ -414,7 +413,9 @@
 				style="margin:0 ;"
 			>
 				<Button
-					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 text-lightOverlayPrimaryColor dark:text-darkOverlayPrimaryColor"
+					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 text-[{$currentMainThemeColors.overlaySecondaryColor}] 
+					border-[{$currentMainThemeColors.primaryColor}]
+					dark:text-darkOverlayPrimaryColor"
 					dir="ltr"
 					pill
 					outline><Chevron>{selectedLang}</Chevron></Button
