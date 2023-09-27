@@ -211,7 +211,7 @@
 										</span>
 									{/if}
 								</div>
-								<p class="text-white">{$currentUser.company_name}</p>
+								<p style="color:--{tailVar}PrimaryColor">{$currentUser.company_name}</p>
 							</div>
 
 							<Dropdown id="" bind:open={userProfileDropdownOpen}>
