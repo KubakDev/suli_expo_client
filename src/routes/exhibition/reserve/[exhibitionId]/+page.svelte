@@ -161,9 +161,9 @@
 					allFieldsPresent = true;
 				}
 
-				if (exhibition.seat_layout.length == 0) {
-					goto(`/exhibition/detail/${exhibition.id}`);
-				}
+				// if (exhibition.seat_layout.length == 0) {
+				// 	goto(`/exhibition/detail/${exhibition.id}`);
+				// }
 			} catch (error) {}
 		}
 	}
