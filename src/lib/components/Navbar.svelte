@@ -179,7 +179,7 @@
 	}
 </script>
 
-<div class=" w-full">
+<div class="w-full">
 	<Navbar
 		let:hidden
 		let:toggle
@@ -323,7 +323,7 @@
 		<NavUl
 			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
 			ulClass=" {Constants.page_max_width} m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
-			activeClass="text-red-400 bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
+			activeClass="dark:text-gray-50"
 			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
@@ -412,19 +412,26 @@
 				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
 				style="margin:0 ;"
 			>
-				<Button
-					class="px-1  w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0 text-[{$currentMainThemeColors.overlaySecondaryColor}] 
-					border-[{$currentMainThemeColors.primaryColor}]
-					dark:text-darkOverlayPrimaryColor"
-					dir="ltr"
-					pill
-					outline><Chevron>{selectedLang}</Chevron></Button
+				<button
+					style="background-color:{$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.secondaryColor}; "
+					class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0
+					border-[{$currentMainThemeColors.primaryColor}]"
+					dir="ltr"><Chevron>{selectedLang}</Chevron></button
 				>
 
 				<Dropdown bind:open={dropdownOpen} id="">
-					<DropdownItem on:click={() => langSelect('ckb')}>کوردی</DropdownItem>
-					<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
-					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
+					<DropdownItem
+						on:click={() => langSelect('ckb')}
+						style="color:{$currentMainThemeColors.overlaySecondaryColor}">کوردی</DropdownItem
+					>
+					<DropdownItem
+						on:click={() => langSelect('ar')}
+						style="color:{$currentMainThemeColors.overlaySecondaryColor}">العربية</DropdownItem
+					>
+					<DropdownItem
+						on:click={() => langSelect('en')}
+						style="color:{$currentMainThemeColors.overlaySecondaryColor}">English</DropdownItem
+					>
 				</Dropdown>
 			</div>
 		</NavUl>
