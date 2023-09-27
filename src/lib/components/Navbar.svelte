@@ -306,7 +306,7 @@
 												px-2 py-1 rounded-full text-white flex justify-center items-center
 												`}
 												>
-													{$LL.reservation.statuses[notificationData.status]()}
+													<!-- {$LL.reservation.statuses[notificationData.status]()} -->
 												</div>
 											</div>
 											<p>{notificationData.message ?? ''}</p>
