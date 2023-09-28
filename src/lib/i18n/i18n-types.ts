@@ -507,6 +507,14 @@ type RootTranslation = {
 	}
 	company_info: {
 		/**
+		 * S​p​e​c​i​f​i​c​ ​c​o​u​n​t​r​y​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 */
+		specific_country_message: string
+		/**
+		 * S​p​e​c​i​f​i​c​ ​c​o​u​n​t​r​y
+		 */
+		specific_country: string
+		/**
 		 * U​p​l​o​a​d​ ​l​o​g​o
 		 */
 		logo_url: string
@@ -1120,6 +1128,14 @@ export type TranslationFunctions = {
 		error: () => LocalizedString
 	}
 	company_info: {
+		/**
+		 * Specific country is required
+		 */
+		specific_country_message: () => LocalizedString
+		/**
+		 * Specific country
+		 */
+		specific_country: () => LocalizedString
 		/**
 		 * Upload logo
 		 */

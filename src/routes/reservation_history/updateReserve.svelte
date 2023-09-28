@@ -110,22 +110,56 @@
 	let imageFile_excel: File | undefined;
 
 	let fileName_excel: FileNameType[] | string = [];
+	let fileError = false;
+	let validFile = false;
+	let errorMessage = '';
+
+	// function handleFileChange(event: any) {
+	// 	const file = event.target.files[0];
+
+	// 	imageFile_excel = file;
+
+	// 	const reader = new FileReader();
+
+	// 	const randomText = getRandomTextNumber();
+	// 	fileName_excel = `${randomText}_${file.name}`;
+
+	// 	reader.readAsDataURL(file);
+	// 	if (file) {
+	// 		fileName = file.name;
+	// 	} else {
+	// 		selectedFile = null;
+	// 	}
+	// }
 
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
+		fileError = true;
+		validFile = false;
+		selectedFile = null;
+		errorMessage = 'File is required';
 
-		imageFile_excel = file;
-
-		const reader = new FileReader();
-
-		const randomText = getRandomTextNumber();
-		fileName_excel = `${randomText}_${file.name}`;
-
-		reader.readAsDataURL(file);
 		if (file) {
-			fileName = file.name;
-		} else {
-			selectedFile = null;
+			imageFile_excel = file;
+
+			const fileExtension = file.name.split('.').pop().toLowerCase();
+			const allowedExtensions = ['xls', 'xlsx', 'xlsm'];
+
+			if (allowedExtensions.includes(fileExtension)) {
+				const reader = new FileReader();
+
+				const randomText = getRandomTextNumber();
+				fileName_excel = `${randomText}_${file.name}`;
+				reader.readAsDataURL(file);
+				fileError = false;
+				errorMessage = '';
+				selectedFile = file;
+				fileName = file.name;
+				validFile = true;
+			} else {
+				selectedFile = null;
+				errorMessage = 'Excel file required';
+			}
 		}
 	}
 
@@ -135,6 +169,7 @@
 			area: customAreaMeter.toString(),
 			quantity: customAreaQuantity
 		});
+		console.log(reservedSeatData, 'reservedSeat ', reservationData, 'reservationData');
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData });
 
 		setTimeout(() => {
@@ -426,8 +461,8 @@
 						name="file-input"
 						id="file-input"
 						class="file-input__input"
-						accept=".xlsx, .xls, .xlsm"
 						on:change={handleFileChange}
+						accept=".xlsx, .xls, .xlsm"
 					/>
 					<label class="file-input__label flex items-center gap-2 cursor-pointer" for="file-input">
 						<div class="flex flex-col gap-2 items-center justify-center w-full">
@@ -458,6 +493,10 @@
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
 					{/if}
 
+					{#if fileError}
+						<span class="text-red-600">{$LL.reservation.short_message()}</span>
+					{/if}
+
 					<button
 						class="mx-2 gap-2 bg-[#76BC58] p-2 rounded-xl flex justify-center items-center text-xs text-white"
 						on:click={() => exportFile(reservationData)}
@@ -480,7 +519,7 @@
 
 				<svelte:fragment slot="footer">
 					<div class="flex gap-2">
-						<Button on:click={handleAddClick}>
+						<Button on:click={handleAddClick} disabled={!validFile}>
 							{$LL.reservation.add_file()}
 						</Button>
 						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
@@ -540,14 +579,21 @@
 		padding: 20px 22px;
 		background-color: #cccccc60;
 		text-align: center;
-		color: #333; /* Adjust as needed */
+		color: #333;
 		font-weight: 600;
-		width: 66.67%; /* 2/3 of parent width */
+		width: 100%;
 		margin: 0 auto;
 		transition: background-color 0.3s;
 	}
 
 	.file-input__label:hover {
 		background-color: #f7f2f2;
+	}
+
+	@media (min-width: 640px) {
+		.file-display,
+		.file-input__label {
+			width: 66.67%;
+		}
 	}
 </style>

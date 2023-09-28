@@ -199,9 +199,9 @@
 							<div class="flex space-x-4 items-center gap-1">
 								<div class="relative">
 									<Avatar
-										src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
-											'/' +
-											$currentUser.logo_url}
+										src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+											$currentUser?.logo_url
+										}`}
 									/>
 									{#if notifications?.length > 0}
 										<span
@@ -364,7 +364,9 @@
 				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm lg:text-lg"
 				active={activeUrl.startsWith('/exhibition')}>{$LL.exhibition()}</NavLi
 			>
-			<NavLi id="media" class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
+			<NavLi
+				id="media"
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi
 			>
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
@@ -405,7 +407,8 @@
 				on:click={() => updateActiveUrl('/contact')}
 				active={activeUrl == '/contact'}
 				href="/contact"
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
+				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm mr-0 ml-0 lg:text-lg"
+				>{$LL.contact()}</NavLi
 			>
 
 			<div
