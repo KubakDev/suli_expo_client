@@ -42,6 +42,7 @@
 			area: string;
 			quantity: number;
 		}[];
+		extraDiscountChecked?: boolean;
 		comment: string;
 		file: File | undefined;
 	} = {
@@ -94,7 +95,7 @@
 				quantity: customAreaQuantity
 			});
 		}
-
+		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);

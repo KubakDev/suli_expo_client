@@ -33,7 +33,8 @@
 				.select(
 					'*,exhibition(*,exhibition_languages(*),seat_layout(*,seat_privacy_policy_lang(*)))'
 				)
-				.eq('company_id', currentUserId);
+				.eq('company_id', currentUserId)
+				.order('created_at', { ascending: false });
 			reservations = response.data as Reservation[];
 		}
 	}
@@ -68,7 +69,8 @@
 				reserved_areas: JSON.stringify(reservedSeatData.area),
 				status: ReservationStatusEnum.PENDING,
 				type: reservationData?.exhibition?.seat_layout[0]?.type,
-				file_url: reservationData.file_url
+				file_url: reservationData.file_url,
+				extra_discount_checked: reservationData.extra_discount_checked
 			})
 			.eq('id', reservationData.id)
 			.then(async (response: any) => {

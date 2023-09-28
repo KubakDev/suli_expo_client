@@ -85,7 +85,8 @@
 					reserved_areas: JSON.stringify(reserveSeatData.area),
 					status: ReservationStatusEnum.PENDING,
 					type: exhibition.seat_layout[0].type,
-					file_url: fileUrl
+					file_url: fileUrl,
+					extra_discount_checked: reserveSeatData.extraDiscountChecked
 				})
 				.then(() => {
 					selectedSeat.set(null);

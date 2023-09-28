@@ -38,13 +38,14 @@
 	if ($locale && data.supabase) {
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
-
-	onMount(() => {
+	onMount(async () => {
+		await pageBuilderStore.get(data.supabase);
+		await activeThemeStore.getActiveTheme(data.supabase);
 		setTheme();
+	});
+	onMount(() => {
 		supabase = data.supabase;
-		activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
-		pageBuilderStore.get(supabase);
 
 		const {
 			data: { subscription }

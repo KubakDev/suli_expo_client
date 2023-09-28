@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox } from 'flowbite-svelte';
 	import moment from 'moment';
 	import { currentUser } from '../../stores/currentUser';
 	import { generateDocx } from '../../utils/generateContract';
@@ -25,7 +25,10 @@
 		area: string;
 		quantity: number;
 	}[] = [];
-
+	let extraDiscount = {
+		description: '',
+		price: 0
+	};
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
@@ -33,7 +36,7 @@
 	let customAreaMeter: number = 0;
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
-
+	let extraDiscountChecked = false;
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -68,6 +71,19 @@
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
+		extraDiscount.description =
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == locale
+			).extra_discount_description ??
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == 'en'
+			).extra_discount_description ??
+			'';
+		extraDiscount.price = data.seat_layout[0]?.extra_discount;
+		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
+		if (extraDiscountChecked) {
+			discountedPrice = extraDiscount.price;
+		}
 		areas = JSON.parse(currentActiveSeat.areas ?? '');
 
 		getCompanyReservedData();
@@ -99,7 +115,13 @@
 		});
 		calculateTotalPrice();
 	}
-
+	function checkExtraDiscount() {
+		extraDiscountChecked = !extraDiscountChecked;
+		discountedPrice = extraDiscountChecked
+			? extraDiscount.price
+			: data.seat_layout[0]?.discounted_price;
+		calculateTotalPrice();
+	}
 	type FileNameType = {
 		lang: string;
 		fileName: string;
@@ -135,6 +157,7 @@
 			area: customAreaMeter.toString(),
 			quantity: customAreaQuantity
 		});
+		reservationData.extra_discount_checked = extraDiscountChecked;
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData });
 
 		setTimeout(() => {
@@ -384,6 +407,18 @@
 			</div>
 		</div>
 	</div>
+	{#if extraDiscount.description}
+		<div class="flex items-center mb-8">
+			<Checkbox
+				class="cursor-pointer mx-1"
+				on:change={checkExtraDiscount}
+				checked={extraDiscountChecked}
+			/>
+			<p style="color: var(--lightPrimaryColor);">
+				{extraDiscount.description}
+			</p>
+		</div>
+	{/if}
 	{#if discountedDescription}
 		<p style="color: var(--lightPrimaryColor);">
 			<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}

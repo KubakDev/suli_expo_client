@@ -48,9 +48,10 @@ export function toggleTheme() {
 export function setTheme() {
 	let currentTheme = localStorage.getItem('color-theme') ?? 'light';
 	themeToggle.set(currentTheme);
-	addCurrentMainThemeColors(capitalizeFirstLetter(currentTheme));
-	addNewsThemeColors(capitalizeFirstLetter(currentTheme));
-	addCurrentExhibitionThemeColors(currentTheme);
+
+	addCurrentExhibitionThemeColors(capitalizeFirstLetter(currentTheme ?? ''));
+	addNewsThemeColors(capitalizeFirstLetter(currentTheme ?? ''));
+	addCurrentMainThemeColors(currentTheme ?? 'light')
 }
 
 function addCurrentMainThemeColors(currentThemeMode: string) {

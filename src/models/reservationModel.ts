@@ -13,6 +13,7 @@ export interface Reservation {
   reserved_areas: string;
   services: string;
   status: ReservationStatus;
+  extra_discount_checked?: boolean;
 
 }
 export enum ReservationStatus {
