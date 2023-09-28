@@ -184,9 +184,9 @@
 		let:hidden
 		let:toggle
 		navDivClass="mx-auto flex flex-wrap justify-between items-center max-w-full px-3 md:px-0 lg:px-3 xl:px-32 3xl:px-96 md:py-0 py-4"
-		style="background-color:--{tailVar}SecondaryColor; "
+		style="background-color: {$currentMainThemeColors.secondaryColor}; color:{$currentMainThemeColors.overlaySecondaryColor} "
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
-		navClass=" px-2 sm:px-4 py-2.5   w-full z-20 top-0 left-0 border-b max-w-full relative"
+		navClass=" px-2 sm:px-4 py-2.5 w-full z-20 top-0 left-0 border-b max-w-full relative"
 	>
 		<NavBrand href="/" />
 		<div class="flex items-center md:order-2 w-full md:w-auto justify-between">
@@ -211,7 +211,7 @@
 										</span>
 									{/if}
 								</div>
-								<p style="color:--{tailVar}PrimaryColor">{$currentUser.company_name}</p>
+								<p>{$currentUser.company_name}</p>
 							</div>
 
 							<Dropdown id="" bind:open={userProfileDropdownOpen}>
@@ -323,8 +323,6 @@
 		<NavUl
 			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
 			ulClass=" {Constants.page_max_width}  m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
-			activeClass="text-white bg-primary-700 md:bg-transparent md:text-primary-700 md:dark:text-white dark:bg-primary-600 md:dark:bg-transparent"
-			nonActiveClass="text-gray-400 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
 			{hidden}
 		>
 			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0 mx-6">
@@ -336,7 +334,7 @@
 					}}
 				>
 					<div
-						class="cursor-pointer border-solid text-darkOverlayPrimaryColor hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 right-10"
+						class="cursor-pointer border-solid focus:outline-none focus:ring-4 rounded-lg text-sm p-2.5 right-10"
 					>
 						{#if currentTheme === 'light'}
 							<Sun />
@@ -349,66 +347,94 @@
 			<NavLi
 				on:click={() => updateActiveUrl('/')}
 				href="/"
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
-				active={activeUrl == '/'}>{$LL.home()}</NavLi
+				class="cursor-pointer  text-sm  lg:text-lg"
+				active={activeUrl == '/'}
+				style={activeUrl === '/'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.home()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/news/1')}
 				href="/news/1"
-				class="cursor-pointer text-sm text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor lg:text-lg "
-				active={activeUrl.startsWith('/news')}>{$LL.news()}</NavLi
+				class="cursor-pointer text-sm  lg:text-lg "
+				active={activeUrl.startsWith('/news')}
+				style={activeUrl === '/news/1'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.news()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/exhibition/1')}
 				href="/exhibition/1"
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm lg:text-lg"
-				active={activeUrl.startsWith('/exhibition')}>{$LL.exhibition()}</NavLi
+				class="cursor-pointer  text-sm lg:text-lg"
+				active={activeUrl.startsWith('/exhibition')}
+				style={activeUrl === '/exhibition/1'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.exhibition()}</NavLi
 			>
-			<NavLi
-				id="media"
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
+			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg "
 				><Chevron aligned>{$LL.media()}</Chevron></NavLi
 			>
 			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
 				<DropdownItem
-					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					style={activeUrl === '/gallery/1'
+						? `color: ${$currentMainThemeColors.primaryColor}`
+						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					defaultClass=" mb-1 text-base"
 					href="/gallery/1"
 					on:click={() => updateActiveUrl('/gallery/1')}>{$LL.gallery()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					style={activeUrl === '/magazine/1'
+						? `color: ${$currentMainThemeColors.primaryColor}`
+						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					defaultClass=" mb-1 text-base"
 					href="/magazine/1"
 					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					style={activeUrl === '/publishing/1'
+						? `color: ${$currentMainThemeColors.primaryColor}`
+						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					defaultClass=" mb-1 text-base"
 					href="/publishing/1"
 					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
 				>
 				<DropdownItem
-					defaultClass="text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor mb-1 text-base"
+					style={activeUrl === '/video/1'
+						? `color: ${$currentMainThemeColors.primaryColor}`
+						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					defaultClass=" mb-1 text-base"
 					href="/video/1"
 					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
 				>
 			</Dropdown>
+
 			<NavLi
 				on:click={() => updateActiveUrl('/service')}
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm lg:text-lg"
+				class="cursor-pointer  text-sm lg:text-lg"
 				href="/service"
-				active={activeUrl == '/service'}>{$LL.services()}</NavLi
+				active={activeUrl == '/service'}
+				style={activeUrl === '/service'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.services()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/about')}
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm  lg:text-lg"
+				class="cursor-pointer  text-sm  lg:text-lg"
 				href="/about"
-				active={activeUrl == '/about'}>{$LL.about()}</NavLi
+				active={activeUrl == '/about'}
+				style={activeUrl === '/about'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.about()}</NavLi
 			>
 			<NavLi
 				on:click={() => updateActiveUrl('/contact')}
 				active={activeUrl == '/contact'}
+				style={activeUrl === '/contact'
+					? `color: ${$currentMainThemeColors.primaryColor}`
+					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
 				href="/contact"
-				class="cursor-pointer text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor text-sm mr-0 ml-0 lg:text-lg"
-				>{$LL.contact()}</NavLi
+				class="cursor-pointer  text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
 			>
 
 			<div
@@ -416,7 +442,7 @@
 				style="margin:0 ;"
 			>
 				<button
-					style="background-color:--{tailVar}PrimaryColor;color:--{tailVar}SecondaryColor; "
+					style="background-color: {$currentMainThemeColors.primaryColor}"
 					class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0
 					border-[{$currentMainThemeColors.primaryColor}]"
 					dir="ltr"><Chevron>{selectedLang}</Chevron></button
@@ -425,11 +451,32 @@
 				<Dropdown
 					bind:open={dropdownOpen}
 					id=""
-					class={`bg-${$currentMainThemeColors.primaryColor} text-${$currentMainThemeColors.overlayBackgroundColor}`}
+					class="bg-[{$currentMainThemeColors.secondaryColor}]"
 				>
-					<DropdownItem on:click={() => langSelect('ckb')}>کوردی</DropdownItem>
-					<DropdownItem on:click={() => langSelect('ar')}>العربية</DropdownItem>
-					<DropdownItem on:click={() => langSelect('en')}>English</DropdownItem>
+					<DropdownItem
+						on:click={() => langSelect('ckb')}
+						style={selectedLang === 'کوردی'
+							? `color: ${$currentMainThemeColors.primaryColor}`
+							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					>
+						کوردی
+					</DropdownItem>
+					<DropdownItem
+						on:click={() => langSelect('ar')}
+						style={selectedLang === 'العربية'
+							? `color: ${$currentMainThemeColors.primaryColor}`
+							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					>
+						العربية
+					</DropdownItem>
+					<DropdownItem
+						on:click={() => langSelect('en')}
+						style={selectedLang === 'English'
+							? `color: ${$currentMainThemeColors.primaryColor}`
+							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
+					>
+						English
+					</DropdownItem>
 				</Dropdown>
 			</div>
 		</NavUl>
