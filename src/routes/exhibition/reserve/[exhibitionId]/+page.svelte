@@ -60,30 +60,31 @@
 		await getExhibition();
 		await getData();
 
-		
 		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
 	async function reserveSeat() {
 		let fileUrl = '';
 		seatReserved = true;
 		defaultModal = false;
-		if (reserveSeatData.file) {
-			const response = await data.supabase.storage
-				.from('file')
-				.upload(
-					`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
-					reserveSeatData.file!
-				);
-			fileUrl = response?.data?.path;
 
-			console.log('reserveSeatData File', fileUrl);
-			
+		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
+			alert('Please upload a non-empty Excel file before proceeding.');
+			return;
 		}
-		
+
+		const response = await data.supabase.storage
+			.from('file')
+			.upload(
+				`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
+				reserveSeatData.file
+			);
+
+		fileUrl = response?.data?.path;
+		console.log('reserveSeatData File', fileUrl);
 
 		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
 			console.log('reserveSeatData', reserveSeatData);
-			
+
 			data.supabase
 				.from('seat_reservation')
 				.insert({
@@ -116,7 +117,6 @@
 						})
 					}).then(() => {
 						console.log('email sent');
-						
 					});
 					defaultModal = true;
 				});
@@ -296,7 +296,6 @@
 									on:reserveSeat={(reserveData) => {
 										defaultModal = true;
 										reserveSeatData = reserveData.detail;
-										
 									}}
 								/>
 							{:else}
