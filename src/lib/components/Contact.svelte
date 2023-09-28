@@ -6,6 +6,7 @@
 	import SulyButton from './sulyButton.svelte';
 	import Constants from '../../utils/constants';
 	import MailTemplate from './MailTemplate.svelte';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	let schema = yup.object().shape({
 		name: yup.string().required().max(30).label('Name'),
@@ -36,28 +37,27 @@
 	}
 
 	function sendEmail() {
-		fetch("/api/contact/email", {
+		fetch('/api/contact/email', {
 			method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                emailUser: fields.email,
-                name: fields.name,
-                message: fields.message
-            })
-        }).then(res => {
-			if (res.status === 200) {
-				 
-			} else {
-				 
-			}
-		}).catch(err => {
-			 
-		});
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				emailUser: fields.email,
+				name: fields.name,
+				message: fields.message
+			})
+		})
+			.then((res) => {
+				if (res.status === 200) {
+				} else {
+				}
+			})
+			.catch((err) => {});
 	}
 </script>
-<section class="text-gray-600 body-font relative">
+
+<section class=" body-font relative">
 	{#if showToast}
 		<div class="bg-green-500 text-white text-center py-2 fixed bottom-0 left-0 right-0">
 			{$LL.successMessage()}
@@ -78,9 +78,15 @@
 	</div>
 	<div class="container px-5 py-24 mx-auto flex">
 		<div
-			class="lg:w-1/3 md:w-1/2 bg-lightBackgroundColor dark:bg-darkBackgroundColor rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
+			class="lg:w-1/3 md:w-1/2 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
+			style="background-color: {$currentMainThemeColors.backgroundColor};"
 		>
-			<h2 class="text-gray-900 text-lg mb-1 font-medium title-font py-5">{$LL.feedback()}</h2>
+			<h2
+				class=" text-lg mb-1 font-medium title-font py-5"
+				style="color:{$currentMainThemeColors.overlayBackgroundColor}"
+			>
+				{$LL.feedback()}
+			</h2>
 			<!-- <p class="leading-relaxed mb-5 text-gray-600">write any text</p> -->
 
 			<Form dir="ltr" class="form" {schema} {fields} submitHandler={formSubmit} {submitted}>
@@ -113,13 +119,6 @@
 						class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
 					/><Message name="message" />
 				</div>
-				<!-- <button
-					on:click|preventDefault={formSubmit}
-					type="submit"
-					class="bg-primary-50 text-[#E4E5D6] font-semibold py-2 px-6 focus:outline-none hover:bg-slate-50 hover:text-primary-50 rounded text-lg transition-all border"
-				>
-					{$LL.send()}</button
-				> -->
 				<SulyButton onBtnClick={formSubmit}>
 					{$LL.send()}
 				</SulyButton>

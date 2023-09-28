@@ -6,7 +6,6 @@ const ckb = {
 		title: 'پرۆفایل',
 		reservation_history: 'حجزکراوەکان',
 		reservation_notification: 'ئاگادارکردنەوە'
-
 	},
 	HI: 'سڵاو {name}! تکایە ستارەیەک بەرز بدە، کاتێک پرۆژەکە لە دڵخوازەکاند',
 	validation: {
@@ -93,7 +92,8 @@ const ckb = {
 		comment: 'سەرنج',
 		comment_placeholder: 'تکایە سەرنجەکەت بنووسە',
 		manual_area: 'لێرەدا دەتوانی ڕوبەر دیاری بکەیت',
-		manual_area_description: 'زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد.. )',
+		manual_area_description:
+			'زیاتر لە 36 مەتر ( پێویستە ڕوبەری دیاریکراو چەندجارەی 9 بێت بۆ نمونە 45م ، 54م ، 63م هتد.. )',
 		add_file: 'زیادکردن',
 		cancel_file: 'پاشگەزبونەوە',
 		required_file: 'پێویستە',
@@ -132,7 +132,6 @@ const ckb = {
 			pending: 'لە چاوەڕوانی',
 			accept: 'پەسەندکراو',
 			reject: 'ڕەتکراو'
-
 		}
 	},
 	loggin: {
@@ -151,7 +150,6 @@ const ckb = {
 		duplicate_password: 'وشەی نهێنی نوێ پێویستە جیاواز بێت لە کۆنەکە'
 	},
 	company_info: {
-		type: 'جۆری كۆمپانیا',
 		logo_url: 'لۆگۆ',
 		phone_number: 'ژمارەی تەلەفۆن',
 		company_name: 'ناوی کۆمپانیا',
@@ -160,6 +158,9 @@ const ckb = {
 		manager_name: 'ناوی بەڕێوەبەر',
 		passport_number: 'ژمارەی پاسپۆرت',
 		address: 'ناونیشان',
+		country: 'وڵات',
+		passport_image: 'هاوپێج کردنی پاسپۆرت',
+		user_image: 'هاوپێچ کردنی وێنەی  بەکارهێنەر',
 		string: ''
 	},
 	email_template: {

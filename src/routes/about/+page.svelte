@@ -8,6 +8,7 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let data;
 
@@ -30,7 +31,11 @@
 <section class="py-12 flex-1">
 	<div class="mx-auto {Constants.page_max_width}">
 		<div class="flex justify-center items-center mb-12">
-			<TitleUi text={$LL.about()} />
+			<TitleUi
+				text={$LL.about()}
+				borderColor={$currentMainThemeColors.primaryColor}
+				textColor={$currentMainThemeColors.overlayBackgroundColor}
+			/>
 		</div>
 		<div class="">
 			{#if $aboutSectionStore}
@@ -43,7 +48,8 @@
 		<section>
 			<div class="text-center pb-12">
 				<h1
-					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-lightPrimaryColor dark:text-darkPrimaryColor"
+					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading"
+					style="color: {$currentMainThemeColors.primaryColor};"
 				>
 					{$LL.successTeam()}
 				</h1>
@@ -51,15 +57,14 @@
 			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 				{#each $staffSectionStore as staffSection}
 					<div
-						class=" text-lightOverlayBackground dark:text-darkOverlayBackgroundColor rounded-lg p-2"
+						class=" rounded-lg p-2"
+						style="color: {$currentMainThemeColors.overlayBackgroundColor};"
 					>
 						<Staff {staffSection} />
 					</div>
 				{/each}
 			</div>
 		</section>
-
-		<!-- </Saos> -->
 	</div>
 </section>
 

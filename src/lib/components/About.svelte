@@ -2,6 +2,7 @@
 	import type { AboutModel } from '../../models/aboutModel';
 	export let aboutSection: AboutModel;
 	import Saos from 'saos';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 </script>
 
 <div class="flex items-center justify-center flex-col px-4 lg:px-0 bbb">
@@ -9,6 +10,7 @@
 	<div class="text-center">
 		<p
 			class=" leading-relaxed mb-8 pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-lightOverlayPrimaryColor dark:text-darkOverlaySecondaryColor"
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 		>
 			{aboutSection?.short_description}
 		</p>
@@ -35,14 +37,6 @@
 </div>
 
 <style>
-	.about_section {
-		background: linear-gradient(
-			90deg,
-			var(--lightTransparentPrimaryColor) 0%,
-			var(--lightPrimaryColor) 100%
-		);
-	}
-
 	@keyframes slide-up {
 		from {
 			transform: translateY(20%);

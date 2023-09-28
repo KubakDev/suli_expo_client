@@ -1,8 +1,32 @@
 import { writable } from 'svelte/store';
+import type { ColorTheme } from '../models/colorTheme';
 
-// The store will hold a string representing the current theme.
-// It starts as 'light'.
 export const themeToggle = writable('light');
+
+export const currentMainThemeColors = writable<ColorTheme>({
+	backgroundColor: "var(--lightBackgroundColor)",
+	primaryColor: "var(--lightPrimaryColor)",
+	overlayBackgroundColor: "var(--lightOverlayBackgroundColor)",
+	overlayPrimaryColor: "var(--lightOverlayPrimaryColor)",
+	overlaySecondaryColor: "var(--lightOverlaySecondaryColor)",
+	secondaryColor: "var(--lightSecondaryColor)"
+})
+export const exhibitionCurrentMainThemeColors = writable<ColorTheme>({
+	backgroundColor: "var(--exhibitionLightBackgroundColor)",
+	primaryColor: "var(--exhibitionLightPrimaryColor)",
+	overlayBackgroundColor: "var(--exhibitionLightOverlayBackgroundColor)",
+	overlayPrimaryColor: "var(--exhibitionLightOverlayPrimaryColor)",
+	overlaySecondaryColor: "var(--exhibitionLightOverlaySecondaryColor)",
+	secondaryColor: "var(--exhibitionLightSecondaryColor)"
+})
+export const newsCurrentThemeColors = writable<ColorTheme>({
+	backgroundColor: "var(--newsLightBackgroundColor)",
+	primaryColor: "var(--newsLightPrimaryColor)",
+	overlayBackgroundColor: "var(--newsLightOverlayBackgroundColor)",
+	overlayPrimaryColor: "var(--newsLightOverlayPrimaryColor)",
+	overlaySecondaryColor: "var(--newsLightOverlaySecondaryColor)",
+	secondaryColor: "var(--newsLightSecondaryColor)"
+})
 
 export function toggleTheme() {
 	const htmlElement = document.querySelector('html');
@@ -17,7 +41,51 @@ export function toggleTheme() {
 	} else {
 		htmlElement?.classList.remove('dark');
 	}
+	addCurrentExhibitionThemeColors(capitalizeFirstLetter(currentTheme ?? ''));
+	addNewsThemeColors(capitalizeFirstLetter(currentTheme ?? ''));
+	addCurrentMainThemeColors(currentTheme ?? 'light')
 }
 export function setTheme() {
-	themeToggle.set(localStorage.getItem('color-theme') ?? 'light');
+	let currentTheme = localStorage.getItem('color-theme') ?? 'light';
+	themeToggle.set(currentTheme);
+	addCurrentMainThemeColors(capitalizeFirstLetter(currentTheme));
+	addNewsThemeColors(capitalizeFirstLetter(currentTheme));
+	addCurrentExhibitionThemeColors(currentTheme);
+}
+
+function addCurrentMainThemeColors(currentThemeMode: string) {
+	currentMainThemeColors.set({
+		backgroundColor: `var(--${currentThemeMode}BackgroundColor)`,
+		primaryColor: `var(--${currentThemeMode}PrimaryColor)`,
+		overlayBackgroundColor: `var(--${currentThemeMode}OverlayBackgroundColor)`,
+		overlayPrimaryColor: `var(--${currentThemeMode}OverlayPrimaryColor)`,
+		overlaySecondaryColor: `var(--${currentThemeMode}OverlaySecondaryColor)`,
+		secondaryColor: `var(--${currentThemeMode}SecondaryColor)`
+
+	})
+}
+function addCurrentExhibitionThemeColors(currentThemeMode: string) {
+	exhibitionCurrentMainThemeColors.set({
+		backgroundColor: `var(--exhibition${currentThemeMode}BackgroundColor)`,
+		primaryColor: `var(--exhibition${currentThemeMode}PrimaryColor)`,
+		overlayBackgroundColor: `var(--exhibition${currentThemeMode}OverlayBackgroundColor)`,
+		overlayPrimaryColor: `var(--exhibition${currentThemeMode}OverlayPrimaryColor)`,
+		overlaySecondaryColor: `var(--exhibition${currentThemeMode}OverlaySecondaryColor)`,
+		secondaryColor: `var(--exhibition${currentThemeMode}SecondaryColor)`
+
+	})
+}
+function addNewsThemeColors(currentThemeMode: string) {
+	newsCurrentThemeColors.set({
+		backgroundColor: `var(--news${currentThemeMode}BackgroundColor)`,
+		primaryColor: `var(--news${currentThemeMode}PrimaryColor)`,
+		overlayBackgroundColor: `var(--news${currentThemeMode}OverlayBackgroundColor)`,
+		overlayPrimaryColor: `var(--news${currentThemeMode}OverlayPrimaryColor)`,
+		overlaySecondaryColor: `var(--news${currentThemeMode}OverlaySecondaryColor)`,
+		secondaryColor: `var(--news${currentThemeMode}SecondaryColor)`
+
+	})
+}
+function capitalizeFirstLetter(inputString: string) {
+	return inputString.charAt(0).toUpperCase() + inputString.slice(1);
 }

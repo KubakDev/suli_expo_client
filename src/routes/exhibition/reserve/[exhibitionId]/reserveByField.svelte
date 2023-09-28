@@ -7,13 +7,15 @@
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
+	import { Toast } from 'flowbite-svelte';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
+	import { convertNumberToWord } from '../../../../utils/numberToWordLang';
+
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
-	import { Toast } from 'flowbite-svelte';
-	import { CloseCircleSolid } from 'flowbite-svelte-icons';
-	import { fly } from 'svelte/transition';
 
 	let showNotification = false;
 	let defaultModal = false;
@@ -47,11 +49,11 @@
 		comment: '',
 		file: undefined
 	};
+
 	onMount(() => {
 		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 			data.seat_layout[0]?.excel_preview_url
 		}`;
-		console.log(preview_url);
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
 		discountedDescription =
@@ -85,21 +87,22 @@
 			}, 3000);
 			return;
 		}
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
-		});
+		if (customAreaMeter) {
+			reservedSeatData.area.push({
+				id: areas.length,
+				area: customAreaMeter.toString(),
+				quantity: customAreaQuantity
+			});
+		}
 
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);
-
-		console.log('last result', reservedSeatData);
 	}
 
-	function addAreaToReservedSeatData(index: number, number: number) {
+	function addAreaToReservedSeatData(index: number, number: number, area: string) {
 		let reservedSeatArea = reservedSeatData.area.find((area) => area.id == index);
+
 		if (reservedSeatArea) {
 			if (number == 0) {
 				reservedSeatData.area = reservedSeatData.area.filter((area) => area.id != index);
@@ -119,16 +122,16 @@
 	async function contractPreview() {
 		let reservedAreas = reservedSeatData.area?.map((data: any) => {
 			let result = {
-				id: data.id++,
+				id: data.id,
 				area: data.area,
 				quantity: data.quantity,
 				pricePerMeter: pricePerMeter,
-				totalPrice: data.quantity * pricePerMeter,
+				totalPrice: data.quantity * pricePerMeter * +data.area,
 				discountedPrice: +data.area * (discountedPrice ?? pricePerMeter)
 			};
 			return result;
 		});
-		if (customAreaQuantity) {
+		if (customAreaMeter) {
 			reservedAreas.push({
 				id: areas.length,
 				area: customAreaMeter,
@@ -138,6 +141,11 @@
 				discountedPrice: customAreaMeter * (discountedPrice ?? pricePerMeter)
 			});
 		}
+		let totalArea = 0;
+
+		reservedAreas.map((area) => {
+			totalArea += +area.area * +area.quantity;
+		});
 		let docxData = {
 			company_name: $currentUser.company_name,
 			address: $currentUser.address,
@@ -148,16 +156,25 @@
 			areas: reservedAreas,
 			date: moment(new Date()).format('DD/MM/YYYY'),
 			id: $currentUser.id,
-			email: $currentUser.email
+			email: $currentUser.email,
+			pricePerMeter,
+			totalArea,
+			totalRawPrice,
+			totalPrice,
+			totalPriceText: convertNumberToWord(totalPrice, locale),
+			totalRawPriceText: convertNumberToWord(totalRawPrice, locale),
+			totalAreaText: convertNumberToWord(totalArea, locale)
 		};
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
 	}
+
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
 		calculateTotalPrice();
@@ -171,7 +188,7 @@
 	let errorMessage = '';
 	let validFile = false;
 
-	function handleFileChange(event) {
+	function handleFileChange(event: any) {
 		const file = event.target.files[0];
 		fileError = true;
 		validFile = false;
@@ -221,6 +238,7 @@
 	}
 </script>
 
+<!-- comment  -->
 <div class="w-full flex flex-col items-start p-10">
 	<img
 		src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data.image_map}
@@ -246,7 +264,7 @@
 						<div class="mx-6 my-2">
 							<InputNumberButton
 								on:numberChanged={(number) => {
-									addAreaToReservedSeatData(index, +number.detail);
+									addAreaToReservedSeatData(index, +number.detail, availableSeatArea.area);
 								}}
 								serviceQuantity={availableSeatArea.quantity}
 								maxQuantityPerUser={availableSeatArea.quantity}
@@ -331,11 +349,9 @@
 			</div>
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
-					<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-						<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-							{$LL.reservation.total_price()} : {totalPrice}$
-						</p>
-					</div>
+					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
+						{$LL.reservation.total_price()} :
+					</p>
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
 							<p

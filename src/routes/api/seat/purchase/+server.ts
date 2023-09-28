@@ -23,10 +23,6 @@ export const POST = (async ({ locals, params, request }) => {
       }
     });
   }
-
-  console.log('emailUser', emailUser);
-  
-
   const emailHtml = render({
     template: MailTemplate,
     props: {

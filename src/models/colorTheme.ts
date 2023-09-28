@@ -1,3 +1,4 @@
+
 export interface ColorTheme {
   name?: string;
   primaryColor?: string;

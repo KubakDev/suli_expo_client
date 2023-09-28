@@ -14,7 +14,11 @@
 	import { getPageType } from '../../utils/pageType';
 	import type { UiModel } from '../../models/uiModel';
 	import { stringToEnum } from '../../utils/enumToString';
-	import { themeToggle } from '../../stores/darkMode';
+	import {
+		currentMainThemeColors,
+		themeToggle,
+		exhibitionCurrentMainThemeColors
+	} from '../../stores/darkMode';
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { page } from '$app/stores';
 
@@ -27,9 +31,9 @@
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
 
@@ -40,15 +44,17 @@
 	}
 
 	onMount(async () => {
-		let pageType = "Exhibition";
-		let exhibitionUi = (await UiStore.get(supabase,getPageType(pageType))) as UiModel;
-		let cardType = exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() + exhibitionUi?.component_type?.type?.slice(1);
+		let pageType = 'Exhibition';
+		let exhibitionUi = (await UiStore.get(supabase, getPageType(pageType))) as UiModel;
+		let cardType =
+			exhibitionUi?.component_type?.type?.charAt(0).toUpperCase() +
+			exhibitionUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		// Fetch data for exhibitionSectionStore
-	if ($locale) {
-		exhibitionSectionStore.get($locale, supabase);
-	}
+		if ($locale) {
+			exhibitionSectionStore.get($locale, supabase);
+		}
 	});
 
 	function openAllExibition() {
@@ -68,10 +74,20 @@
 			<div class="flex justify-between items-center">
 				<div class="h-10 w-32" />
 				<div class="">
-					<TitleUi text={$LL.exhibition()} />
+					<TitleUi
+						text={$LL.exhibition()}
+						textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
+						borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+					/>
 				</div>
 				<div class="flex justify-end w-32">
-					<SeeAllBtn onBtnClick={openAllExibition} />
+					<SeeAllBtn
+						onBtnClick={openAllExibition}
+						color={{
+							backgroundColor: $exhibitionCurrentMainThemeColors.primaryColor ?? '',
+							textColor: $exhibitionCurrentMainThemeColors.overlayPrimaryColor ?? ''
+						}}
+					/>
 				</div>
 			</div>
 			{#if $exhibitionSectionStore}
@@ -87,8 +103,10 @@
 						>
 							<ExpoCard
 								imageClass={Constants.image_card_layout}
-								primaryColor={`var(--exhibition${tailVar === "light" ? "Light" : "Dark"}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={`var(--exhibition${tailVar === "light" ? "Light" : "Dark"}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
+								primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ??
+									Constants.main_theme.lightPrimary}
+								overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ??
+									Constants.main_theme.lightOverlayPrimary}
 								title={exhibition.title}
 								short_description={exhibition.description}
 								thumbnail={exhibition.thumbnail}
@@ -102,29 +120,6 @@
 			{/if}
 		</section>
 	</Saos>
-	<!-- {:else}
-	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
-	>
-		<div class="flex justify-between items-center">
-			<div class="h-10 w-32" />
-			<div class="">
-				<TitleUi text={$LL.exhibition()} customClass=" dark:text-white text-secondary " />
-			</div>
-			<Button color="primary" class="w-32 rounded-md bg-primary text-black">See all</Button>
-		</div>
-		<div
-			class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center items-center {constants.section_margin_top}"
-		>
-			{#each [1, 2] as n, i}
-				<div
-					class=" bg-gray-300 rounded-md animate-pulse flex-1 min-w-10 max-w-128 overflow-hidden h-128"
-				>
-					<div class="h-40 bg-gray-400 rounded-t-md w-128" />
-				</div>
-			{/each}
-		</div>
-	</section> -->
 {/if}
 
 <style>

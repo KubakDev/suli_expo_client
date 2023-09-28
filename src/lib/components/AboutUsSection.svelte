@@ -6,19 +6,17 @@
 	import Saos from '$lib/animate/Saos.svelte';
 	import Constants from '../../utils/constants';
 	import { onMount } from 'svelte';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 	export let supabase: any;
 
 	$: {
-		//.info('locale changed %%%%%%%%%%%%%%%%%%');
 		if ($locale) {
-			//.info('locale changed #########', $locale);
 			aboutSectionStore.get($locale, supabase);
 		}
 	}
 
 	onMount(async () => {
 		if ($locale) {
-			//.info('locale changed #########', $locale);
 			aboutSectionStore.get($locale, supabase);
 		}
 	});
@@ -28,31 +26,26 @@
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding} mb-96"
 	>
-		<!-- <Saos animation="from-bottom 1s cubic-bezier(0.500, 0.5, 0.1, 1) both"> -->
 		<div class="flex justify-center items-center aboutTitle">
-			<TitleUi text={$LL.about()} />
+			<TitleUi
+				text={$LL.about()}
+				borderColor={$currentMainThemeColors.primaryColor}
+				textColor={$currentMainThemeColors.overlayBackgroundColor}
+			/>
 		</div>
-		<!-- </Saos> -->
 		<div
 			class=" flex items-center justify-center flex-col w-full {constants.section_margin_top} relative"
 		>
-			<!-- short description  -->
-			<!-- <Saos animation="from-bottom 1.2s cubic-bezier(0.500, 0.5, 0.1, 1) both"> -->
 			<p
-				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl text-lightOverlayPrimaryColor dark:text-darkOverlaySecondaryColor"
+				class="leading-relaxed pt-10 md:pb-20 pb-5 lg:px-8 px-4 text-base md:text-xl about_section rounded-2xl"
+				style="background-color: {$currentMainThemeColors.primaryColor}; color:{$currentMainThemeColors.overlayPrimaryColor}"
 			>
 				{$aboutSectionStore.short_description}
 			</p>
-			<!-- </Saos> -->
 			<div class="w-full justify-center items-center flex py-2 lg:-mt-20">
 				<div class=" lg:w-4/6 w-full h-96 object-cover object-center rounded-lg">
 					<Saos animation="from-bottom 1.8s cubic-bezier(0.500, 0.5, 0.1, 1) both">
-						<!-- svelte-ignore a11y-img-redundant-alt -->
-						<img
-							class=" w-full rounded-lg"
-							alt="about image"
-							src="{$aboutSectionStore.image}"
-						/>
+						<img class=" w-full rounded-lg" alt="aboutImage" src={$aboutSectionStore.image} />
 					</Saos>
 				</div>
 			</div>
@@ -61,13 +54,6 @@
 {/if}
 
 <style>
-	.about_section {
-		background: linear-gradient(
-			90deg,
-			var(--lightTransparentPrimaryColor) 0%,
-			var(--lightPrimaryColor) 100%
-		);
-	}
 	.aboutTitle {
 		will-change: transform, opacity;
 	}

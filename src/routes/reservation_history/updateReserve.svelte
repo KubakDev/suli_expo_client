@@ -10,16 +10,14 @@
 	import type { Reservation } from '../../models/reservationModel';
 	import { ReservationStatus } from '../../models/reservationModel';
 	import { getRandomTextNumber } from '../../utils/getRandomText';
+	import { convertNumberToWord } from '../../utils/numberToWordLang';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	export let reservationData: Reservation;
 
-	onMount(() => {
-		console.log(reservationData);
-		console.log(data);
-	});
+	let totalRawPrice = 0;
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
@@ -50,34 +48,28 @@
 		file: ''
 	};
 	let reservedAreas: any[] = [];
-
-	onMount(() => {
-		console.log('first', reservedSeatData);
-	});
+	let currentActiveSeat = data.seat_layout.find((seat: any) => seat.is_active == true);
 
 	onMount(() => {
 		onMountData();
 	});
 
 	function onMountData() {
-		console.log('llllllllll', data.seat_layout[0]?.excel_preview_url);
-		preview_url = data.seat_layout[0]?.excel_preview_url;
+		preview_url = currentActiveSeat?.excel_preview_url;
 
-		console.log(preview_url);
-		pricePerMeter = data.seat_layout[0]?.price_per_meter;
-		discountedPrice = data.seat_layout[0]?.discounted_price;
+		pricePerMeter = currentActiveSeat?.price_per_meter;
+		discountedPrice = currentActiveSeat?.discounted_price;
 
 		discountedDescription =
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale
 			).discount_description ??
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
-		if (data?.seat_layout[0]?.areas) {
-			areas = JSON.parse(data?.seat_layout[0]?.areas);
-		}
+		areas = JSON.parse(currentActiveSeat.areas ?? '');
+
 		getCompanyReservedData();
 	}
 
@@ -88,7 +80,6 @@
 			comment: reservationData.comment,
 			file: reservationData.file_url
 		};
-		console.log('////////////////////', reservedSeatData.file);
 
 		let allReservedArea = reservedAreas.map((reservedArea) => {
 			return reservedArea.area;
@@ -139,8 +130,6 @@
 	}
 
 	async function reserveSeat() {
-		console.log('before submitting data /////////////', reservedSeatData.file);
-
 		reservedSeatData.area.push({
 			id: areas.length,
 			area: customAreaMeter.toString(),
@@ -159,11 +148,7 @@
 				.from('file')
 				.upload(`reserve/${fileName_excel}`, imageFile_excel!);
 			reservationData.file_url = response.data?.path ?? '';
-
-			console.log(';;;;;;;', response);
-		} catch (error) {
-			console.error('Error uploading file:', error);
-		}
+		} catch (error) {}
 	}
 
 	function addAreaToReservedSeatData(index: number, number: number) {
@@ -207,6 +192,11 @@
 				discountedPrice: customAreaMeter * (discountedPrice ?? pricePerMeter)
 			});
 		}
+		let totalArea = 0;
+
+		reservedAreas.map((area) => {
+			totalArea += +area.area * +area.quantity;
+		});
 		let docxData = {
 			company_name: $currentUser.company_name,
 			address: $currentUser.address,
@@ -217,12 +207,20 @@
 			areas: reservedAreas,
 			date: moment(new Date()).format('DD/MM/YYYY'),
 			id: $currentUser.id,
-			email: $currentUser.email
+			email: $currentUser.email,
+			pricePerMeter,
+			totalArea,
+			totalRawPrice,
+			totalPrice,
+			totalPriceText: convertNumberToWord(totalPrice, locale),
+			totalRawPriceText: convertNumberToWord(totalRawPrice, locale),
+			totalAreaText: convertNumberToWord(totalArea, locale)
 		};
 		await supabase
 			.from('contract_decode_files')
 			.select('*')
 			.eq('exhibition_id', data.id)
+			.eq('language', locale)
 			.then(async (Response: any) => {
 				generateDocx(Response.data[0].decoded_file, docxData);
 			});
@@ -238,11 +236,14 @@
 			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		totalRawPrice = 0;
+		reservedSeatData.area.map((seatArea) => {
+			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
+		});
+		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 
 	function exportFile(reservation: any) {
-		console.log('link ', reservation);
-
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
@@ -359,9 +360,27 @@
 			</div>
 
 			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
-				<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-					{$LL.reservation.total_price()} : {totalPrice}$
-				</p>
+				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
+					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
+						{$LL.reservation.total_price()} :
+					</p>
+					<div class="mx-4">
+						{#if discountedPrice}
+							<p
+								class="text-start justify-center flex my-2 line-through text-xs md:text-xl
+							"
+							>
+								{totalRawPrice}$
+							</p>
+						{/if}
+
+						<p
+							class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+						>
+							{totalPrice}$
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -394,7 +413,7 @@
 						<img
 							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
 								'/' +
-								data.seat_layout[0]?.excel_preview_url}
+								currentActiveSeat?.excel_preview_url}
 							alt="thumbnail"
 							class="bg-red-400 w-2/3 h-56 object-cover rounded"
 						/>
