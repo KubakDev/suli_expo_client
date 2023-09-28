@@ -59,68 +59,105 @@
 		}
 		await getExhibition();
 		await getData();
+
+		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
+
 	async function reserveSeat() {
 		let fileUrl = '';
 		seatReserved = true;
 		defaultModal = false;
-		if (reserveSeatData.file) {
+
+		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
+			alert('Please upload a non-empty Excel file before proceeding.');
+			return;
+		}
+
+		try {
 			const response = await data.supabase.storage
 				.from('file')
 				.upload(
 					`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
-					reserveSeatData.file!
+					reserveSeatData.file
 				);
-			fileUrl = response?.data?.path;
-		}
 
-		if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
-			data.supabase
-				.from('seat_reservation')
-				.insert({
-					exhibition_id: exhibition.id,
-					company_id: $currentUser.id,
-					object_id: new Date().getTime(),
-					comment: reserveSeatData.comment,
-					reserved_areas: JSON.stringify(reserveSeatData.area),
-					status: ReservationStatusEnum.PENDING,
-					type: exhibition.seat_layout[0].type,
-					file_url: fileUrl,
-					extra_discount_checked: reserveSeatData.extraDiscountChecked
-				})
-				.then(() => {
-					selectedSeat.set(null);
-					setTimeout(() => {
-						goto('/exhibition/1');
-					}, 3000);
-					fetch('/api/seat/purchase', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({
-							emailUser: data?.session?.user?.email,
-							name: '',
-							message: '',
-							exhibition: exhibition,
-							companyData: $currentUser,
-							reserveSeatData: reserveSeatData
-						})
-					}).then(() => {});
-					defaultModal = true;
+			fileUrl = response?.data?.path;
+			if (!fileUrl) {
+				alert('anUnknown error occurred while uploading the file. Please try again.');
+				return;
+			}
+			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
+				await data.supabase
+					.from('seat_reservation')
+					.insert({
+						exhibition_id: exhibition.id,
+						company_id: $currentUser.id,
+						object_id: new Date().getTime(),
+						comment: reserveSeatData.comment,
+						reserved_areas: JSON.stringify(reserveSeatData.area),
+						status: ReservationStatusEnum.PENDING,
+						type: exhibition.seat_layout[0].type,
+						file_url: fileUrl,
+						extra_discount_checked: reserveSeatData.extraDiscountChecked
+					})
+					.then(() => {
+						selectedSeat.set(null);
+						setTimeout(() => {
+							goto('/exhibition/1');
+						}, 3000);
+						fetch('/api/seat/purchase', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								emailUser: data?.session?.user?.email,
+								name: '',
+								message: '',
+								exhibition: exhibition,
+								companyData: $currentUser,
+								reserveSeatData: reserveSeatData
+							})
+						}).then(() => {});
+						defaultModal = true;
+					});
+
+				selectedSeat.set(null);
+				setTimeout(() => {
+					goto('/exhibition/1');
+				}, 3000);
+				await fetch('/api/seat/purchase', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						emailUser: data?.session?.user?.email,
+						name: '',
+						message: '',
+						exhibition: exhibition,
+						companyData: $currentUser,
+						reserveSeatData: reserveSeatData
+					})
 				});
-		} else {
-			data.supabase
-				.from('seat_reservation')
-				.insert(reserveSeatData)
-				.then(() => {
-					selectedSeat.set(null);
-					setTimeout(() => {
-						goto('/exhibition/1');
-					}, 3000);
-				});
+
+				console.log('email sent');
+				defaultModal = true;
+			} else {
+				await data.supabase.from('seat_reservation').insert(reserveSeatData);
+
+				selectedSeat.set(null);
+				setTimeout(() => {
+					goto('/exhibition/1');
+				}, 3000);
+			}
+		} catch (error) {
+			console.error('Error during reservation process:', error);
+			alert('An error occurred while reserving the seat. Please try again.');
+			seatReserved = false;
 		}
 	}
+
 	onDestroy(() => {
 		localStorage.removeItem('redirect');
 	});

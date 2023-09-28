@@ -4,7 +4,7 @@
 	import { requiredFields, exhibitionID } from '../../../../../stores/requiredFieldStore';
 	import imageCompression from 'browser-image-compression';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
+	import { Button, Fileupload, Input, Label, Select } from 'flowbite-svelte';
 	import { currentUser } from '../../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
 
@@ -20,6 +20,8 @@
 	let currentImageFile3 = false;
 
 	const id = $page.params.userId;
+	let selectedCountry = 'Iraq';
+	let otherCountryName = '';
 
 	let result = {
 		id: 0,
@@ -181,9 +183,15 @@
 	}
 	let passportImageError = false;
 	let userImageError = false;
+	let countryError = '';
 
 	async function handleUpdate() {
 		if (selectedCountry === 'Other') {
+			if (!otherCountryName.trim()) {
+				countryError = `${$LL.company_info['specific_country_message']()}`;
+				return;
+			}
+
 			if (!currentImageFile2 && !result.passport_image) {
 				passportImageError = true;
 			} else {
@@ -234,6 +242,8 @@
 			result.passport_image = '';
 			result.user_image = '';
 		}
+
+		console.log(result);
 		await data.supabase
 			.from('company')
 			.update({
@@ -260,9 +270,6 @@
 				goto(`/exhibition/reserve/${$exhibitionID}`);
 			});
 	}
-
-	let selectedCountry = 'Iraq';
-	let otherCountryName = '';
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
@@ -280,7 +287,7 @@
 			/>
 		</div>
 
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 			<div>
 				<div class="flex gap-2">
 					{#if $requiredFields?.includes('logo_url')}<span class="text-red-500">*</span>{/if}
@@ -347,11 +354,12 @@
 
 				<Input type="text" bind:value={result.address} />
 			</div>
+
 			<div>
-				<div class="flex gap-2">
+				<div class="flex">
 					{#if $requiredFields.includes('country')}<span class="text-red-500">*</span>{/if}
 					<div class="w-full">
-						<Label for="" class="mb-2">{$LL.company_info['country']()}</Label>
+						<Label for="" class="mb-3 ml-2">{$LL.company_info['country']()}</Label>
 						<select
 							bind:value={selectedCountry}
 							id="countrySelect"
@@ -367,7 +375,9 @@
 				{#if selectedCountry === 'Other'}
 					<div class="flex gap-2">
 						{#if $requiredFields.includes('country')}<span class="text-red-500">*</span>{/if}
-						<label for="countrySelect" class="mb-2">specific country</label>
+						<label for="countrySelect" class="mb-3"
+							>{`${$LL.company_info['specific_country']()}`}</label
+						>
 					</div>
 					<Input
 						class="-mt-2"
@@ -375,6 +385,10 @@
 						bind:value={otherCountryName}
 						placeholder="Enter your country"
 					/>
+
+					{#if countryError}
+						<p class="text-red-500 mt-2">{countryError}</p>
+					{/if}
 				{/if}
 			</div>
 
@@ -417,26 +431,29 @@
 						{/if}
 					</div>
 				</div>
+				{#if imageFile2 || result.passport_image}
+					<div class="flex justify-center items-center pb-10">
+						<img
+							src={currentImageFile2
+								? result.passport_image
+								: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.passport_image}`}
+							alt="Upload Image"
+							class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
+						/>
+					</div>
+				{/if}
 
-				<div class="flex justify-center items-center pb-10">
-					<img
-						src={currentImageFile2
-							? result.passport_image
-							: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.passport_image}`}
-						alt="Upload Image"
-						class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
-					/>
-				</div>
-
-				<div class="flex justify-center items-center pb-10">
-					<img
-						src={currentImageFile3
-							? result.user_image
-							: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.user_image}`}
-						alt="passport Image"
-						class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
-					/>
-				</div>
+				{#if imageFile3 || result.user_image}
+					<div class="flex justify-center items-center pb-10">
+						<img
+							src={currentImageFile3
+								? result.user_image
+								: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.user_image}`}
+							alt="passport Image"
+							class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
+						/>
+					</div>
+				{/if}
 			{/if}
 		</div>
 		<div class="w-full flex justify-end mt-10">
