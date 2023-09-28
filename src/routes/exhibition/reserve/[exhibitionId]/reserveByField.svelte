@@ -183,24 +183,32 @@
 
 	let imageFile_excel: File | undefined;
 
-	type FileNameType = {
-		lang: string;
-		fileName: string;
-	};
-	let fileName_excel: FileNameType[] | string = [];
-
 	let selectedFile: any = null;
 	let fileName = '';
 	let fileError = false;
+	let errorMessage = '';
+	let validFile = false;
+
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
+		fileError = true;
+		validFile = false;
+		selectedFile = null;
+		errorMessage = 'File is required';
+
 		if (file) {
-			fileError = false;
-			selectedFile = file;
-			fileName = file.name;
-		} else {
-			fileError = true;
-			selectedFile = null;
+			const fileExtension = file.name.split('.').pop().toLowerCase();
+			const allowedExtensions = ['xls', 'xlsx', 'xlsm'];
+
+			if (allowedExtensions.includes(fileExtension)) {
+				fileError = false;
+				errorMessage = '';
+				selectedFile = file;
+				fileName = file.name;
+				validFile = true;
+			} else {
+				errorMessage = 'Excel file required';
+			}
 		}
 	}
 
@@ -404,7 +412,11 @@
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
 					{#if preview_url.length > 0}
-						<img src={preview_url} alt="preview" class="border w-2/3 h-56 object-cover rounded" />
+						<img
+							src={preview_url}
+							alt="preview"
+							class="bg-red-400 w-full lg:w-2/3 h-56 object-cover rounded"
+						/>
 					{:else}{/if}
 				</div>
 
@@ -414,8 +426,8 @@
 						name="file-input"
 						id="file-input"
 						class="file-input__input"
-						accept=".xlsx, .xls, .xlsm"
 						on:change={handleFileChange}
+						accept=".xlsx, .xls, .xlsm"
 					/>
 					<label class="file-input__label flex items-center gap-2 cursor-pointer" for="file-input">
 						<div class="flex flex-col gap-2 items-center justify-center w-full">
@@ -445,11 +457,14 @@
 					{#if imageFile_excel === null}
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
 					{/if}
+					{#if fileError}
+						<span class="text-red-600">{$LL.reservation.short_message()}</span>
+					{/if}
 				</div>
 
 				<svelte:fragment slot="footer">
 					<div class="flex gap-2">
-						<Button on:click={handleAddClick}>
+						<Button on:click={handleAddClick} disabled={!validFile}>
 							{$LL.reservation.add_file()}
 						</Button>
 						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
@@ -519,14 +534,21 @@
 		padding: 20px 22px;
 		background-color: #cccccc60;
 		text-align: center;
-		color: #333; /* Adjust as needed */
+		color: #333;
 		font-weight: 600;
-		width: 66.67%; /* 2/3 of parent width */
+		width: 100%;
 		margin: 0 auto;
 		transition: background-color 0.3s;
 	}
 
 	.file-input__label:hover {
 		background-color: #f7f2f2;
+	}
+
+	@media (min-width: 640px) {
+		.file-display,
+		.file-input__label {
+			width: 66.67%;
+		}
 	}
 </style>

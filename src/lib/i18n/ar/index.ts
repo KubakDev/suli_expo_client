@@ -146,6 +146,8 @@ const ar = {
 		error: 'بريد إلكتروني أو كلمة مرور غير صحيحة'
 	},
 	company_info: {
+		specific_country_message: 'دولة محددة مطلوبة',
+		specific_country: 'دولة أخرى',
 		logo_url: 'تحميل شعار الشركة',
 		phone_number: 'رقم الهاتف',
 		company_name: 'اسم الشركة',

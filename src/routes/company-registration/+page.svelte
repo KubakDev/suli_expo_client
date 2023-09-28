@@ -88,22 +88,26 @@
 		loaded = true;
 	});
 
+	let countryError = '';
 	async function submitForm() {
 		formSubmitted = true;
 
-		if (selectedCountry === 'Other' && otherCountry) {
-			userData.country = otherCountry;
-		} else {
-			userData.country = selectedCountry;
-		}
-
 		if (selectedCountry === 'Other') {
+			if (!otherCountry.trim()) {
+				countryError = `${$LL.company_info['specific_country_message']()}`;
+				return;
+			} else {
+				userData.country = otherCountry;
+			}
+
 			passportImageError = !currentImageFile2 && !userData.passport_image;
 			userImageError = !currentImageFile3 && !userData.user_image;
 
 			if (passportImageError || userImageError) {
 				return;
 			}
+		} else {
+			userData.country = selectedCountry;
 		}
 
 		const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
@@ -354,13 +358,18 @@
 
 			{#if selectedCountry === 'Other'}
 				<div>
-					<Label dir={direction} for="otherCountry" class="mb-2">Specify Country</Label>
+					<Label dir={direction} for="otherCountry" class="mb-2"
+						>{`${$LL.company_info['specific_country']()}`}</Label
+					>
 					<Input
 						type="text"
 						id="otherCountry"
 						placeholder="Enter country name"
 						bind:value={otherCountry}
 					/>
+					{#if countryError}
+						<p class="text-red-500 mt-2">{countryError}</p>
+					{/if}
 				</div>
 			{/if}
 

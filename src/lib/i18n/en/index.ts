@@ -150,6 +150,8 @@ const en = {
 		error: 'invalid email or password'
 	},
 	company_info: {
+		specific_country_message: 'Specific country is required',
+		specific_country: 'Specific country',
 		logo_url: 'Upload logo',
 		phone_number: 'Phone number',
 		company_name: 'Company name',
