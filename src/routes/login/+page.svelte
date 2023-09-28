@@ -11,6 +11,7 @@
 	export let form;
 	export let data;
 	import { get } from 'svelte/store';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	let loading = false;
 	let resetPasswordModal = false;
@@ -64,7 +65,11 @@
 	{/if}
 
 	<div class="w-full flex justify-end">
-		<Button on:click={resetPassword}>{$LL.loggin.send_email()}</Button>
+		<Button
+			on:click={resetPassword}
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+			>{$LL.loggin.send_email()}</Button
+		>
 	</div>
 </Modal>
 <div class="w-full flex justify-center items-center">
@@ -75,7 +80,7 @@
 		use:enhance
 		dir="ltr"
 	>
-		<div class="shadow-md rounded-md w-full lg:w-1/2 z-30" style="background-color:white">
+		<div class="shadow-md rounded-md w-full lg:w-1/2 z-30 bg-white dark:bg-slate-300">
 			<div
 				class="w-full h-[100px] rounded-t-md"
 				style={`background-image: url(${Test});  background-repeat: no-repeat;
@@ -107,13 +112,19 @@
 					>
 				{/if}
 				<div class="w-full grid grid-cols-3 gap-2">
-					<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2 ">
+					<Button
+						on:click={onSubmit}
+						type="submit"
+						class=" mt-10 col-span-2 "
+						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+					>
 						{$LL.buttons.submit()}</Button
 					>
 					<Button
 						on:click={() => {
 							goto('/register');
 						}}
+						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						type="button"
 						class=" mt-10"
 						outline>{$LL.loggin.register()}</Button

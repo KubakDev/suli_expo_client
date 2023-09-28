@@ -7,6 +7,7 @@
 	import { Button, Fileupload, Input, Label, Select } from 'flowbite-svelte';
 	import { currentUser } from '../../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
+	import { currentMainThemeColors } from '../../../../../stores/darkMode';
 
 	export let data: any;
 	let imageFile: File | undefined;
@@ -243,7 +244,6 @@
 			result.user_image = '';
 		}
 
-		console.log(result);
 		await data.supabase
 			.from('company')
 			.update({
@@ -274,7 +274,7 @@
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
 	<div
-		class="border border-gray-200 shadow-md rounded-md p-8 w-full lg:w-1/2 bg-[#f3f3f3]"
+		class="border 200 shadow-md rounded-md p-8 w-full lg:w-1/2 bg-[#f3f3f3] dark:bg-slate-600"
 		style="background-color: var(secondaryColor);"
 	>
 		<div class="flex justify-center items-center pb-10">
@@ -437,7 +437,7 @@
 							src={currentImageFile2
 								? result.passport_image
 								: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.passport_image}`}
-							alt="Upload Image"
+							alt="UploadImage"
 							class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
 						/>
 					</div>
@@ -449,7 +449,7 @@
 							src={currentImageFile3
 								? result.user_image
 								: `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${result?.user_image}`}
-							alt="passport Image"
+							alt="passportImage"
 							class="max-w-sm h-44 mx-auto object-cover rounded-lg border bg-white"
 						/>
 					</div>
@@ -457,7 +457,12 @@
 			{/if}
 		</div>
 		<div class="w-full flex justify-end mt-10">
-			<Button on:click={handleUpdate} type="button">{$LL.buttons.submit()}</Button>
+			<Button
+				on:click={handleUpdate}
+				type="button"
+				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				>{$LL.buttons.submit()}</Button
+			>
 		</div>
 	</div>
 </form>

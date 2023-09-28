@@ -5,6 +5,7 @@
 	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	let imageFile: File | undefined;
 	let imageFile2: File | undefined;
@@ -280,7 +281,7 @@
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
-	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color: #f3f3f3">
+	<div class="shadow-md rounded-md p-8 w-full lg:w-1/2 bg-[#f3f3f3] dark:bg-slate-600">
 		<div class="flex justify-center items-center pb-10">
 			<img
 				src={currentImageFile
@@ -386,7 +387,12 @@
 		</div>
 
 		<div class="w-full flex justify-end">
-			<Button on:click={submitForm} type="button">{$LL.buttons.submit()}</Button>
+			<Button
+				on:click={submitForm}
+				type="button"
+				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				>{$LL.buttons.submit()}</Button
+			>
 		</div>
 	</div>
 </form>

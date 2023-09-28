@@ -2,7 +2,7 @@
 	import { Button, Input, Label, Modal, Spinner } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import LoginIcon from '../login/loginIcon.json';
 	import EmailVerification from './emailVerificationIcon.json';
 	import { currentUser } from '../../stores/currentUser';
@@ -10,6 +10,7 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import type { ActionData } from './$types.js';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let form: ActionData;
 	export let data;
@@ -124,15 +125,23 @@
 				<span class="py-2 px-1 text-red-400">{form?.errors}</span>
 			{/if}
 			<div class="w-full grid grid-cols-3 gap-2">
-				<Button on:click={onSubmit} type="submit" class=" mt-10 col-span-2">
+				<Button
+					on:click={onSubmit}
+					type="submit"
+					class=" mt-10 col-span-2"
+					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				>
 					{$LL.buttons.submit()}</Button
 				>
 				<Button
 					on:click={() => {
 						goto('/login');
 					}}
+					style="border:1px solid {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.primaryColor};outlinedButton"
+					onMouseOver="this.style.color='{$currentMainThemeColors.overlayPrimaryColor}'"
+					onMouseOut="this.style.color='{$currentMainThemeColors.primaryColor}'"
 					type="button"
-					class=" mt-10"
+					class=" mt-10 "
 					outline>{$LL.loggin.login()}</Button
 				>
 			</div>

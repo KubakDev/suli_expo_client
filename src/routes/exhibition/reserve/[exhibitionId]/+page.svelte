@@ -214,7 +214,9 @@
 			<section class="w-full flex-1 overflow-x-hidden">
 				<div class="px-0 lg:px-32 3xl:px-72 w-full h-full">
 					<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap justify-center">
-						<div class="bg-[#f5f5f5] min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6">
+						<div
+							class="bg-[#f5f5f5] dark:bg-slate-300 min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6"
+						>
 							{#if exhibition?.seat_layout}
 								<ReserveByFieldComponent
 									data={exhibition}
