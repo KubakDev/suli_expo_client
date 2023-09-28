@@ -53,8 +53,8 @@
 			return;
 		}
 
-		// console.log('email', data.session.user.email);
-		// console.log('////////////////', $currentUser.id);
+		//
+		//
 
 		if ($currentUser && $currentUser.id) {
 			goto(localStorage.getItem('redirect') ?? '/exhibition/1');

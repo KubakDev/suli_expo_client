@@ -17,7 +17,6 @@ export const incrementNewsViewer = async (supabase: SupabaseClient) => {
 		.eq('created_at', today);
 
 	if (fetchError) {
-		console.error('Error fetching current viewers:', fetchError);
 		return;
 	}
 
@@ -31,7 +30,6 @@ export const incrementNewsViewer = async (supabase: SupabaseClient) => {
 			.eq('created_at', today);
 
 		if (updateError) {
-			console.error('Error updating viewers:', updateError);
 			return;
 		}
 
@@ -42,7 +40,6 @@ export const incrementNewsViewer = async (supabase: SupabaseClient) => {
 			.insert([{ created_at: today, news_viewers: 1 }]);
 
 		if (insertError) {
-			console.error('Error inserting new viewers:', insertError);
 			return;
 		}
 
@@ -62,7 +59,6 @@ export const incrementExhibitionViewer = async (supabase: SupabaseClient) => {
 		.eq('created_at', today);
 
 	if (fetchError) {
-		console.error('Error fetching current viewers:', fetchError);
 		return;
 	}
 
@@ -76,7 +72,6 @@ export const incrementExhibitionViewer = async (supabase: SupabaseClient) => {
 			.eq('created_at', today);
 
 		if (updateError) {
-			console.error('Error updating viewers:', updateError);
 			return;
 		}
 
@@ -87,7 +82,6 @@ export const incrementExhibitionViewer = async (supabase: SupabaseClient) => {
 			.insert([{ created_at: today, exhibition_viewers: 1 }]);
 
 		if (insertError) {
-			console.error('Error inserting new viewers:', insertError);
 			return;
 		}
 
@@ -107,7 +101,6 @@ export const incrementSulExpoViewer = async (supabase: SupabaseClient) => {
 		.eq('created_at', today);
 
 	if (fetchError) {
-		console.error('Error fetching current viewers:', fetchError);
 		return;
 	}
 
@@ -121,7 +114,6 @@ export const incrementSulExpoViewer = async (supabase: SupabaseClient) => {
 			.eq('created_at', today);
 
 		if (updateError) {
-			console.error('Error updating viewers:', updateError);
 			return;
 		}
 
@@ -132,7 +124,6 @@ export const incrementSulExpoViewer = async (supabase: SupabaseClient) => {
 			.insert([{ created_at: today, suly_expo_viewers: 1 }]);
 
 		if (insertError) {
-			console.error('Error inserting new viewers:', insertError);
 			return;
 		}
 

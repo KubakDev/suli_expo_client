@@ -174,7 +174,6 @@
 	function isValid() {
 		for (let field of $requiredFields) {
 			if (!result[field] || result[field].trim() === '') {
-				console.error(`Field ${field} is required`);
 				return false;
 			}
 		}
@@ -184,8 +183,6 @@
 	let userImageError = false;
 
 	async function handleUpdate() {
-		console.log(result);
-
 		if (selectedCountry === 'Other') {
 			if (!currentImageFile2 && !result.passport_image) {
 				passportImageError = true;
@@ -205,7 +202,6 @@
 		}
 
 		if (!isValid()) {
-			console.error('All required fields must be filled!');
 			return;
 		}
 
