@@ -6,7 +6,7 @@
 	import About from '$lib/components/About.svelte';
 	import Staff from '$lib/components/Staff.svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from 'saos';
 	import Constants from '../../utils/constants';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 

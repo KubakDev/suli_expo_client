@@ -7,7 +7,7 @@
 	import { exhibitionSectionStore } from '../../stores/exhibtionSectionStore';
 	import SeeAllBtn from './SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from 'saos';
 	import Constants from '../../utils/constants';
 	import { onMount } from 'svelte';
 	import { UiStore } from '../../stores/ui/Ui';
@@ -42,7 +42,7 @@
 			exhibitionSectionStore.get($locale, supabase);
 		}
 	}
-
+	console.log('exhibition  ///// ', $exhibitionSectionStore);
 	onMount(async () => {
 		let pageType = 'Exhibition';
 		let exhibitionUi = (await UiStore.get(supabase, getPageType(pageType))) as UiModel;

@@ -3,7 +3,7 @@
 	import { aboutSectionStore } from '../../stores/aboutSectionStore';
 	import TitleUi from './TitleUi.svelte';
 	import constants from '../../utils/constants';
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from 'saos';
 	import Constants from '../../utils/constants';
 	import { onMount } from 'svelte';
 	import { currentMainThemeColors } from '../../stores/darkMode';

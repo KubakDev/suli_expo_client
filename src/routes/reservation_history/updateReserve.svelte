@@ -578,13 +578,13 @@
 		>
 			{$LL.buttons.update()}
 		</Button>
-		<Button
+		<!-- <Button
 			on:click={contractPreview}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			color="alternative"
 		>
 			{$LL.reservation.preview_contract()}
-		</Button>
+		</Button> -->
 	</div>
 </div>
 

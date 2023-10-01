@@ -9,7 +9,7 @@
 	import SeeAllBtn from '../SeeAllBtn.svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import { stringToEnum } from '../../../utils/enumToString';
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from 'saos';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import Constants from '../../../utils/constants';
 	import { getNameRegex } from '../../../utils/urlRegexName';
