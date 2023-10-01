@@ -109,7 +109,11 @@
 			in:fade={{ duration: 800 }}
 			out:fade={{ duration: 400 }}
 		>
-			<TitleUi text={$LL.videos()} />
+			<TitleUi
+				text={$LL.videos()}
+				borderColor={$videoCurrentThemeColors.primaryColor}
+				textColor={$videoCurrentThemeColors.overlayBackgroundColor}
+			/>
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>

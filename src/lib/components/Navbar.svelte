@@ -272,7 +272,7 @@
 								<p>{$currentUser.company_name}</p>
 							</div>
 
-							<Dropdown id="" bind:open={userProfileDropdownOpen}>
+							<Dropdown id="" bind:open={userProfileDropdownOpen} class="bg-black text-white">
 								<DropdownItem
 									on:click={() => goto(`/exhibition/reserve/register/${$currentUser.uid}`)}
 								>
@@ -411,8 +411,8 @@
 					>
 
 					<Dropdown
+						class="w-32 z-20 p-2 rounded-lg  first-letter bg-black text-white"
 						triggeredBy="#{navTitle.title}"
-						class="w-32 z-20 p-2 bg-[var(--{$themeToggle}SecondaryColor)]"
 					>
 						{#each navTitle.urls as url}
 							<DropdownItem
@@ -444,16 +444,16 @@
 				style="margin:0 ;"
 			>
 				<button
-					style="background-color: {$currentMainThemeColors.primaryColor}"
+					id="language-dropdown"
+					style="background-color: {$currentMainThemeColors.primaryColor} ;color:{$currentMainThemeColors.overlayPrimaryColor}"
 					class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0
-					border-[{$currentMainThemeColors.primaryColor}]"
-					dir="ltr"><Chevron>{selectedLang}</Chevron></button
+					border-[{$currentMainThemeColors.primaryColor}]"><Chevron>{selectedLang}</Chevron></button
 				>
 
 				<Dropdown
 					bind:open={dropdownOpen}
-					id=""
-					class="bg-[{$currentMainThemeColors.secondaryColor}]"
+					triggeredBy="#language-dropdown"
+					class="bg-black text-white"
 				>
 					<DropdownItem
 						on:click={() => langSelect('ckb')}
