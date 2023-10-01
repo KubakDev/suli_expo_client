@@ -20,6 +20,7 @@
 		exhibitionCurrentMainThemeColors,
 		currentMainThemeColors
 	} from '../../../../stores/darkMode';
+	import PdfViewer from 'svelte-pdf';
 
 	export let data: any;
 	const youtubeRegex =
