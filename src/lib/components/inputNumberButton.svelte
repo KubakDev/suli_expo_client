@@ -2,6 +2,7 @@
 	import { Button, Input } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { Plus, Minus } from 'svelte-heros-v2';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let serviceQuantity: number = 0;
 	export let maxQuantityPerUser: number = 0;
@@ -20,9 +21,10 @@
 <div>
 	<div class="w-full flex max-w-[150px]">
 		<button
-			class={`p-[0.3rem] md:p-2 ${
-				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
-			} rounded-lg text-white`}
+			class={`p-[0.3rem] md:p-2 rounded-lg `}
+			style="background-color: {disabled
+				? '#f0d8b3'
+				: $currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 			on:click={() => {
 				invalid = false;
 				if (number == 0) return;
@@ -40,10 +42,10 @@
 		/>
 		<button
 			{disabled}
-			class={`p-[0.3rem] md:p-2 ${
-				disabled ? 'bg-[#f0d8b3]' : 'bg-[#e1b168]'
-			} rounded-lg text-white`}
-
+			class={`p-[0.3rem] md:p-2 rounded-lg `}
+			style="background-color: {disabled
+				? '#f0d8b3'
+				: $currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 			on:click={() => {
 				if (unlimited) {
 					number++;

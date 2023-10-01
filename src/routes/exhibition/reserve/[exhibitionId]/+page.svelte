@@ -82,21 +82,45 @@
 				);
 
 			fileUrl = response?.data?.path;
-			console.log('reserveSeatData File', fileUrl);
-
+			if (!fileUrl) {
+				alert('anUnknown error occurred while uploading the file. Please try again.');
+				return;
+			}
 			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
-				console.log('reserveSeatData', reserveSeatData);
-
-				await data.supabase.from('seat_reservation').insert({
-					exhibition_id: exhibition.id,
-					company_id: $currentUser.id,
-					object_id: new Date().getTime(),
-					comment: reserveSeatData.comment,
-					reserved_areas: JSON.stringify(reserveSeatData.area),
-					status: ReservationStatusEnum.PENDING,
-					type: exhibition.seat_layout[0].type,
-					file_url: fileUrl
-				});
+				await data.supabase
+					.from('seat_reservation')
+					.insert({
+						exhibition_id: exhibition.id,
+						company_id: $currentUser.id,
+						object_id: new Date().getTime(),
+						comment: reserveSeatData.comment,
+						reserved_areas: JSON.stringify(reserveSeatData.area),
+						status: ReservationStatusEnum.PENDING,
+						type: exhibition.seat_layout[0].type,
+						file_url: fileUrl,
+						extra_discount_checked: reserveSeatData.extraDiscountChecked
+					})
+					.then(() => {
+						selectedSeat.set(null);
+						setTimeout(() => {
+							goto('/exhibition/1');
+						}, 3000);
+						fetch('/api/seat/purchase', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								emailUser: data?.session?.user?.email,
+								name: '',
+								message: '',
+								exhibition: exhibition,
+								companyData: $currentUser,
+								reserveSeatData: reserveSeatData
+							})
+						}).then(() => {});
+						defaultModal = true;
+					});
 
 				selectedSeat.set(null);
 				setTimeout(() => {
@@ -190,7 +214,9 @@
 			<section class="w-full flex-1 overflow-x-hidden">
 				<div class="px-0 lg:px-32 3xl:px-72 w-full h-full">
 					<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap justify-center">
-						<div class="bg-[#f5f5f5] min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6">
+						<div
+							class="bg-[#f5f5f5] dark:bg-slate-300 min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6"
+						>
 							{#if exhibition?.seat_layout}
 								<ReserveByFieldComponent
 									data={exhibition}

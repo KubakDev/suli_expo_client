@@ -66,8 +66,12 @@
 		{#if $carouselStore}
 			{#each $carouselStore as c, i}
 				<swiper-slide class="h-full">
-					<div class="relative flex justify-start" dir={locale === 'en' ? 'ltr' : 'rtl'}>
-						<img class="object-cover w-full h-full" src={c.image} alt="Carasoul Image" />
+					<div class="relative flex justify-start w-full" dir={locale === 'en' ? 'ltr' : 'rtl'}>
+						<img
+							class="object-cover w-full h-[300px] lg:h-[50%]"
+							src={c.image}
+							alt="CarauselImage"
+						/>
 						<div class="absolute bottom-0 w-full left-0 right-0 h-96 bg-gradient-black block" />
 						<div
 							class="absolute bottom-4 sm:bottom-10 md:bottom-20 lg:bottom-32 {locale === 'en'

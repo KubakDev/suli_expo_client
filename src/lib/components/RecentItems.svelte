@@ -5,6 +5,7 @@
 	import type { ItemModel } from '../../models/covertModel';
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { page } from '$app/stores';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let title: string;
 	export let pageType: string;
@@ -34,14 +35,22 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
-			class=" flex md:flex-row flex-col items-start cursor-pointer bg-opacity-20 hover:bg-slate-400 dark:bg-opacity-40 rounded-xl transition-all"
+			onmouseover="this.style.backgroundColor='{$currentMainThemeColors.primaryColor}'; this.style.color='{$currentMainThemeColors.overlayPrimaryColor}';"
+			onmouseout="this.style.backgroundColor=''; this.style.color='';"
+			class="flex md:flex-row flex-col items-start cursor-pointer bg-opacity-20 dark:bg-opacity-40 rounded-xl transition-all"
 			on:click={() => DetailsPage(item.id)}
 		>
 			<div class="lg:w-2/4 md:w-1/2 w-full mb-4 md:mb-0 h-60 3xl:h-36 p-2">
-				<img class="object-cover w-full h-full rounded-lg" alt="hero" src={item.thumbnail ?? youtubeThumbnail[index]} />
+				<img
+					class="object-cover w-full h-full rounded-lg"
+					alt="hero"
+					src={item.thumbnail ?? youtubeThumbnail[index]}
+				/>
 			</div>
 			<div
-				class="text-{getNameRegex($page.url.pathname)}SecondaryColor lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
+				class="text-{getNameRegex(
+					$page.url.pathname
+				)}SecondaryColor lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
 			>
 				{#if item.title.length > 19}
 					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">

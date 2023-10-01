@@ -14,9 +14,10 @@
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { themeToggle } from '../../../stores/darkMode';
+	import { themeToggle, publishingCurrentThemeColors } from '../../../stores/darkMode';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore';
+
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
@@ -31,7 +32,7 @@
 			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
-	
+
 	$: {
 		if ($locale) {
 			const currentPage = $page.params.page;
@@ -39,11 +40,11 @@
 		}
 	}
 
-	$:{
+	$: {
 		if (asc) {
-            const currentPage = $page.params.page;
-            publishingStore.get($locale, data.supabase, currentPage, undefined, $asc);
-        }
+			const currentPage = $page.params.page;
+			publishingStore.get($locale, data.supabase, currentPage, undefined, $asc);
+		}
 	}
 
 	onMount(async () => {
@@ -87,9 +88,8 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id || 1)}>
 						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
-								Constants.main_theme.lightOverlayPrimary}
+							primaryColor={$publishingCurrentThemeColors.secondaryColor}
+							overlayPrimaryColor={$publishingCurrentThemeColors.overlaySecondaryColor}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}

@@ -9,6 +9,7 @@
 	import { newsStore } from '../../../../stores/newsStore';
 	import { Spinner } from 'flowbite-svelte';
 	import { DetailPage } from 'kubak-svelte-component';
+	import { newsCurrentThemeColors } from '../../../../stores/darkMode';
 
 	export let data;
 	let news: NewsModel | undefined | null;
@@ -22,7 +23,7 @@
 	async function getNews() {
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
 
-		newsStore.get($locale, data.supabase, '1',5);
+		newsStore.get($locale, data.supabase, '1', 5);
 	}
 
 	onMount(() => {
@@ -30,11 +31,10 @@
 	});
 </script>
 
-
 <section
-	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+	style="background-color: {$newsCurrentThemeColors.secondaryColor}; color: {$newsCurrentThemeColors.overlaySecondaryColor}"
+	class=" {Constants.page_max_width} mx-auto w-full"
 >
-
 	{#if news}
 		<div
 			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
@@ -53,7 +53,7 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="w-full h-full flex flex-1 justify-center items-center absolute">
+		<div class="w-full min-h-screen flex justify-center items-center">
 			<Spinner />
 		</div>
 	{/if}

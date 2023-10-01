@@ -11,6 +11,7 @@
 	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 	import { fly } from 'svelte/transition';
 	import { convertNumberToWord } from '../../../../utils/numberToWordLang';
+	import { currentMainThemeColors } from '../../../../stores/darkMode';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -42,6 +43,7 @@
 			area: string;
 			quantity: number;
 		}[];
+		extraDiscountChecked?: boolean;
 		comment: string;
 		file: File | undefined;
 	} = {
@@ -94,7 +96,7 @@
 				quantity: customAreaQuantity
 			});
 		}
-
+		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		dispatch('reserveSeat', reservedSeatData);
@@ -245,8 +247,11 @@
 		alt="not found"
 		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
-	<div class="border-[1px] border-[#787e89] w-full my-6" />
-	<div class="w-full flex justify-center">
+	<div class="border-[1px] w-full my-6" />
+	<div
+		class="w-full flex justify-center"
+		style="color: {$currentMainThemeColors.overlayBackgroundColor} !important;"
+	>
 		<div class="w-full lg:w-8/12">
 			<div class="w-full flex items-center my-2 justify-between">
 				<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
@@ -286,7 +291,8 @@
 							</p>
 							{#if discountedPrice}
 								<p
-									class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+									style="color: {$currentMainThemeColors.primaryColor};"
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
@@ -295,7 +301,7 @@
 						</div>
 					</div>
 				{/each}
-				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
+				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
 				<p class="text-sm md:text-lg mt-1">
 					{$LL.reservation.manual_area_description()}
@@ -339,7 +345,8 @@
 						</p>
 						{#if discountedPrice}
 							<p
-								class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+								class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+								style="color: {$currentMainThemeColors.primaryColor};"
 							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
@@ -347,7 +354,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
+			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
 					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
 						{$LL.reservation.total_price()} :
@@ -363,7 +370,8 @@
 						{/if}
 
 						<p
-							class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+							style="color: {$currentMainThemeColors.primaryColor};"
 						>
 							{totalPrice}$
 						</p>
@@ -393,7 +401,10 @@
 			{/if}
 		</div>
 	</div>
-	<p class="text-md md:text-2xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
+	<p
+		class="text-md md:text-2xl font-bold mt-8"
+		style="color: {$currentMainThemeColors.primaryColor};"
+	>
 		{$LL.reservation.comment()}
 	</p>
 	<Textarea
@@ -405,7 +416,10 @@
 	/>
 	<div class="block md:flex justify-end w-full mt-8">
 		<div class="w-full md:w-auto">
-			<Button on:click={() => (defaultModal = true)} class="w-full md:w-auto md:my-0 my-1"
+			<Button
+				on:click={() => (defaultModal = true)}
+				class="w-full md:w-auto md:my-0 my-1"
+				style="background-color: {$currentMainThemeColors.primaryColor};"
 				>{$LL.reservation.upload_file()}</Button
 			>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
@@ -415,8 +429,7 @@
 							src={preview_url}
 							alt="preview"
 							class="bg-red-400 w-full lg:w-2/3 h-56 object-cover rounded"
-						/>
-					{:else}{/if}
+						/>{/if}
 				</div>
 
 				<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
@@ -463,7 +476,11 @@
 
 				<svelte:fragment slot="footer">
 					<div class="flex gap-2">
-						<Button on:click={handleAddClick} disabled={!validFile}>
+						<Button
+							on:click={handleAddClick}
+							disabled={!validFile}
+							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+						>
 							{$LL.reservation.add_file()}
 						</Button>
 						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
@@ -471,13 +488,18 @@
 				</svelte:fragment>
 			</Modal>
 		</div>
-		<Button on:click={reserveSeat} class="w-full md:w-auto md:mx-2 md:my-0 my-1">
+		<Button
+			on:click={reserveSeat}
+			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+		>
 			{$LL.reservation.reserve()}
 		</Button>
 		<Button
 			on:click={contractPreview}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			color="alternative"
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 		>
 			{$LL.reservation.preview_contract()}
 		</Button>

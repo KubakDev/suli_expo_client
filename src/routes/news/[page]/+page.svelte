@@ -15,11 +15,7 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
-	import {
-		exhibitionCurrentMainThemeColors,
-		newsCurrentThemeColors,
-		themeToggle
-	} from '../../../stores/darkMode';
+	import { newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
 	import { Button, Checkbox, Chevron, Dropdown, Label } from 'flowbite-svelte';
 	import NewsFilters from '$lib/components/NewsFilters.svelte';
@@ -109,10 +105,8 @@
 					>
 						{#if CardComponent}
 							<ExpoCard
-								primaryColor={$newsCurrentThemeColors.secondaryColor ??
-									Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={$newsCurrentThemeColors.overlaySecondaryColor ??
-									Constants.main_theme.lightOverlayPrimary}
+								primaryColor={$newsCurrentThemeColors.secondaryColor}
+								overlayPrimaryColor={$newsCurrentThemeColors.overlaySecondaryColor}
 								cardType={CardComponent ?? CardType.Flat}
 								title={item.title}
 								thumbnail={item.thumbnail}

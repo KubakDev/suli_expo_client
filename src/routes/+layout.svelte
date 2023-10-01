@@ -19,6 +19,7 @@
 	import { themeToggle, setTheme } from '../stores/darkMode';
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
+	import { currentMainThemeColors } from '../stores/darkMode';
 
 	register();
 	export let data;
@@ -38,13 +39,14 @@
 	if ($locale && data.supabase) {
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
-
-	onMount(() => {
+	onMount(async () => {
+		await pageBuilderStore.get(data.supabase);
+		await activeThemeStore.getActiveTheme(data.supabase);
 		setTheme();
+	});
+	onMount(() => {
 		supabase = data.supabase;
-		activeThemeStore.getActiveTheme(supabase);
 		changeLanguage(data.locale);
-		pageBuilderStore.get(supabase);
 
 		const {
 			data: { subscription }
@@ -147,12 +149,14 @@
 	}
 </script>
 
+<!-- comment -->
+
 {#if supabase}
 	{#if $page}
 		<div class="app" use:applyTheme>
 			<Navbar {data} />
 			<main
-				style="background-color: var(--{tailVar}BackgroundColor);"
+				style="background-color:{$currentMainThemeColors.backgroundColor} "
 				class="h-full flex min-h-screen"
 			>
 				{#key data.url.pathname}

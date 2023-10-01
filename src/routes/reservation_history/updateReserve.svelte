@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox } from 'flowbite-svelte';
 	import moment from 'moment';
 	import { currentUser } from '../../stores/currentUser';
 	import { generateDocx } from '../../utils/generateContract';
@@ -11,6 +11,7 @@
 	import { ReservationStatus } from '../../models/reservationModel';
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -25,7 +26,10 @@
 		area: string;
 		quantity: number;
 	}[] = [];
-
+	let extraDiscount = {
+		description: '',
+		price: 0
+	};
 	let totalPrice = 0;
 	let pricePerMeter: number = 0;
 	let discountedPrice: number = 0;
@@ -33,7 +37,7 @@
 	let customAreaMeter: number = 0;
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
-
+	let extraDiscountChecked = false;
 	let reservedSeatData: {
 		area: {
 			id: number;
@@ -68,6 +72,19 @@
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
+		extraDiscount.description =
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == locale
+			).extra_discount_description ??
+			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+				(privacyLang: any) => privacyLang.language == 'en'
+			).extra_discount_description ??
+			'';
+		extraDiscount.price = data.seat_layout[0]?.extra_discount;
+		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
+		if (extraDiscountChecked) {
+			discountedPrice = extraDiscount.price;
+		}
 		areas = JSON.parse(currentActiveSeat.areas ?? '');
 
 		getCompanyReservedData();
@@ -99,7 +116,13 @@
 		});
 		calculateTotalPrice();
 	}
-
+	function checkExtraDiscount() {
+		extraDiscountChecked = !extraDiscountChecked;
+		discountedPrice = extraDiscountChecked
+			? extraDiscount.price
+			: data.seat_layout[0]?.discounted_price;
+		calculateTotalPrice();
+	}
 	type FileNameType = {
 		lang: string;
 		fileName: string;
@@ -169,7 +192,7 @@
 			area: customAreaMeter.toString(),
 			quantity: customAreaQuantity
 		});
-		console.log(reservedSeatData, 'reservedSeat ', reservationData, 'reservationData');
+		reservationData.extra_discount_checked = extraDiscountChecked;
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData });
 
 		setTimeout(() => {
@@ -291,7 +314,7 @@
 		alt="not found"
 		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
-	<div class="border-[1px] border-[#787e89] w-full my-6" />
+	<div class="border-[1px] w-full my-6" />
 	<div class="w-full flex justify-center">
 		<div class="w-full lg:w-8/12">
 			<div class="w-full flex items-center my-2 justify-between">
@@ -334,7 +357,8 @@
 							</p>
 							{#if discountedPrice}
 								<p
-									class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+									style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
@@ -343,7 +367,7 @@
 						</div>
 					</div>
 				{/each}
-				<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end" />
+				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
 				<div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
@@ -385,7 +409,8 @@
 						</p>
 						{#if discountedPrice}
 							<p
-								class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+								class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+								style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
@@ -394,7 +419,7 @@
 				</div>
 			</div>
 
-			<div class="w-full mt-6 border-t-2 border-[#e5e7eb] p-2 flex justify-end">
+			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
 					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
 						{$LL.reservation.total_price()} :
@@ -410,7 +435,8 @@
 						{/if}
 
 						<p
-							class=" text-start text-md text-[#e1b168] md:text-xl font-medium justify-center flex my-2"
+							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						>
 							{totalPrice}$
 						</p>
@@ -419,12 +445,27 @@
 			</div>
 		</div>
 	</div>
+	{#if extraDiscount.description}
+		<div class="flex items-center mb-8">
+			<Checkbox
+				class="cursor-pointer mx-1"
+				on:change={checkExtraDiscount}
+				checked={extraDiscountChecked}
+			/>
+			<p style="color: var(--lightPrimaryColor);">
+				{extraDiscount.description}
+			</p>
+		</div>
+	{/if}
 	{#if discountedDescription}
 		<p style="color: var(--lightPrimaryColor);">
 			<span class="text-2xl mx-2 text-red-600">*</span>{discountedDescription}
 		</p>
 	{/if}
-	<p class="text-md md:text-2xl font-bold mt-8" style="color: var(--lightPrimaryColor);">
+	<p
+		class="text-md md:text-2xl font-bold mt-8"
+		style="color:{$currentMainThemeColors.primaryColor}"
+	>
 		{$LL.reservation.comment()}
 	</p>
 	<Textarea
@@ -500,6 +541,7 @@
 					<button
 						class="mx-2 gap-2 bg-[#76BC58] p-2 rounded-xl flex justify-center items-center text-xs text-white"
 						on:click={() => exportFile(reservationData)}
+						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 					>
 						Download
 
@@ -531,6 +573,7 @@
 		<Button
 			on:click={reserveSeat}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 			disabled={reservationData.status != ReservationStatus.PENDING}
 		>
 			{$LL.buttons.update()}

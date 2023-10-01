@@ -68,7 +68,7 @@
 							<TitleUi text={$LL.contact()} footerSize={true} />
 						</div>
 						<ul
-							style="color:{$currentMainThemeColors.overlaySecondaryColor}; "
+							style="color:{$currentMainThemeColors.overlaySecondaryColor};"
 							class="text-sm leading-6"
 						>
 							{#if contactInfoData}
@@ -100,8 +100,8 @@
 						>
 							<SocialIcons
 								network="twitter"
-								fgColor="#eeeeee"
-								bgColor="#b18c25"
+								fgColor={$currentMainThemeColors.overlayPrimaryColor}
+								bgColor={$currentMainThemeColors.primaryColor}
 								width={50}
 								height={50}
 							/>
@@ -113,8 +113,8 @@
 						>
 							<SocialIcons
 								network="instagram"
-								fgColor="#eeeeee"
-								bgColor="#b18c25"
+								fgColor={$currentMainThemeColors.overlayPrimaryColor}
+								bgColor={$currentMainThemeColors.primaryColor}
 								width={50}
 								height={50}
 							/>
@@ -126,8 +126,8 @@
 						>
 							<SocialIcons
 								network="facebook"
-								fgColor="#eeeeee"
-								bgColor="#b18c25"
+								fgColor={$currentMainThemeColors.overlayPrimaryColor}
+								bgColor={$currentMainThemeColors.primaryColor}
 								width={50}
 								height={50}
 							/>
@@ -139,8 +139,8 @@
 						>
 							<SocialIcons
 								network="linkedin"
-								fgColor="#eeeeee"
-								bgColor="#b18c25"
+								fgColor={$currentMainThemeColors.overlayPrimaryColor}
+								bgColor={$currentMainThemeColors.primaryColor}
 								width={50}
 								height={50}
 							/>
@@ -152,8 +152,8 @@
 						>
 							<SocialIcons
 								network="youtube"
-								fgColor="#eeeeee"
-								bgColor="#b18c25"
+								fgColor={$currentMainThemeColors.overlayPrimaryColor}
+								bgColor={$currentMainThemeColors.primaryColor}
 								width={50}
 								height={50}
 							/>
@@ -161,7 +161,10 @@
 					</div>
 				</div>
 			{/if}
-			<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+			<hr
+				style="border-color:{$currentMainThemeColors.overlaySecondaryColor}; "
+				class="my-6 sm:mx-auto lg:my-8"
+			/>
 			<div class="sm:flex sm:items-center sm:justify-center">
 				<h3 style="color:{$currentMainThemeColors.overlaySecondaryColor}; ">
 					Copyright - SulyExpo ©

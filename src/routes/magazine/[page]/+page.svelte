@@ -15,9 +15,10 @@
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { fade } from 'svelte/transition';
-	import { themeToggle } from '../../../stores/darkMode';
+	import { themeToggle, magazineCurrentThemeColors } from '../../../stores/darkMode';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore';
+
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
@@ -41,10 +42,10 @@
 		}
 	}
 
-	$:{
-		if(asc){
+	$: {
+		if (asc) {
 			const currentPage = $page.params.page;
-            magazineStore.get($locale, data.supabase, currentPage, undefined, $asc);
+			magazineStore.get($locale, data.supabase, currentPage, undefined, $asc);
 		}
 	}
 	onMount(async function () {
@@ -89,10 +90,8 @@
 				<div on:click={() => DetailsPage(item.id)}>
 					{#if CardComponent}
 						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ??
-								Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
-								Constants.main_theme.lightOverlayPrimary}
+							primaryColor={$magazineCurrentThemeColors.secondaryColor}
+							overlayPrimaryColor={$magazineCurrentThemeColors.overlaySecondaryColor}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
