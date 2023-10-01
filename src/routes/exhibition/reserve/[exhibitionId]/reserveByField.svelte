@@ -247,10 +247,10 @@
 		alt="not found"
 		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
-	<div class="border-[1px] w-full my-6" />
+	<div class="w-full my-6" />
 	<div
 		class="w-full flex justify-center"
-		style="color: {$currentMainThemeColors.overlayBackgroundColor} !important;"
+		style="color: {$currentMainThemeColors.overlaySecondaryColor} !important;"
 	>
 		<div class="w-full lg:w-8/12">
 			<div class="w-full flex items-center my-2 justify-between">
@@ -262,7 +262,9 @@
 			<div>
 				{#each areas as availableSeatArea, index}
 					<div class="flex gap-2 justify-between items-center my-2">
-						<p class=" text-start text-md md:text-2xl font-medium my-2">
+						<p
+							class=" text-md md:text-2xl font-medium my-2 w-[60px] md:w-[150px] text-center md:text-start"
+						>
 							{availableSeatArea.area}
 							{$LL.reservation.measure.m()}
 						</p>
@@ -301,7 +303,10 @@
 						</div>
 					</div>
 				{/each}
-				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
+				<div
+					class="w-full mt-6 border-t-2 p-2 flex justify-end"
+					style="border-color: {$currentMainThemeColors.backgroundColor}"
+				/>
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
 				<p class="text-sm md:text-lg mt-1">
 					{$LL.reservation.manual_area_description()}
@@ -354,7 +359,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
+			<div
+				class="w-full mt-6 border-t-2 p-2 flex justify-end"
+				style="border-color: {$currentMainThemeColors.backgroundColor}"
+			>
 				<div class=" text-start text-md md:text-xl font-medium justify-center flex items-center">
 					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
 						{$LL.reservation.total_price()} :
