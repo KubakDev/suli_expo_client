@@ -304,6 +304,9 @@
 	}
 
 	function exportFile(reservation: any) {
+		console.log(
+			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
+		);
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
@@ -482,6 +485,7 @@
 			<Button
 				class="w-full md:w-auto md:my-0 my-1"
 				on:click={() => (defaultModal = true)}
+				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 				disabled={reservationData.status != ReservationStatus.PENDING}
 				>{$LL.reservation.upload_file()}</Button
 			>

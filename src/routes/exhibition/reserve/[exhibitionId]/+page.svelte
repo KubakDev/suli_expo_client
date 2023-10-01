@@ -21,6 +21,7 @@
 	import { ReservationStatusEnum } from '../../../../models/reserveSeat';
 	import { setExhibitionID, setRequiredFields } from '../../../../stores/requiredFieldStore';
 	import { getRandomTextNumber } from '../../../../utils/getRandomText';
+	import { currentMainThemeColors } from '../../../../stores/darkMode';
 
 	export let data: any;
 
@@ -215,7 +216,8 @@
 				<div class="px-0 lg:px-32 3xl:px-72 w-full h-full">
 					<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap justify-center">
 						<div
-							class="bg-[#f5f5f5] dark:bg-slate-300 min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6"
+							class="min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6"
+							style="background-color: {$currentMainThemeColors.secondaryColor};color: {$currentMainThemeColors.overlaySecondaryColor}"
 						>
 							{#if exhibition?.seat_layout}
 								<ReserveByFieldComponent

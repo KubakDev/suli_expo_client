@@ -107,7 +107,7 @@
 				{#each reservations as reservation}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
-						class="my-2 py-2 w-full md:w-10/12 border-2 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
+						class=" my-2 py-2 w-full md:w-10/12 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
 						style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor}"
 					>
 						<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
@@ -145,13 +145,15 @@
 {:else}
 	<div class="w-full flex justify-center items-center px-4">
 		<div
-			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 bg-white dark:bg-slate-300 rounded-md"
+			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
+			style="background-color: {$currentMainThemeColors.secondaryColor};color: {$currentMainThemeColors.overlaySecondaryColor}"
 		>
 			<div class="flex justify-start w-full">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					class="cursor-pointer bg-gray-100 dark:bg-gray-700 rounded-lg p-2.5 -mt-6 mx-6"
+					class="cursor-pointer rounded-lg p-2.5 -mt-6 mx-6"
+					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 					on:click={() => {
 						openEditModal = false;
 					}}
