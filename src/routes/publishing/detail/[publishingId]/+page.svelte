@@ -9,6 +9,8 @@
 	import type { PublishingModel } from '../../../../models/publishingModel';
 	import { publishingStore } from '../../../../stores/publishingStore';
 	import { modelToItemModel } from '../../../../models/covertModel';
+	import { publishingCurrentThemeColors } from '../../../../stores/darkMode';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
 	let publishing: PublishingModel | undefined | null;
@@ -24,25 +26,32 @@
 </script>
 
 <section
-	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+	style="background-color: {$publishingCurrentThemeColors.secondaryColor}; color: {$publishingCurrentThemeColors.overlaySecondaryColor}"
+	class=" {Constants.page_max_width} mx-auto w-full"
 >
 	{#if publishing}
 		<div
-			class="grid 3xl:grid-cols-3 grid-cols-2 mx-4 my-2 rounded-lg justify-center items-center content-center"
+			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
 		>
-			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full justify-start items-start">
+			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full z-0">
 				<DetailPage
 					long_description={publishing.long_description}
 					imagesCarousel={publishing.imagesCarousel}
 				/>
 			</div>
-			{#if $publishingStore}
-				<RecentItems
-					title={$LL.publishing()}
-					items={$publishingStore.data.map((publishing) => modelToItemModel(publishing))}
-					pageType={'publishing'}
-				/>
+			{#if $publishingStore?.data}
+				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full h-full">
+					<RecentItems
+						title={$LL.publishing()}
+						items={$publishingStore.data.map((publishing) => modelToItemModel(publishing))}
+						pageType={'publishing'}
+					/>
+				</div>
 			{/if}
+		</div>
+	{:else}
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<Spinner />
 		</div>
 	{/if}
 </section>

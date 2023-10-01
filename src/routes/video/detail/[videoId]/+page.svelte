@@ -10,6 +10,8 @@
 	import { videoStore } from '../../../../stores/videoStore.js';
 	import Constants from '../../../../utils/constants.js';
 	import { modelToItemModel } from '../../../../models/covertModel.js';
+	import { videoCurrentThemeColors } from '../../../../stores/darkMode';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data;
 	let video: VideoModel | undefined | null;
@@ -58,7 +60,8 @@
 </script>
 
 <section
-	class="dark:bg-slate-900 dark:text-white text-slate-950 {Constants.page_max_width} mx-auto w-full"
+	style="background-color: {$videoCurrentThemeColors.secondaryColor}; color: {$videoCurrentThemeColors.overlaySecondaryColor}"
+	class=" {Constants.page_max_width} mx-auto w-full"
 >
 	{#if video}
 		<div
@@ -84,6 +87,10 @@
 					/>
 				</div>
 			{/if}
+		</div>
+	{:else}
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<Spinner />
 		</div>
 	{/if}
 </section>

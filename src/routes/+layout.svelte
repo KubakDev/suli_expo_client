@@ -19,6 +19,7 @@
 	import { themeToggle, setTheme } from '../stores/darkMode';
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
+	import { currentMainThemeColors } from '../stores/darkMode';
 
 	register();
 	export let data;
@@ -148,12 +149,14 @@
 	}
 </script>
 
+<!-- comment -->
+
 {#if supabase}
 	{#if $page}
 		<div class="app" use:applyTheme>
 			<Navbar {data} />
 			<main
-				style="background-color: var(--{tailVar}BackgroundColor);"
+				style="background-color:{$currentMainThemeColors.backgroundColor} "
 				class="h-full flex min-h-screen"
 			>
 				{#key data.url.pathname}
