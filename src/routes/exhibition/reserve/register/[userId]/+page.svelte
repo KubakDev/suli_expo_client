@@ -52,7 +52,12 @@
 		} else {
 			result = fetchedData;
 
-			if (result.country && result.country !== 'Iraq' && result.country !== 'Other') {
+			// check if country value exists, if not, set it to 'Iraq'
+			if (!result.country || result.country.trim() === '') {
+				result.country = 'Iraq';
+			}
+
+			if (result.country !== 'Iraq' && result.country !== 'Other') {
 				selectedCountry = 'Other';
 				otherCountryName = result.country;
 			} else {

@@ -12,6 +12,7 @@
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -197,6 +198,7 @@
 
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
+			goto(`/exhibition/1`);
 		}, 10);
 	}
 

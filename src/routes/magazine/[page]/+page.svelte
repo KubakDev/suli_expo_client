@@ -77,7 +77,11 @@
 			out:fade={{ duration: 400 }}
 			class="flex justify-center w-full px-2"
 		>
-			<TitleUi text={$LL.magazine()} />
+			<TitleUi
+				text={$LL.magazine()}
+				borderColor={$magazineCurrentThemeColors.primaryColor}
+				textColor={$magazineCurrentThemeColors.overlayBackgroundColor}
+			/>
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>

@@ -80,7 +80,11 @@
 			out:fade={{ duration: 400 }}
 			class="flex justify-center w-full px-2"
 		>
-			<TitleUi text={$LL.gallery()} />
+			<TitleUi
+				text={$LL.gallery()}
+				borderColor={$galleryCurrentThemeColors.primaryColor}
+				textColor={$galleryCurrentThemeColors.overlayBackgroundColor}
+			/>
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
