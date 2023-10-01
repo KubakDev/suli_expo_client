@@ -69,6 +69,14 @@
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
+	<a
+		href={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${exhibition?.pdf_files}`}
+		target="_blank"
+		class="btn btn-primary"
+	>
+		Open PDF
+	</a>
+
 	{#if exhibitionImage.length > 0}
 		<Carousel
 			slideClass="w-full"
