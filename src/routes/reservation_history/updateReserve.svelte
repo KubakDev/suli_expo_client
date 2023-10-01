@@ -358,7 +358,7 @@
 							{#if discountedPrice}
 								<p
 									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+									style="color:{$currentMainThemeColors.primaryColor}"
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
@@ -410,7 +410,7 @@
 						{#if discountedPrice}
 							<p
 								class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-								style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+								style="color:{$currentMainThemeColors.primaryColor}"
 							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
@@ -436,7 +436,7 @@
 
 						<p
 							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							style="color:{$currentMainThemeColors.primaryColor}"
 						>
 							{totalPrice}$
 						</p>
