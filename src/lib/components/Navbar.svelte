@@ -28,9 +28,67 @@
 	import { Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
-	import { EnvelopeSolid, UserSolid } from 'flowbite-svelte-icons';
+	import { UserSolid } from 'flowbite-svelte-icons';
+	import type { TranslationFunctions } from '$lib/i18n/i18n-types';
 
 	export let data: PageData;
+
+	const navTitles: any = [
+		{
+			title: 'home',
+			url: '/'
+		},
+		{
+			title: 'news',
+			url: '/news/1'
+		},
+		{
+			title: 'exhibition',
+			url: '/exhibition/1'
+		},
+		{
+			title: 'media',
+			urls: [
+				{
+					title: 'gallery',
+					url: '/gallery/1'
+				},
+				{
+					title: 'magazine',
+					url: '/magazine/1'
+				},
+				{
+					title: 'publishing',
+					url: '/publishing/1'
+				},
+				{
+					title: 'videos',
+					url: '/video/1'
+				}
+			]
+		},
+		{
+			title: 'services',
+			url: '/service'
+		},
+		{
+			title: 'about',
+			url: '/about'
+		},
+		{
+			title: 'contact',
+			url: '/contact'
+		}
+	];
+	type TranslationFunctions = {
+		[key: string]: () => string;
+	};
+
+	function getNavTranslation(title: string) {
+		let test: any = $LL as unknown;
+		return test[title + '']();
+	}
+	$: translation = $LL as unknown as any;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
 
@@ -323,6 +381,8 @@
 		<NavUl
 			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
 			ulClass=" {Constants.page_max_width}  m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
+			activeClass="text-[var(--{$themeToggle + 'PrimaryColor'})]"
+			nonActiveClass="text-[var(--{$themeToggle + 'OverlaySecondaryColor'})]"
 			{hidden}
 		>
 			<div class="flex-1 flex flex-col md:flex-row justify-start items-center md:left-0 mx-6">
@@ -344,98 +404,37 @@
 					</div>
 				</div>
 			</div>
-			<NavLi
-				on:click={() => updateActiveUrl('/')}
-				href="/"
-				class="cursor-pointer  text-sm  lg:text-lg"
-				active={activeUrl == '/'}
-				style={activeUrl === '/'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.home()}</NavLi
-			>
-			<NavLi
-				on:click={() => updateActiveUrl('/news/1')}
-				href="/news/1"
-				class="cursor-pointer text-sm  lg:text-lg "
-				active={activeUrl.startsWith('/news')}
-				style={activeUrl === '/news/1'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.news()}</NavLi
-			>
-			<NavLi
-				on:click={() => updateActiveUrl('/exhibition/1')}
-				href="/exhibition/1"
-				class="cursor-pointer  text-sm lg:text-lg"
-				active={activeUrl.startsWith('/exhibition')}
-				style={activeUrl === '/exhibition/1'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.exhibition()}</NavLi
-			>
-			<NavLi id="media" class="cursor-pointer text-sm  lg:text-lg "
-				><Chevron aligned>{$LL.media()}</Chevron></NavLi
-			>
-			<Dropdown triggeredBy="#media" class="w-32 z-20 p-2 ">
-				<DropdownItem
-					style={activeUrl === '/gallery/1'
-						? `color: ${$currentMainThemeColors.primaryColor}`
-						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					defaultClass=" mb-1 text-base"
-					href="/gallery/1"
-					on:click={() => updateActiveUrl('/gallery/1')}>{$LL.gallery()}</DropdownItem
-				>
-				<DropdownItem
-					style={activeUrl === '/magazine/1'
-						? `color: ${$currentMainThemeColors.primaryColor}`
-						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					defaultClass=" mb-1 text-base"
-					href="/magazine/1"
-					on:click={() => updateActiveUrl('/magazine/1')}>{$LL.magazine()}</DropdownItem
-				>
-				<DropdownItem
-					style={activeUrl === '/publishing/1'
-						? `color: ${$currentMainThemeColors.primaryColor}`
-						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					defaultClass=" mb-1 text-base"
-					href="/publishing/1"
-					on:click={() => updateActiveUrl('/publishing/1')}>{$LL.publishing()}</DropdownItem
-				>
-				<DropdownItem
-					style={activeUrl === '/video/1'
-						? `color: ${$currentMainThemeColors.primaryColor}`
-						: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					defaultClass=" mb-1 text-base"
-					href="/video/1"
-					on:click={() => updateActiveUrl('/video/1')}>{$LL.videos()}</DropdownItem
-				>
-			</Dropdown>
+			{#each navTitles as navTitle}
+				{#if navTitle.urls}
+					<NavLi id={navTitle.title} class="cursor-pointer text-sm  lg:text-lg "
+						><Chevron aligned>{translation[navTitle.title + '']()}</Chevron></NavLi
+					>
 
-			<NavLi
-				on:click={() => updateActiveUrl('/service')}
-				class="cursor-pointer  text-sm lg:text-lg"
-				href="/service"
-				active={activeUrl == '/service'}
-				style={activeUrl === '/service'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.services()}</NavLi
-			>
-			<NavLi
-				on:click={() => updateActiveUrl('/about')}
-				class="cursor-pointer  text-sm  lg:text-lg"
-				href="/about"
-				active={activeUrl == '/about'}
-				style={activeUrl === '/about'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}>{$LL.about()}</NavLi
-			>
-			<NavLi
-				on:click={() => updateActiveUrl('/contact')}
-				active={activeUrl == '/contact'}
-				style={activeUrl === '/contact'
-					? `color: ${$currentMainThemeColors.primaryColor}`
-					: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-				href="/contact"
-				class="cursor-pointer  text-sm mr-0 ml-0 lg:text-lg">{$LL.contact()}</NavLi
-			>
+					<Dropdown
+						triggeredBy="#{navTitle.title}"
+						class="w-32 z-20 p-2 bg-[var(--{$themeToggle}SecondaryColor)]"
+					>
+						{#each navTitle.urls as url}
+							<DropdownItem
+								defaultClass=" mb-1 text-base"
+								href={url.url}
+								on:click={() => updateActiveUrl(url.url ?? '')}
+								style={activeUrl.startsWith(`/${url.url.split('/')[1]}`)
+									? `color:${$currentMainThemeColors.primaryColor}`
+									: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
+								active={activeUrl == url.url}>{translation[url.title + '']()}</DropdownItem
+							>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						on:click={() => updateActiveUrl(navTitle.url ?? '')}
+						href={navTitle.url}
+						class="cursor-pointer  text-sm  lg:text-lg"
+						active={activeUrl == navTitle.url}>{translation[navTitle.title + '']()}</NavLi
+					>
+				{/if}
+			{/each}
 
 			<div
 				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
