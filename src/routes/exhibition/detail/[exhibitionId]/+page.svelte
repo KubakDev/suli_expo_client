@@ -62,7 +62,7 @@
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 		if (isMobile) {
-			window.location.href = completePdfLink;
+			window.open(completePdfLink, '_blank');
 		} else {
 			const newWindow = window.open();
 			if (newWindow !== null) {
@@ -73,9 +73,13 @@
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
-	<button class="btn btn-primary" on:click={() => openPdfFile(exhibition?.pdf_files)}>
+	<a
+		href={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${exhibition?.pdf_files}`}
+		target="_blank"
+		class="btn bg-green-600"
+	>
 		Open PDF
-	</button>
+	</a>
 
 	{#if exhibitionImage.length > 0}
 		<Carousel
