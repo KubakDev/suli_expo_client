@@ -431,6 +431,9 @@
 						on:click={() => updateActiveUrl(navTitle.url ?? '')}
 						href={navTitle.url}
 						class="cursor-pointer  text-sm  lg:text-lg"
+						style={activeUrl == navTitle.url
+							? `color:${$currentMainThemeColors.primaryColor}`
+							: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
 						active={activeUrl == navTitle.url}>{translation[navTitle.title + '']()}</NavLi
 					>
 				{/if}
