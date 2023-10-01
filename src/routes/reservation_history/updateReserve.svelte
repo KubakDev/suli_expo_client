@@ -74,14 +74,14 @@
 			).discount_description ??
 			'';
 		extraDiscount.description =
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale
 			).extra_discount_description ??
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == 'en'
 			).extra_discount_description ??
 			'';
-		extraDiscount.price = data.seat_layout[0]?.extra_discount;
+		extraDiscount.price = currentActiveSeat?.extra_discount;
 		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
 		if (extraDiscountChecked) {
 			discountedPrice = extraDiscount.price;
@@ -360,7 +360,7 @@
 							{#if discountedPrice}
 								<p
 									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+									style="color:{$currentMainThemeColors.primaryColor}"
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
@@ -412,7 +412,7 @@
 						{#if discountedPrice}
 							<p
 								class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-								style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+								style="color:{$currentMainThemeColors.primaryColor}"
 							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
@@ -438,7 +438,7 @@
 
 						<p
 							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							style="color:{$currentMainThemeColors.primaryColor}"
 						>
 							{totalPrice}$
 						</p>
