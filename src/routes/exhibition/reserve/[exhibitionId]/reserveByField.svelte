@@ -66,7 +66,6 @@
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
-		console.log(data.seat_layout[0]?.seat_privacy_policy_lang);
 		extraDiscount.description =
 			data.seat_layout[0]?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale
@@ -496,14 +495,14 @@
 		>
 			{$LL.reservation.reserve()}
 		</Button>
-		<Button
+		<!-- <Button
 			on:click={contractPreview}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			color="alternative"
 			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 		>
 			{$LL.reservation.preview_contract()}
-		</Button>
+		</Button> -->
 	</div>
 </div>
 

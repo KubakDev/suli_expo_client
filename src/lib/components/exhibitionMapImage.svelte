@@ -5,6 +5,7 @@
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { onMount } from 'svelte';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
+	import { exhibitionCurrentMainThemeColors, currentMainThemeColors } from '../../stores/darkMode';
 
 	export let exhibition: ExhibitionModel;
 
@@ -33,23 +34,35 @@
 		<div class="scene-2 rounded-xl">
 			<div
 				class="w-full flex flex-col justify-center items-center h-full"
-				style="background-color: rgba(41, 46, 54,0.95);"
+				style="background-color: {$exhibitionCurrentMainThemeColors.secondaryColor}"
 			>
 				<div class="w-full h-full flex flex-col justify-center items-center px-8 text-center">
 					{#if $currentUser?.id}
-						<h1 class="my-2 text-white font-bold">
+						<h1
+							class="my-2 font-bold"
+							style="color: {$exhibitionCurrentMainThemeColors.overlaySecondaryColor}"
+						>
 							{$LL.reservation.welcome()}
-							<span class="text-[#b18c25]">{$currentUser?.company_name?.toUpperCase()}</span>
+							<span style="color:{$currentMainThemeColors.primaryColor}"
+								>{$currentUser?.company_name?.toUpperCase()}</span
+							>
 						</h1>
-						<p class="text-sm md:text-xl mb-5 text-white">
+						<p
+							style="color: {$exhibitionCurrentMainThemeColors.overlaySecondaryColor}"
+							class="text-sm md:text-xl mb-5"
+						>
 							{$LL.reservation.logged_in_description()}
 						</p>
 						{#if exhibition?.seat_layout.length == 0}
-							<Button disabled>
+							<Button
+								style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+								disabled
+							>
 								{$LL.reservation.logged_in_button()}
 							</Button>
 						{:else}
 							<Button
+								style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
 								on:click={() => {
 									goto('/exhibition/reserve/' + exhibition.id);
 								}}
@@ -58,14 +71,21 @@
 							</Button>
 						{/if}
 					{:else}
-						<h2 class="text-xl font-bold mb-5 text-white">
+						<h2
+							class="text-xl font-bold mb-5"
+							style="color: {$exhibitionCurrentMainThemeColors.overlaySecondaryColor}"
+						>
 							{$LL.reservation.not_logged_in_description()}
 						</h2>
 
-						<Button on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button>
+						<Button
+							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+							on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button
+						>
 					{/if}
 					{#if exhibition.contract_file}
 						<Button
+							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
 							class="mt-5"
 							on:click={() => {
 								openPdfFile(exhibition?.contract_file);
@@ -74,7 +94,11 @@
 							{$LL.reservation.contract()}
 						</Button>
 					{:else}
-						<Button disabled class="mt-5">
+						<Button
+							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+							disabled
+							class="mt-5"
+						>
 							{$LL.reservation.contract()}
 						</Button>
 					{/if}

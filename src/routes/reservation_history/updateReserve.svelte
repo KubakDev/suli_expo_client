@@ -12,6 +12,7 @@
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -197,6 +198,7 @@
 
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
+			goto(`/exhibition/1`);
 		}, 10);
 	}
 
@@ -358,7 +360,7 @@
 							{#if discountedPrice}
 								<p
 									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+									style="color:{$currentMainThemeColors.primaryColor}"
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 										(+discountedPrice * +availableSeatArea.area)}$
@@ -410,7 +412,7 @@
 						{#if discountedPrice}
 							<p
 								class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-								style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+								style="color:{$currentMainThemeColors.primaryColor}"
 							>
 								{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
 							</p>
@@ -436,7 +438,7 @@
 
 						<p
 							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							style="color:{$currentMainThemeColors.primaryColor}"
 						>
 							{totalPrice}$
 						</p>
@@ -578,13 +580,13 @@
 		>
 			{$LL.buttons.update()}
 		</Button>
-		<Button
+		<!-- <Button
 			on:click={contractPreview}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			color="alternative"
 		>
 			{$LL.reservation.preview_contract()}
-		</Button>
+		</Button> -->
 	</div>
 </div>
 

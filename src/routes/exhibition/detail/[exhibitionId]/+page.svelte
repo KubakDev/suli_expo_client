@@ -16,6 +16,10 @@
 	import ExhibitionMapImage from '$lib/components/exhibitionMapImage.svelte';
 	import { Carousel } from 'flowbite-svelte';
 	import 'pdfjs-dist/web/pdf_viewer.css';
+	import {
+		exhibitionCurrentMainThemeColors,
+		currentMainThemeColors
+	} from '../../../../stores/darkMode';
 
 	export let data: any;
 	const youtubeRegex =
@@ -57,11 +61,9 @@
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-
 		const newWindow = window.open();
 		if (newWindow !== null) {
 			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
-
 		}
 	}
 </script>
@@ -87,7 +89,11 @@
 			<div class=" items-start flex flex-col justify-around">
 				<div class="w-full">
 					<div class="py-8 flex justify-center">
-						<TitleUi text={$LL.reservation.title()} />
+						<TitleUi
+							text={$LL.reservation.title()}
+							borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+							textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
+						/>
 					</div>
 					{#if exhibition?.image_map}
 						<ExhibitionMapImage {exhibition} />
@@ -95,87 +101,81 @@
 				</div>
 				<div class="w-full h-20" />
 				<div class="w-full flex flex-col">
-					<div class="grid md:grid-cols-3 md:justify-between w-full justify-center pb-6">
+					<div
+						style="background-color: {$exhibitionCurrentMainThemeColors.secondaryColor};"
+						class="px-5 py-16 rounded-lg grid md:grid-cols-3 md:justify-between w-full justify-center"
+					>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full justify-center items-center h-20 w-20 bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
+								class="flex rounded-full justify-center items-center h-20 w-20"
 							>
-								<GlobeAsiaAustralia
-									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-									size="50"
-								/>
+								<GlobeAsiaAustralia size="50" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col w-40">
 								{#if exhibition}
 									<h2
-										class="text-2xl text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor font-bold"
+										style="color: {$currentMainThemeColors.overlayPrimaryColor}"
+										class="text-2xl font-bold"
 									>
 										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
 									</h2>
 								{/if}
-								<p
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
-								>
+								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class="text-lg">
 									{$LL.exhibition_mini_data.Countries()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
+								class="flex rounded-full h-20 w-20 justify-center items-center"
 							>
-								<BuildingOffice2
-									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-									size="50"
-								/>
+								<BuildingOffice2 size="50" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col">
 								<h2
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold"
+									style="color: {$currentMainThemeColors.overlayPrimaryColor}"
+									class=" text-2xl font-bold"
 								>
 									{#if exhibition}
 										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
 									{/if}
 								</h2>
-								<p
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
-								>
+								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
 									{$LL.exhibition_mini_data.Companies()}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-20 items-center my-1">
 							<div
-								class="flex rounded-full h-20 w-20 justify-center items-center bg-exhibitionLightSecondaryColor dark:bg-exhibitionDarkSecondaryColor"
+								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
+								class="flex rounded-full h-20 w-20 justify-center items-center"
 							>
-								<MapPin
-									size="50"
-									class="text-exhibitionLightBackgroundColor dark:text-exhibitionDarkBackgroundColor"
-								/>
+								<MapPin size="50" />
 							</div>
 							<div class="h-full w-4" />
 							<div class="flex flex-col dark:text-white">
 								<h2
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold uppercase tracking-wide"
+									style="color: {$currentMainThemeColors.overlayPrimaryColor}"
+									class=" text-2xl font-bold uppercase tracking-wide"
 								>
 									{exhibition?.location_title ?? 'Not Available'}
 								</h2>
-								<p
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
-								>
+								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
 									{exhibition?.location ?? 'Not Available'}
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="w-full flex flex-row justify-center">
-						<h1
-							class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-2xl font-bold text-center pb-4 w-full"
-						>
-							{$LL.exhibition_mini_data.Brochure()}
-						</h1>
+					<div class="w-full flex flex-row justify-center pt-16 pb-10">
+						<TitleUi
+							text={$LL.exhibition_mini_data.Brochure()}
+							borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+							textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
+						/>
 					</div>
 					<div class="grid">
 						<div class="w-full relative mx-auto">
@@ -198,10 +198,11 @@
 								/>
 							{/if}
 						</div>
-						<div class="p-8 flex justify-between flex-col items-start">
+						<div class="px-2 py-4 flex justify-between flex-col items-start">
 							<div class="flex flex-col items-start">
 								<p
-									class="text-exhibitionLightOverlayBackgroundColor dark:text-exhibitionDarkOverlayBackgroundColor text-lg"
+									class="text-lg"
+									style="color: {$exhibitionCurrentMainThemeColors.overlaySecondaryColor}"
 								>
 									{#if exhibition?.story && exhibition.story.length > 600}
 										{exhibition?.story?.slice(0, 600) || 'No Story Available'}...
@@ -219,22 +220,24 @@
 			</div>
 		</div>
 		{#if youtubeRegex.exec(exhibition?.video_youtube_link)}
-			<div class="{Constants.page_max_width} mx-auto">
+			<div class="{Constants.page_max_width} mx-auto w-full">
 				<VideoPlayer videoUrl={exhibition?.video_youtube_link} />
 			</div>
 		{/if}
 
 		{#if exhibition && exhibition.sponsor_images && exhibition.sponsor_images.length > 0}
-			<div class="flex justify-between items-center py-5">
+			<div class="flex justify-between items-center pt-14 pb-5">
 				<div class="h-10 w-32" />
 				<div class="">
 					<TitleUi
 						text={exhibition?.sponsor_title ?? $LL.exhibition_mini_data.Exhibition_Sponsors()}
+						borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+						textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
 					/>
 				</div>
 				<div class="flex justify-end w-32" />
 			</div>
-			<div class="{Constants.page_max_width} mx-auto">
+			<div class="{Constants.page_max_width} mx-auto pb-10">
 				<SponsorSlider images={exhibition.sponsor_images} />
 			</div>
 		{/if}

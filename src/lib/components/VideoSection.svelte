@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
-	import Saos from '$lib/animate/Saos.svelte';
+	import Saos from 'saos';
 	import { videoExhibitionStore } from '../../stores/videoExhibitionStore';
 	import constants from '../../utils/constants';
 	import TitleUi from './TitleUi.svelte';
