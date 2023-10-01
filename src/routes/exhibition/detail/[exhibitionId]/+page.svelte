@@ -20,7 +20,6 @@
 		exhibitionCurrentMainThemeColors,
 		currentMainThemeColors
 	} from '../../../../stores/darkMode';
-	import PdfViewer from 'svelte-pdf';
 
 	export let data: any;
 	const youtubeRegex =
@@ -62,25 +61,21 @@
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-		if (isMobile) {
-			window.open(completePdfLink, '_blank');
-		} else {
-			const newWindow = window.open();
-			if (newWindow !== null) {
-				newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
-			}
+		const newWindow = window.open();
+		if (newWindow !== null) {
+			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
 		}
 	}
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
-	<a
+	<!-- <a
 		href={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${exhibition?.pdf_files}`}
 		target="_blank"
-		class="btn bg-green-600"
+		class="btn btn-primary"
 	>
 		Open PDF
-	</a>
+	</a> -->
 
 	{#if exhibitionImage.length > 0}
 		<Carousel
