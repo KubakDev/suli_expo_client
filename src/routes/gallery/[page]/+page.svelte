@@ -15,9 +15,9 @@
 	import type { UiModel } from '../../../models/uiModel';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
-	import { themeToggle } from '../../../stores/darkMode';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore';
+	import { galleryCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 
 	export let data: any;
 	let CardComponent: any;
@@ -29,9 +29,9 @@
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
 			let pageName = getNameRegex($page.url.pathname);
-			tailVar = $themeToggle === "light" ? pageName + 'Light' : pageName + 'Dark';
+			tailVar = $themeToggle === 'light' ? pageName + 'Light' : pageName + 'Dark';
 		} else {
-			tailVar = $themeToggle === "light" ? 'light' : 'dark';
+			tailVar = $themeToggle === 'light' ? 'light' : 'dark';
 		}
 	}
 
@@ -42,11 +42,11 @@
 		}
 	}
 
-	$:{
+	$: {
 		if (asc) {
-            const currentPage = $page.params.page;
-            galleryStore.get($locale, data.supabase, currentPage, undefined, $asc);
-        }
+			const currentPage = $page.params.page;
+			galleryStore.get($locale, data.supabase, currentPage, undefined, $asc);
+		}
 	}
 
 	onMount(async () => {
@@ -84,6 +84,7 @@
 		</div>
 		<div class="justify-end flex z-10 w-full" />
 	</div>
+
 	{#if $galleryStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $galleryStore.data as item, i}
@@ -92,8 +93,8 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id)}>
 						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ?? Constants.main_theme.lightOverlayPrimary}
+							primaryColor={$galleryCurrentThemeColors.secondaryColor}
+							overlayPrimaryColor={$galleryCurrentThemeColors.overlaySecondaryColor}
 							imageClass={Constants.image_card_layout}
 							cardType={CardComponent}
 							title={item.title}

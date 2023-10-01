@@ -15,7 +15,7 @@
 	import type { UiModel } from '../../../models/uiModel';
 	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { themeToggle } from '../../../stores/darkMode';
+	import { themeToggle, videoCurrentThemeColors } from '../../../stores/darkMode';
 	import { ascStore } from '../../../stores/ascStore';
 	import Filters from '$lib/components/Filters.svelte';
 
@@ -48,16 +48,16 @@
 		}
 	}
 
-	$:{
-		if(asc){
+	$: {
+		if (asc) {
 			const currentPage = $page.params.page;
-            videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
-            thumbnailChanging();
+			videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
+			thumbnailChanging();
 		}
 	}
 
-	$:{
-		if($videoStore?.data){
+	$: {
+		if ($videoStore?.data) {
 			thumbnailChanging();
 		}
 	}
@@ -103,7 +103,7 @@
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
 	<div class="flex justify-center items-center mb-12">
-	<Filters />
+		<Filters />
 		<div
 			class="flex justify-center w-full px-2"
 			in:fade={{ duration: 800 }}
@@ -121,9 +121,8 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>
 						<ExpoCard
-							primaryColor={`var(--${tailVar}PrimaryColor)` ?? Constants.main_theme.lightPrimary}
-							overlayPrimaryColor={`var(--${tailVar}OverlayPrimaryColor)` ??
-								Constants.main_theme.lightOverlayPrimary}
+							primaryColor={$videoCurrentThemeColors.secondaryColor}
+							overlayPrimaryColor={$videoCurrentThemeColors.overlaySecondaryColor}
 							cardType={CardComponent || CardType.Main}
 							title={item.title}
 							thumbnail={thumbnailUrl[index] ?? ''}

@@ -9,19 +9,21 @@
 	import { galleryStore } from '../../../../stores/galleryStore';
 	import RecentItems from '$lib/components/RecentItems.svelte';
 	import { modelToItemModel } from '../../../../models/covertModel';
+	import { galleryCurrentThemeColors } from '../../../../stores/darkMode';
+	import { Spinner } from 'flowbite-svelte';
 
-	export let data:any;
+	export let data: any;
 	let gallery: GalleryModel | undefined | null;
 
-	$:{
-		if($locale) {
+	$: {
+		if ($locale) {
 			getGallery();
 		}
 	}
 
 	async function getGallery() {
 		gallery = await galleryStore.getSingle($locale, data.supabase, $page.params.galleryId);
-		galleryStore.get($locale, data.supabase,"1", 5);
+		galleryStore.get($locale, data.supabase, '1', 5);
 	}
 
 	onMount(() => {
@@ -29,24 +31,33 @@
 	});
 </script>
 
-<section class="dark:bg-slate-900 dark:text-white text-slate-950 flex-1 relative">
+<section
+	style="background-color: {$galleryCurrentThemeColors.secondaryColor}; color: {$galleryCurrentThemeColors.overlaySecondaryColor}"
+	class=" {Constants.page_max_width} mx-auto w-full"
+>
 	{#if gallery}
-		<div class=" items-start flex flex-col 3xl:flex-row justify-around">
-			<div class="m-auto w-full 3xl:w-96 4xl:w-142 block h-0 lg:mt-0 mt-5 rounded-lg" />
-			<div class="w-full bg-gray-50 {Constants.page_max_width} m-auto flex-1 my-10 z-0">
+		<div
+			class="grid 3xl:grid-cols-3 grid-cols-2 my-2 rounded-lg justify-center items-center content-center w-full"
+		>
+			<div class="flex-1 my-10 mt-auto col-span-2 w-full h-full z-0">
 				<DetailPage
 					imagesCarousel={gallery.imagesCarousel}
 					long_description={gallery.long_description}
 				/>
 			</div>
-
 			{#if $galleryStore?.data}
-				<RecentItems
-					title={$LL.gallery()}
-					items={$galleryStore?.data.map((gallery) => modelToItemModel(gallery))}
-					pageType={'gallery'}
-				/>
+				<div class="3xl:col-span-1 p-2 col-span-2 ml-1 w-full h-full">
+					<RecentItems
+						title={$LL.gallery()}
+						items={$galleryStore?.data.map((gallery) => modelToItemModel(gallery))}
+						pageType={'gallery'}
+					/>
+				</div>
 			{/if}
+		</div>
+	{:else}
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<Spinner />
 		</div>
 	{/if}
 </section>
