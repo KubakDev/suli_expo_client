@@ -66,6 +66,7 @@
 				(privacyLang: any) => privacyLang.language == 'en'
 			).discount_description ??
 			'';
+		console.log(data.seat_layout[0]?.seat_privacy_policy_lang);
 		extraDiscount.description =
 			data.seat_layout[0]?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale

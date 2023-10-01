@@ -73,14 +73,14 @@
 			).discount_description ??
 			'';
 		extraDiscount.description =
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == locale
 			).extra_discount_description ??
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			currentActiveSeat?.seat_privacy_policy_lang.find(
 				(privacyLang: any) => privacyLang.language == 'en'
 			).extra_discount_description ??
 			'';
-		extraDiscount.price = data.seat_layout[0]?.extra_discount;
+		extraDiscount.price = currentActiveSeat?.extra_discount;
 		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
 		if (extraDiscountChecked) {
 			discountedPrice = extraDiscount.price;
