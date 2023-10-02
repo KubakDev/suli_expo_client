@@ -1,20 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import {
-		Navbar,
-		NavLi,
-		NavUl,
-		NavHamburger,
-		Dropdown,
-		DropdownItem,
-		Chevron,
-		Button,
-		DarkMode,
-		Avatar,
-		Indicator,
-		NavBrand
-	} from 'flowbite-svelte';
+	import { Navbar, NavLi, NavUl, NavHamburger, Chevron, Avatar, NavBrand } from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
@@ -29,7 +16,6 @@
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
 	import { UserSolid } from 'flowbite-svelte-icons';
-	import type { TranslationFunctions } from '$lib/i18n/i18n-types';
 
 	export let data: PageData;
 
@@ -102,6 +88,7 @@
 	}
 
 	let dropdownOpen = false;
+	let dropdownOpenProfile = false;
 	let userProfileDropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 
@@ -139,7 +126,6 @@
 		setLocale(locale);
 		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
 		changeLanguage(locale);
-		// set cookie
 		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
 		dropdownOpen = false;
 	}
@@ -235,6 +221,14 @@
 			goto('/');
 		} catch (err) {}
 	}
+
+	function toggleDropdown() {
+		dropdownOpen = !dropdownOpen;
+	}
+
+	function toggleDropdownProfile() {
+		dropdownOpenProfile = !dropdownOpenProfile;
+	}
 </script>
 
 <div class="w-full">
@@ -244,133 +238,161 @@
 		navDivClass="mx-auto flex flex-wrap justify-between items-center max-w-full px-3 md:px-0 lg:px-3 xl:px-32 3xl:px-96 md:py-0 py-4"
 		style="background-color: {$currentMainThemeColors.secondaryColor}; color:{$currentMainThemeColors.overlaySecondaryColor} "
 		class="w-full z-20 top-0 left-0 border-b max-w-full relative"
-		navClass=" px-2 sm:px-4 py-2.5 w-full z-20 top-0 left-0 border-b max-w-full relative"
+		navClass="px-2 sm:px-4 py-2.5 w-full z-20 top-0 left-0 border-b max-w-full relative"
 	>
 		<NavBrand href="/" />
+		<!-- profile button -->
 		<div class="flex items-center md:order-2 w-full md:w-auto justify-between">
 			<div>
 				{#if $currentUser}
 					{#if $currentUser.id}
-						<div
-							class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0 cursor-pointer"
-						>
-							<div class="flex space-x-4 items-center gap-1">
-								<div class="relative">
-									<Avatar
-										src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
-											$currentUser?.logo_url
-										}`}
-									/>
-									{#if notifications?.length > 0}
-										<span
-											class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
-										>
-											{notifications?.length}
-										</span>
-									{/if}
-								</div>
-								<p>{$currentUser.company_name}</p>
-							</div>
-
-							<Dropdown id="" bind:open={userProfileDropdownOpen} class="bg-black text-white">
-								<DropdownItem
-									on:click={() => goto(`/exhibition/reserve/register/${$currentUser.uid}`)}
+						<div class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0">
+							<div class="dropdown-profile inline-block relative">
+								<button
+									on:click={toggleDropdownProfile}
+									class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0"
 								>
-									<div class="flex justify-start items-center">
-										<UserSolid class="h-5 w-5 text-[#dce1de] mr-2" />
-										{$LL.profile.title()}
-									</div>
-								</DropdownItem>
-								<DropdownItem on:click={() => goto('/reservation_history')}
-									><div class="flex justify-start items-center">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke-width="1.5"
-											stroke="#dce1de"
-											class="w-6 h-6 mr-2"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
-											/>
-										</svg>
-
-										{$LL.profile.reservation_history()}
-									</div></DropdownItem
-								>
-
-								<DropdownItem on:click={() => logoutFunction()}>
-									<div class="flex justify-start items-center">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke-width="1.5"
-											stroke="#dce1de"
-											class="w-6 h-6 mr-2"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-											/>
-										</svg>
-
-										{$LL.profile.logout()}
-									</div>
-								</DropdownItem>
-								<DropdownItem on:click={() => goto('/reservation_history')}>
-									<div>
-										<div class="flex justify-start items-center">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="1.5"
-												stroke="#dce1de"
-												class="w-6 h-6 mr-2"
+									<div class="flex items-center space-x-4">
+										<Avatar
+											src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+												$currentUser?.logo_url
+											}`}
+										/>
+										<p>{$currentUser.company_name}</p>
+										{#if notifications?.length > 0}
+											<span
+												class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
 											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-												/>
-											</svg>
-											<div>
-												<span>{$LL.profile.reservation_notification()}</span>
-												<span class="text-red-600 font-bold ml-3">{notifications?.length}</span>
-											</div>
-										</div>
+												{notifications?.length}
+											</span>
+										{/if}
 									</div>
-								</DropdownItem>
-								<hr />
-								{#each notifications as notificationData}
-									<DropdownItem
-										class="flex justify-between cursor-default hover:none  shadow-sm my-3 rounded-md"
+								</button>
+
+								{#if dropdownOpenProfile}
+									<ul
+										style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
+										class="dropdown-menu-profile absolute py-2 rounded"
 									>
-										<div class="w-full">
-											<div class="flex justify-between mb-4">
-												<div>
-													{notificationData.exhibition_name}
+										<li>
+											<button
+												class="text-sm profile-button rounded block whitespace-no-wrap"
+												on:click={() => goto(`/exhibition/reserve/register/${$currentUser.uid}`)}
+											>
+												<div class="flex justify-start items-center">
+													<UserSolid class="h-4 w-4 text-[#dce1de] mr-2" />
+													{$LL.profile.title()}
 												</div>
-												<div
-													class={`${
-														notificationData.status === 'accept' ? 'bg-green-500' : 'bg-red-500'
-													}
+											</button>
+										</li>
+										<li>
+											<button
+												class="profile-button rounded block whitespace-no-wrap"
+												on:click={() => goto('/reservation_history')}
+											>
+												<div class="flex justify-start items-center">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="#dce1de"
+														class="w-5 h-5 mr-2"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
+														/>
+													</svg>
+
+													{$LL.profile.reservation_history()}
+												</div>
+											</button>
+										</li>
+										<li>
+											<button
+												class="text-sm profile-button rounded block whitespace-no-wrap"
+												on:click={() => logoutFunction()}
+											>
+												<div class="flex justify-start items-center">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="#dce1de"
+														class="w-5 h-5 mr-2"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+														/>
+													</svg>
+
+													{$LL.profile.logout()}
+												</div>
+											</button>
+										</li>
+										<li>
+											<button
+												class="text-sm profile-button rounded block whitespace-no-wrap"
+												on:click={() => goto('/reservation_history')}
+											>
+												<div class="flex justify-start items-center">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="#dce1de"
+														class="w-5 h-5 mr-2"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+														/>
+													</svg>
+													<div>
+														<span>{$LL.profile.reservation_notification()}</span>
+														<span class="text-red-600 font-bold ml-3">{notifications?.length}</span>
+													</div>
+												</div>
+											</button>
+										</li>
+										<hr />
+										<li>
+											{#each notifications as notificationData}
+												<button
+													class="text-sm flex justify-between cursor-default hover:none shadow-sm my-3 rounded-md"
+												>
+													<div class="w-full">
+														<div class="flex justify-between mb-4">
+															<div>
+																{notificationData.exhibition_name}
+															</div>
+															<div
+																class={`${
+																	notificationData.status === 'accept'
+																		? 'bg-green-500'
+																		: 'bg-red-500'
+																}
 												px-2 py-1 rounded-full text-white flex justify-center items-center
 												`}
-												>
-													<!-- {$LL.reservation.statuses[notificationData.status]()} -->
-												</div>
-											</div>
-											<p>{notificationData.message ?? ''}</p>
-										</div>
-									</DropdownItem>
-								{/each}
-							</Dropdown>
+															>
+																<!-- {$LL.reservation.statuses[notificationData.status]()} -->
+															</div>
+														</div>
+														<p>{notificationData.message ?? ''}</p>
+													</div>
+												</button>
+											{/each}
+										</li>
+									</ul>
+								{/if}
+							</div>
 						</div>
 					{/if}
 				{/if}
@@ -379,8 +401,8 @@
 		</div>
 
 		<NavUl
-			divClass="w-full md:block md:w-auto justify-center max-w-full items-center  p-0 z-[10000]"
-			ulClass=" {Constants.page_max_width}  m-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-8 justify-between md:justify-center md:mt-0 md:text-sm  items-center nav-ul"
+			divClass="w-full md:block md:w-auto justify-center max-w-full items-center p-0 z-[10000]"
+			ulClass="bg-[{$currentMainThemeColors.secondaryColor}] dark:bg-[{$currentMainThemeColors.secondaryColor}] border lg:border-none   {Constants.page_max_width}  mx-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-4 justify-between md:justify-center md:mt- md:text-sm  items-center"
 			activeClass="text-[var(--{$themeToggle + 'PrimaryColor'})]"
 			nonActiveClass="text-[var(--{$themeToggle + 'OverlaySecondaryColor'})]"
 			{hidden}
@@ -404,83 +426,152 @@
 					</div>
 				</div>
 			</div>
+
 			{#each navTitles as navTitle}
 				{#if navTitle.urls}
-					<NavLi id={navTitle.title} class="cursor-pointer text-sm  lg:text-lg "
-						><Chevron aligned>{translation[navTitle.title + '']()}</Chevron></NavLi
-					>
-
-					<Dropdown
-						class="w-32 z-20 p-2 rounded-lg  first-letter bg-black text-white"
-						triggeredBy="#{navTitle.title}"
-					>
-						{#each navTitle.urls as url}
-							<DropdownItem
-								defaultClass=" mb-1 text-base"
-								href={url.url}
-								on:click={() => updateActiveUrl(url.url ?? '')}
-								style={activeUrl.startsWith(`/${url.url.split('/')[1]}`)
-									? `color:${$currentMainThemeColors.primaryColor}`
-									: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
-								active={activeUrl == url.url}>{translation[url.title + '']()}</DropdownItem
+					<div class="nav-container flex-1 flex flex-col md:flex-row justify-center items-center">
+						<div class="menu-container inline-block relative">
+							<button
+								id={navTitle.title}
+								class="menu-button text-center font-medium inline-flex items-center justify-center text-base focus:outline-none focus:ring-0 cursor-pointer lg:text-lg"
 							>
-						{/each}
-					</Dropdown>
+								<Chevron aligned>{translation[navTitle.title + '']()}</Chevron>
+							</button>
+
+							<ul
+								class="pt-5 menu-list hidden absolute z-20 p-2 first-letter py-2 rounded"
+								style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
+							>
+								{#each navTitle.urls as url}
+									<li>
+										<a
+											class="menu-item rounded block whitespace-no-wrap mb-1 text-base"
+											href={url.url}
+											style={activeUrl.startsWith(`/${url.url.split('/')[1]}`)
+												? `color:${$currentMainThemeColors.primaryColor}`
+												: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
+										>
+											{translation[url.title + '']()}
+										</a>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					</div>
 				{:else}
 					<NavLi
 						on:click={() => updateActiveUrl(navTitle.url ?? '')}
 						href={navTitle.url}
-						class="cursor-pointer  text-sm  lg:text-lg"
+						class="cursor-pointer text-sm  lg:text-lg"
 						style={activeUrl == navTitle.url
-							? `color:${$currentMainThemeColors.primaryColor}`
+							? `color:${$currentMainThemeColors.primaryColor} ;`
 							: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
 						active={activeUrl == navTitle.url}>{translation[navTitle.title + '']()}</NavLi
 					>
 				{/if}
 			{/each}
 
-			<div
-				class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0"
-				style="margin:0 ;"
-			>
-				<button
-					id="language-dropdown"
-					style="background-color: {$currentMainThemeColors.primaryColor} ;color:{$currentMainThemeColors.overlayPrimaryColor}"
-					class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-1 w-full md:w-24 rounded-3xl focus:outline-none focus:ring-0
-					border-[{$currentMainThemeColors.primaryColor}]"><Chevron>{selectedLang}</Chevron></button
-				>
+			<!-- language button -->
+			<div class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0">
+				<div class="dropdown inline-block relative">
+					<button
+						on:click={toggleDropdown}
+						style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};"
+						class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-2 w-full rounded-3xl focus:outline-none focus:ring-0 border-black"
+					>
+						<span class="mr-1">{selectedLang}</span>
+						<svg
+							class="fill-current h-4 w-4"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 20 20"
+						>
+							<path
+								d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+							/>
+						</svg>
+					</button>
 
-				<Dropdown
-					bind:open={dropdownOpen}
-					triggeredBy="#language-dropdown"
-					class="bg-black text-white"
-				>
-					<DropdownItem
-						on:click={() => langSelect('ckb')}
-						style={selectedLang === 'کوردی'
-							? `color: ${$currentMainThemeColors.primaryColor}`
-							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					>
-						کوردی
-					</DropdownItem>
-					<DropdownItem
-						on:click={() => langSelect('ar')}
-						style={selectedLang === 'العربية'
-							? `color: ${$currentMainThemeColors.primaryColor}`
-							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					>
-						العربية
-					</DropdownItem>
-					<DropdownItem
-						on:click={() => langSelect('en')}
-						style={selectedLang === 'English'
-							? `color: ${$currentMainThemeColors.primaryColor}`
-							: `color: ${$currentMainThemeColors.overlaySecondaryColor}`}
-					>
-						English
-					</DropdownItem>
-				</Dropdown>
+					{#if dropdownOpen}
+						<ul
+							style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
+							class="dropdown-menu absolute py-2 rounded"
+						>
+							<li>
+								<button
+									class="language-button rounded block whitespace-no-wrap"
+									on:click={() => langSelect('ckb')}
+								>
+									کوردی
+								</button>
+							</li>
+							<li>
+								<button
+									class="language-button rounded block whitespace-no-wrap"
+									on:click={() => langSelect('ar')}
+								>
+									العربية
+								</button>
+							</li>
+							<li>
+								<button
+									class="language-button rounded block whitespace-no-wrap"
+									on:click={() => langSelect('en')}
+								>
+									English
+								</button>
+							</li>
+						</ul>
+					{/if}
+				</div>
 			</div>
 		</NavUl>
 	</Navbar>
 </div>
+
+<style>
+	.dropdown:hover .dropdown-menu {
+		display: block;
+	}
+
+	.language-button {
+		transition: opacity 0.3s ease-in-out;
+		width: 80px;
+		height: 30px;
+	}
+
+	.language-button:hover {
+		opacity: 0.5;
+	}
+
+	/* profile menu */
+
+	.dropdown-profile:hover .dropdown-menu-profile {
+		display: block;
+	}
+	.profile-button {
+		transition: opacity 0.3s ease-in-out;
+		width: 150px;
+		height: 30px;
+	}
+
+	.profile-button:hover {
+		opacity: 0.5;
+	}
+
+	/* media button */
+
+	.menu-container:hover .menu-list {
+		display: block;
+	}
+
+	.menu-item {
+		transition: opacity 0.3s ease-in-out;
+		width: 70px;
+		height: 30px;
+		display: block;
+	}
+
+	.menu-item:hover {
+		opacity: 0.7;
+	}
+</style>

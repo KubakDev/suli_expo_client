@@ -42,12 +42,9 @@
 			)
 			.eq('languages.language', $locale)
 			.eq('id', $page.params.exhibitionId)
-			.eq('seat_layout.is_active', true)
 			.is('deleted_status', null)
 			.single();
-		// setTimeout(() => {
 		loaded = true;
-		// }, 3300);
 		exhibition = response.data;
 	}
 
@@ -60,8 +57,8 @@
 		}
 		await getExhibition();
 		await getData();
-
-		console.log('reserveSeatData', exhibition.seat_layout[0].type);
+		let activeSeatLayout = exhibition.seat_layout.find((x: any) => x.is_active == true);
+		exhibition.seat_layout[0] = activeSeatLayout;
 	});
 
 	async function reserveSeat() {
@@ -102,6 +99,7 @@
 						extra_discount_checked: reserveSeatData.extraDiscountChecked
 					})
 					.then(() => {
+						defaultModal = true;
 						selectedSeat.set(null);
 						setTimeout(() => {
 							goto('/exhibition/1');
@@ -141,9 +139,6 @@
 						reserveSeatData: reserveSeatData
 					})
 				});
-
-				console.log('email sent');
-				defaultModal = true;
 			} else {
 				await data.supabase.from('seat_reservation').insert(reserveSeatData);
 
@@ -153,7 +148,6 @@
 				}, 3000);
 			}
 		} catch (error) {
-			console.error('Error during reservation process:', error);
 			alert('An error occurred while reserving the seat. Please try again.');
 			seatReserved = false;
 		}
