@@ -44,6 +44,8 @@
 			.eq('id', $page.params.exhibitionId)
 			.is('deleted_status', null)
 			.single();
+		let activeSeatLayout = response.data.seat_layout.find((x: any) => x.is_active == true);
+		response.data.seat_layout[0] = activeSeatLayout;
 		loaded = true;
 		exhibition = response.data;
 	}
@@ -57,8 +59,6 @@
 		}
 		await getExhibition();
 		await getData();
-		let activeSeatLayout = exhibition.seat_layout.find((x: any) => x.is_active == true);
-		exhibition.seat_layout[0] = activeSeatLayout;
 	});
 
 	async function reserveSeat() {
