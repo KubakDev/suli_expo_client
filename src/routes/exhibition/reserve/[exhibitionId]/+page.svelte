@@ -63,27 +63,26 @@
 
 	async function reserveSeat() {
 		let fileUrl = '';
-		seatReserved = true;
+
 		defaultModal = false;
 
 		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
 			alert('Please upload a non-empty Excel file before proceeding.');
 			return;
 		}
+		let extention = reserveSeatData.file.name.split('.').pop();
 
 		try {
 			const response = await data.supabase.storage
 				.from('file')
-				.upload(
-					`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
-					reserveSeatData.file
-				);
+				.upload(`reserve/${getRandomTextNumber()}.${extention}`, reserveSeatData.file);
 
 			fileUrl = response?.data?.path;
 			if (!fileUrl) {
 				alert('anUnknown error occurred while uploading the file. Please try again.');
 				return;
 			}
+
 			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
 				await data.supabase
 					.from('seat_reservation')
@@ -100,6 +99,7 @@
 					})
 					.then(() => {
 						defaultModal = true;
+						seatReserved = true;
 						selectedSeat.set(null);
 						setTimeout(() => {
 							goto('/exhibition/1');
@@ -117,8 +117,9 @@
 								companyData: $currentUser,
 								reserveSeatData: reserveSeatData
 							})
-						}).then(() => {});
-						defaultModal = true;
+						}).then(() => {
+							defaultModal = true;
+						});
 					});
 
 				selectedSeat.set(null);
@@ -148,7 +149,7 @@
 				}, 3000);
 			}
 		} catch (error) {
-			alert('An error occurred while reserving the seat. Please try again.');
+			alert('An error occurred while uploading the file. Please try again with difference file.');
 			seatReserved = false;
 		}
 	}
