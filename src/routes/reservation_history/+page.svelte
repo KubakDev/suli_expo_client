@@ -14,6 +14,7 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from '../exhibition/reserve/[exhibitionId]/successLottie.json';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -59,7 +60,7 @@
 			: '';
 		return result;
 	}
-	async function updateReserveData(reservationData: any, reservedSeatData: any) {
+	async function updateReserveData(reservationData: any, reservedSeatData: any, areas: any) {
 		data.supabase
 			.from('seat_reservation')
 			.update({
@@ -80,7 +81,19 @@
 					alert('error ocuured');
 					return;
 				}
-				successModal = true;
+				let activeSeatLayout = reservationData?.exhibition?.seat_layout?.find(
+					(seatLayout: any) => seatLayout.is_active == true
+				);
+				await data.supabase
+					.from('seat_layout')
+					.update({
+						areas: JSON.stringify(areas)
+					})
+					.eq('id', activeSeatLayout.id)
+					.then(() => {
+						goto(`/exhibition/1`);
+						successModal = true;
+					});
 			});
 	}
 </script>
@@ -172,7 +185,8 @@
 				on:updateReserveSeat={(reserveData) => {
 					updateReserveData(
 						reserveData.detail.reservationData,
-						reserveData.detail.reservedSeatData
+						reserveData.detail.reservedSeatData,
+						reserveData.detail.areas
 					);
 				}}
 				reservationData={selectedReservation}

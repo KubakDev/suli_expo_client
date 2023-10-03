@@ -194,11 +194,25 @@
 			quantity: customAreaQuantity
 		});
 		reservationData.extra_discount_checked = extraDiscountChecked;
-		dispatch('updateReserveSeat', { reservedSeatData, reservationData });
+
+		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
+		reservedSeatArea.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1) {
+				areas[existingSeatAreaIndex].quantity =
+					areas[existingSeatAreaIndex].quantity + area.quantity;
+			}
+		});
+		reservedSeatData.area.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
+				areas[existingSeatAreaIndex].quantity = area.quantity;
+			}
+		});
+		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
 
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
-			goto(`/exhibition/1`);
 		}, 10);
 	}
 
@@ -304,9 +318,6 @@
 	}
 
 	function exportFile(reservation: any) {
-		console.log(
-			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
-		);
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
@@ -330,47 +341,49 @@
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					<div class="flex gap-2 justify-between items-center my-2">
-						<p class=" text-start text-md md:text-2xl font-medium my-2">
-							{availableSeatArea.area}
-							{$LL.reservation.measure.m()}
-						</p>
-						<div class="mx-6 my-2">
-							<InputNumberButton
-								on:numberChanged={(number) => {
-									addAreaToReservedSeatData(index, +number.detail);
-								}}
-								serviceQuantity={availableSeatArea.quantity}
-								maxQuantityPerUser={availableSeatArea.quantity}
-								number={reservedAreas.find((area) => area.id == index)?.quantity ?? 0}
-								disabled={reservationData.status != ReservationStatus.PENDING}
-							/>
-						</div>
-						<p
-							class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
-						>
-							{+pricePerMeter * +availableSeatArea.area} $
-						</p>
-						<div class="lg:mx-4">
-							<p
-								class={` text-start text-sm md:text-xl justify-center flex my-2 ${
-									discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
-								}`}
-							>
-								{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-									(+pricePerMeter * +availableSeatArea.area)}$
+					{#if availableSeatArea.quantity > 0}
+						<div class="flex gap-2 justify-between items-center my-2">
+							<p class=" text-start text-md md:text-2xl font-medium my-2">
+								{availableSeatArea.area}
+								{$LL.reservation.measure.m()}
 							</p>
-							{#if discountedPrice}
+							<div class="mx-6 my-2">
+								<InputNumberButton
+									on:numberChanged={(number) => {
+										addAreaToReservedSeatData(index, +number.detail);
+									}}
+									serviceQuantity={availableSeatArea.quantity}
+									maxQuantityPerUser={availableSeatArea.quantity}
+									number={reservedAreas.find((area) => area.id == index)?.quantity ?? 0}
+									disabled={reservationData.status != ReservationStatus.PENDING}
+								/>
+							</div>
+							<p
+								class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
+							>
+								{+pricePerMeter * +availableSeatArea.area} $
+							</p>
+							<div class="lg:mx-4">
 								<p
-									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="color:{$currentMainThemeColors.primaryColor}"
+									class={` text-start text-sm md:text-xl justify-center flex my-2 ${
+										discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
+									}`}
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-										(+discountedPrice * +availableSeatArea.area)}$
+										(+pricePerMeter * +availableSeatArea.area)}$
 								</p>
-							{/if}
+								{#if discountedPrice}
+									<p
+										class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
+										style="color:{$currentMainThemeColors.primaryColor}"
+									>
+										{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
+											(+discountedPrice * +availableSeatArea.area)}$
+									</p>
+								{/if}
+							</div>
 						</div>
-					</div>
+					{/if}
 				{/each}
 				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>

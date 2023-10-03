@@ -42,7 +42,6 @@
 			exhibitionSectionStore.get($locale, supabase);
 		}
 	}
-	console.log('exhibition  ///// ', $exhibitionSectionStore);
 	onMount(async () => {
 		let pageType = 'Exhibition';
 		let exhibitionUi = (await UiStore.get(supabase, getPageType(pageType))) as UiModel;
