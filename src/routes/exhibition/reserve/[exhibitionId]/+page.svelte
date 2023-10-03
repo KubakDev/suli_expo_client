@@ -71,7 +71,16 @@
 			return;
 		}
 		let extention = reserveSeatData.file.name.split('.').pop();
+		console.log(exhibition.seat_layout[0]);
+		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
 
+		reserveSeatData.area.map((area: any) => {
+			let existingSeatAreaIndex = existingSeatArea.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1) {
+				existingSeatArea[existingSeatAreaIndex].quantity =
+					existingSeatArea[existingSeatAreaIndex].quantity - area.quantity;
+			}
+		});
 		try {
 			const response = await data.supabase.storage
 				.from('file')
@@ -97,14 +106,43 @@
 						file_url: fileUrl,
 						extra_discount_checked: reserveSeatData.extraDiscountChecked
 					})
-					.then(() => {
-						defaultModal = true;
-						seatReserved = true;
+					.then(async () => {
+						data.supabase
+							.from('seat_layout')
+							.update({
+								areas: JSON.stringify(existingSeatArea)
+							})
+							.eq('id', exhibition.seat_layout[0].id)
+							.then(async () => {
+								defaultModal = true;
+								seatReserved = true;
+								selectedSeat.set(null);
+								setTimeout(() => {
+									goto('/exhibition/1');
+								}, 3000);
+								fetch('/api/seat/purchase', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										emailUser: data?.session?.user?.email,
+										name: '',
+										message: '',
+										exhibition: exhibition,
+										companyData: $currentUser,
+										reserveSeatData: reserveSeatData
+									})
+								}).then(() => {
+									defaultModal = true;
+								});
+							});
+
 						selectedSeat.set(null);
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
-						fetch('/api/seat/purchase', {
+						await fetch('/api/seat/purchase', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -117,29 +155,8 @@
 								companyData: $currentUser,
 								reserveSeatData: reserveSeatData
 							})
-						}).then(() => {
-							defaultModal = true;
 						});
 					});
-
-				selectedSeat.set(null);
-				setTimeout(() => {
-					goto('/exhibition/1');
-				}, 3000);
-				await fetch('/api/seat/purchase', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						emailUser: data?.session?.user?.email,
-						name: '',
-						message: '',
-						exhibition: exhibition,
-						companyData: $currentUser,
-						reserveSeatData: reserveSeatData
-					})
-				});
 			} else {
 				await data.supabase.from('seat_reservation').insert(reserveSeatData);
 
