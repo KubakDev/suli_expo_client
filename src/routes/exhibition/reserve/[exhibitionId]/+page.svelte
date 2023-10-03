@@ -71,7 +71,6 @@
 			return;
 		}
 		let extention = reserveSeatData.file.name.split('.').pop();
-		console.log(exhibition.seat_layout[0]);
 		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
 
 		reserveSeatData.area.map((area: any) => {
