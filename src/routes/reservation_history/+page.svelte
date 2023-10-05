@@ -72,7 +72,8 @@
 				status: ReservationStatusEnum.PENDING,
 				type: reservationData?.exhibition?.seat_layout[0]?.type,
 				file_url: reservationData.file_url,
-				extra_discount_checked: reservationData.extra_discount_checked
+				extra_discount_checked: reservationData.extra_discount_checked,
+				new_edit: true
 			})
 			.eq('id', reservationData.id)
 			.then(async (response: any) => {
