@@ -342,7 +342,7 @@
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					{#if availableSeatArea.quantity > 0}
+					{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
 						<div class="flex gap-2 justify-between items-center my-2">
 							<p class=" text-start text-md md:text-2xl font-medium my-2">
 								{availableSeatArea.area}
@@ -388,7 +388,7 @@
 				{/each}
 				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
-				<div class="flex gap-2 justify-between items-center my-2">
+				<!-- <div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
@@ -435,7 +435,7 @@
 							</p>
 						{/if}
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
