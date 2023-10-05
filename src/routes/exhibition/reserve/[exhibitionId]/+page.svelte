@@ -42,12 +42,11 @@
 			)
 			.eq('languages.language', $locale)
 			.eq('id', $page.params.exhibitionId)
-			.eq('seat_layout.is_active', true)
 			.is('deleted_status', null)
 			.single();
-		// setTimeout(() => {
+		let activeSeatLayout = response.data.seat_layout.find((x: any) => x.is_active == true);
+		response.data.seat_layout[0] = activeSeatLayout;
 		loaded = true;
-		// }, 3300);
 		exhibition = response.data;
 	}
 
@@ -60,33 +59,38 @@
 		}
 		await getExhibition();
 		await getData();
-
-		console.log('reserveSeatData', exhibition.seat_layout[0].type);
 	});
 
 	async function reserveSeat() {
 		let fileUrl = '';
-		seatReserved = true;
+
 		defaultModal = false;
 
 		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
 			alert('Please upload a non-empty Excel file before proceeding.');
 			return;
 		}
+		let extention = reserveSeatData.file.name.split('.').pop();
+		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
 
+		reserveSeatData.area.map((area: any) => {
+			let existingSeatAreaIndex = existingSeatArea.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1) {
+				existingSeatArea[existingSeatAreaIndex].quantity =
+					existingSeatArea[existingSeatAreaIndex].quantity - area.quantity;
+			}
+		});
 		try {
 			const response = await data.supabase.storage
 				.from('file')
-				.upload(
-					`reserve/${getRandomTextNumber()}_${reserveSeatData.file.name}`,
-					reserveSeatData.file
-				);
+				.upload(`reserve/${getRandomTextNumber()}.${extention}`, reserveSeatData.file);
 
 			fileUrl = response?.data?.path;
 			if (!fileUrl) {
 				alert('anUnknown error occurred while uploading the file. Please try again.');
 				return;
 			}
+
 			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
 				await data.supabase
 					.from('seat_reservation')
@@ -101,12 +105,43 @@
 						file_url: fileUrl,
 						extra_discount_checked: reserveSeatData.extraDiscountChecked
 					})
-					.then(() => {
+					.then(async () => {
+						data.supabase
+							.from('seat_layout')
+							.update({
+								areas: JSON.stringify(existingSeatArea)
+							})
+							.eq('id', exhibition.seat_layout[0].id)
+							.then(async () => {
+								defaultModal = true;
+								seatReserved = true;
+								selectedSeat.set(null);
+								setTimeout(() => {
+									goto('/exhibition/1');
+								}, 3000);
+								fetch('/api/seat/purchase', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										emailUser: data?.session?.user?.email,
+										name: '',
+										message: '',
+										exhibition: exhibition,
+										companyData: $currentUser,
+										reserveSeatData: reserveSeatData
+									})
+								}).then(() => {
+									defaultModal = true;
+								});
+							});
+
 						selectedSeat.set(null);
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
-						fetch('/api/seat/purchase', {
+						await fetch('/api/seat/purchase', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -119,31 +154,8 @@
 								companyData: $currentUser,
 								reserveSeatData: reserveSeatData
 							})
-						}).then(() => {});
-						defaultModal = true;
+						});
 					});
-
-				selectedSeat.set(null);
-				setTimeout(() => {
-					goto('/exhibition/1');
-				}, 3000);
-				await fetch('/api/seat/purchase', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						emailUser: data?.session?.user?.email,
-						name: '',
-						message: '',
-						exhibition: exhibition,
-						companyData: $currentUser,
-						reserveSeatData: reserveSeatData
-					})
-				});
-
-				console.log('email sent');
-				defaultModal = true;
 			} else {
 				await data.supabase.from('seat_reservation').insert(reserveSeatData);
 
@@ -153,8 +165,7 @@
 				}, 3000);
 			}
 		} catch (error) {
-			console.error('Error during reservation process:', error);
-			alert('An error occurred while reserving the seat. Please try again.');
+			alert('An error occurred while uploading the file. Please try again with difference file.');
 			seatReserved = false;
 		}
 	}
