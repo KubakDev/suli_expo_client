@@ -194,19 +194,22 @@
 		reservationData.extra_discount_checked = extraDiscountChecked;
 
 		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
+
 		reservedSeatArea.map((area: any) => {
 			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
 			if (existingSeatAreaIndex > -1) {
 				areas[existingSeatAreaIndex].quantity =
-					areas[existingSeatAreaIndex].quantity + area.quantity;
+					+areas[existingSeatAreaIndex].quantity + +area.quantity;
 			}
 		});
 		reservedSeatData.area.map((area: any) => {
 			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
 			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
-				areas[existingSeatAreaIndex].quantity = area.quantity;
+				areas[existingSeatAreaIndex].quantity =
+					areas[existingSeatAreaIndex].quantity - area.quantity;
 			}
 		});
+
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
 
 		setTimeout(() => {

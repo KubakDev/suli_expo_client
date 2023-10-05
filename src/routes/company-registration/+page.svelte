@@ -103,8 +103,8 @@
 			userData.passport_image = userData.passport_image || [];
 			userData.user_image = userData.user_image || [];
 
-			console.log('Passport Images:', passportFiles);
-			console.log('User Images:', userImageFiles);
+			'Passport Images:', passportFiles;
+			'User Images:', userImageFiles;
 
 			if (passportFiles.length === 0) {
 				passportImageError = true;
@@ -157,7 +157,7 @@
 			userData.user_image = uploadedPaths.filter((path) => path !== null);
 		}
 
-		console.log(userData);
+		userData;
 
 		const { data: existingData } = await data.supabase
 			.from('company')
@@ -237,7 +237,7 @@
 							previewPassportImages = [...previewPassportImages, reader.result];
 						}
 					};
-					// console.log(previewPassportImages);
+					// (previewPassportImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -247,7 +247,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					console.log('///', passportFiles);
+					'///', passportFiles;
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -277,7 +277,7 @@
 							previewUserImages = [...previewUserImages, reader.result];
 						}
 					};
-					// console.log(previewUserImages);
+					// (previewUserImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -287,7 +287,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					console.log(userImageFiles);
+					userImageFiles;
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}

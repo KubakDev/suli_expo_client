@@ -103,7 +103,7 @@ const en = {
 			paid_services: 'Services'
 		},
 		total_price: 'Total Price',
-		price_per_each_meter: 'price per each meter',
+		price_per_each_meter: 'Price per meter',
 		reserve: 'Reserve',
 		preview_contract: 'Contract Preview',
 		seat_types: {
@@ -111,7 +111,7 @@ const en = {
 			reserved: 'RESERVED',
 			pending: 'PENDING'
 		},
-		available_area: 'available area',
+		available_area: 'Available area',
 		measure: {
 			m: 'Meter'
 		},

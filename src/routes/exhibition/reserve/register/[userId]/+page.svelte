@@ -110,7 +110,7 @@
 			};
 			reader.readAsDataURL(compressedFile);
 		} catch (error) {
-			console.log(error);
+			error;
 		}
 	}
 	let previewPassportImages: string[] = [];
@@ -139,7 +139,7 @@
 							previewPassportImages = [...previewPassportImages, reader.result];
 						}
 					};
-					// console.log(previewPassportImages);
+					// (previewPassportImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -149,7 +149,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					console.log(passportFiles);
+					passportFiles;
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -179,7 +179,7 @@
 							previewUserImages = [...previewUserImages, reader.result];
 						}
 					};
-					// console.log(previewUserImages);
+					// (previewUserImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -255,13 +255,13 @@
 			result.logo_url = response.data?.path || '';
 		}
 
-		console.log('first ', passportFiles);
+		'first ', passportFiles;
 		if (passportFiles) {
 			for (let passportFile of passportFiles) {
 				const response2 = await data.supabase.storage
 					.from('image')
 					.upload(passportFile.fileName, passportFile.file);
-				// console.log(response2.data.path);
+				// (response2.data.path);
 				if (response2.data) {
 					result.passport_image.push(response2?.data?.path);
 				}
