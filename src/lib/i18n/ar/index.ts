@@ -146,6 +146,8 @@ const ar = {
 		error: 'بريد إلكتروني أو كلمة مرور غير صحيحة'
 	},
 	company_info: {
+		user_message: 'صورة المستخدم مطلوبة',
+		passport_message: 'صورة جواز السفر مطلوبة',
 		specific_country_message: 'دولة محددة مطلوبة',
 		specific_country: 'دولة أخرى',
 		logo_url: 'تحميل شعار الشركة',
