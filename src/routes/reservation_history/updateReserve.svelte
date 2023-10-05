@@ -342,7 +342,7 @@
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					{#if availableSeatArea.quantity > 0}
+					{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
 						<div class="flex gap-2 justify-between items-center my-2">
 							<p class=" text-start text-md md:text-2xl font-medium my-2">
 								{availableSeatArea.area}
