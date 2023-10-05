@@ -12,8 +12,6 @@
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
-	import { goto } from '$app/navigation';
-
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
@@ -504,13 +502,13 @@
 			>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
-					{#if preview_url.length > 0}
+					{#if currentActiveSeat?.excel_preview_url}
 						<img
 							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
 								'/' +
 								currentActiveSeat?.excel_preview_url}
 							alt="thumbnail"
-							class="bg-red-400 w-2/3 h-56 object-cover rounded"
+							class=" w-2/3 h-56 object-cover rounded"
 						/>
 					{:else}{/if}
 				</div>
