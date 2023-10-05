@@ -388,7 +388,7 @@
 				{/each}
 				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
-				<div class="flex gap-2 justify-between items-center my-2">
+				<!-- <div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
@@ -435,7 +435,7 @@
 							</p>
 						{/if}
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
