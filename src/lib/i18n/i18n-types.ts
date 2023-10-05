@@ -507,6 +507,14 @@ type RootTranslation = {
 	}
 	company_info: {
 		/**
+		 * U​s​e​r​ ​I​m​a​g​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 */
+		user_message: string
+		/**
+		 * P​a​s​s​p​o​r​t​ ​I​m​a​g​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 */
+		passport_message: string
+		/**
 		 * S​p​e​c​i​f​i​c​ ​c​o​u​n​t​r​y​ ​i​s​ ​r​e​q​u​i​r​e​d
 		 */
 		specific_country_message: string
@@ -551,7 +559,7 @@ type RootTranslation = {
 		 */
 		country: string
 		/**
-		 * U​p​l​o​a​d​ ​P​a​s​s​p​o​r​t
+		 * U​p​l​o​a​d​ ​P​a​s​s​p​o​r​t​ ​I​m​a​g​e
 		 */
 		passport_image: string
 		/**
@@ -1129,6 +1137,14 @@ export type TranslationFunctions = {
 	}
 	company_info: {
 		/**
+		 * User Image is required
+		 */
+		user_message: () => LocalizedString
+		/**
+		 * Passport Image is required
+		 */
+		passport_message: () => LocalizedString
+		/**
 		 * Specific country is required
 		 */
 		specific_country_message: () => LocalizedString
@@ -1173,7 +1189,7 @@ export type TranslationFunctions = {
 		 */
 		country: () => LocalizedString
 		/**
-		 * Upload Passport
+		 * Upload Passport Image
 		 */
 		passport_image: () => LocalizedString
 		/**
