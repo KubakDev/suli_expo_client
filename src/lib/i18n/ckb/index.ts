@@ -150,6 +150,8 @@ const ckb = {
 		duplicate_password: 'وشەی نهێنی نوێ پێویستە جیاواز بێت لە کۆنەکە'
 	},
 	company_info: {
+		user_message: 'هاوپێچ کردنی وێنەی بەکارهێنەر پێویستە',
+		passport_message: 'هاوپێچ کردنی پاسپۆرت پێویستە',
 		specific_country_message: 'دیاری کردنی وڵات پێویستە',
 		specific_country: 'وڵاتێکی تر',
 		logo_url: 'لۆگۆ',

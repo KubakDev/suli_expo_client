@@ -150,6 +150,8 @@ const en = {
 		error: 'invalid email or password'
 	},
 	company_info: {
+		user_message: 'User Image is required',
+		passport_message: 'Passport Image is required',
 		specific_country_message: 'Specific country is required',
 		specific_country: 'Specific country',
 		logo_url: 'Upload logo',
@@ -161,7 +163,7 @@ const en = {
 		passport_number: 'Passport number',
 		address: 'Address',
 		country: 'Country',
-		passport_image: 'Upload Passport',
+		passport_image: 'Upload Passport Image',
 		user_image: 'Upload User Image',
 		string: ''
 	},
