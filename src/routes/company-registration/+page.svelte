@@ -156,22 +156,18 @@
 
 		console.log(userData);
 
-		const { data: existingData } = await data.supabase
+		const { data: existingData, error } = await data.supabase
 			.from('company')
 			.select('*')
 			.eq('uid', data?.session?.user.id)
 			.single();
 
-		if (existingData) {
-			alert('A user with this ID already exists!');
+		if (existingData && error) {
+			alert('An error occurred while processing your request or the company has already exist');
 			goto(
 				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
 			);
 			return;
-		}
-
-		if (existingData) {
-			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
 		} else {
 			await data.supabase.from('company').insert({
 				...userData,
