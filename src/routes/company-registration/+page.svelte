@@ -2,10 +2,12 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { currentUser } from '../../stores/currentUser';
-	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
+	import { Alert, Button, Fileupload, Input, Label, Toast } from 'flowbite-svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { CloseCircleSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
 
 	let imageFile: File | undefined;
 	let fileName: string;
@@ -16,11 +18,13 @@
 	let userImageError = false;
 	let passportFiles: { fileName: string; file: File }[] = [];
 	let userImageFiles: { fileName: string; file: File }[] = [];
-
+	let formSubmitted = false;
+	let loaded = false;
 	let direction = 'ltr';
-	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
-
+	let showAlert = false;
 	export let data: any;
+
+	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 
 	let userData: any = {
 		logo_url: '',
@@ -36,14 +40,6 @@
 		user_image: []
 	};
 
-	$: {
-		if ($currentUser && $currentUser.id) {
-			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
-		}
-	}
-	let formSubmitted = false;
-
-	let loaded = false;
 	onMount(async () => {
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
@@ -52,11 +48,11 @@
 			return;
 		}
 
-		//
-		//
-
 		if ($currentUser && $currentUser.id) {
-			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
+			alert('A user with this ID already exists!');
+			goto(
+				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
+			);
 		}
 
 		await data.supabase
@@ -67,6 +63,12 @@
 			.then((res: any) => {
 				if (res.data) {
 					currentUser.set(res.data);
+					alert('A user with this ID already exists!');
+					// showAlert = true;
+					goto(
+						localStorage.getItem('redirect') ??
+							`/exhibition/reserve/register/${data?.session?.user.id}`
+					);
 				}
 			});
 
@@ -391,6 +393,10 @@
 			];
 		}
 	}
+
+	$: {
+		console.log($currentUser);
+	}
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
@@ -651,6 +657,13 @@
 		</div>
 	</div>
 </form>
+
+<!-- {#if showAlert}
+	<Alert dismissable>
+		<InfoCircleSolid slot="icon" class="w-4 h-4" />
+		A user with this ID already exists!
+	</Alert>
+{/if} -->
 
 <style>
 	.dropzone {
