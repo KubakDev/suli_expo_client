@@ -2,12 +2,11 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { currentUser } from '../../stores/currentUser';
-	import { Alert, Button, Fileupload, Input, Label, Toast } from 'flowbite-svelte';
+	import { Button, Fileupload, Input, Label, Toast } from 'flowbite-svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
 	import { currentMainThemeColors } from '../../stores/darkMode';
-	import { CloseCircleSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
-	import { fly } from 'svelte/transition';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 
 	let imageFile: File | undefined;
 	let fileName: string;
@@ -21,7 +20,6 @@
 	let formSubmitted = false;
 	let loaded = false;
 	let direction = 'ltr';
-	let showAlert = false;
 	export let data: any;
 
 	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
@@ -40,6 +38,12 @@
 		user_image: []
 	};
 
+	$: {
+		if ($currentUser && $currentUser.id) {
+			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
+		}
+	}
+
 	onMount(async () => {
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
@@ -48,12 +52,9 @@
 			return;
 		}
 
-		if ($currentUser && $currentUser.id) {
-			alert('A user with this ID already exists!');
-			goto(
-				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
-			);
-		}
+		// if ($currentUser && $currentUser.id) {
+		// 	goto(localStorage.getItem('redirect') ?? '/exhibition/1');
+		// }
 
 		await data.supabase
 			.from('company')
@@ -63,12 +64,6 @@
 			.then((res: any) => {
 				if (res.data) {
 					currentUser.set(res.data);
-					alert('A user with this ID already exists!');
-					// showAlert = true;
-					goto(
-						localStorage.getItem('redirect') ??
-							`/exhibition/reserve/register/${data?.session?.user.id}`
-					);
 				}
 			});
 
@@ -105,8 +100,8 @@
 			userData.passport_image = userData.passport_image || [];
 			userData.user_image = userData.user_image || [];
 
-			'Passport Images:', passportFiles;
-			'User Images:', userImageFiles;
+			console.log('Passport Images:', passportFiles);
+			console.log('User Images:', userImageFiles);
 
 			if (passportFiles.length === 0) {
 				passportImageError = true;
@@ -159,13 +154,21 @@
 			userData.user_image = uploadedPaths.filter((path) => path !== null);
 		}
 
-		userData;
+		console.log(userData);
 
 		const { data: existingData } = await data.supabase
 			.from('company')
 			.select('*')
 			.eq('uid', data?.session?.user.id)
 			.single();
+
+		if (existingData) {
+			alert('A user with this ID already exists!');
+			goto(
+				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
+			);
+			return;
+		}
 
 		if (existingData) {
 			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
@@ -239,7 +242,7 @@
 							previewPassportImages = [...previewPassportImages, reader.result];
 						}
 					};
-					// (previewPassportImages);
+					// console.log(previewPassportImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -249,7 +252,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					'///', passportFiles;
+					console.log('///', passportFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -279,7 +282,7 @@
 							previewUserImages = [...previewUserImages, reader.result];
 						}
 					};
-					// (previewUserImages);
+					// console.log(previewUserImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -289,7 +292,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					userImageFiles;
+					console.log(userImageFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -657,13 +660,6 @@
 		</div>
 	</div>
 </form>
-
-<!-- {#if showAlert}
-	<Alert dismissable>
-		<InfoCircleSolid slot="icon" class="w-4 h-4" />
-		A user with this ID already exists!
-	</Alert>
-{/if} -->
 
 <style>
 	.dropzone {
