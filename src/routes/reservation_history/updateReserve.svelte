@@ -12,8 +12,6 @@
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
-	import { goto } from '$app/navigation';
-
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
@@ -196,19 +194,22 @@
 		reservationData.extra_discount_checked = extraDiscountChecked;
 
 		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
+
 		reservedSeatArea.map((area: any) => {
 			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
 			if (existingSeatAreaIndex > -1) {
 				areas[existingSeatAreaIndex].quantity =
-					areas[existingSeatAreaIndex].quantity + area.quantity;
+					+areas[existingSeatAreaIndex].quantity + +area.quantity;
 			}
 		});
 		reservedSeatData.area.map((area: any) => {
 			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
 			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
-				areas[existingSeatAreaIndex].quantity = area.quantity;
+				areas[existingSeatAreaIndex].quantity =
+					areas[existingSeatAreaIndex].quantity - area.quantity;
 			}
 		});
+
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
 
 		setTimeout(() => {
@@ -341,7 +342,7 @@
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					{#if availableSeatArea.quantity > 0}
+					{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
 						<div class="flex gap-2 justify-between items-center my-2">
 							<p class=" text-start text-md md:text-2xl font-medium my-2">
 								{availableSeatArea.area}
@@ -387,7 +388,7 @@
 				{/each}
 				<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 				<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
-				<div class="flex gap-2 justify-between items-center my-2">
+				<!-- <div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
@@ -434,7 +435,7 @@
 							</p>
 						{/if}
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
@@ -504,13 +505,13 @@
 			>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				<div class="flex justify-center items-center">
-					{#if preview_url.length > 0}
+					{#if currentActiveSeat?.excel_preview_url}
 						<img
 							src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
 								'/' +
 								currentActiveSeat?.excel_preview_url}
 							alt="thumbnail"
-							class="bg-red-400 w-2/3 h-56 object-cover rounded"
+							class=" w-2/3 h-56 object-cover rounded"
 						/>
 					{:else}{/if}
 				</div>

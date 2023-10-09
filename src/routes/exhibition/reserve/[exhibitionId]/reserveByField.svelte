@@ -53,9 +53,11 @@
 	};
 
 	onMount(() => {
-		preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
-			data.seat_layout[0]?.excel_preview_url
-		}`;
+		if (data.seat_layout[0]?.excel_preview_url) {
+			preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+				data.seat_layout[0]?.excel_preview_url
+			}`;
+		}
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
 		discountedDescription =
@@ -261,7 +263,7 @@
 			</div>
 			<div>
 				{#each areas as availableSeatArea, index}
-					{#if availableSeatArea.quantity > 0}
+					{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
 						<div class="flex gap-2 justify-between items-center my-2">
 							<p
 								class=" text-md md:text-2xl font-medium my-2 w-[60px] md:w-[150px] text-center md:text-start"
@@ -313,7 +315,7 @@
 				<p class="text-sm md:text-lg mt-1">
 					{$LL.reservation.manual_area_description()}
 				</p>
-				<div class="flex gap-2 justify-between items-center my-2">
+				<!-- <div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
 							<NumberInput
@@ -359,7 +361,7 @@
 							</p>
 						{/if}
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div
 				class="w-full mt-6 border-t-2 p-2 flex justify-end"
@@ -433,14 +435,15 @@
 				>{$LL.reservation.upload_file()}</Button
 			>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
-				<div class="flex justify-center items-center">
-					{#if preview_url.length > 0}
+				{#if preview_url}
+					<div class="flex justify-center items-center">
 						<img
 							src={preview_url}
 							alt="preview"
-							class="bg-red-400 w-full lg:w-2/3 h-56 object-cover rounded"
-						/>{/if}
-				</div>
+							class="w-full lg:w-2/3 h-56 object-cover rounded"
+						/>
+					</div>
+				{/if}
 
 				<div class="file-input flex flex-col gap-2 w-full justify-center items-center">
 					<input
