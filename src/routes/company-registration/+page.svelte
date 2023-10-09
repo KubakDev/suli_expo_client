@@ -2,10 +2,11 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { currentUser } from '../../stores/currentUser';
-	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
+	import { Button, Fileupload, Input, Label, Toast } from 'flowbite-svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 
 	let imageFile: File | undefined;
 	let fileName: string;
@@ -16,11 +17,12 @@
 	let userImageError = false;
 	let passportFiles: { fileName: string; file: File }[] = [];
 	let userImageFiles: { fileName: string; file: File }[] = [];
-
+	let formSubmitted = false;
+	let loaded = false;
 	let direction = 'ltr';
-	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
-
 	export let data: any;
+
+	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 
 	let userData: any = {
 		logo_url: '',
@@ -41,9 +43,7 @@
 			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
 		}
 	}
-	let formSubmitted = false;
 
-	let loaded = false;
 	onMount(async () => {
 		if (!data.session && !data.session?.user) {
 			setTimeout(() => {
@@ -52,12 +52,9 @@
 			return;
 		}
 
-		//
-		//
-
-		if ($currentUser && $currentUser.id) {
-			goto(localStorage.getItem('redirect') ?? '/exhibition/1');
-		}
+		// if ($currentUser && $currentUser.id) {
+		// 	goto(localStorage.getItem('redirect') ?? '/exhibition/1');
+		// }
 
 		await data.supabase
 			.from('company')
@@ -103,8 +100,8 @@
 			userData.passport_image = userData.passport_image || [];
 			userData.user_image = userData.user_image || [];
 
-			'Passport Images:', passportFiles;
-			'User Images:', userImageFiles;
+			console.log('Passport Images:', passportFiles);
+			console.log('User Images:', userImageFiles);
 
 			if (passportFiles.length === 0) {
 				passportImageError = true;
@@ -157,16 +154,20 @@
 			userData.user_image = uploadedPaths.filter((path) => path !== null);
 		}
 
-		userData;
+		console.log(userData);
 
-		const { data: existingData } = await data.supabase
+		const { data: existingData, error } = await data.supabase
 			.from('company')
 			.select('*')
 			.eq('uid', data?.session?.user.id)
 			.single();
 
-		if (existingData) {
-			await data.supabase.from('company').update(userData).eq('uid', data?.session?.user.id);
+		if (existingData && error) {
+			alert('An error occurred while processing your request or the company has already exist');
+			goto(
+				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
+			);
+			return;
 		} else {
 			await data.supabase.from('company').insert({
 				...userData,
@@ -237,7 +238,7 @@
 							previewPassportImages = [...previewPassportImages, reader.result];
 						}
 					};
-					// (previewPassportImages);
+					// console.log(previewPassportImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -247,7 +248,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					'///', passportFiles;
+					console.log('///', passportFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -277,7 +278,7 @@
 							previewUserImages = [...previewUserImages, reader.result];
 						}
 					};
-					// (previewUserImages);
+					// console.log(previewUserImages);
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -287,7 +288,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					userImageFiles;
+					console.log(userImageFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -390,6 +391,10 @@
 				...userData.user_image.slice(index + 1)
 			];
 		}
+	}
+
+	$: {
+		console.log($currentUser);
 	}
 </script>
 
