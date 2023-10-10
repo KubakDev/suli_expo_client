@@ -19,11 +19,7 @@
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
 	import { currentMainThemeColors } from '../stores/darkMode';
-	import { Modal } from 'flowbite-svelte';
-	import { detectLocale } from '$lib/i18n/i18n-util';
-	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
-	import { setLocale } from '$lib/i18n/i18n-svelte';
-
+ 
 	register();
 	export let data;
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;

@@ -262,6 +262,7 @@
 	}
 </script>
 
+<!-- showing  modal dialog for choose the language while the website it gonna be load   -->
 <div class={dropdownOpenLang ? 'modal-open' : 'modal-closed'}>
 	<div class="modal-bg" />
 	<div class="modal-content lg:w-[300px] w-64 mx-auto bg-gray-100 shadow">
@@ -499,34 +500,40 @@
 
 			{#each navTitles as navTitle}
 				{#if navTitle.urls}
-					<div class="nav-container flex-1 flex flex-col md:flex-row justify-center items-center">
-						<div class="menu-container inline-block relative">
-							<button
-								id={navTitle.title}
-								class="menu-button text-center font-medium inline-flex items-center justify-center text-base focus:outline-none focus:ring-0 cursor-pointer lg:text-lg"
+					<div class="menu-container inline-block relative">
+						<button
+							on:click={() => updateActiveUrl(navTitle.url ?? '')}
+							style={activeUrl == navTitle.url
+								? `color:${$currentMainThemeColors.primaryColor} ;`
+								: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
+							id={navTitle.title}
+							class="lg:-ml-3 text-center font-medium inline-flex items-center justify-center text-base focus:outline-none focus:ring-0 cursor-pointer lg:text-lg"
+						>
+							<Chevron aligned>
+								<span class="mx-2">
+									{translation[navTitle.title + '']()}
+								</span></Chevron
 							>
-								<Chevron aligned>{translation[navTitle.title + '']()}</Chevron>
-							</button>
+						</button>
 
-							<ul
-								class="pt-5 menu-list hidden absolute z-20 p-2 first-letter py-2 rounded"
-								style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
-							>
-								{#each navTitle.urls as url}
-									<li>
-										<a
-											class="menu-item rounded block whitespace-no-wrap mb-1 text-base"
-											href={url.url}
-											style={activeUrl.startsWith(`/${url.url.split('/')[1]}`)
-												? `color:${$currentMainThemeColors.primaryColor}`
-												: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
-										>
-											{translation[url.title + '']()}
-										</a>
-									</li>
-								{/each}
-							</ul>
-						</div>
+						<ul
+							class="pt-5 menu-list hidden absolute z-20 first-letter py-2 rounded"
+							style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
+						>
+							{#each navTitle.urls as url}
+								<li>
+									<a
+										class="menu-item rounded block whitespace-no-wrap mb-1 text-base"
+										href={url.url}
+										style={activeUrl.startsWith(`/${url.url.split('/')[1]}`)
+											? `color:${$currentMainThemeColors.primaryColor}`
+											: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
+									>
+										{translation[url.title + '']()}
+									</a>
+								</li>
+							{/each}
+						</ul>
 					</div>
 				{:else}
 					<NavLi
@@ -536,8 +543,10 @@
 						style={activeUrl == navTitle.url
 							? `color:${$currentMainThemeColors.primaryColor} ;`
 							: `color:${$currentMainThemeColors.overlaySecondaryColor}`}
-						active={activeUrl == navTitle.url}>{translation[navTitle.title + '']()}</NavLi
+						active={activeUrl == navTitle.url}
 					>
+						{translation[navTitle.title + '']()}
+					</NavLi>
 				{/if}
 			{/each}
 
@@ -637,8 +646,9 @@
 
 	.menu-item {
 		transition: opacity 0.3s ease-in-out;
-		width: 70px;
-		height: 30px;
+		text-align: center;
+		width: 80px;
+		height: 20px;
 		display: block;
 	}
 
