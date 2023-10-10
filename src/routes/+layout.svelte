@@ -2,14 +2,13 @@
 	import Navbar from '../lib/components/Navbar.svelte';
 	import '../app.css';
 	import './styles.css';
-	import Headerbar from '$lib/components/Headerbar.svelte';
 	import { onMount } from 'svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { locale } from '$lib/i18n/i18n-svelte';
 	import { changeLanguage } from '../utils/language';
 	import { contactInfoSectionStore } from '../stores/contactInfo';
-	import { color, easeCubicIn, transition } from 'd3';
-	import { fade, fly } from 'svelte/transition';
+	import { easeCubicIn } from 'd3';
+	import { fly } from 'svelte/transition';
 	import { previousPageStore } from '../stores/navigationStore';
 	import { register } from 'swiper/element';
 	import { activeThemeStore } from '../stores/ui/theme';
@@ -20,6 +19,10 @@
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
 	import { currentMainThemeColors } from '../stores/darkMode';
+	import { Modal } from 'flowbite-svelte';
+	import { detectLocale } from '$lib/i18n/i18n-util';
+	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
+	import { setLocale } from '$lib/i18n/i18n-svelte';
 
 	register();
 	export let data;
@@ -36,6 +39,7 @@
 	}
 
 	let supabase: any;
+
 	if ($locale && data.supabase) {
 		contactInfoSectionStore.get($locale, data.supabase);
 	}
@@ -44,6 +48,7 @@
 		await activeThemeStore.getActiveTheme(data.supabase);
 		setTheme();
 	});
+
 	onMount(() => {
 		supabase = data.supabase;
 		changeLanguage(data.locale);

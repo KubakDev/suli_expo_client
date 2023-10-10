@@ -1,7 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import { Navbar, NavLi, NavUl, NavHamburger, Chevron, Avatar, NavBrand } from 'flowbite-svelte';
+	import {
+		Navbar,
+		NavLi,
+		NavUl,
+		NavHamburger,
+		Chevron,
+		Avatar,
+		NavBrand,
+		Modal
+	} from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
@@ -10,7 +19,7 @@
 	import Constants from '../../utils/constants';
 	import { previousPageStore } from '../../stores/navigationStore';
 	import { getNameRegex } from '../../utils/urlRegexName';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
 	import { Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
@@ -120,16 +129,6 @@
 		previousPageStore.set($page.url.pathname);
 	}
 
-	async function langSelect(lang: string) {
-		var locale = detectLocale(() => [lang]);
-		await loadLocaleAsync(locale);
-		setLocale(locale);
-		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
-		changeLanguage(locale);
-		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
-		dropdownOpen = false;
-	}
-
 	let currentTheme: string;
 	themeToggle.subscribe((value) => {
 		currentTheme = value;
@@ -222,14 +221,85 @@
 		} catch (err) {}
 	}
 
-	function toggleDropdown() {
-		dropdownOpen = !dropdownOpen;
-	}
-
 	function toggleDropdownProfile() {
 		dropdownOpenProfile = !dropdownOpenProfile;
 	}
+
+	// show modal dialog for choose the language
+	let dropdownOpenLang = !localStorage.getItem('selectedLanguage');
+
+	onMount(() => {
+		const storedLang = localStorage.getItem('selectedLanguage');
+		if (storedLang) {
+			langSelect(storedLang);
+		}
+	});
+
+	async function langSelect(lang: string) {
+		var locale = detectLocale(() => [lang]);
+		await loadLocaleAsync(locale);
+		setLocale(locale);
+		selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
+		changeLanguage(locale);
+		fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
+		localStorage.setItem('selectedLanguage', lang);
+		dropdownOpenLang = false;
+		dropdownOpen = false;
+	}
+
+	onMount(() => {
+		if (dropdownOpenLang) {
+			document.body.style.overflow = 'hidden';
+		}
+	});
+
+	onDestroy(() => {
+		document.body.style.overflow = '';
+	});
+
+	function toggleDropdownList() {
+		dropdownOpen = !dropdownOpen;
+	}
 </script>
+
+<div class={dropdownOpenLang ? 'modal-open' : 'modal-closed'}>
+	<div class="modal-bg" />
+	<div class="modal-content lg:w-[300px] w-64 mx-auto bg-gray-100 shadow">
+		<ul class="space-y-3 p-8 shadow-2xl">
+			<li>
+				<button
+					class="flex language-button-hover items-center justify-center gap-10 border py-1 px-2 rounded-lg w-full"
+					on:click={() => langSelect('ckb')}
+				>
+					<img
+						src="../../../icons/kurdistan.png"
+						alt="Kurdistan Flag"
+						class="w-10 h-10 object-cover"
+					/>
+					<span class=" text-base lg:text-xl font-semibold">کوردی</span>
+				</button>
+			</li>
+			<li>
+				<button
+					class="flex language-button-hover items-center justify-center gap-10 border py-1 px-2 rounded-lg w-full"
+					on:click={() => langSelect('ar')}
+				>
+					<img src="../../../icons/iraq.png" alt="Iraq Flag" class="w-10 h-10 object-cover" />
+					<span class=" text-base lg:text-xl font-semibold">العربية</span>
+				</button>
+			</li>
+			<li>
+				<button
+					class="flex language-button-hover items-center justify-center gap-10 border py-1 px-2 rounded-lg w-full"
+					on:click={() => langSelect('en')}
+				>
+					<img src="../../../icons/us.png" alt="Iraq Flag" class="w-10 h-10 object-cover" />
+					<span class=" text-base lg:text-xl font-semibold">English</span>
+				</button>
+			</li>
+		</ul>
+	</div>
+</div>
 
 <div class="w-full">
 	<Navbar
@@ -475,7 +545,7 @@
 			<div class="w-full flex-1 flex flex-col md:flex-row justify-end items-center md:left-0">
 				<div class="dropdown inline-block relative">
 					<button
-						on:click={toggleDropdown}
+						on:click={toggleDropdownList}
 						style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};"
 						class="text-center font-medium inline-flex items-center justify-center py-2.5 text-sm border px-2 w-full rounded-3xl focus:outline-none focus:ring-0 border-black"
 					>
@@ -543,8 +613,9 @@
 		opacity: 0.5;
 	}
 
-	/* profile menu */
-
+	.language-button-hover:hover {
+		opacity: 0.8;
+	}
 	.dropdown-profile:hover .dropdown-menu-profile {
 		display: block;
 	}
@@ -573,5 +644,30 @@
 
 	.menu-item:hover {
 		opacity: 0.7;
+	}
+
+	.modal-open {
+		display: block;
+	}
+	.modal-closed {
+		display: none;
+	}
+	.modal-bg {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(4, 4, 4, 0.741);
+		z-index: 39;
+	}
+	.modal-content {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 40;
+		border-radius: 0.5rem;
+		overflow: hidden;
 	}
 </style>
