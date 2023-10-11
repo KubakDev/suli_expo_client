@@ -245,6 +245,9 @@
 		localStorage.setItem('selectedLanguage', lang);
 		dropdownOpenLang = false;
 		dropdownOpen = false;
+
+		// Enable scrolling here
+		document.body.style.overflow = '';
 	}
 
 	onMount(() => {
