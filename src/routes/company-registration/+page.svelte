@@ -6,7 +6,6 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import imageCompression from 'browser-image-compression';
 	import { currentMainThemeColors } from '../../stores/darkMode';
-	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 
 	let imageFile: File | undefined;
 	let fileName: string;
@@ -111,6 +110,11 @@
 				userImageError = true;
 				return;
 			}
+
+			if (!userData.passport_image || !userData.user_image) {
+				alert('anUnknown error occurred while uploading the file. Please try again.');
+				return;
+			}
 		} else {
 			userData.country = selectedCountry;
 		}
@@ -153,8 +157,6 @@
 			const uploadedPaths = await Promise.all(uploadPromises);
 			userData.user_image = uploadedPaths.filter((path) => path !== null);
 		}
-
-		console.log(userData);
 
 		const { data: existingData, error } = await data.supabase
 			.from('company')
@@ -205,7 +207,7 @@
 			reader.onloadend = () => {
 				userData.logo_url = reader.result as string;
 				const randomText = getRandomTextNumber();
-				const newFileName = `users/${randomText}_${compressedFile.name}`;
+				const newFileName = `users/${randomText}`;
 				setImageFile(compressedFile);
 				setFileName(newFileName);
 			};
@@ -242,7 +244,7 @@
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
-					const newFileName = `users/${randomText}_${compressedFile.name}`;
+					const newFileName = `users/${randomText}`;
 
 					passportFiles.push({
 						fileName: newFileName,
@@ -282,7 +284,7 @@
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
-					const newFileName = `users/${randomText}_${compressedFile.name}`;
+					const newFileName = `users/${randomText}`;
 
 					userImageFiles.push({
 						fileName: newFileName,
