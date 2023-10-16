@@ -241,13 +241,8 @@
 				userImageError = false;
 			}
 
-			if (!result.user_image) {
-				userImageError = true;
-			}
-			if (!result.passport_image) {
-				passportImageError = true;
-			}
 			if (passportImageError || userImageError) {
+				alert('Passport image and user image cannot be empty.');
 				return;
 			}
 		}
@@ -258,41 +253,51 @@
 
 		if (imageFile) {
 			const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
-			result.logo_url = response.data?.path || '';
-		}
-
-		if (passportFiles) {
-			for (let passportFile of passportFiles) {
-				const response2 = await data.supabase.storage
-					.from('image')
-					.upload(passportFile.fileName, passportFile.file);
-				// (response2.data.path);
-				if (response2.data) {
-					result.passport_image.push(response2?.data?.path);
-				}
-				if (response2.error) {
-					console.error('Error uploading passport image:', response2.error);
-				} else {
-					// result.passport_image.push(response2.data?.path || '');
-				}
+			if (!result.logo_url) {
+				alert('anUnknown error occurred while uploading the file. Please try again.');
+				return;
+			} else {
+				result.logo_url = response.data?.path || '';
 			}
 		}
 
-		if (userImageFiles) {
-			for (let userImageFile of userImageFiles) {
-				const response2 = await data.supabase.storage
-					.from('image')
-					.upload(userImageFile.fileName, userImageFile.file);
-				if (response2.data) {
-					result.user_image.push(response2?.data?.path);
-				}
-				if (response2.error) {
-					console.error('Error uploading passport image:', response2.error);
-				} else {
-					// result.passport_image.push(response2.data?.path || '');
-				}
+		//upload passport image
+		for (let passportFile of passportFiles) {
+			const response = await data.supabase.storage
+				.from('image')
+				.upload(passportFile.fileName, passportFile.file);
+
+			if (response.error) {
+				console.error('Error uploading passport image:', response.error);
+				alert('An error occurred while uploading passport images. Please try again.');
+				return;
+			}
+			if (response.data) {
+				result.passport_image.push(response.data.path);
 			}
 		}
+
+		// Upload user images
+		for (let userImageFile of userImageFiles) {
+			const response = await data.supabase.storage
+				.from('image')
+				.upload(userImageFile.fileName, userImageFile.file);
+
+			if (response.error) {
+				console.error('Error uploading user image:', response.error);
+				alert('An error occurred while uploading user images. Please try again.');
+				return;
+			}
+
+			if (response.data) {
+				result.user_image.push(response.data.path);
+			}
+		}
+
+		// if (result.passport_image.length === 0 || result.user_image.length === 0) {
+		// 	alert('Passport image and user image cannot be empty.');
+		// 	return;
+		// }
 
 		if (selectedCountry === 'Other') {
 			result.country = otherCountryName;

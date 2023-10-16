@@ -319,6 +319,7 @@
 	}
 
 	function exportFile(reservation: any) {
+		console.log(reservation?.file_url);
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);

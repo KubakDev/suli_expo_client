@@ -99,20 +99,12 @@
 			userData.passport_image = userData.passport_image || [];
 			userData.user_image = userData.user_image || [];
 
-			console.log('Passport Images:', passportFiles);
-			console.log('User Images:', userImageFiles);
-
 			if (passportFiles.length === 0) {
 				passportImageError = true;
 				return;
 			}
 			if (userImageFiles.length === 0) {
 				userImageError = true;
-				return;
-			}
-
-			if (!userData.passport_image || !userData.user_image) {
-				alert('anUnknown error occurred while uploading the file. Please try again.');
 				return;
 			}
 		} else {
@@ -122,17 +114,19 @@
 		const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
 		userData.logo_url = response.data?.path || '';
 
+		// Upload passport images
 		if (passportFiles) {
 			const uploadPromises = passportFiles.map(async (passportFile) => {
-				const response2 = await data.supabase.storage
+				const response = await data.supabase.storage
 					.from('image')
 					.upload(passportFile.fileName, passportFile.file);
 
-				if (response2.error) {
-					console.error('Error uploading passport image:', response2.error);
+				if (response.error) {
+					// console.error('Error uploading passport image:', response.error);
+					alert('An error occurred while uploading passport images. Please try again.');
 					return null;
 				} else {
-					return response2?.data?.path;
+					return response?.data?.path;
 				}
 			});
 
@@ -140,6 +134,7 @@
 			userData.passport_image = uploadedPaths.filter((path) => path !== null);
 		}
 
+		// Upload user images
 		if (userImageFiles) {
 			const uploadPromises = userImageFiles.map(async (userImageFile) => {
 				const response2 = await data.supabase.storage
@@ -147,7 +142,8 @@
 					.upload(userImageFile.fileName, userImageFile.file);
 
 				if (response2.error) {
-					console.error('Error uploading passport image:', response2.error);
+					console.error('Error uploading user image:', response2.error);
+					alert('An error occurred while uploading user images. Please try again.');
 					return null;
 				} else {
 					return response2?.data?.path;
@@ -158,6 +154,12 @@
 			userData.user_image = uploadedPaths.filter((path) => path !== null);
 		}
 
+		// Check if passport_image and user_image are not empty
+		// if (userData.passport_image.length === 0 || userData.user_image.length === 0) {
+		// 	alert('Passport image and user image cannot be empty.');
+		// 	return;
+		// }
+
 		const { data: existingData, error } = await data.supabase
 			.from('company')
 			.select('*')
@@ -165,7 +167,7 @@
 			.single();
 
 		if (existingData && error) {
-			alert('An error occurred while processing your request or the company has already exist');
+			alert('An error occurred while processing your request or the company already exists');
 			goto(
 				localStorage.getItem('redirect') ?? `/exhibition/reserve/register/${data?.session?.user.id}`
 			);
@@ -250,7 +252,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					console.log('///', passportFiles);
+					// console.log('///', passportFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
