@@ -479,9 +479,9 @@
 						</div>
 					</label>
 
-					{#if imageFile_excel === null}
+					<!-- {#if imageFile_excel === null}
 						<span class="text-red-600">{$LL.reservation.required_file()}</span>
-					{/if}
+					{/if} -->
 					{#if fileError}
 						<span class="text-red-600">{$LL.reservation.short_message()}</span>
 					{/if}
