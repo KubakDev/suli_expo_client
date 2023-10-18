@@ -292,7 +292,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					console.log(userImageFiles);
+					// console.log(userImageFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -397,9 +397,7 @@
 		}
 	}
 
-	$: {
-		console.log($currentUser);
-	}
+	 
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
