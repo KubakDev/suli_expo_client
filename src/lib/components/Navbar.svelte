@@ -101,7 +101,7 @@
 	let userProfileDropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 
-	// acgtive on route
+	// active on route
 	let activeUrl: string;
 	$: {
 		activeUrl = $page.url.pathname;
@@ -215,15 +215,33 @@
 		try {
 			const { error } = await data.supabase.auth.signOut();
 			if (error) throw error;
-
+			// console.log('first', $currentUser);
 			currentUser.set(null);
 			goto('/');
 		} catch (err) {}
 	}
 
-	function toggleDropdownProfile() {
+	const toggleDropdownProfile = () => {
 		dropdownOpenProfile = !dropdownOpenProfile;
+		if (dropdownOpenProfile) {
+			document.addEventListener('click', closeDropdownOnClickOutside);
+		} else {
+			document.removeEventListener('click', closeDropdownOnClickOutside);
+		}
+	};
+
+	function closeDropdownOnClickOutside(event) {
+		const dropdown = document.querySelector('.dropdown-profile');
+		if (dropdown && !dropdown.contains(event.target)) {
+			dropdownOpenProfile = false;
+			document.removeEventListener('click', closeDropdownOnClickOutside);
+		}
 	}
+
+	// Clean up event listener on component destroy
+	onDestroy(() => {
+		document.removeEventListener('click', closeDropdownOnClickOutside);
+	});
 
 	// show modal dialog for choose the language
 	let dropdownOpenLang = !localStorage.getItem('selectedLanguage');
@@ -328,14 +346,18 @@
 								>
 									<div class="flex items-center space-x-4">
 										<Avatar
+											class={`${
+												selectedLang === 'العربية' || selectedLang === 'کوردی' ? 'mx-2' : 'mx-0'
+											}`}
 											src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 												$currentUser?.logo_url
 											}`}
 										/>
+
 										<p>{$currentUser.company_name}</p>
 										{#if notifications?.length > 0}
 											<span
-												class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 rounded-full flex justify-center items-center"
+												class="absolute text-xs -top-2 right-0 w-5 h-5 bg-red-500 text-white rounded-full flex justify-center items-center"
 											>
 												{notifications?.length}
 											</span>
@@ -346,12 +368,15 @@
 								{#if dropdownOpenProfile}
 									<ul
 										style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
-										class="dropdown-menu-profile absolute py-2 rounded"
+										class="dropdown-menu-profile absolute py-2 px-1 rounded z-50"
 									>
 										<li>
 											<button
 												class="text-sm profile-button rounded block whitespace-no-wrap"
-												on:click={() => goto(`/exhibition/reserve/register/${$currentUser.uid}`)}
+												on:click={() => {
+													goto(`/exhibition/reserve/register/${$currentUser.uid}`);
+													dropdownOpenProfile = false;
+												}}
 											>
 												<div class="flex justify-start items-center">
 													<UserSolid class="h-4 w-4 text-[#dce1de] mr-2" />
@@ -362,7 +387,10 @@
 										<li>
 											<button
 												class="profile-button rounded block whitespace-no-wrap"
-												on:click={() => goto('/reservation_history')}
+												on:click={() => {
+													goto('/reservation_history');
+													dropdownOpenProfile = false;
+												}}
 											>
 												<div class="flex justify-start items-center">
 													<svg
@@ -387,7 +415,10 @@
 										<li>
 											<button
 												class="text-sm profile-button rounded block whitespace-no-wrap"
-												on:click={() => logoutFunction()}
+												on:click={() => {
+													logoutFunction();
+													dropdownOpenProfile = false;
+												}}
 											>
 												<div class="flex justify-start items-center">
 													<svg
@@ -412,7 +443,10 @@
 										<li>
 											<button
 												class="text-sm profile-button rounded block whitespace-no-wrap"
-												on:click={() => goto('/reservation_history')}
+												on:click={() => {
+													goto('/reservation_history');
+													dropdownOpenProfile = false;
+												}}
 											>
 												<div class="flex justify-start items-center">
 													<svg
@@ -431,33 +465,35 @@
 													</svg>
 													<div>
 														<span>{$LL.profile.reservation_notification()}</span>
+
 														<span class="text-red-600 font-bold ml-3">{notifications?.length}</span>
 													</div>
 												</div>
 											</button>
 										</li>
-										<hr />
+										<hr
+											class="w-36 mt-2 mx-auto"
+											style="color: {$currentMainThemeColors.overlaySecondaryColor};"
+										/>
 										<li>
 											{#each notifications as notificationData}
 												<button
 													class="text-sm flex justify-between cursor-default hover:none shadow-sm my-3 rounded-md"
 												>
 													<div class="w-full">
-														<div class="flex justify-between mb-4">
+														<div class="flex justify-between items-start mb-4">
 															<div>
 																{notificationData.exhibition_name}
 															</div>
 															<div
-																class={`${
+																class={` ${
 																	notificationData.status === 'accept'
 																		? 'bg-green-500'
 																		: 'bg-red-500'
 																}
-												px-2 py-1 rounded-full text-white flex justify-center items-center
-												`}
-															>
-																<!-- {$LL.reservation.statuses[notificationData.status]()} -->
-															</div>
+										                        	 w-4 h-4 px-2 py-1 rounded-full text-white flex justify-center items-center
+											            	`}
+															/>
 														</div>
 														<p>{notificationData.message ?? ''}</p>
 													</div>

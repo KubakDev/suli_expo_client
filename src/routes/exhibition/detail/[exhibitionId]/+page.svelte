@@ -59,24 +59,16 @@
 
 	function openPdfFile(pdfLink: string) {
 		const completePdfLink = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL + '/' + pdfLink;
-		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-		const newWindow = window.open();
-		if (newWindow !== null) {
-			newWindow.document.body.innerHTML = `<iframe src="${completePdfLink}" width="100%" height="100%"></iframe>`;
+		if (completePdfLink) {
+			window.open(completePdfLink, '_blank');
+		} else {
+			console.error('Invalid PDF link');
 		}
 	}
 </script>
 
 <section class="w-full flex-1 overflow-x-hidden">
-	<!-- <a
-		href={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_PDF_URL}/${exhibition?.pdf_files}`}
-		target="_blank"
-		class="btn btn-primary"
-	>
-		Open PDF
-	</a> -->
-
 	{#if exhibitionImage.length > 0}
 		<Carousel
 			slideClass="w-full"
@@ -157,7 +149,28 @@
 								</p>
 							</div>
 						</div>
+
 						<div class="flex h-20 items-center my-1">
+							<div
+								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
+								class="flex rounded-full h-20 w-20 justify-center items-center"
+							>
+								<MapPin size="50" />
+							</div>
+							<div class="h-full w-4" />
+							<div class="flex flex-col">
+								<h2
+									style="color: {$currentMainThemeColors.overlayPrimaryColor}"
+									class=" text-lg font-bold"
+								>
+									{exhibition?.location_title ?? 'Not Available'}
+								</h2>
+								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
+									{$LL.exhibition_mini_data.Companies()}
+								</p>
+							</div>
+						</div>
+						<!-- <div class="flex h-20 items-center my-1">
 							<div
 								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
 								class="flex rounded-full h-20 w-20 justify-center items-center"
@@ -176,7 +189,7 @@
 									{exhibition?.location ?? 'Not Available'}
 								</p>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<div class="w-full flex flex-row justify-center pt-16 pb-10">
 						<TitleUi
