@@ -7,6 +7,7 @@ const createCarouselStore = () => {
 	// const  // =new pino.pino({prettyPrint: true});
 	const { subscribe, set, update } = writable<CarouselModel[]>();
 
+	
 	return {
 		subscribe,
 		set: (carousels: CarouselModel[]) => {
