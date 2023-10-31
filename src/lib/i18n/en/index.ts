@@ -77,14 +77,12 @@ const en = {
 		warning_message: 'Please upload a Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
-
-		title: 'Exhibition Seats',
+		title: 'Booth Reservation',
 		contract: 'View PDF Contract',
 		welcome: 'Welcome',
 		logged_in_description:
 			'To reserve a seat and get information about each one , click goto reservation page',
-		not_logged_in_description:
-			'To reserve a seat and get information about each one ,you have to logging before',
+		not_logged_in_description: 'To book your booth and get more information, Please login before ',
 		logged_in_button: 'goto reservation page',
 		not_logged_in_button: 'goto login page',
 		description: 'Description',
