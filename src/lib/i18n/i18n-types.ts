@@ -289,7 +289,7 @@ type RootTranslation = {
 		 */
 		reserveUpdated: string
 		/**
-		 * E​x​h​i​b​i​t​i​o​n​ ​S​e​a​t​s
+		 * B​o​o​t​h​ ​R​e​s​e​r​v​a​t​i​o​n
 		 */
 		title: string
 		/**
@@ -305,7 +305,7 @@ type RootTranslation = {
 		 */
 		logged_in_description: string
 		/**
-		 * T​o​ ​r​e​s​e​r​v​e​ ​a​ ​s​e​a​t​ ​a​n​d​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​o​n​e​ ​,​y​o​u​ ​h​a​v​e​ ​t​o​ ​l​o​g​g​i​n​g​ ​b​e​f​o​r​e
+		 * T​o​ ​b​o​o​k​ ​y​o​u​r​ ​b​o​o​t​h​ ​a​n​d​ ​g​e​t​ ​m​o​r​e​ ​i​n​f​o​r​m​a​t​i​o​n​,​ ​P​l​e​a​s​e​ ​l​o​g​i​n​ ​b​e​f​o​r​e​ 
 		 */
 		not_logged_in_description: string
 		/**
@@ -919,7 +919,7 @@ export type TranslationFunctions = {
 		 */
 		reserveUpdated: () => LocalizedString
 		/**
-		 * Exhibition Seats
+		 * Booth Reservation
 		 */
 		title: () => LocalizedString
 		/**
@@ -935,7 +935,7 @@ export type TranslationFunctions = {
 		 */
 		logged_in_description: () => LocalizedString
 		/**
-		 * To reserve a seat and get information about each one ,you have to logging before
+		 * To book your booth and get more information, Please login before 
 		 */
 		not_logged_in_description: () => LocalizedString
 		/**

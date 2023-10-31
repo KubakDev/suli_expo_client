@@ -39,10 +39,7 @@ const createContactInfoSectionStore = () => {
 			// get current selected language
 			//.info(locale);
 			//.info('#############');
-			const result = await supabase
-				.from('contact_info')
-				.select('*')
-				.single();
+			const result = await supabase.from('contact_info').select('*').single();
 
 			if (result.error) {
 				//.error(result.error);

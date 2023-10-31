@@ -27,6 +27,7 @@
 
 	$: {
 		if ($locale) {
+			contactInfoSectionStore.get($locale, data.supabase);
 			contactInfoData = $contactInfoSectionStore;
 		}
 	}
