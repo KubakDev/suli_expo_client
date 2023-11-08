@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let onBtnClick: any = () => {};
 </script>
 
 <Button
 	on:click={onBtnClick}
-	class="border-lightOverlaySecondaryColor dark:border-darkOverlaySecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor hover:bg-lightOverlaySecondaryColor dark:hover:bg-darkOverlaySecondaryColor hover:text-lightOverlayBackgroundColor dark:hover:text-darkOverlayBackgroundColor"
+	style="background-color:{$currentMainThemeColors.primaryColor}; color :{$currentMainThemeColors.overlayPrimaryColor}"
 	dir="ltr"
 	outline
 >
