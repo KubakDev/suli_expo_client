@@ -22,7 +22,6 @@ const createContactInfoSectionStore = () => {
 				.select('*,languages:contact_info_languages(*)')
 				.eq('languages.language', locale)
 				.order('created_at', { ascending: false });
-
 			if (result.error) {
 				//.error(result.error);
 				return null;
@@ -40,7 +39,6 @@ const createContactInfoSectionStore = () => {
 			//.info(locale);
 			//.info('#############');
 			const result = await supabase.from('contact_info').select('*').single();
-
 			if (result.error) {
 				//.error(result.error);
 				return null;
