@@ -25,14 +25,11 @@
 		}
 	}
 
-	$: {
+	onMount(async () => {
 		if ($locale) {
 			contactInfoSectionStore.get($locale, data.supabase);
 			contactInfoData = $contactInfoSectionStore;
 		}
-	}
-
-	onMount(async () => {
 		SocialMedia = (await contactInfoSectionStore.getSingle(data.supabase)) as SocialMediaModel;
 	});
 </script>
