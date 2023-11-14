@@ -12,13 +12,13 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	// import { fabric } from 'fabric';
+	import { fabric } from 'fabric';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 
-	let fabricInstance: any;
+	// let fabric: any;
 	let previousReserveSeatData: any = [];
 	let canvas: Canvas;
 	let container: any;
@@ -39,11 +39,6 @@
 		status: ReservationStatusEnum.PENDING
 	};
 	onMount(async () => {
-		setTimeout(async () => {
-			const { fabric } = await import('fabric');
-			fabricInstance = fabric;
-			// Now you can use fabricInstance as you would use the fabric package
-		}, 1000);
 		if (data) {
 			await loadSeats();
 		}
@@ -66,9 +61,9 @@
 		canvas.renderAll();
 	};
 	const loadSeats = async () => {
-		if (fabricInstance) {
+		if (fabric) {
 			const canvasElement: any = document.getElementById('canvas');
-			canvas = new fabricInstance.Canvas(canvasElement, {
+			canvas = new fabric.Canvas(canvasElement, {
 				hoverCursor: 'default',
 				selection: false
 			});
@@ -125,6 +120,7 @@
 			return;
 		selectedObject = event.target?.objectDetail;
 		clearSelectedDesign();
+		if (!selectedObject?.selectable) return;
 		if (selectedObject) {
 			event.target.set('stroke', '#1782ff');
 			event.target.set('strokeWidth', 4);
@@ -251,14 +247,25 @@
 						}
 						if (reservedSeat.status == 'pending') {
 							obj.set('fill', '#A0B0C2');
-							obj.set('backgroundColor', '#A0B0C2');
 							obj.set('stroke', '#A0B0C2');
 							obj.set('strokeWidth', 3);
 						} else if (reservedSeat.status == 'accept') {
 							obj.set('fill', '#ff176b');
-							obj.set('backgroundColor', '#ff176b');
 							obj.set('stroke', '#ff176b');
 							obj.set('strokeWidth', 3);
+						}
+						if (obj.type == 'group') {
+							obj.forEachObject((child: any) => {
+								if (reservedSeat.status == 'pending') {
+									child.set('fill', '#A0B0C2');
+									child.set('stroke', '#A0B0C2');
+									child.set('strokeWidth', 3);
+								} else if (reservedSeat.status == 'accept') {
+									child.set('fill', '#ff176b');
+									child.set('stroke', '#ff176b');
+									child.set('strokeWidth', 3);
+								}
+							});
 						}
 						obj.setCoords();
 						canvas.renderAll();
@@ -269,7 +276,7 @@
 	}
 </script>
 
-{#if fabricInstance}
+{#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<div class="w-full flex justify-center mt-10">
 			<div class="flex justify-center items-center">
