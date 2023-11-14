@@ -4,7 +4,7 @@
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	//@ts-ignore
-	import ReservationComponent from './ReservationComponent.svelte';
+	// import ReservationComponent from './ReservationComponent.svelte';
 	import SelectedSeatInformationSection from './selectedSeatInformationSection.svelte';
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
