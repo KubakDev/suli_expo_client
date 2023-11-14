@@ -98,7 +98,6 @@
 
 	let dropdownOpen = false;
 	let dropdownOpenProfile = false;
-	let userProfileDropdownOpen = false;
 	let selectedLang = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
 
 	// active on route
@@ -108,7 +107,7 @@
 	}
 	$: {
 		setTimeout(async () => {
-			if (userProfileDropdownOpen) {
+			if (dropdownOpenProfile) {
 				notifications.map((notification: any) => {
 					data.supabase
 						.from('notification')
@@ -230,7 +229,7 @@
 		}
 	};
 
-	function closeDropdownOnClickOutside(event) {
+	function closeDropdownOnClickOutside(event: any) {
 		const dropdown = document.querySelector('.dropdown-profile');
 		if (dropdown && !dropdown.contains(event.target)) {
 			dropdownOpenProfile = false;
