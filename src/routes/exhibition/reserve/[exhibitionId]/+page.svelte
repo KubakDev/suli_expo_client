@@ -48,7 +48,6 @@
 		let activeSeatLayout = response.data.seat_layout.find((x: any) => x.is_active == true);
 		response.data.seat_layout[0] = activeSeatLayout;
 		loaded = true;
-		console.log(response.data);
 		exhibition = response.data;
 	}
 
