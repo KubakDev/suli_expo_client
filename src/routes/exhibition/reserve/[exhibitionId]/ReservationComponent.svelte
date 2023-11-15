@@ -39,7 +39,7 @@
 		status: ReservationStatusEnum.PENDING
 	};
 	onMount(async () => {
-		const f = require('fabric');
+		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
 		}
