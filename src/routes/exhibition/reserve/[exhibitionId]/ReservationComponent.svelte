@@ -12,13 +12,13 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { fabric } from 'fabric';
+	// import { fabric } from 'fabric';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 
-	// let fabric: any;
+	let fabric: any;
 	let previousReserveSeatData: any = [];
 	let canvas: Canvas;
 	let container: any;
@@ -39,6 +39,7 @@
 		status: ReservationStatusEnum.PENDING
 	};
 	onMount(async () => {
+		const f = require('fabric');
 		if (data) {
 			await loadSeats();
 		}
