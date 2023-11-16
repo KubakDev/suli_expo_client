@@ -63,7 +63,6 @@
 		if (completePdfLink) {
 			window.open(completePdfLink, '_blank');
 		} else {
-			console.error('Invalid PDF link');
 		}
 	}
 </script>

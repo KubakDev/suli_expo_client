@@ -62,7 +62,6 @@
 		canvas.renderAll();
 	};
 	const loadSeats = async () => {
-		console.log(fabric);
 		fabric.then((Response: any) => {
 			const canvasElement: any = document.getElementById('canvas');
 			canvas = new Response.fabric.Canvas(canvasElement, {
@@ -167,21 +166,6 @@
 		selectedObject = event.target?.objectDetail;
 		clearSelectedDesign();
 		if (!selectedObject?.selectable) return;
-		if (selectedObject) {
-			event.target.set('stroke', '#1782ff');
-			event.target.set('strokeWidth', 4);
-			event.target.set({
-				backgroundColor: '#ecf1f7',
-				shadow: {
-					color: 'rgba(97, 97, 97, 0.13)',
-					offsetX: 0,
-					offsetY: 4,
-					blur: 17
-				},
-				padding: 8
-			});
-			canvas.renderAll();
-		}
 
 		addSelectedSeat(event.target);
 		selectableObjectTotalPrice = +selectedObject?.price;
@@ -247,18 +231,6 @@
 	};
 	function clearSelectedDesign() {
 		canvas.forEachObject((obj: any) => {
-			obj.set('stroke', '');
-			obj.set('strokeWidth', 0);
-			obj.set({
-				backgroundColor: '',
-				shadow: {
-					color: '',
-					offsetX: 0,
-					offsetY: 0,
-					blur: 0
-				},
-				padding: 0
-			});
 			for (let reservedSeat of previousReserveSeatData) {
 				checkIfTheSeatSold(reservedSeat);
 			}
