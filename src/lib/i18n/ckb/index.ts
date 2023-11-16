@@ -24,6 +24,7 @@ const ckb = {
 	pdf_file: 'پەڕگەی PDF',
 	services: 'خزمەتگوزاری',
 	exhibition: 'پێشانگاکان',
+
 	exhibition_mini_data: {
 		Reservation: {
 			title: 'حیجزکردن',
@@ -73,6 +74,8 @@ const ckb = {
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	total_company_reserve: 'کۆی گشتیی حیجزەکان',
 	reservation: {
+		emptySeatMessage: 'ببورە ، لە ئێستادا هیچ  شوێنێک نیە بۆ حیجزکردن',
+		gotoExhibition: 'بڕۆ بۆپەڕەی  پێشانگا',
 		short_message: ' تەنها ڕێگەت پێدەدرێت بە هاوپێچ کردنی فایلێکی ئێکسڵ',
 		warning_message: 'تکایە پێش حجزکردنی فایلێکی ئێکسڵ هاوپێج بکە.',
 		reserved: 'داواکاریەکەت بە سەرکەوتووی وەرگیرا ، تکایە چاوروان بە تاکوو پەیوەندیت پێوە دەکەین',

@@ -159,6 +159,7 @@
 						});
 					});
 			} else {
+				console.log(reserveSeatData);
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -168,9 +169,15 @@
 						comment: reserveSeatData.comment,
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
-						file_url: fileUrl
+						file_url: fileUrl,
+						services: reserveSeatData.services
 					})
-					.then(() => {
+					.then((Response: any) => {
+						console.log(Response);
+						if (Response.error) {
+							alert('unknown error occurred ');
+							return;
+						}
 						defaultModal = true;
 						seatReserved = true;
 						selectedSeat.set(null);
@@ -414,7 +421,9 @@
 							{#if exhibition?.seat_layout[0]?.excel_preview_url}
 								<div class="flex justify-center items-center">
 									<img
-										src={exhibition?.seat_layout[0]?.excel_preview_url}
+										src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
+											'/' +
+											exhibition?.seat_layout[0]?.excel_preview_url}
 										alt="preview"
 										class="w-full lg:w-2/3 h-56 object-cover rounded"
 									/>
@@ -510,6 +519,25 @@
 			/>
 		</div>
 	{/if}
+{:else}
+	<div
+		class="w-full flex justify-center items-center flex-col px-4 text-center"
+		style="height: calc(100vh - 100px);"
+	>
+		<p class="text-2xl">
+			{$LL.reservation.emptySeatMessage()}
+		</p>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+		<p
+			class="mt-2 cursor-pointer text-[#4b71fa]"
+			on:click={() => {
+				goto(`/exhibition/detail/${exhibition.id}`);
+			}}
+		>
+			{$LL.reservation.gotoExhibition()}
+		</p>
+	</div>
 {/if}
 
 <style>

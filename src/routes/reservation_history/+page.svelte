@@ -115,7 +115,10 @@
 	</div>
 </Modal>
 {#if !openEditModal}
-	<div class="w-full flex justify-center items-center">
+	<div
+		class="w-full flex justify-center items-center overflow-y-auto"
+		style="max-height: calc(100vh);"
+	>
 		<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
 			<div class="w-full">
 				{#each reservations as reservation}
@@ -205,5 +208,24 @@
 	}
 	.accept {
 		background-color: #00bf2d;
+	}
+
+	::-webkit-scrollbar {
+		width: 0;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: #888;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: #555;
 	}
 </style>
