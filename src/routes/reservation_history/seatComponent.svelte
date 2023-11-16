@@ -7,11 +7,13 @@
 	let fabric: any;
 	let canvas: Canvas;
 	let container: any;
-
+	let services: any;
 	onMount(async () => {
 		fabric = import('fabric');
 		if (seatLayout) {
-			console.log(reservationData);
+			services = reservationData.services
+				? reservationData.services.map((service: any) => JSON.parse(service))
+				: [];
 			await loadSeats();
 		}
 	});
@@ -25,7 +27,6 @@
 			adjustCanvasSize();
 			if (canvas) {
 				const width = seatLayout?.design?.width;
-
 				const height = seatLayout?.design?.height;
 				const containerWidth = container?.offsetWidth;
 				const containerHeight = container?.offsetHeight;
@@ -108,8 +109,37 @@
 </script>
 
 {#if fabric}
+	<div class="grid w-full grid-cols-3 gap-2 my-6 px-6 text-black">
+		{#each services as service}
+			<div
+				class="h-[100px] w-full bg-[#edeeec] border-2 border-[#dadddd] rounded-md flex justify-around items-center"
+			>
+				<div class="flex flex-col justify-center items-center">
+					<p class="text-xl font-bold">
+						{service.serviceDetail.title}
+					</p>
+					<p>
+						{service.quantity}
+					</p>
+				</div>
+
+				<div class="flex flex-col justify-center items-center">
+					{#if service.serviceDetail.discount}
+						<p class="text-sm" style="text-decoration: line-through;">
+							{service.serviceDetail.discount}
+						</p>
+					{/if}
+					<p class="text-xl font-bold">{service.serviceDetail.price}</p>
+				</div>
+				<div class="flex flex-col justify-center items-center">
+					<p class="text-sm">Total Price</p>
+					<p class="text-xl font-bold">{service.totalPrice}</p>
+				</div>
+			</div>
+		{/each}
+	</div>
 	<div bind:this={container} class=" w-full relative overflow-hidden">
-		<canvas id="canvas" class="h-full w-full fabric-canvas" style="border: 4px solid white ;" />
+		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}

@@ -159,7 +159,6 @@
 						});
 					});
 			} else {
-				console.log(reserveSeatData);
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -173,7 +172,6 @@
 						services: reserveSeatData.services
 					})
 					.then((Response: any) => {
-						console.log(Response);
 						if (Response.error) {
 							alert('unknown error occurred ');
 							return;
