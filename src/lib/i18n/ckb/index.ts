@@ -73,8 +73,8 @@ const ckb = {
 	videos: 'ڤیدیۆکان',
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
-	total_company_reserve: 'کۆی گشتیی حیجزەکان',
 	reservation: {
+		total_company_reserve: 'کۆی گشتیی حیجزەکان',
 		emptySeatMessage: 'ببورە ، لە ئێستادا هیچ  شوێنێک نیە بۆ حیجزکردن',
 		gotoExhibition: 'بڕۆ بۆپەڕەی  پێشانگا',
 		short_message: ' تەنها ڕێگەت پێدەدرێت بە هاوپێچ کردنی فایلێکی ئێکسڵ',

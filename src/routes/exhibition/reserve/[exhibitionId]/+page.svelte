@@ -294,6 +294,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								</div>
 							{/if}
@@ -377,6 +378,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								{:else}
 									<NotSelectedObject />
@@ -394,6 +396,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								</div>
 							{/if}

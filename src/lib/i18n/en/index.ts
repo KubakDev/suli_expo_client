@@ -72,10 +72,9 @@ const en = {
 	videos: 'Videos',
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
-	total_company_reserve: 'Total Company Reserve',
 	reservation: {
-		emptySeatMessage:
-			'	Regrettably, there are no available reservations for the current time slot at this exhibition.',
+		total_company_reserve: 'Total Company Reserve',
+		emptySeatMessage: '	Regrettably, there are no available reservations for the current time slot at this exhibition.',
 		gotoExhibition: 'Go to Exhibition Page',
 		short_message: 'Just allow to upload Excel file',
 		warning_message: 'Please upload an Excel File before reserving a seat.',
