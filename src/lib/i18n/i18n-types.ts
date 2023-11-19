@@ -107,6 +107,10 @@ type RootTranslation = {
 		 */
 		Companies: string
 		/**
+		 * L​o​c​a​t​i​o​n
+		 */
+		Location: string
+		/**
 		 * C​o​u​n​t​r​i​e​s
 		 */
 		Countries: string
@@ -736,6 +740,10 @@ export type TranslationFunctions = {
 		 * Companies
 		 */
 		Companies: () => LocalizedString
+		/**
+		 * Location
+		 */
+		Location: () => LocalizedString
 		/**
 		 * Countries
 		 */
