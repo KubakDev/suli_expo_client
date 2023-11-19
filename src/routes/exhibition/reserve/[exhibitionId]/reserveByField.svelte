@@ -500,7 +500,9 @@
 				</svelte:fragment>
 			</Modal>
 		</div>
+
 		<Button
+			disabled={!reservedSeatData?.file}
 			on:click={reserveSeat}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"

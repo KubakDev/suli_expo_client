@@ -289,7 +289,7 @@ type RootTranslation = {
 		 */
 		short_message: string
 		/**
-		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
+		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​n​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
 		 */
 		warning_message: string
 		/**
@@ -931,7 +931,7 @@ export type TranslationFunctions = {
 		 */
 		short_message: () => LocalizedString
 		/**
-		 * Please upload a Excel File before reserving a seat.
+		 * Please upload an Excel File before reserving a seat.
 		 */
 		warning_message: () => LocalizedString
 		/**

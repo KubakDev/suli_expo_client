@@ -22,6 +22,7 @@
 	import { setExhibitionID, setRequiredFields } from '../../../../stores/requiredFieldStore';
 	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 
 	export let data: any;
 
@@ -33,6 +34,7 @@
 	let seatReserved = false;
 	let loaded = false;
 	let excelFileName: string | undefined = '';
+	let showNotification = false;
 
 	async function getExhibition() {
 		const response = await data.supabase
@@ -64,11 +66,11 @@
 
 	async function reserveSeat() {
 		let fileUrl = '';
-
+		showNotification = false;
 		defaultModal = false;
 
 		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
-			alert('Please upload a non-empty Excel file before proceeding.');
+			showNotification = true;
 			return;
 		}
 		let extention = reserveSeatData.file.name.split('.').pop();
@@ -536,6 +538,21 @@
 			{$LL.reservation.gotoExhibition()}
 		</p>
 	</div>
+{/if}
+
+{#if showNotification}
+	<Toast
+		color="red"
+		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
+		transition={fly}
+	>
+		<svelte:fragment slot="icon">
+			<CloseCircleSolid class="w-5 h-5" />
+			<span class="sr-only">Error icon</span>
+		</svelte:fragment>
+
+		{$LL.reservation.warning_message()}
+	</Toast>
 {/if}
 
 <style>

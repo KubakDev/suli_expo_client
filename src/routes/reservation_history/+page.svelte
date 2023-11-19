@@ -9,12 +9,14 @@
 	import UpdateReserve from './updateReserve.svelte';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
 	import { ReservationStatusEnum } from '../../models/reserveSeat';
-	import { Button, Modal } from 'flowbite-svelte';
+	import { Button, Modal, Toast } from 'flowbite-svelte';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from '../exhibition/reserve/[exhibitionId]/successLottie.json';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { goto } from '$app/navigation';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { fly } from 'svelte/transition';
 
 	export let data: PageData;
 
@@ -25,6 +27,8 @@
 	let selectedExhibition: ExhibitionModel;
 	let selectedReservation: Reservation;
 	let selectedReservationId: number;
+	let showNotification = false;
+
 	onMount(async () => {
 		await getAllReservationHistory();
 	});
@@ -61,6 +65,12 @@
 		return result;
 	}
 	async function updateReserveData(reservationData: any, reservedSeatData: any, areas: any) {
+		showNotification = false;
+
+		if (!reservationData.file_url) {
+			showNotification = true;
+			return;
+		}
 		data.supabase
 			.from('seat_reservation')
 			.update({
@@ -207,6 +217,20 @@
 			/>
 		</div>
 	</div>
+{/if}
+{#if showNotification}
+	<Toast
+		color="red"
+		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
+		transition={fly}
+	>
+		<svelte:fragment slot="icon">
+			<CloseCircleSolid class="w-5 h-5" />
+			<span class="sr-only">Error icon</span>
+		</svelte:fragment>
+
+		{$LL.reservation.warning_message()}
+	</Toast>
 {/if}
 
 <style>
