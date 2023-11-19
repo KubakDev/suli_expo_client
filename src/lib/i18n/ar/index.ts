@@ -29,6 +29,7 @@ const ar = {
 			place: 'العراق - السليمانية'
 		},
 		Companies: 'الشركات',
+		Location: 'الموقع',
 		Countries: 'الدول',
 		Brochure: 'كتب المعرض',
 		Fair: 'معرض السليمانية الدولي',

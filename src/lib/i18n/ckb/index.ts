@@ -31,6 +31,7 @@ const ckb = {
 			place: 'عێراق - سلێمانی'
 		},
 		Companies: 'کۆمپانیاکان',
+		Location: 'شوێن',
 		Countries: 'وڵاتەکان',
 		Brochure: 'بڕۆشوری پێشانگا',
 		Fair: 'پێشانگای نێودەوڵەتی سلێمانی',

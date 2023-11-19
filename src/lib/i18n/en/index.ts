@@ -30,6 +30,7 @@ const en = {
 			place: 'Iraq - Sulaymaniyah'
 		},
 		Companies: 'Companies',
+		Location: 'Location',
 		Countries: 'Countries',
 		Brochure: 'Exhibition Brochure',
 		Fair: 'Sulaymaniyah International Fair',
