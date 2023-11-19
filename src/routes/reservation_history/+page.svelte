@@ -210,16 +210,6 @@
 {/if}
 
 <style>
-	.pending {
-		background-color: #37d6ff;
-	}
-	.reject {
-		background-color: #d91010;
-	}
-	.accept {
-		background-color: #00bf2d;
-	}
-
 	::-webkit-scrollbar {
 		width: 0;
 	}

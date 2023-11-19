@@ -267,11 +267,11 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
-	/**
-	 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
-	 */
-	total_company_reserve: string
 	reservation: {
+		/**
+		 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
+		 */
+		total_company_reserve: string
 		/**
 		 * 	​R​e​g​r​e​t​t​a​b​l​y​,​ ​t​h​e​r​e​ ​a​r​e​ ​n​o​ ​a​v​a​i​l​a​b​l​e​ ​r​e​s​e​r​v​a​t​i​o​n​s​ ​f​o​r​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​t​i​m​e​ ​s​l​o​t​ ​a​t​ ​t​h​i​s​ ​e​x​h​i​b​i​t​i​o​n​.
 		 */
@@ -905,11 +905,11 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
-	/**
-	 * Total Company Reserve
-	 */
-	total_company_reserve: () => LocalizedString
 	reservation: {
+		/**
+		 * Total Company Reserve
+		 */
+		total_company_reserve: () => LocalizedString
 		/**
 		 * 	Regrettably, there are no available reservations for the current time slot at this exhibition.
 		 */

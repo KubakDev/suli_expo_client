@@ -88,27 +88,28 @@ a {
 	color: inherit !important;
 }
 
-img, video{
+img,
+video {
 	max-width: 100%;
 	height: auto;
 	width: 100%;
 	max-height: 67.5rem;
 }
 
-.contents-wrapper{
-    position: static !important;
-    /* Because position is set to static, top, left, and right won't have any effect.
+.contents-wrapper {
+	position: static !important;
+	/* Because position is set to static, top, left, and right won't have any effect.
        So, you don't have to explicitly reset them. But if you still want to, you can set them to 'auto' */
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	display: flex !important;
+	flex-direction: column !important;
+	justify-content: center !important;
 }
 
 @media screen and (min-width: 768px) {
-	.contents-wrapper{
+	.contents-wrapper {
 		position: absolute !important;
 		/* Because position is set to static, top, left, and right won't have any effect.
 		   So, you don't have to explicitly reset them. But if you still want to, you can set them to 'auto' */
@@ -120,56 +121,63 @@ img, video{
 		justify-content: center !important;
 	}
 }
-	
-
 
 .datepicker {
 	--button-background-color: #fff !important;
-    --button-border-color: #eee !important;
-    --button-text-color: #333 !important;
-    --highlight-color: #f7901e !important;
-    --passive-highlight-color: #FCD9B1 !important;
-    --day-background-color: none !important;
-    --day-background-color-is-night: none !important;
-    --day-text-color: #4a4a4a !important;
-    --day-text-color-in-range: white !important;
-    --day-text-color-is-night: #4a4a4a !important;
-    --day-highlighted-background-color: #efefef !important;
-    --day-highlighted-text-color: #4a4a4a !important;
-    --current-day-text-color: #000 !important;
-    --selected-day-text-color: white !important;
-    --time-night-mode-text-color: white !important;
-    --time-night-mode-background-color: #808080 !important;
-    --time-day-mode-text-color: white !important;
-    --time-day-mode-background-color: white !important;
-    --time-selected-text-color: #3d4548 !important;
-    --time-input-text-color: #3d4548 !important;
-    --time-confirm-button-text-color: white !important;
-    --time-confirm-button-color: #2196F3 !important;
-    --toolbar-border-color: #888 !important;
-    --content-background: white !important;
-    --month-year-text-color: #3d4548 !important;
-    --legend-text-color: #4a4a4a !important;
-    --datepicker-width: auto !important;
-    width: 100% !important;
+	--button-border-color: #eee !important;
+	--button-text-color: #333 !important;
+	--highlight-color: #f7901e !important;
+	--passive-highlight-color: #fcd9b1 !important;
+	--day-background-color: none !important;
+	--day-background-color-is-night: none !important;
+	--day-text-color: #4a4a4a !important;
+	--day-text-color-in-range: white !important;
+	--day-text-color-is-night: #4a4a4a !important;
+	--day-highlighted-background-color: #efefef !important;
+	--day-highlighted-text-color: #4a4a4a !important;
+	--current-day-text-color: #000 !important;
+	--selected-day-text-color: white !important;
+	--time-night-mode-text-color: white !important;
+	--time-night-mode-background-color: #808080 !important;
+	--time-day-mode-text-color: white !important;
+	--time-day-mode-background-color: white !important;
+	--time-selected-text-color: #3d4548 !important;
+	--time-input-text-color: #3d4548 !important;
+	--time-confirm-button-text-color: white !important;
+	--time-confirm-button-color: #2196f3 !important;
+	--toolbar-border-color: #888 !important;
+	--content-background: white !important;
+	--month-year-text-color: #3d4548 !important;
+	--legend-text-color: #4a4a4a !important;
+	--datepicker-width: auto !important;
+	width: 100% !important;
 	/* display: block !important; */
 }
 
-.trigger button{
-    width: 100% !important;   /* Or a fixed width if needed */
-    height: auto !important;  /* Or a fixed height if needed */
-    flex-shrink: 0 !important; /* Prevents button from shrinking */
-    flex-grow: 0 !important;   /* Prevents button from growing */
+.trigger button {
+	width: 100% !important; /* Or a fixed width if needed */
+	height: auto !important; /* Or a fixed height if needed */
+	flex-shrink: 0 !important; /* Prevents button from shrinking */
+	flex-grow: 0 !important; /* Prevents button from growing */
 }
 
 .view {
 	display: flex;
-    flex-direction: column !important;
-    align-items: center;
+	flex-direction: column !important;
+	align-items: center;
 }
 
 @media screen and (min-width: 1733px) {
-	.view{
+	.view {
 		flex-direction: row !important;
 	}
+}
+.pending {
+	background-color: #37d6ff;
+}
+.reject {
+	background-color: #d91010;
+}
+.accept {
+	background-color: #00bf2d;
 }

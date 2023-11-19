@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Spinner, Textarea } from 'flowbite-svelte';
+	import { Button, Modal, Spinner, Textarea } from 'flowbite-svelte';
 	import InputNumberButton from '$lib/components/inputNumberButton.svelte';
 	import {
 		addSelectedSeat,
@@ -15,11 +15,12 @@
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
 	import { XMark } from 'svelte-heros-v2';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let supabase: SupabaseClient;
-
+	export let objectId: number;
 	const dispatch = createEventDispatcher();
 	let reserveSeatData: ReserveSeatModel = {
 		company_id: 0,
@@ -30,14 +31,39 @@
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
-
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
 		quantity?: number;
 		serviceDetail?: any;
 	}[] = [];
+	let selectedSeatObjectId: any = undefined;
+	let thisObjectReservedByThisCompany: boolean = false;
+	let thisObjectReservedByThisCompanyStatus: ReservationStatusEnum | undefined = undefined;
+	let cancelReserveModal = false;
 
+	let objectReservedByThisCompanyData: any = undefined;
+	$: {
+		thisObjectReservedByThisCompany = false;
+		if (objectId && selectedSeatObjectId != objectId) {
+			selectedSeatObjectId = objectId;
+			getPreviousCompanyReservationForThisObject();
+		}
+	}
+	async function getPreviousCompanyReservationForThisObject() {
+		await supabase
+			.from('seat_reservation')
+			.select('*')
+			.eq('object_id', objectId)
+			.eq('company_id', $currentUser.id)
+			.then((response) => {
+				if (response.data && response.data?.length > 0) {
+					thisObjectReservedByThisCompany = true;
+					thisObjectReservedByThisCompanyStatus = response.data[0].status;
+					objectReservedByThisCompanyData = response.data[0];
+				}
+			});
+	}
 	function countTotalPrice() {
 		totalPrice = +objectDetail?.price;
 		for (let price of servicesPrice) {
@@ -61,8 +87,25 @@
 			(x: any) => x.language == $locale ?? 'en'
 		)?.description;
 	}
+	async function cancelReservation() {
+		await supabase
+			.from('seat_reservation')
+			.update({ status: ReservationStatusEnum.REJECT, rejected_by_user: true })
+			.eq('id', objectReservedByThisCompanyData.id);
+		goto('/exhibition/detail' + $page.params.exhibitionId);
+	}
 </script>
 
+<Modal bind:open={cancelReserveModal} size="xs" autoclose>
+	<div class="text-center">
+		<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			Are you sure you want to delete this product?
+		</h3>
+		<Button color="red" class="mr-2" on:click={cancelReservation}>Yes, I'm sure</Button>
+		<Button color="alternative">No, cancel</Button>
+	</div>
+</Modal>
 <div class="h-full w-full" style="overflow-y: auto;">
 	{#if $totalReservedSeat}
 		<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
@@ -208,7 +251,33 @@
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
 					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
-				<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button>
+				{#if thisObjectReservedByThisCompany}
+					<p class="text-center leading-8">
+						you already reserved this seat with status
+						<span class="{thisObjectReservedByThisCompanyStatus} mx-1 p-1 rounded-md text-white">
+							{thisObjectReservedByThisCompanyStatus}
+						</span>
+						{#if thisObjectReservedByThisCompanyStatus == ReservationStatusEnum.PENDING}
+							<span>
+								click
+								<!-- svelte-ignore a11y-click-events-have-key-events -->
+								<!-- svelte-ignore a11y-no-static-element-interactions -->
+								<span
+									class="text-[#1782ff] cursor-pointer"
+									on:click={() => {
+										cancelReserveModal = true;
+									}}
+								>
+									here
+								</span>
+								to cancel reservation
+							</span>
+						{/if}
+					</p>
+				{:else}
+					<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button
+					>
+				{/if}
 			</div>
 		</div>
 	{/if}

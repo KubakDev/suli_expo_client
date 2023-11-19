@@ -375,6 +375,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								{:else}
 									<NotSelectedObject />
