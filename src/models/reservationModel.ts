@@ -14,7 +14,7 @@ export interface Reservation {
   services: string;
   status: ReservationStatus;
   extra_discount_checked?: boolean;
-
+  type?: string;
 }
 export enum ReservationStatus {
   PENDING = 'pending',

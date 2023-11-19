@@ -73,6 +73,8 @@ const ar = {
 	moreVideos: 'المزيد من الفيديوهات',
 	total_company_reserve: 'إجمالي حجوزات الشركات',
 	reservation: {
+		emptySeatMessage: 'للأسف، لا توجد حجوزات متاحة للفترة الزمنية الحالية لهذا المعرض.',
+		gotoExhibition: "اذهب إلى صفحة المعرض",
 		short_message: 'السماح فقط بتحميل ملف Excel',
 		warning_message: 'من فضلك قم بتحميل ملف Excel قبل الحجز.',
 		reserved: 'تم استلام طلبك بنجاح، يرجى الانتظار للاتصال بکم',

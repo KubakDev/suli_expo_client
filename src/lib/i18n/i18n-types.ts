@@ -277,6 +277,14 @@ type RootTranslation = {
 	total_company_reserve: string
 	reservation: {
 		/**
+		 * 	​R​e​g​r​e​t​t​a​b​l​y​,​ ​t​h​e​r​e​ ​a​r​e​ ​n​o​ ​a​v​a​i​l​a​b​l​e​ ​r​e​s​e​r​v​a​t​i​o​n​s​ ​f​o​r​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​t​i​m​e​ ​s​l​o​t​ ​a​t​ ​t​h​i​s​ ​e​x​h​i​b​i​t​i​o​n​.
+		 */
+		emptySeatMessage: string
+		/**
+		 * G​o​ ​t​o​ ​E​x​h​i​b​i​t​i​o​n​ ​P​a​g​e
+		 */
+		gotoExhibition: string
+		/**
 		 * J​u​s​t​ ​a​l​l​o​w​ ​t​o​ ​u​p​l​o​a​d​ ​E​x​c​e​l​ ​f​i​l​e
 		 */
 		short_message: string
@@ -910,6 +918,14 @@ export type TranslationFunctions = {
 	 */
 	total_company_reserve: () => LocalizedString
 	reservation: {
+		/**
+		 * 	Regrettably, there are no available reservations for the current time slot at this exhibition.
+		 */
+		emptySeatMessage: () => LocalizedString
+		/**
+		 * Go to Exhibition Page
+		 */
+		gotoExhibition: () => LocalizedString
 		/**
 		 * Just allow to upload Excel file
 		 */

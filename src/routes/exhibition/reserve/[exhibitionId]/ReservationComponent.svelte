@@ -18,7 +18,7 @@
 	export let supabase: SupabaseClient;
 	export let locale: string;
 
-	let fabricInstance: any;
+	let fabric: any;
 	let previousReserveSeatData: any = [];
 	let canvas: Canvas;
 	let container: any;
@@ -39,11 +39,7 @@
 		status: ReservationStatusEnum.PENDING
 	};
 	onMount(async () => {
-		setTimeout(async () => {
-			const { fabric } = await import('fabric');
-			fabricInstance = fabric;
-			// Now you can use fabricInstance as you would use the fabric package
-		}, 1000);
+		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
 		}
@@ -66,9 +62,9 @@
 		canvas.renderAll();
 	};
 	const loadSeats = async () => {
-		if (fabricInstance) {
+		fabric.then((Response: any) => {
 			const canvasElement: any = document.getElementById('canvas');
-			canvas = new fabricInstance.Canvas(canvasElement, {
+			canvas = new Response.fabric.Canvas(canvasElement, {
 				hoverCursor: 'default',
 				selection: false
 			});
@@ -111,6 +107,50 @@
 					canvas.renderAll();
 				});
 			}
+		});
+		if (fabric) {
+			// const canvasElement: any = document.getElementById('canvas');
+			// canvas = new fabric.fabric.Canvas(canvasElement, {
+			// 	hoverCursor: 'default',
+			// 	selection: false
+			// });
+			// adjustCanvasSize();
+			// if (canvas) {
+			// 	const width = data[0]?.design?.width;
+			// 	const height = data[0]?.design?.height;
+			// 	const containerWidth = container?.offsetWidth;
+			// 	const containerHeight = container?.offsetHeight;
+			// 	const widthRatio = containerWidth / width;
+			// 	const heightRatio = containerHeight / height;
+			// 	canvas.loadFromJSON(data[0]?.design, async () => {
+			// 		canvas.forEachObject((obj: any) => {
+			// 			obj.set('selectable', false);
+			// 			obj.set('lockMovementX', true);
+			// 			obj.set('lockMovementY', true);
+			// 			obj.setCoords();
+			// 		});
+			// 		canvas.on('mouse:down', handleMouseDown);
+			// 		canvas.on('mouse:over', handleMouseOver);
+			// 		canvas.on('mouse:out', handleMouseOut);
+			// 		await tick(); // wait for the next update cycle
+			// 		canvas.forEachObject((obj: any) => {
+			// 			const scaleX = obj.scaleX;
+			// 			const scaleY = obj.scaleY;
+			// 			const left = obj.left;
+			// 			const top = obj.top;
+			// 			const tempScaleX = scaleX * widthRatio;
+			// 			const tempScaleY = scaleY * heightRatio;
+			// 			const tempLeft = left * widthRatio;
+			// 			const tempTop = top * heightRatio;
+			// 			obj.scaleX = tempScaleX;
+			// 			obj.scaleY = tempScaleY;
+			// 			obj.left = tempLeft;
+			// 			obj.top = tempTop;
+			// 			obj.setCoords();
+			// 		});
+			// 		canvas.renderAll();
+			// 	});
+			// }
 		}
 		getPreviousReserveSeatData();
 	};
@@ -125,21 +165,7 @@
 			return;
 		selectedObject = event.target?.objectDetail;
 		clearSelectedDesign();
-		if (selectedObject) {
-			event.target.set('stroke', '#1782ff');
-			event.target.set('strokeWidth', 4);
-			event.target.set({
-				backgroundColor: '#ecf1f7',
-				shadow: {
-					color: 'rgba(97, 97, 97, 0.13)',
-					offsetX: 0,
-					offsetY: 4,
-					blur: 17
-				},
-				padding: 8
-			});
-			canvas.renderAll();
-		}
+		if (!selectedObject?.selectable) return;
 
 		addSelectedSeat(event.target);
 		selectableObjectTotalPrice = +selectedObject?.price;
@@ -205,18 +231,6 @@
 	};
 	function clearSelectedDesign() {
 		canvas.forEachObject((obj: any) => {
-			obj.set('stroke', '');
-			obj.set('strokeWidth', 0);
-			obj.set({
-				backgroundColor: '',
-				shadow: {
-					color: '',
-					offsetX: 0,
-					offsetY: 0,
-					blur: 0
-				},
-				padding: 0
-			});
 			for (let reservedSeat of previousReserveSeatData) {
 				checkIfTheSeatSold(reservedSeat);
 			}
@@ -251,14 +265,25 @@
 						}
 						if (reservedSeat.status == 'pending') {
 							obj.set('fill', '#A0B0C2');
-							obj.set('backgroundColor', '#A0B0C2');
 							obj.set('stroke', '#A0B0C2');
 							obj.set('strokeWidth', 3);
 						} else if (reservedSeat.status == 'accept') {
 							obj.set('fill', '#ff176b');
-							obj.set('backgroundColor', '#ff176b');
 							obj.set('stroke', '#ff176b');
 							obj.set('strokeWidth', 3);
+						}
+						if (obj.type == 'group') {
+							obj.forEachObject((child: any) => {
+								if (reservedSeat.status == 'pending') {
+									child.set('fill', '#A0B0C2');
+									child.set('stroke', '#A0B0C2');
+									child.set('strokeWidth', 3);
+								} else if (reservedSeat.status == 'accept') {
+									child.set('fill', '#ff176b');
+									child.set('stroke', '#ff176b');
+									child.set('strokeWidth', 3);
+								}
+							});
 						}
 						obj.setCoords();
 						canvas.renderAll();
@@ -269,20 +294,26 @@
 	}
 </script>
 
-{#if fabricInstance}
+{#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
-		<div class="w-full flex justify-center mt-10">
+		<div class="w-full flex justify-center md:mt-10">
 			<div class="flex justify-center items-center">
-				<div class="h-[30px] w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2" />
-				<p class="font-bold text-md">{$LL.reservation.seat_types.selected()}</p>
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.selected()}</p>
 			</div>
 			<div class="flex justify-center items-center mx-8">
-				<div class="h-[30px] w-[30px] bg-[#FF176B] rounded-md shadow-md mx-2" />
-				<p class="font-bold text-md">{$LL.reservation.seat_types.reserved()}</p>
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#FF176B] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.reserved()}</p>
 			</div>
 			<div class="flex justify-center items-center">
-				<div class="h-[30px] w-[30px] bg-[#A0B0C2] rounded-md shadow-md mx-2" />
-				<p class="font-bold text-md">{$LL.reservation.seat_types.pending()}</p>
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#A0B0C2] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
 		</div>
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />

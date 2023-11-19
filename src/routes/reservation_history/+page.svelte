@@ -2,14 +2,14 @@
 	import { onMount } from 'svelte';
 	import { currentUser } from '../../stores/currentUser';
 	import type { PageData } from './$types';
-	import type { Reservation } from '../../models/reservationModel';
+	import { ReservationStatus, type Reservation } from '../../models/reservationModel';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import moment from 'moment';
 	import { PencilSquare, ChevronLeft, ChevronRight } from 'svelte-heros-v2';
 	import UpdateReserve from './updateReserve.svelte';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
 	import { ReservationStatusEnum } from '../../models/reserveSeat';
-	import { Modal } from 'flowbite-svelte';
+	import { Button, Modal } from 'flowbite-svelte';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from '../exhibition/reserve/[exhibitionId]/successLottie.json';
@@ -115,7 +115,10 @@
 	</div>
 </Modal>
 {#if !openEditModal}
-	<div class="w-full flex justify-center items-center">
+	<div
+		class="w-full flex justify-center items-center overflow-y-auto"
+		style="max-height: calc(100vh);"
+	>
 		<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
 			<div class="w-full">
 				{#each reservations as reservation}
@@ -160,9 +163,11 @@
 	<div class="w-full flex justify-center items-center px-4">
 		<div
 			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
-			style="background-color: {$currentMainThemeColors.secondaryColor};color: {$currentMainThemeColors.overlaySecondaryColor}"
+			style="background-color: {selectedReservation.type == 'AreaFields'
+				? $currentMainThemeColors.secondaryColor
+				: '#f5f5f5'};color: {$currentMainThemeColors.overlaySecondaryColor}"
 		>
-			<div class="flex justify-start w-full">
+			<div class="flex justify-between w-full">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
@@ -176,6 +181,14 @@
 						<ChevronLeft />
 					{:else}
 						<ChevronRight />
+					{/if}
+				</div>
+				<div class="flex items-center -mt-6 px-6">
+					<div class="mx-2 rounded-lg p-2.5 {selectedReservation.status}">
+						{selectedReservation.status}
+					</div>
+					{#if selectedReservation.status == ReservationStatus.PENDING}
+						<Button color="alternative">Cancel Reservation</Button>
 					{/if}
 				</div>
 			</div>
@@ -205,5 +218,24 @@
 	}
 	.accept {
 		background-color: #00bf2d;
+	}
+
+	::-webkit-scrollbar {
+		width: 0;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: #888;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: #555;
 	}
 </style>
