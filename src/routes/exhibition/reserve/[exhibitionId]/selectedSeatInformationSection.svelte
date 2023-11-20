@@ -57,7 +57,7 @@
 			.eq('object_id', objectId)
 			.eq('company_id', $currentUser.id)
 			.then((response) => {
-				console.log(response);
+				// console.log(response);
 				if (response.data && response.data?.length > 0) {
 					thisObjectReservedByThisCompany = true;
 					thisObjectReservedByThisCompanyStatus = response.data[0].status;

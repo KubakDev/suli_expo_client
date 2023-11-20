@@ -14,7 +14,8 @@ const en = {
 	buttons: {
 		submit: 'Submit',
 		upload_sheet: 'Upload Sheet',
-		update: 'Update'
+		update: 'Update',
+		loginForm: 'Login Form'
 	},
 	home: 'Home',
 	about: 'About',
@@ -74,7 +75,8 @@ const en = {
 	moreVideos: 'More Videos',
 	reservation: {
 		total_company_reserve: 'Total Company Reserve',
-		emptySeatMessage: '	Regrettably, there are no available reservations for the current time slot at this exhibition.',
+		emptySeatMessage:
+			'	Regrettably, there are no available reservations for the current time slot at this exhibition.',
 		gotoExhibition: 'Go to Exhibition Page',
 		short_message: 'Just allow to upload Excel file',
 		warning_message: 'Please upload an Excel File before reserving a seat.',
@@ -134,6 +136,12 @@ const en = {
 			reject: 'Rejected'
 		}
 	},
+	register: {
+		registerForm: 'Register Form',
+		alertText: 'Do you have account?',
+		warning: 'Password must be at least 6 characters long.'
+	},
+
 	loggin: {
 		message: 'Please Check Your Email for reset password',
 		login: 'Login',
@@ -148,7 +156,12 @@ const en = {
 			msg: 'Verify your email address to activate your account'
 		},
 		duplicate_password: 'New password must be identical to old one',
-		error: 'invalid email or password'
+		error: 'invalid email or password',
+		loginDesc: 'Welcome back! Please enter your details',
+		email: 'Email',
+		password: 'Password',
+		signIn: 'Sign In',
+		alertText: "Don't have account?"
 	},
 	company_info: {
 		user_message: 'User Image is required',
