@@ -15,6 +15,7 @@
 	import SuccessLottieAnimation from '../exhibition/reserve/[exhibitionId]/successLottie.json';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { goto } from '$app/navigation';
+	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let data: PageData;
 
@@ -25,6 +26,8 @@
 	let selectedExhibition: ExhibitionModel;
 	let selectedReservation: Reservation;
 	let selectedReservationId: number;
+	let cancelReserveModal: boolean = false;
+	let cancelReservationSuccessModal: boolean = false;
 	onMount(async () => {
 		await getAllReservationHistory();
 	});
@@ -97,7 +100,52 @@
 					});
 			});
 	}
+	async function cancelReservation() {
+		await data.supabase
+			.from('seat_reservation')
+			.update({ status: ReservationStatusEnum.REJECT, rejected_by_user: true })
+			.eq('id', selectedReservation.id)
+			.then((response) => {
+				if (response.error) return;
+				cancelReservationSuccessModal = true;
+
+				setTimeout(() => {
+					openEditModal = false;
+					cancelReservationSuccessModal = false;
+					getAllReservationHistory();
+				}, 3000);
+			});
+	}
 </script>
+
+<Modal bind:open={cancelReservationSuccessModal}>
+	<div class="flex justify-center">
+		<LottiePlayer
+			src={SuccessLottieAnimation}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={300}
+			width={300}
+		/>
+	</div>
+	<div class="w-full flex justify-center items-center">
+		<p class="font-bold">{$LL.reservation.pending.success()}</p>
+	</div>
+</Modal>
+
+<Modal bind:open={cancelReserveModal} size="xs" autoclose>
+	<div class="text-center">
+		<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			{$LL.reservation.pending.confirmation()}
+		</h3>
+		<Button color="red" class="mr-2" on:click={cancelReservation}
+			>{$LL.reservation.pending.yes()}</Button
+		>
+		<Button color="alternative">{$LL.reservation.pending.no()}</Button>
+	</div>
+</Modal>
 
 <Modal bind:open={successModal}>
 	<div class="flex justify-center">
@@ -188,7 +236,9 @@
 						{selectedReservation.status}
 					</div>
 					{#if selectedReservation.status == ReservationStatus.PENDING}
-						<Button color="alternative">Cancel Reservation</Button>
+						<Button color="alternative" on:click={() => (cancelReserveModal = true)}
+							>Cancel Reservation</Button
+						>
 					{/if}
 				</div>
 			</div>

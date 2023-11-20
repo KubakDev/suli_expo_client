@@ -255,8 +255,8 @@
 	}
 </script>
 
-{#if exhibition && exhibition.seat_layout[0]}
-	{#if loaded}
+{#if loaded}
+	{#if exhibition && exhibition.seat_layout[0]}
 		{#if allFieldsPresent}
 			<div class="absolute w-full flex justify-end p-3" />
 			{#if exhibition?.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS}
@@ -508,36 +508,36 @@
 			{/if}
 		{/if}
 	{:else}
-		<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
-			<LottiePlayer
-				src={LoadingExhibitionLottie}
-				autoplay={true}
-				renderer="svg"
-				background="transparent"
-				height={500}
-				width={500}
-				loop={true}
-			/>
+		<div
+			class="w-full flex justify-center items-center flex-col px-4 text-center"
+			style="height: calc(100vh - 100px);"
+		>
+			<p class="text-2xl">
+				{$LL.reservation.emptySeatMessage()}
+			</p>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<p
+				class="mt-2 cursor-pointer text-[#4b71fa]"
+				on:click={() => {
+					goto(`/exhibition/detail/${exhibition.id}`);
+				}}
+			>
+				{$LL.reservation.gotoExhibition()}
+			</p>
 		</div>
 	{/if}
 {:else}
-	<div
-		class="w-full flex justify-center items-center flex-col px-4 text-center"
-		style="height: calc(100vh - 100px);"
-	>
-		<p class="text-2xl">
-			{$LL.reservation.emptySeatMessage()}
-		</p>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-		<p
-			class="mt-2 cursor-pointer text-[#4b71fa]"
-			on:click={() => {
-				goto(`/exhibition/detail/${exhibition.id}`);
-			}}
-		>
-			{$LL.reservation.gotoExhibition()}
-		</p>
+	<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
+		<LottiePlayer
+			src={LoadingExhibitionLottie}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={500}
+			width={500}
+			loop={true}
+		/>
 	</div>
 {/if}
 

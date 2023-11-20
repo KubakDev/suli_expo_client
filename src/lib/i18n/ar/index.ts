@@ -73,6 +73,17 @@ const ar = {
 	moreVideos: 'المزيد من الفيديوهات',
 	total_company_reserve: 'إجمالي حجوزات الشركات',
 	reservation: {
+		pending: {
+			description: 'لقد قمت بالفعل بحجز هذا المقعد بحالة',
+			status: 'قيد الانتظار',
+			click: 'انقر',
+			here: 'هنا',
+			to_cancel: 'لإلغاء حجزك',
+			confirmation: 'هل أنت متأكد أنك تريد إلغاء حجزك؟',
+			success: 'تم إلغاء حجزك بنجاح',
+			yes: "نعم، أنا متأكد",
+			no: 'لا'
+		},
 		emptySeatMessage: 'للأسف، لا توجد حجوزات متاحة للفترة الزمنية الحالية لهذا المعرض.',
 		gotoExhibition: "اذهب إلى صفحة المعرض",
 		short_message: 'السماح فقط بتحميل ملف Excel',
