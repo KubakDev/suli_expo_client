@@ -63,7 +63,6 @@
 			.then((response) => {
 				if (response.data && response.data?.length > 0) {
 					thisObjectReservedByThisCompany = true;
-					console.log(response.data);
 					isThisObjectHasAPendingStatusForThisCompany = response.data.find(
 						(item) => item.status == ReservationStatusEnum.PENDING
 					)

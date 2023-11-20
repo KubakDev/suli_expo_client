@@ -18,6 +18,7 @@
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 	import { fly } from 'svelte/transition';
+	import LoadingExhibitionLottie from '../exhibition/reserve/[exhibitionId]/loadingExhibition.json';
 
 	export let data: PageData;
 
@@ -31,12 +32,13 @@
 	let cancelReserveModal: boolean = false;
 	let cancelReservationSuccessModal: boolean = false;
 	let showNotification = false;
-
+	let loading = false;
 	onMount(async () => {
 		await getAllReservationHistory();
 	});
 	async function getAllReservationHistory() {
 		if (currentUserId) {
+			loading = true;
 			const response = await data.supabase
 				.from('seat_reservation')
 				.select(
@@ -45,6 +47,7 @@
 				.eq('company_id', currentUserId)
 				.order('created_at', { ascending: false });
 			reservations = response.data as Reservation[];
+			loading = false;
 		}
 	}
 	$: {
@@ -173,50 +176,64 @@
 	</div>
 </Modal>
 {#if !openEditModal}
-	<div
-		class="w-full flex justify-center items-center overflow-y-auto"
-		style="max-height: calc(100vh);"
-	>
-		<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
-			<div class="w-full">
-				{#each reservations as reservation}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
-						class=" my-2 py-2 w-full md:w-10/12 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
-						style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor}"
-					>
-						<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
-							{exhibitionName(reservation)}
-						</div>
-						<div class="flex flex-col justify-center items-center text-sm md:text-lg">
-							{moment(reservation.created_at).format('DD/MM/YYYY')}
-							<div>
-								{moment(reservation.created_at).format('HH:MM:SS')}
+	{#if loading}
+		<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
+			<LottiePlayer
+				src={LoadingExhibitionLottie}
+				autoplay={true}
+				renderer="svg"
+				background="transparent"
+				height={500}
+				width={500}
+				loop={true}
+			/>
+		</div>
+	{:else}
+		<div
+			class="w-full flex justify-center items-center overflow-y-auto"
+			style="max-height: calc(100vh);"
+		>
+			<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
+				<div class="w-full">
+					{#each reservations as reservation}
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<div
+							class=" my-2 py-2 w-full md:w-10/12 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
+							style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor}"
+						>
+							<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
+								{exhibitionName(reservation)}
+							</div>
+							<div class="flex flex-col justify-center items-center text-sm md:text-lg">
+								{moment(reservation.created_at).format('DD/MM/YYYY')}
+								<div>
+									{moment(reservation.created_at).format('HH:MM:SS')}
+								</div>
+							</div>
+							<div
+								class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
+							>
+								{$LL.reservation.statuses[reservation.status]()}
+							</div>
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<div
+								class="cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700 rounded-lg p-2.5"
+								on:click={() => {
+									openEditModal = true;
+									selectedExhibition = reservation.exhibition;
+									selectedReservationId = reservation.id;
+									selectedReservation = reservation;
+								}}
+							>
+								<PencilSquare />
 							</div>
 						</div>
-						<div
-							class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
-						>
-							{$LL.reservation.statuses[reservation.status]()}
-						</div>
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						<div
-							class="cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700 rounded-lg p-2.5"
-							on:click={() => {
-								openEditModal = true;
-								selectedExhibition = reservation.exhibition;
-								selectedReservationId = reservation.id;
-								selectedReservation = reservation;
-							}}
-						>
-							<PencilSquare />
-						</div>
-					</div>
-				{/each}
+					{/each}
+				</div>
 			</div>
 		</div>
-	</div>
+	{/if}
 {:else}
 	<div class="w-full flex justify-center items-center px-4">
 		<div
