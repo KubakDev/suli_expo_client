@@ -68,7 +68,9 @@
 					)
 						? true
 						: false;
-					objectReservedByThisCompanyData = response.data[0];
+					objectReservedByThisCompanyData = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					);
 				}
 			});
 	}
