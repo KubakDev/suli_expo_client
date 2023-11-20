@@ -21,6 +21,7 @@
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
+	import { modelToItemModel } from '../../../../models/covertModel';
 
 	export let supabase: SupabaseClient;
 	export let objectId: number;
@@ -42,7 +43,7 @@
 	}[] = [];
 	let selectedSeatObjectId: any = undefined;
 	let thisObjectReservedByThisCompany: boolean = false;
-	let thisObjectReservedByThisCompanyStatus: ReservationStatusEnum | undefined = undefined;
+	let isThisObjectHasAPendingStatusForThisCompany: boolean = false;
 	let cancelReserveModal = false;
 	let successModal = false;
 	let objectReservedByThisCompanyData: any = undefined;
@@ -62,7 +63,12 @@
 			.then((response) => {
 				if (response.data && response.data?.length > 0) {
 					thisObjectReservedByThisCompany = true;
-					thisObjectReservedByThisCompanyStatus = response.data[0].status;
+					console.log(response.data);
+					isThisObjectHasAPendingStatusForThisCompany = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					)
+						? true
+						: false;
 					objectReservedByThisCompanyData = response.data[0];
 				}
 			});
@@ -288,13 +294,13 @@
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
 					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
-				{#if thisObjectReservedByThisCompany && thisObjectReservedByThisCompanyStatus == ReservationStatusEnum.PENDING}
+				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}
 					<p class="text-center leading-8">
 						{$LL.reservation.pending.description()}
-						<span class="{thisObjectReservedByThisCompanyStatus} mx-1 p-1 rounded-md text-white">
+						<span class="pending mx-1 p-1 rounded-md text-white">
 							{$LL.reservation.pending.status()}
 						</span>
-						{#if thisObjectReservedByThisCompanyStatus == ReservationStatusEnum.PENDING}
+						{#if isThisObjectHasAPendingStatusForThisCompany}
 							<span>
 								{$LL.reservation.pending.click()}
 								<!-- svelte-ignore a11y-click-events-have-key-events -->
