@@ -88,7 +88,7 @@ const en = {
 		emptySeatMessage: '	Regrettably, there are no available reservations for the current time slot at this exhibition.',
 		gotoExhibition: 'Go to Exhibition Page',
 		short_message: 'Just allow to upload Excel file',
-		warning_message: 'Please upload a Excel File before reserving a seat.',
+		warning_message: 'Please upload an Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
 		title: 'Booth Reservation',

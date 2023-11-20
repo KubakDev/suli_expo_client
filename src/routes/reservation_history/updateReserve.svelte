@@ -189,6 +189,7 @@
 	}
 
 	async function reserveSeat() {
+		// console.log('first ///');
 		reservedSeatData.area.push({
 			id: areas.length,
 			area: customAreaMeter.toString(),
@@ -214,7 +215,7 @@
 		});
 
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
-
+		// console.log('first', reservedSeatData);
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
 		}, 10);
