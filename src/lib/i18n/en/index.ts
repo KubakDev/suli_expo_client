@@ -74,6 +74,17 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
+		pending: {
+			description: 'you already reserved this seat with status',
+			status: 'Pending',
+			click: 'click',
+			here: 'here',
+			to_cancel: 'to cancel your reservation',
+			confirmation: 'Are you sure you want to cancel your reservation?',
+			success: 'Your reservation has been canceled successfully',
+			yes: "yes , I'm sure",
+			no: 'No'
+		},
 		total_company_reserve: 'Total Company Reserve',
 		emptySeatMessage:
 			'	Regrettably, there are no available reservations for the current time slot at this exhibition.',

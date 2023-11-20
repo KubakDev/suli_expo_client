@@ -276,6 +276,44 @@ type RootTranslation = {
 	 */
 	moreVideos: string
 	reservation: {
+		pending: {
+			/**
+			 * y​o​u​ ​a​l​r​e​a​d​y​ ​r​e​s​e​r​v​e​d​ ​t​h​i​s​ ​s​e​a​t​ ​w​i​t​h​ ​s​t​a​t​u​s
+			 */
+			description: string
+			/**
+			 * P​e​n​d​i​n​g
+			 */
+			status: string
+			/**
+			 * c​l​i​c​k
+			 */
+			click: string
+			/**
+			 * h​e​r​e
+			 */
+			here: string
+			/**
+			 * t​o​ ​c​a​n​c​e​l​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n
+			 */
+			to_cancel: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​c​a​n​c​e​l​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​?
+			 */
+			confirmation: string
+			/**
+			 * Y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​h​a​s​ ​b​e​e​n​ ​c​a​n​c​e​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			success: string
+			/**
+			 * y​e​s​ ​,​ ​I​'​m​ ​s​u​r​e
+			 */
+			yes: string
+			/**
+			 * N​o
+			 */
+			no: string
+		}
 		/**
 		 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
 		 */
@@ -956,6 +994,44 @@ export type TranslationFunctions = {
 	 */
 	moreVideos: () => LocalizedString
 	reservation: {
+		pending: {
+			/**
+			 * you already reserved this seat with status
+			 */
+			description: () => LocalizedString
+			/**
+			 * Pending
+			 */
+			status: () => LocalizedString
+			/**
+			 * click
+			 */
+			click: () => LocalizedString
+			/**
+			 * here
+			 */
+			here: () => LocalizedString
+			/**
+			 * to cancel your reservation
+			 */
+			to_cancel: () => LocalizedString
+			/**
+			 * Are you sure you want to cancel your reservation?
+			 */
+			confirmation: () => LocalizedString
+			/**
+			 * Your reservation has been canceled successfully
+			 */
+			success: () => LocalizedString
+			/**
+			 * yes , I'm sure
+			 */
+			yes: () => LocalizedString
+			/**
+			 * No
+			 */
+			no: () => LocalizedString
+		}
 		/**
 		 * Total Company Reserve
 		 */

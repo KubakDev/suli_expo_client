@@ -18,6 +18,10 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	//@ts-ignore
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
+	import SuccessLottieAnimation from './successLottie.json';
+	import { modelToItemModel } from '../../../../models/covertModel';
 
 	export let supabase: SupabaseClient;
 	export let objectId: number;
@@ -39,9 +43,9 @@
 	}[] = [];
 	let selectedSeatObjectId: any = undefined;
 	let thisObjectReservedByThisCompany: boolean = false;
-	let thisObjectReservedByThisCompanyStatus: ReservationStatusEnum | undefined = undefined;
+	let isThisObjectHasAPendingStatusForThisCompany: boolean = false;
 	let cancelReserveModal = false;
-
+	let successModal = false;
 	let objectReservedByThisCompanyData: any = undefined;
 	$: {
 		thisObjectReservedByThisCompany = false;
@@ -57,11 +61,16 @@
 			.eq('object_id', objectId)
 			.eq('company_id', $currentUser.id)
 			.then((response) => {
-				// console.log(response);
 				if (response.data && response.data?.length > 0) {
 					thisObjectReservedByThisCompany = true;
-					thisObjectReservedByThisCompanyStatus = response.data[0].status;
-					objectReservedByThisCompanyData = response.data[0];
+					isThisObjectHasAPendingStatusForThisCompany = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					)
+						? true
+						: false;
+					objectReservedByThisCompanyData = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					);
 				}
 			});
 	}
@@ -92,19 +101,53 @@
 		await supabase
 			.from('seat_reservation')
 			.update({ status: ReservationStatusEnum.REJECT, rejected_by_user: true })
-			.eq('id', objectReservedByThisCompanyData.id);
-		goto('/exhibition/detail' + $page.params.exhibitionId);
+			.eq('id', objectReservedByThisCompanyData.id)
+			.then((response) => {
+				if (response.error) return;
+				successModal = true;
+				setTimeout(() => {
+					goto('/exhibition/detail' + $page.params.exhibitionId);
+				}, 3000);
+			});
 	}
 </script>
+
+<Modal bind:open={successModal}>
+	<div class="flex justify-center">
+		<LottiePlayer
+			src={SuccessLottieAnimation}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={300}
+			width={300}
+		/>
+	</div>
+	<div class="w-full flex justify-center items-center">
+		<p class="font-bold">{$LL.reservation.pending.success()}</p>
+	</div>
+
+	<svelte:fragment slot="footer">
+		<div class=" w-full flex justify-end items-center">
+			<Button
+				on:click={() => {
+					goto('/exhibition/detail' + $page.params.exhibitionId);
+				}}>Ok</Button
+			>
+		</div>
+	</svelte:fragment>
+</Modal>
 
 <Modal bind:open={cancelReserveModal} size="xs" autoclose>
 	<div class="text-center">
 		<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
 		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-			Are you sure you want to delete this product?
+			{$LL.reservation.pending.confirmation()}
 		</h3>
-		<Button color="red" class="mr-2" on:click={cancelReservation}>Yes, I'm sure</Button>
-		<Button color="alternative">No, cancel</Button>
+		<Button color="red" class="mr-2" on:click={cancelReservation}
+			>{$LL.reservation.pending.yes()}</Button
+		>
+		<Button color="alternative">{$LL.reservation.pending.no()}</Button>
 	</div>
 </Modal>
 <div class="h-full w-full" style="overflow-y: auto;">
@@ -252,15 +295,15 @@
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
 					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
-				{#if thisObjectReservedByThisCompany}
+				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}
 					<p class="text-center leading-8">
-						you already reserved this seat with status
-						<span class="{thisObjectReservedByThisCompanyStatus} mx-1 p-1 rounded-md text-white">
-							{thisObjectReservedByThisCompanyStatus}
+						{$LL.reservation.pending.description()}
+						<span class="pending mx-1 p-1 rounded-md text-white">
+							{$LL.reservation.pending.status()}
 						</span>
-						{#if thisObjectReservedByThisCompanyStatus == ReservationStatusEnum.PENDING}
+						{#if isThisObjectHasAPendingStatusForThisCompany}
 							<span>
-								click
+								{$LL.reservation.pending.click()}
 								<!-- svelte-ignore a11y-click-events-have-key-events -->
 								<!-- svelte-ignore a11y-no-static-element-interactions -->
 								<span
@@ -269,9 +312,9 @@
 										cancelReserveModal = true;
 									}}
 								>
-									here
+									{$LL.reservation.pending.here()}
 								</span>
-								to cancel reservation
+								{$LL.reservation.pending.to_cancel()}
 							</span>
 						{/if}
 					</p>

@@ -41,7 +41,6 @@
 	onMount(async () => {
 		fabric = import('fabric');
 		if (data) {
-			// console.log(data);
 			await loadSeats();
 		}
 	});
