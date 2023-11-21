@@ -24,8 +24,7 @@ export const POST = (async ({ locals, params, request }) => {
 			}
 		});
 	}
-
-	console.log('hi 1');
+ 
 	const emailHtml = render({
 		template: MailTemplate,
 		props: {
@@ -34,7 +33,7 @@ export const POST = (async ({ locals, params, request }) => {
 			reserveSeatData
 		}
 	});
-	console.log('hi 2');
+ 
 	const worked = await transport.sendMail({
 		from: email,
 		to: emailUser,
@@ -42,6 +41,5 @@ export const POST = (async ({ locals, params, request }) => {
 		text: message,
 		html: emailHtml
 	});
-	console.log('hi 3');
 	return new Response(worked.response);
 }) satisfies RequestHandler;

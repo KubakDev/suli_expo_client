@@ -82,15 +82,16 @@ const ar = {
 			to_cancel: 'لإلغاء حجزك',
 			confirmation: 'هل أنت متأكد أنك تريد إلغاء حجزك؟',
 			success: 'تم إلغاء حجزك بنجاح',
-			yes: "نعم، أنا متأكد",
+			yes: 'نعم، أنا متأكد',
 			no: 'لا'
 		},
 		emptySeatMessage: 'للأسف، لا توجد حجوزات متاحة للفترة الزمنية الحالية لهذا المعرض.',
 		gotoExhibition: 'اذهب إلى صفحة المعرض',
 		short_message: 'السماح فقط بتحميل ملف Excel',
+		afterUpload_message: 'لقد قرأت سياسة الخصوصية والخصوصية',
 		warning_message: 'من فضلك قم بتحميل ملف Excel قبل الحجز.',
 		reserved: 'تم استلام طلبك بنجاح، يرجى الانتظار للاتصال بکم',
-		reserveUpdated: 'تم تحديث طلبك بنجاح، يرجى الانتظار للاتصال بکم',
+		reserveUpdated: 'لقد قرأت وقبلت جميع الشروط والأحكام.',
 		title: 'مقاعد المعرض',
 		contract: 'عرض ملف العقد بصيغة PDF',
 		welcome: 'مرحبًا',
@@ -216,7 +217,11 @@ const ar = {
 			relations: 'العلاقات: ',
 			technical: 'التقنية: ',
 			administration: 'الإدارة: ',
-			website: 'الموقع الإلكتروني: '
+			website: 'الموقع الإلكتروني: ',
+			warningMessage:
+				'هذه رسالة بريد إلكتروني آلية ولا تتم مراقبتها للرد عليها. من فضلك لا تعيد تشغيل هذا البريد الإلكتروني',
+			regard: 'يعتبر',
+			team: 'SulyExpo فريق'
 		}
 	}
 } satisfies BaseTranslation;

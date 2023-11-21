@@ -90,6 +90,7 @@ const en = {
 			'	Regrettably, there are no available reservations for the current time slot at this exhibition.',
 		gotoExhibition: 'Go to Exhibition Page',
 		short_message: 'Just allow to upload Excel file',
+		afterUpload_message: "I've read the privacy and privacy policy",
 		warning_message: 'Please upload an Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
@@ -219,7 +220,11 @@ const en = {
 			relations: 'Relations: ',
 			technical: 'Technical: ',
 			administration: 'Administration: ',
-			website: 'Website: '
+			website: 'Website: ',
+			warningMessage:
+				'This is an automated email and is not monitored for response. Please do not replay to this email.',
+			regard: 'Regards',
+			team: 'SulyExpo Team'
 		}
 	}
 } satisfies BaseTranslation;

@@ -331,6 +331,10 @@ type RootTranslation = {
 		 */
 		short_message: string
 		/**
+		 * I​'​v​e​ ​r​e​a​d​ ​t​h​e​ ​p​r​i​v​a​c​y​ ​a​n​d​ ​p​r​i​v​a​c​y​ ​p​o​l​i​c​y
+		 */
+		afterUpload_message: string
+		/**
 		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​n​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
 		 */
 		warning_message: string
@@ -730,6 +734,18 @@ type RootTranslation = {
 			 * W​e​b​s​i​t​e​:​ 
 			 */
 			website: string
+			/**
+			 * T​h​i​s​ ​i​s​ ​a​n​ ​a​u​t​o​m​a​t​e​d​ ​e​m​a​i​l​ ​a​n​d​ ​i​s​ ​n​o​t​ ​m​o​n​i​t​o​r​e​d​ ​f​o​r​ ​r​e​s​p​o​n​s​e​.​ ​P​l​e​a​s​e​ ​d​o​ ​n​o​t​ ​r​e​p​l​a​y​ ​t​o​ ​t​h​i​s​ ​e​m​a​i​l​.
+			 */
+			warningMessage: string
+			/**
+			 * R​e​g​a​r​d​s
+			 */
+			regard: string
+			/**
+			 * S​u​l​y​E​x​p​o​ ​T​e​a​m
+			 */
+			team: string
 		}
 	}
 }
@@ -1048,6 +1064,10 @@ export type TranslationFunctions = {
 		 * Just allow to upload Excel file
 		 */
 		short_message: () => LocalizedString
+		/**
+		 * I've read the privacy and privacy policy
+		 */
+		afterUpload_message: () => LocalizedString
 		/**
 		 * Please upload an Excel File before reserving a seat.
 		 */
@@ -1448,6 +1468,18 @@ export type TranslationFunctions = {
 			 * Website: 
 			 */
 			website: () => LocalizedString
+			/**
+			 * This is an automated email and is not monitored for response. Please do not replay to this email.
+			 */
+			warningMessage: () => LocalizedString
+			/**
+			 * Regards
+			 */
+			regard: () => LocalizedString
+			/**
+			 * SulyExpo Team
+			 */
+			team: () => LocalizedString
 		}
 	}
 }

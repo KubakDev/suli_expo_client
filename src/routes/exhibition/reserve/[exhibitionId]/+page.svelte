@@ -491,8 +491,7 @@
 							</div>
 							<div>
 								<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-									{getDescriptionDependOnLanguage() ??
-										'lorem ipsum dolor sit a met consectetur adipisicing elit'}
+									{getDescriptionDependOnLanguage() ?? 'Title'}
 								</p>
 								<div class="mt-4 flex">
 									<Checkbox
@@ -502,7 +501,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm"> i've read the privacy and privacy policy </span>
+									<span class="text-sm"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}
