@@ -123,6 +123,7 @@
 								setTimeout(() => {
 									goto('/exhibition/1');
 								}, 3000);
+
 								fetch('/api/seat/purchase', {
 									method: 'POST',
 									headers: {
@@ -145,6 +146,7 @@
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
 						await fetch('/api/seat/purchase', {
 							method: 'POST',
 							headers: {
@@ -161,6 +163,7 @@
 						});
 					});
 			} else {
+				console.log('hi seat');
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -173,7 +176,7 @@
 						file_url: fileUrl,
 						services: reserveSeatData.services
 					})
-					.then((Response: any) => {
+					.then(async (Response: any) => {
 						if (Response.error) {
 							alert('unknown error occurred ');
 							return;
@@ -184,6 +187,23 @@
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
+						await fetch('/api/seat/purchase', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								emailUser: data?.session?.user?.email,
+								name: '',
+								message: '',
+								exhibition: exhibition,
+								companyData: $currentUser,
+								reserveSeatData: reserveSeatData
+							})
+						}).then(() => {
+							defaultModal = true;
+						});
 					});
 			}
 		} catch (error) {
