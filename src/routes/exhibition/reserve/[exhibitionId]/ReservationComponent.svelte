@@ -192,6 +192,10 @@
 			.eq('languages.language', locale)
 			.in('id', servicesId)
 			.then((result) => {
+				freeServices = [];
+				paidServices = [];
+				addSelectedFreeSeatServices([]);
+				addSelectedPaidSeatServices([]);
 				result.data?.forEach((service: any) => {
 					let selectedObjectService = selectedObject.services.find(
 						(item: any) => item.id === service.id

@@ -21,7 +21,6 @@
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
-	import { modelToItemModel } from '../../../../models/covertModel';
 
 	export let supabase: SupabaseClient;
 	export let objectId: number;
@@ -35,6 +34,7 @@
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
+
 	let servicesPrice: {
 		serviceId: number;
 		totalPrice: number;
