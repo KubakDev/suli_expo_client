@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { currentMainThemeColors } from '../../stores/darkMode';
+	import SVGLoginComponent from '../../lib/components/SVGLoginComponent.svelte';
 	import { Button, Input, Label, Modal, Spinner } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
@@ -6,12 +8,11 @@
 	import { goto } from '$app/navigation';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-	import { LL } from '$lib/i18n/i18n-svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import Test from './test.png';
 	export let form;
 	export let data;
 	import { get } from 'svelte/store';
-	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	let loading = false;
 	let resetPasswordModal = false;
@@ -50,6 +51,7 @@
 	}
 </script>
 
+<!-- reset password  -->
 <Modal title={$LL.loggin.reset_password()} bind:open={resetPasswordModal}>
 	<div class="w-full">
 		<Input
@@ -67,82 +69,110 @@
 	<div class="w-full flex justify-end">
 		<Button
 			on:click={resetPassword}
-			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+			style="background-color:{$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 			>{$LL.loggin.send_email()}</Button
 		>
 	</div>
 </Modal>
-<div class="w-full flex justify-center items-center">
-	<form
-		action="?/signin"
-		method="POST"
-		class="flex h-screen justify-center items-center w-3/4 max-w-[1000px]"
-		use:enhance
-		dir="ltr"
-	>
-		<div class="shadow-md rounded-md w-full lg:w-1/2 z-30 bg-white dark:bg-slate-300">
-			<div
-				class="w-full h-[100px] rounded-t-md"
-				style={`background-image: url(${Test});  background-repeat: no-repeat;
-			background-size: cover; `}
-			/>
-			<div class="px-8 pt-32 pb-10">
-				<div class="w-full flex justify-center" />
-				<div class="w-full pb-8">
-					<Input
-						type="text"
-						id="email"
-						placeholder="example@example.com"
-						name="email"
-						value={form?.email ?? ''}
-					/>
-				</div>
-				<div class="w-full">
-					<Input
-						type="password"
-						id="password"
-						placeholder="*********"
-						name="password"
-						value={form?.password ?? ''}
-					/>
-				</div>
-				{#if form?.errors}
-					<span class="py-2 px-1 text-red-400">
-						{form?.errors == 'Invalid login credentials' ? $LL.loggin.error() : form?.errors}</span
+<div
+	style="background-color: {$currentMainThemeColors.backgroundColor};"
+	class="flex flex-wrap min-h-screen w-full content-center justify-center py-10"
+>
+	<div class="flex shadow-md border rounded-md">
+		<!-- Login form -->
+		<div
+			class=" flex flex-wrap content-center justify-center rounded-l-md w-[22rem] md:w-[24rem]"
+			style=" height: 32rem; background-color: {$currentMainThemeColors.backgroundColor};"
+		>
+			<div class="w-72">
+				<!-- Heading -->
+				<h1 class="text-xl font-semibold">{$LL.buttons.loginForm()}</h1>
+				<small
+					class="flex justify-center items-center opacity-70"
+					style=" color: {$currentMainThemeColors.overlayBackgroundColor};"
+					>{$LL.loggin.loginDesc()}</small
+				>
+
+				<!-- Form -->
+				<form
+					class="mt-4"
+					action="?/signin"
+					method="POST"
+					use:enhance
+					style={`${$locale === 'en' ? 'direction:ltr' : 'direction:rtl'}`}
+				>
+					<div class="mb-3">
+						<label class="mb-2 block text-xs font-semibold">{$LL.loggin.email()}</label>
+						<input
+							type="text"
+							id="email"
+							placeholder="example@example.com"
+							name="email"
+							value={form?.email ?? ''}
+							class="block w-full rounded-md border border-gray-300 focus:border-[{$currentMainThemeColors.primaryColor}] focus:outline-none focus:ring-1 focus:ring-[{$currentMainThemeColors.primaryColor}] py-1 px-1.5"
+						/>
+					</div>
+
+					<div class="mb-3">
+						<label class="mb-2 block text-xs font-semibold">{$LL.loggin.password()}</label>
+						<input
+							type="password"
+							id="password"
+							placeholder="******"
+							name="password"
+							value={form?.password ?? ''}
+							class="block w-full rounded-md border border-gray-300 focus:border-[{$currentMainThemeColors.primaryColor}] focus:outline-none focus:ring-1 focus:ring-[{$currentMainThemeColors.primaryColor}] py-1 px-1.5"
+						/>
+					</div>
+					{#if form?.errors}
+						<span class="py-3 px-1 text-red-400">
+							{form?.errors == 'Invalid login credentials'
+								? $LL.loggin.error()
+								: form?.errors}</span
+						>
+					{/if}
+					<div class="mb-3 flex flex-wrap content-center">
+						<a
+							href="#"
+							on:click={() => {
+								resetPasswordModal = true;
+							}}
+							class="text-xs font-semibold"
+							style="color:{$currentMainThemeColors.primaryColor}">{$LL.loggin.forgot_password()}</a
+						>
+					</div>
+
+					<div class="mb-3">
+						<button
+							on:click={onSubmit}
+							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							class="mb-1.5 block w-full text-center px-2 py-1.5 rounded-md"
+						>
+							{$LL.loggin.signIn()}</button
+						>
+					</div>
+				</form>
+
+				<!-- Footer -->
+				<div class="text-center">
+					<span style="color: {$currentMainThemeColors.overlayBackgroundColor};" class="text-xs"
+						>{$LL.loggin.alertText()}</span
 					>
-				{/if}
-				<div class="w-full grid grid-cols-3 gap-2">
-					<Button
-						on:click={onSubmit}
-						type="submit"
-						class=" mt-10 col-span-2 "
-						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+					<a
+						href={'/register'}
+						class="text-xs font-semibold"
+						style="color:{$currentMainThemeColors.primaryColor}">{$LL.loggin.register()}</a
 					>
-						{$LL.buttons.submit()}</Button
-					>
-					<Button
-						on:click={() => {
-							goto('/register');
-						}}
-						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
-						type="button"
-						class=" mt-10"
-						outline>{$LL.loggin.register()}</Button
-					>
-				</div>
-				<div class="mt-2 text-end">
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-					<p
-						class="cursor-pointer hover:text-gray-400"
-						on:click={() => {
-							resetPasswordModal = true;
-						}}
-					>
-						{$LL.loggin.forgot_password()}
-					</p>
 				</div>
 			</div>
 		</div>
-	</form>
+
+		<!-- Login banner -->
+		<div
+			class="lg:flex flex-wrap content-center justify-center rounded-r-md hidden"
+			style="width: 24rem; height: 32rem;background-color: {$currentMainThemeColors.backgroundColor};"
+		>
+			<SVGLoginComponent />
+		</div>
+	</div>
 </div>

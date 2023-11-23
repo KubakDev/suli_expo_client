@@ -123,6 +123,7 @@
 								setTimeout(() => {
 									goto('/exhibition/1');
 								}, 3000);
+
 								fetch('/api/seat/purchase', {
 									method: 'POST',
 									headers: {
@@ -145,6 +146,7 @@
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
 						await fetch('/api/seat/purchase', {
 							method: 'POST',
 							headers: {
@@ -161,6 +163,7 @@
 						});
 					});
 			} else {
+				console.log('hi seat');
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -173,7 +176,7 @@
 						file_url: fileUrl,
 						services: reserveSeatData.services
 					})
-					.then((Response: any) => {
+					.then(async (Response: any) => {
 						if (Response.error) {
 							alert('unknown error occurred ');
 							return;
@@ -184,6 +187,23 @@
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
+						await fetch('/api/seat/purchase', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								emailUser: data?.session?.user?.email,
+								name: '',
+								message: '',
+								exhibition: exhibition,
+								companyData: $currentUser,
+								reserveSeatData: reserveSeatData
+							})
+						}).then(() => {
+							defaultModal = true;
+						});
 					});
 			}
 		} catch (error) {
@@ -471,8 +491,7 @@
 							</div>
 							<div>
 								<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-									{getDescriptionDependOnLanguage() ??
-										'lorem ipsum dolor sit a met consectetur adipisicing elit'}
+									{getDescriptionDependOnLanguage() ?? 'Title'}
 								</p>
 								<div class="mt-4 flex">
 									<Checkbox
@@ -482,7 +501,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm"> i've read the privacy and privacy policy </span>
+									<span class="text-sm"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}

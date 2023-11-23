@@ -58,6 +58,10 @@ type RootTranslation = {
 		 * U​p​d​a​t​e
 		 */
 		update: string
+		/**
+		 * L​o​g​i​n​ ​F​o​r​m
+		 */
+		loginForm: string
 	}
 	/**
 	 * H​o​m​e
@@ -327,6 +331,10 @@ type RootTranslation = {
 		 */
 		short_message: string
 		/**
+		 * I​'​v​e​ ​r​e​a​d​ ​t​h​e​ ​p​r​i​v​a​c​y​ ​a​n​d​ ​p​r​i​v​a​c​y​ ​p​o​l​i​c​y
+		 */
+		afterUpload_message: string
+		/**
 		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​n​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
 		 */
 		warning_message: string
@@ -507,6 +515,20 @@ type RootTranslation = {
 			reject: string
 		}
 	}
+	register: {
+		/**
+		 * R​e​g​i​s​t​e​r​ ​F​o​r​m
+		 */
+		registerForm: string
+		/**
+		 * D​o​ ​y​o​u​ ​h​a​v​e​ ​a​c​c​o​u​n​t​?
+		 */
+		alertText: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​6​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g​.
+		 */
+		warning: string
+	}
 	loggin: {
 		/**
 		 * P​l​e​a​s​e​ ​C​h​e​c​k​ ​Y​o​u​r​ ​E​m​a​i​l​ ​f​o​r​ ​r​e​s​e​t​ ​p​a​s​s​w​o​r​d
@@ -554,6 +576,26 @@ type RootTranslation = {
 		 * i​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
 		 */
 		error: string
+		/**
+		 * W​e​l​c​o​m​e​ ​b​a​c​k​!​ ​P​l​e​a​s​e​ ​e​n​t​e​r​ ​y​o​u​r​ ​d​e​t​a​i​l​s
+		 */
+		loginDesc: string
+		/**
+		 * E​m​a​i​l
+		 */
+		email: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * S​i​g​n​ ​I​n
+		 */
+		signIn: string
+		/**
+		 * D​o​n​'​t​ ​h​a​v​e​ ​a​c​c​o​u​n​t​?
+		 */
+		alertText: string
 	}
 	company_info: {
 		/**
@@ -692,6 +734,18 @@ type RootTranslation = {
 			 * W​e​b​s​i​t​e​:​ 
 			 */
 			website: string
+			/**
+			 * T​h​i​s​ ​i​s​ ​a​n​ ​a​u​t​o​m​a​t​e​d​ ​e​m​a​i​l​ ​a​n​d​ ​i​s​ ​n​o​t​ ​m​o​n​i​t​o​r​e​d​ ​f​o​r​ ​r​e​s​p​o​n​s​e​.​ ​P​l​e​a​s​e​ ​d​o​ ​n​o​t​ ​r​e​p​l​a​y​ ​t​o​ ​t​h​i​s​ ​e​m​a​i​l​.
+			 */
+			warningMessage: string
+			/**
+			 * R​e​g​a​r​d​s
+			 */
+			regard: string
+			/**
+			 * S​u​l​y​E​x​p​o​ ​T​e​a​m
+			 */
+			team: string
 		}
 	}
 }
@@ -738,6 +792,10 @@ export type TranslationFunctions = {
 		 * Update
 		 */
 		update: () => LocalizedString
+		/**
+		 * Login Form
+		 */
+		loginForm: () => LocalizedString
 	}
 	/**
 	 * Home
@@ -1007,6 +1065,10 @@ export type TranslationFunctions = {
 		 */
 		short_message: () => LocalizedString
 		/**
+		 * I've read the privacy and privacy policy
+		 */
+		afterUpload_message: () => LocalizedString
+		/**
 		 * Please upload an Excel File before reserving a seat.
 		 */
 		warning_message: () => LocalizedString
@@ -1187,6 +1249,20 @@ export type TranslationFunctions = {
 			reject: () => LocalizedString
 		}
 	}
+	register: {
+		/**
+		 * Register Form
+		 */
+		registerForm: () => LocalizedString
+		/**
+		 * Do you have account?
+		 */
+		alertText: () => LocalizedString
+		/**
+		 * Password must be at least 6 characters long.
+		 */
+		warning: () => LocalizedString
+	}
 	loggin: {
 		/**
 		 * Please Check Your Email for reset password
@@ -1234,6 +1310,26 @@ export type TranslationFunctions = {
 		 * invalid email or password
 		 */
 		error: () => LocalizedString
+		/**
+		 * Welcome back! Please enter your details
+		 */
+		loginDesc: () => LocalizedString
+		/**
+		 * Email
+		 */
+		email: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Sign In
+		 */
+		signIn: () => LocalizedString
+		/**
+		 * Don't have account?
+		 */
+		alertText: () => LocalizedString
 	}
 	company_info: {
 		/**
@@ -1372,6 +1468,18 @@ export type TranslationFunctions = {
 			 * Website: 
 			 */
 			website: () => LocalizedString
+			/**
+			 * This is an automated email and is not monitored for response. Please do not replay to this email.
+			 */
+			warningMessage: () => LocalizedString
+			/**
+			 * Regards
+			 */
+			regard: () => LocalizedString
+			/**
+			 * SulyExpo Team
+			 */
+			team: () => LocalizedString
 		}
 	}
 }

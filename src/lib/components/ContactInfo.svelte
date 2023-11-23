@@ -119,6 +119,7 @@
 			<div class="flex px-2">
 				{$LL.relations()} :
 			</div>
+
 			{#if $locale === 'ckb' || $locale === 'ar'}
 				{contactInfoSection?.phoneNumber_relations}+
 			{:else}
