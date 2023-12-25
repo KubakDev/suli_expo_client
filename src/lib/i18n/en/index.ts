@@ -14,7 +14,8 @@ const en = {
 	buttons: {
 		submit: 'Submit',
 		upload_sheet: 'Upload Sheet',
-		update: 'Update'
+		update: 'Update',
+		loginForm: 'Login Form'
 	},
 	home: 'Home',
 	about: 'About',
@@ -30,6 +31,7 @@ const en = {
 			place: 'Iraq - Sulaymaniyah'
 		},
 		Companies: 'Companies',
+		Location: 'Location',
 		Countries: 'Countries',
 		Brochure: 'Exhibition Brochure',
 		Fair: 'Sulaymaniyah International Fair',
@@ -71,10 +73,25 @@ const en = {
 	videos: 'Videos',
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
-	total_company_reserve: 'Total Company Reserve',
 	reservation: {
+		pending: {
+			description: 'you already reserved this seat with status',
+			status: 'Pending',
+			click: 'click',
+			here: 'here',
+			to_cancel: 'to cancel your reservation',
+			confirmation: 'Are you sure you want to cancel your reservation?',
+			success: 'Your reservation has been canceled successfully',
+			yes: "yes , I'm sure",
+			no: 'No'
+		},
+		total_company_reserve: 'Total Company Reserve',
+		emptySeatMessage:
+			'	Regrettably, there are no available reservations for the current time slot at this exhibition.',
+		gotoExhibition: 'Go to Exhibition Page',
 		short_message: 'Just allow to upload Excel file',
-		warning_message: 'Please upload a Excel File before reserving a seat.',
+		afterUpload_message: "I've read the privacy and privacy policy",
+		warning_message: 'Please upload an Excel File before reserving a seat.',
 		reserved: 'Your request has been successfully received, please wait for our contact',
 		reserveUpdated: 'Your request has been successfully updated, please wait for our contact',
 		title: 'Booth Reservation',
@@ -131,6 +148,12 @@ const en = {
 			reject: 'Rejected'
 		}
 	},
+	register: {
+		registerForm: 'Register Form',
+		alertText: 'Do you have account?',
+		warning: 'Password must be at least 6 characters long.'
+	},
+
 	loggin: {
 		message: 'Please Check Your Email for reset password',
 		login: 'Login',
@@ -145,7 +168,12 @@ const en = {
 			msg: 'Verify your email address to activate your account'
 		},
 		duplicate_password: 'New password must be identical to old one',
-		error: 'invalid email or password'
+		error: 'invalid email or password',
+		loginDesc: 'Welcome back! Please enter your details',
+		email: 'Email',
+		password: 'Password',
+		signIn: 'Sign In',
+		alertText: "Don't have account?"
 	},
 	company_info: {
 		user_message: 'User Image is required',
@@ -192,7 +220,11 @@ const en = {
 			relations: 'Relations: ',
 			technical: 'Technical: ',
 			administration: 'Administration: ',
-			website: 'Website: '
+			website: 'Website: ',
+			warningMessage:
+				'This is an automated email and is not monitored for response. Please do not replay to this email.',
+			regard: 'Regards',
+			team: 'SulyExpo Team'
 		}
 	}
 } satisfies BaseTranslation;

@@ -63,7 +63,6 @@
 		if (completePdfLink) {
 			window.open(completePdfLink, '_blank');
 		} else {
-			console.error('Invalid PDF link');
 		}
 	}
 </script>
@@ -166,30 +165,10 @@
 									{exhibition?.location_title ?? 'Not Available'}
 								</h2>
 								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
-									{$LL.exhibition_mini_data.Companies()}
+									{$LL.exhibition_mini_data.Location()}
 								</p>
 							</div>
 						</div>
-						<!-- <div class="flex h-20 items-center my-1">
-							<div
-								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
-								class="flex rounded-full h-20 w-20 justify-center items-center"
-							>
-								<MapPin size="50" />
-							</div>
-							<div class="h-full w-4" />
-							<div class="flex flex-col dark:text-white">
-								<h2
-									style="color: {$currentMainThemeColors.overlayPrimaryColor}"
-									class=" text-2xl font-bold uppercase tracking-wide"
-								>
-									{exhibition?.location_title ?? 'Not Available'}
-								</h2>
-								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
-									{exhibition?.location ?? 'Not Available'}
-								</p>
-							</div>
-						</div> -->
 					</div>
 					<div class="w-full flex flex-row justify-center pt-16 pb-10">
 						<TitleUi

@@ -58,6 +58,10 @@ type RootTranslation = {
 		 * U​p​d​a​t​e
 		 */
 		update: string
+		/**
+		 * L​o​g​i​n​ ​F​o​r​m
+		 */
+		loginForm: string
 	}
 	/**
 	 * H​o​m​e
@@ -106,6 +110,10 @@ type RootTranslation = {
 		 * C​o​m​p​a​n​i​e​s
 		 */
 		Companies: string
+		/**
+		 * L​o​c​a​t​i​o​n
+		 */
+		Location: string
 		/**
 		 * C​o​u​n​t​r​i​e​s
 		 */
@@ -267,17 +275,67 @@ type RootTranslation = {
 	 * M​o​r​e​ ​V​i​d​e​o​s
 	 */
 	moreVideos: string
-	/**
-	 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
-	 */
-	total_company_reserve: string
 	reservation: {
+		pending: {
+			/**
+			 * y​o​u​ ​a​l​r​e​a​d​y​ ​r​e​s​e​r​v​e​d​ ​t​h​i​s​ ​s​e​a​t​ ​w​i​t​h​ ​s​t​a​t​u​s
+			 */
+			description: string
+			/**
+			 * P​e​n​d​i​n​g
+			 */
+			status: string
+			/**
+			 * c​l​i​c​k
+			 */
+			click: string
+			/**
+			 * h​e​r​e
+			 */
+			here: string
+			/**
+			 * t​o​ ​c​a​n​c​e​l​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n
+			 */
+			to_cancel: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​c​a​n​c​e​l​ ​y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​?
+			 */
+			confirmation: string
+			/**
+			 * Y​o​u​r​ ​r​e​s​e​r​v​a​t​i​o​n​ ​h​a​s​ ​b​e​e​n​ ​c​a​n​c​e​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			success: string
+			/**
+			 * y​e​s​ ​,​ ​I​'​m​ ​s​u​r​e
+			 */
+			yes: string
+			/**
+			 * N​o
+			 */
+			no: string
+		}
+		/**
+		 * T​o​t​a​l​ ​C​o​m​p​a​n​y​ ​R​e​s​e​r​v​e
+		 */
+		total_company_reserve: string
+		/**
+		 * 	​R​e​g​r​e​t​t​a​b​l​y​,​ ​t​h​e​r​e​ ​a​r​e​ ​n​o​ ​a​v​a​i​l​a​b​l​e​ ​r​e​s​e​r​v​a​t​i​o​n​s​ ​f​o​r​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​t​i​m​e​ ​s​l​o​t​ ​a​t​ ​t​h​i​s​ ​e​x​h​i​b​i​t​i​o​n​.
+		 */
+		emptySeatMessage: string
+		/**
+		 * G​o​ ​t​o​ ​E​x​h​i​b​i​t​i​o​n​ ​P​a​g​e
+		 */
+		gotoExhibition: string
 		/**
 		 * J​u​s​t​ ​a​l​l​o​w​ ​t​o​ ​u​p​l​o​a​d​ ​E​x​c​e​l​ ​f​i​l​e
 		 */
 		short_message: string
 		/**
-		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
+		 * I​'​v​e​ ​r​e​a​d​ ​t​h​e​ ​p​r​i​v​a​c​y​ ​a​n​d​ ​p​r​i​v​a​c​y​ ​p​o​l​i​c​y
+		 */
+		afterUpload_message: string
+		/**
+		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​n​ ​E​x​c​e​l​ ​F​i​l​e​ ​b​e​f​o​r​e​ ​r​e​s​e​r​v​i​n​g​ ​a​ ​s​e​a​t​.
 		 */
 		warning_message: string
 		/**
@@ -457,6 +515,20 @@ type RootTranslation = {
 			reject: string
 		}
 	}
+	register: {
+		/**
+		 * R​e​g​i​s​t​e​r​ ​F​o​r​m
+		 */
+		registerForm: string
+		/**
+		 * D​o​ ​y​o​u​ ​h​a​v​e​ ​a​c​c​o​u​n​t​?
+		 */
+		alertText: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​6​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g​.
+		 */
+		warning: string
+	}
 	loggin: {
 		/**
 		 * P​l​e​a​s​e​ ​C​h​e​c​k​ ​Y​o​u​r​ ​E​m​a​i​l​ ​f​o​r​ ​r​e​s​e​t​ ​p​a​s​s​w​o​r​d
@@ -504,6 +576,26 @@ type RootTranslation = {
 		 * i​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
 		 */
 		error: string
+		/**
+		 * W​e​l​c​o​m​e​ ​b​a​c​k​!​ ​P​l​e​a​s​e​ ​e​n​t​e​r​ ​y​o​u​r​ ​d​e​t​a​i​l​s
+		 */
+		loginDesc: string
+		/**
+		 * E​m​a​i​l
+		 */
+		email: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * S​i​g​n​ ​I​n
+		 */
+		signIn: string
+		/**
+		 * D​o​n​'​t​ ​h​a​v​e​ ​a​c​c​o​u​n​t​?
+		 */
+		alertText: string
 	}
 	company_info: {
 		/**
@@ -642,6 +734,18 @@ type RootTranslation = {
 			 * W​e​b​s​i​t​e​:​ 
 			 */
 			website: string
+			/**
+			 * T​h​i​s​ ​i​s​ ​a​n​ ​a​u​t​o​m​a​t​e​d​ ​e​m​a​i​l​ ​a​n​d​ ​i​s​ ​n​o​t​ ​m​o​n​i​t​o​r​e​d​ ​f​o​r​ ​r​e​s​p​o​n​s​e​.​ ​P​l​e​a​s​e​ ​d​o​ ​n​o​t​ ​r​e​p​l​a​y​ ​t​o​ ​t​h​i​s​ ​e​m​a​i​l​.
+			 */
+			warningMessage: string
+			/**
+			 * R​e​g​a​r​d​s
+			 */
+			regard: string
+			/**
+			 * S​u​l​y​E​x​p​o​ ​T​e​a​m
+			 */
+			team: string
 		}
 	}
 }
@@ -688,6 +792,10 @@ export type TranslationFunctions = {
 		 * Update
 		 */
 		update: () => LocalizedString
+		/**
+		 * Login Form
+		 */
+		loginForm: () => LocalizedString
 	}
 	/**
 	 * Home
@@ -736,6 +844,10 @@ export type TranslationFunctions = {
 		 * Companies
 		 */
 		Companies: () => LocalizedString
+		/**
+		 * Location
+		 */
+		Location: () => LocalizedString
 		/**
 		 * Countries
 		 */
@@ -897,17 +1009,67 @@ export type TranslationFunctions = {
 	 * More Videos
 	 */
 	moreVideos: () => LocalizedString
-	/**
-	 * Total Company Reserve
-	 */
-	total_company_reserve: () => LocalizedString
 	reservation: {
+		pending: {
+			/**
+			 * you already reserved this seat with status
+			 */
+			description: () => LocalizedString
+			/**
+			 * Pending
+			 */
+			status: () => LocalizedString
+			/**
+			 * click
+			 */
+			click: () => LocalizedString
+			/**
+			 * here
+			 */
+			here: () => LocalizedString
+			/**
+			 * to cancel your reservation
+			 */
+			to_cancel: () => LocalizedString
+			/**
+			 * Are you sure you want to cancel your reservation?
+			 */
+			confirmation: () => LocalizedString
+			/**
+			 * Your reservation has been canceled successfully
+			 */
+			success: () => LocalizedString
+			/**
+			 * yes , I'm sure
+			 */
+			yes: () => LocalizedString
+			/**
+			 * No
+			 */
+			no: () => LocalizedString
+		}
+		/**
+		 * Total Company Reserve
+		 */
+		total_company_reserve: () => LocalizedString
+		/**
+		 * 	Regrettably, there are no available reservations for the current time slot at this exhibition.
+		 */
+		emptySeatMessage: () => LocalizedString
+		/**
+		 * Go to Exhibition Page
+		 */
+		gotoExhibition: () => LocalizedString
 		/**
 		 * Just allow to upload Excel file
 		 */
 		short_message: () => LocalizedString
 		/**
-		 * Please upload a Excel File before reserving a seat.
+		 * I've read the privacy and privacy policy
+		 */
+		afterUpload_message: () => LocalizedString
+		/**
+		 * Please upload an Excel File before reserving a seat.
 		 */
 		warning_message: () => LocalizedString
 		/**
@@ -1087,6 +1249,20 @@ export type TranslationFunctions = {
 			reject: () => LocalizedString
 		}
 	}
+	register: {
+		/**
+		 * Register Form
+		 */
+		registerForm: () => LocalizedString
+		/**
+		 * Do you have account?
+		 */
+		alertText: () => LocalizedString
+		/**
+		 * Password must be at least 6 characters long.
+		 */
+		warning: () => LocalizedString
+	}
 	loggin: {
 		/**
 		 * Please Check Your Email for reset password
@@ -1134,6 +1310,26 @@ export type TranslationFunctions = {
 		 * invalid email or password
 		 */
 		error: () => LocalizedString
+		/**
+		 * Welcome back! Please enter your details
+		 */
+		loginDesc: () => LocalizedString
+		/**
+		 * Email
+		 */
+		email: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Sign In
+		 */
+		signIn: () => LocalizedString
+		/**
+		 * Don't have account?
+		 */
+		alertText: () => LocalizedString
 	}
 	company_info: {
 		/**
@@ -1272,6 +1468,18 @@ export type TranslationFunctions = {
 			 * Website: 
 			 */
 			website: () => LocalizedString
+			/**
+			 * This is an automated email and is not monitored for response. Please do not replay to this email.
+			 */
+			warningMessage: () => LocalizedString
+			/**
+			 * Regards
+			 */
+			regard: () => LocalizedString
+			/**
+			 * SulyExpo Team
+			 */
+			team: () => LocalizedString
 		}
 	}
 }

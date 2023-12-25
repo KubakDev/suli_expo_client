@@ -3,19 +3,20 @@
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import LoginIcon from '../login/loginIcon.json';
 	import EmailVerification from './emailVerificationIcon.json';
 	import { currentUser } from '../../stores/currentUser';
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-	import { LL } from '$lib/i18n/i18n-svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import type { ActionData } from './$types.js';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import SVGRegisterComponent from '$lib/components/SVGRegisterComponent.svelte';
 
 	export let form: ActionData;
 	export let data;
 	let loading = false;
 	let showModal = false;
+	let error = false;
 
 	let userInfo: {
 		email: string;
@@ -52,6 +53,13 @@
 	});
 
 	function onSubmit() {
+		// Validate if the password is less than 6 characters
+		error = false;
+		if (form?.password && form.password.length < 6) {
+			error = true;
+			loading = false;
+			return;
+		}
 		loading = true;
 
 		if (userInfo && userInfo?.email && userInfo?.uid) {
@@ -82,69 +90,104 @@
 	</p>
 </Modal>
 
-<div class="w-full flex justify-center items-center" dir="ltr">
-	<form
-		action="?/register"
-		method="POST"
-		class="flex h-screen justify-center items-center w-3/4 max-w-[1500px]"
-		use:enhance
-		dir="ltr"
-	>
-		<div class="shadow-md rounded-md p-8 w-full lg:w-1/2" style="background-color:#f3f3f3">
-			<div class="w-full flex justify-center">
-				<LottiePlayer
-					src={LoginIcon}
-					autoplay={true}
-					loop={true}
-					renderer="svg"
-					background="transparent"
-					height={300}
-					width={300}
-				/>
-			</div>
+<div
+	style="background-color: {$currentMainThemeColors.backgroundColor};"
+	class="flex flex-wrap min-h-screen w-full content-center justify-center py-10"
+>
+	<div class="flex shadow-md border rounded-md">
+		<!-- register form -->
+		<div
+			class=" flex flex-wrap content-center justify-center rounded-l-md w-[22rem] md:w-[24rem]"
+			style=" height: 32rem; background-color: {$currentMainThemeColors.backgroundColor};"
+		>
+			<div class="w-72">
+				<!-- Heading -->
+				<h1 class="text-xl font-semibold">{$LL.register.registerForm()}</h1>
 
-			<div class="w-full pb-8">
-				<Input
-					type="text"
-					id="email"
-					placeholder="example@example.com"
-					name="email"
-					value={form?.email ?? ''}
-				/>
-			</div>
-			<div class="w-full">
-				<Input
-					type="password"
-					id="password"
-					placeholder="*********"
-					name="password"
-					value={form?.password ?? ''}
-				/>
-			</div>
-			{#if form?.errors}
-				<span class="py-2 px-1 text-red-400">{form?.errors}</span>
-			{/if}
-			<div class="w-full grid grid-cols-3 gap-2">
-				<Button
-					on:click={onSubmit}
-					type="submit"
-					class=" mt-10 col-span-2"
-					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				<!-- Form -->
+				<form
+					use:enhance
+					style={`${$locale === 'en' ? 'direction:ltr' : 'direction:rtl'}`}
+					action="?/register"
+					method="POST"
+					class="mt-4"
+					use:enhance
 				>
-					{$LL.buttons.submit()}</Button
-				>
-				<Button
-					on:click={() => {
-						goto('/login');
-					}}
-					style="border:1px solid {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.primaryColor};outlinedButton"
-					onMouseOver="this.style.color='{$currentMainThemeColors.overlayPrimaryColor}'"
-					onMouseOut="this.style.color='{$currentMainThemeColors.primaryColor}'"
-					type="button"
-					class=" mt-10 "
-					outline>{$LL.loggin.login()}</Button
-				>
+					<div class="mb-3">
+						<label class="mb-2 block text-xs font-semibold">{$LL.loggin.email()}</label>
+						<input
+							type="text"
+							id="email"
+							placeholder="example@example.com"
+							name="email"
+							value={form?.email ?? ''}
+							class="block w-full rounded-md border border-gray-300 focus:border-[{$currentMainThemeColors.primaryColor}] focus:outline-none focus:ring-1 focus:ring-[{$currentMainThemeColors.primaryColor}] py-1 px-1.5 text-gray-500"
+						/>
+					</div>
+
+					<div class="mb-3">
+						<label class="mb-2 block text-xs font-semibold">{$LL.loggin.password()}</label>
+						<input
+							type="password"
+							id="password"
+							placeholder="*********"
+							name="password"
+							value={form?.password ?? ''}
+							class="block w-full rounded-md border border-gray-300 focus:border-[{$currentMainThemeColors.primaryColor}] focus:outline-none focus:ring-1 focus:ring-[{$currentMainThemeColors.primaryColor}] py-1 px-1.5 text-gray-500"
+						/>
+					</div>
+					{#if form?.errors}
+						<span class="text-sm py-2 px-1 text-red-400">{form?.errors}</span>
+					{/if}
+					<div class="text-sm text-red-400 mb-2">
+						{#if error}
+							{$LL.register.warning()}
+						{/if}
+					</div>
+					<!-- <div class="mb-3 flex flex-wrap content-center">
+						<a
+							href="#"
+							on:click={() => {
+								resetPasswordModal = true;
+							}}
+							class="text-xs font-semibold"
+							style="color:{$currentMainThemeColors.primaryColor}">{$LL.loggin.forgot_password()}</a
+						>
+					</div> -->
+
+					<div class="mb-3">
+						<button
+							on:click={onSubmit}
+							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							class="mb-1.5 block w-full text-center px-2 py-1.5 rounded-md"
+						>
+							{$LL.buttons.submit()}</button
+						>
+					</div>
+				</form>
+
+				<!-- Footer -->
+				<div class="text-center">
+					<span style="color: {$currentMainThemeColors.overlayBackgroundColor};" class="text-xs"
+						>{$LL.register.alertText()}</span
+					>
+					<button
+						on:click={() => {
+							goto('/login');
+						}}
+						class="text-xs font-semibold"
+						style="color:{$currentMainThemeColors.primaryColor}">{$LL.loggin.login()}</button
+					>
+				</div>
 			</div>
 		</div>
-	</form>
+
+		<!-- Login banner -->
+		<div
+			class="lg:flex flex-wrap content-center justify-center rounded-r-md hidden"
+			style="width: 24rem; height: 32rem;background-color: {$currentMainThemeColors.backgroundColor};"
+		>
+			<SVGRegisterComponent />
+		</div>
+	</div>
 </div>

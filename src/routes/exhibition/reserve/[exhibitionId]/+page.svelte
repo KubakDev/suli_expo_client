@@ -4,7 +4,7 @@
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
 	import type { ExhibitionModel } from '../../../../models/exhibitionModel';
 	//@ts-ignore
-	// import ReservationComponent from './ReservationComponent.svelte';
+	import ReservationComponent from './ReservationComponent.svelte';
 	import SelectedSeatInformationSection from './selectedSeatInformationSection.svelte';
 	import { selectedSeat } from './seatReservationStore';
 	import NotSelectedObject from './notSelectedObject.svelte';
@@ -22,6 +22,7 @@
 	import { setExhibitionID, setRequiredFields } from '../../../../stores/requiredFieldStore';
 	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
+	import { CloseCircleSolid } from 'flowbite-svelte-icons';
 
 	export let data: any;
 
@@ -33,6 +34,7 @@
 	let seatReserved = false;
 	let loaded = false;
 	let excelFileName: string | undefined = '';
+	let showNotification = false;
 
 	async function getExhibition() {
 		const response = await data.supabase
@@ -64,11 +66,11 @@
 
 	async function reserveSeat() {
 		let fileUrl = '';
-
+		showNotification = false;
 		defaultModal = false;
 
 		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
-			alert('Please upload a non-empty Excel file before proceeding.');
+			showNotification = true;
 			return;
 		}
 		let extention = reserveSeatData.file.name.split('.').pop();
@@ -121,6 +123,7 @@
 								setTimeout(() => {
 									goto('/exhibition/1');
 								}, 3000);
+
 								fetch('/api/seat/purchase', {
 									method: 'POST',
 									headers: {
@@ -143,6 +146,7 @@
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
 						await fetch('/api/seat/purchase', {
 							method: 'POST',
 							headers: {
@@ -159,6 +163,7 @@
 						});
 					});
 			} else {
+				console.log('hi seat');
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -168,15 +173,37 @@
 						comment: reserveSeatData.comment,
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
-						file_url: fileUrl
+						file_url: fileUrl,
+						services: reserveSeatData.services
 					})
-					.then(() => {
+					.then(async (Response: any) => {
+						if (Response.error) {
+							alert('unknown error occurred ');
+							return;
+						}
 						defaultModal = true;
 						seatReserved = true;
 						selectedSeat.set(null);
 						setTimeout(() => {
 							goto('/exhibition/1');
 						}, 3000);
+
+						await fetch('/api/seat/purchase', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								emailUser: data?.session?.user?.email,
+								name: '',
+								message: '',
+								exhibition: exhibition,
+								companyData: $currentUser,
+								reserveSeatData: reserveSeatData
+							})
+						}).then(() => {
+							defaultModal = true;
+						});
 					});
 			}
 		} catch (error) {
@@ -250,8 +277,8 @@
 	}
 </script>
 
-{#if exhibition && exhibition.seat_layout[0]}
-	{#if loaded}
+{#if loaded}
+	{#if exhibition && exhibition.seat_layout[0]}
 		{#if allFieldsPresent}
 			<div class="absolute w-full flex justify-end p-3" />
 			{#if exhibition?.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS}
@@ -287,6 +314,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								</div>
 							{/if}
@@ -353,11 +381,11 @@
 							<div class="bg-[#f5f5f5] h-3/4 mx-2 rounded-xl w-full 2xl:w-[69%]">
 								<div class=" items-center sm:h-auto h-screen flex flex-col justify-around">
 									{#if exhibition?.seat_layout}
-										<!-- <ReservationComponent
+										<ReservationComponent
 											data={exhibition?.seat_layout}
 											supabase={data.supabase}
 											locale={$locale}
-										/> -->
+										/>
 									{/if}
 								</div>
 							</div>
@@ -370,6 +398,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								{:else}
 									<NotSelectedObject />
@@ -387,6 +416,7 @@
 											defaultModal = true;
 											reserveSeatData = reserveData.detail;
 										}}
+										objectId={$selectedSeat.id}
 									/>
 								</div>
 							{/if}
@@ -414,7 +444,9 @@
 							{#if exhibition?.seat_layout[0]?.excel_preview_url}
 								<div class="flex justify-center items-center">
 									<img
-										src={exhibition?.seat_layout[0]?.excel_preview_url}
+										src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL +
+											'/' +
+											exhibition?.seat_layout[0]?.excel_preview_url}
 										alt="preview"
 										class="w-full lg:w-2/3 h-56 object-cover rounded"
 									/>
@@ -459,8 +491,7 @@
 							</div>
 							<div>
 								<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-									{getDescriptionDependOnLanguage() ??
-										'lorem ipsum dolor sit a met consectetur adipisicing elit'}
+									{getDescriptionDependOnLanguage() ?? 'Title'}
 								</p>
 								<div class="mt-4 flex">
 									<Checkbox
@@ -470,7 +501,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm"> i've read the privacy and privacy policy </span>
+									<span class="text-sm"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}
@@ -498,18 +529,52 @@
 			{/if}
 		{/if}
 	{:else}
-		<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
-			<LottiePlayer
-				src={LoadingExhibitionLottie}
-				autoplay={true}
-				renderer="svg"
-				background="transparent"
-				height={500}
-				width={500}
-				loop={true}
-			/>
+		<div
+			class="w-full flex justify-center items-center flex-col px-4 text-center"
+			style="height: calc(100vh - 100px);"
+		>
+			<p class="text-2xl">
+				{$LL.reservation.emptySeatMessage()}
+			</p>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<p
+				class="mt-2 cursor-pointer text-[#4b71fa]"
+				on:click={() => {
+					goto(`/exhibition/detail/${exhibition.id}`);
+				}}
+			>
+				{$LL.reservation.gotoExhibition()}
+			</p>
 		</div>
 	{/if}
+{:else}
+	<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
+		<LottiePlayer
+			src={LoadingExhibitionLottie}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={500}
+			width={500}
+			loop={true}
+		/>
+	</div>
+{/if}
+
+{#if showNotification}
+	<Toast
+		color="red"
+		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
+		transition={fly}
+	>
+		<svelte:fragment slot="icon">
+			<CloseCircleSolid class="w-5 h-5" />
+			<span class="sr-only">Error icon</span>
+		</svelte:fragment>
+
+		{$LL.reservation.warning_message()}
+	</Toast>
 {/if}
 
 <style>

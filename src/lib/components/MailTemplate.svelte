@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import moment from 'moment';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
@@ -6,10 +5,14 @@
 	import type { ReserveSeatModel } from '../../models/reserveSeat';
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { locale, LL } from '$lib/i18n/i18n-svelte';
+	import { onMount } from 'svelte';
 
 	export let exhibition: ExhibitionModel;
 	export let companyData: CompanyModel;
 	export let reserveSeatData: ReserveSeatModel;
+	onMount(() => {
+		console.log($locale);
+	});
 </script>
 
 <div style={$locale == 'ar' || $locale == 'ckb' ? 'direction: rtl' : ''}>
@@ -30,12 +33,10 @@
 		</li>
 		<li>
 			<span style="font-weight: bold;">{$LL.email_template.detail.event()}</span>
-			{exhibition?.title}
+			{exhibition?.exhibition_type}
 		</li>
 		<li>
-			<span style="font-weight: bold;"
-				>{$LL.email_template.detail.note()}
-			</span>
+			<span style="font-weight: bold;">{$LL.email_template.detail.note()} </span>
 		</li>
 	</ul>
 
@@ -95,5 +96,10 @@
 		{$LL.email_template.contact.website()}
 		<a href={import.meta.env.VITE_BASE_URL}>{import.meta.env.VITE_BASE_URL}</a>
 	</p>
+	<br />
+	<p>
+		{$LL.email_template.contact.warningMessage()}
+	</p>
+	<p>{$LL.email_template.contact.regard()}</p>
+	<p>{$LL.email_template.contact.team()}</p>
 </div>
-

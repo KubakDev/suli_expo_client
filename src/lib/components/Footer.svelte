@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TitleUi from './TitleUi.svelte';
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
-	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import { LL, locale, setLocale } from '$lib/i18n/i18n-svelte';
 	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import { onMount } from 'svelte';
 	import type { PageData } from '../../routes/$types';
@@ -9,6 +9,8 @@
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { page } from '$app/stores';
 	import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
+	import { loadLocaleAsync } from '$lib/i18n/i18n-util.async';
+	import { detectLocale } from '$lib/i18n/i18n-util';
 
 	export let data: PageData;
 	let contactInfoData: any;
@@ -25,12 +27,31 @@
 		}
 	}
 
-	onMount(async () => {
-		if ($locale) {
-			contactInfoSectionStore.get($locale, data.supabase);
-			contactInfoData = $contactInfoSectionStore;
+	onMount(() => {
+		const storedLang = localStorage.getItem('selectedLanguage');
+		if (storedLang) {
+			langSelect(storedLang);
 		}
+	});
+
+	async function langSelect(lang: string) {
+		var locale = detectLocale(() => [lang]);
+		await loadLocaleAsync(locale);
+		setLocale(locale);
+	}
+
+	$: if ($locale) {
+		fetchContactInfo();
+	}
+
+	async function fetchContactInfo() {
+		await contactInfoSectionStore.get($locale, data.supabase);
+		contactInfoData = $contactInfoSectionStore;
 		SocialMedia = (await contactInfoSectionStore.getSingle(data.supabase)) as SocialMediaModel;
+	}
+
+	onMount(() => {
+		fetchContactInfo();
 	});
 </script>
 

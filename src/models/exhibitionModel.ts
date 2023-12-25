@@ -3,6 +3,7 @@ import type { ExhibitionSectionTypeModel } from './exhibitionSectionModel';
 
 export interface ExhibitionModel {
 	id?: number;
+	exhibition_type: string;
 	title: string;
 	video_youtube_link: string;
 	images: string[];
@@ -29,7 +30,7 @@ export interface ExhibitionModel {
 	brochure?: string;
 	map_title?: string;
 	deleted_status: string | null;
-	exhibition_languages: ExhibitionLanguagesModel[]
+	exhibition_languages: ExhibitionLanguagesModel[];
 }
 
 export interface ExhibitionLanguagesModel {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Spinner, Textarea } from 'flowbite-svelte';
+	import { Button, Modal, Spinner, Textarea } from 'flowbite-svelte';
 	import InputNumberButton from '$lib/components/inputNumberButton.svelte';
 	import {
 		addSelectedSeat,
@@ -15,11 +15,15 @@
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
 	import { XMark } from 'svelte-heros-v2';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
+	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	//@ts-ignore
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
+	import SuccessLottieAnimation from './successLottie.json';
 
 	export let supabase: SupabaseClient;
-
+	export let objectId: number;
 	const dispatch = createEventDispatcher();
 	let reserveSeatData: ReserveSeatModel = {
 		company_id: 0,
@@ -37,7 +41,39 @@
 		quantity?: number;
 		serviceDetail?: any;
 	}[] = [];
-
+	let selectedSeatObjectId: any = undefined;
+	let thisObjectReservedByThisCompany: boolean = false;
+	let isThisObjectHasAPendingStatusForThisCompany: boolean = false;
+	let cancelReserveModal = false;
+	let successModal = false;
+	let objectReservedByThisCompanyData: any = undefined;
+	$: {
+		thisObjectReservedByThisCompany = false;
+		if (objectId && selectedSeatObjectId != objectId) {
+			selectedSeatObjectId = objectId;
+			getPreviousCompanyReservationForThisObject();
+		}
+	}
+	async function getPreviousCompanyReservationForThisObject() {
+		await supabase
+			.from('seat_reservation')
+			.select('*')
+			.eq('object_id', objectId)
+			.eq('company_id', $currentUser.id)
+			.then((response) => {
+				if (response.data && response.data?.length > 0) {
+					thisObjectReservedByThisCompany = true;
+					isThisObjectHasAPendingStatusForThisCompany = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					)
+						? true
+						: false;
+					objectReservedByThisCompanyData = response.data.find(
+						(item) => item.status == ReservationStatusEnum.PENDING
+					);
+				}
+			});
+	}
 	function countTotalPrice() {
 		totalPrice = +objectDetail?.price;
 		for (let price of servicesPrice) {
@@ -61,8 +97,59 @@
 			(x: any) => x.language == $locale ?? 'en'
 		)?.description;
 	}
+	async function cancelReservation() {
+		await supabase
+			.from('seat_reservation')
+			.update({ status: ReservationStatusEnum.REJECT, rejected_by_user: true })
+			.eq('id', objectReservedByThisCompanyData.id)
+			.then((response) => {
+				if (response.error) return;
+				successModal = true;
+				setTimeout(() => {
+					goto('/exhibition/detail' + $page.params.exhibitionId);
+				}, 3000);
+			});
+	}
 </script>
 
+<Modal bind:open={successModal}>
+	<div class="flex justify-center">
+		<LottiePlayer
+			src={SuccessLottieAnimation}
+			autoplay={true}
+			renderer="svg"
+			background="transparent"
+			height={300}
+			width={300}
+		/>
+	</div>
+	<div class="w-full flex justify-center items-center">
+		<p class="font-bold">{$LL.reservation.pending.success()}</p>
+	</div>
+
+	<svelte:fragment slot="footer">
+		<div class=" w-full flex justify-end items-center">
+			<Button
+				on:click={() => {
+					goto('/exhibition/detail' + $page.params.exhibitionId);
+				}}>Ok</Button
+			>
+		</div>
+	</svelte:fragment>
+</Modal>
+
+<Modal bind:open={cancelReserveModal} size="xs" autoclose>
+	<div class="text-center">
+		<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			{$LL.reservation.pending.confirmation()}
+		</h3>
+		<Button color="red" class="mr-2" on:click={cancelReservation}
+			>{$LL.reservation.pending.yes()}</Button
+		>
+		<Button color="alternative">{$LL.reservation.pending.no()}</Button>
+	</div>
+</Modal>
 <div class="h-full w-full" style="overflow-y: auto;">
 	{#if $totalReservedSeat}
 		<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
@@ -208,7 +295,33 @@
 					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
 					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
-				<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button>
+				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}
+					<p class="text-center leading-8">
+						{$LL.reservation.pending.description()}
+						<span class="pending mx-1 p-1 rounded-md text-white">
+							{$LL.reservation.pending.status()}
+						</span>
+						{#if isThisObjectHasAPendingStatusForThisCompany}
+							<span>
+								{$LL.reservation.pending.click()}
+								<!-- svelte-ignore a11y-click-events-have-key-events -->
+								<!-- svelte-ignore a11y-no-static-element-interactions -->
+								<span
+									class="text-[#1782ff] cursor-pointer"
+									on:click={() => {
+										cancelReserveModal = true;
+									}}
+								>
+									{$LL.reservation.pending.here()}
+								</span>
+								{$LL.reservation.pending.to_cancel()}
+							</span>
+						{/if}
+					</p>
+				{:else}
+					<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button
+					>
+				{/if}
 			</div>
 		</div>
 	{/if}
