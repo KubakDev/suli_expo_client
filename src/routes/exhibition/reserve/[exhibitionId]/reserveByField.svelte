@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal, Checkbox } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox, Input } from 'flowbite-svelte';
 	import { currentUser } from '../../../../stores/currentUser';
 	import { generateDocx } from '../../../../utils/generateContract';
 	import moment from 'moment';
@@ -19,11 +19,15 @@
 	const dispatch = createEventDispatcher();
 
 	let showNotification = false;
+
 	let defaultModal = false;
-	let areas: {
-		area: string;
-		quantity: number;
-	}[] = [];
+	let areas: any[] = [];
+	let servicesByArea = {};
+
+	// let areas: {
+	// 	area: string;
+	// 	quantity: number;
+	// }[] = [];
 	let totalPrice = 0;
 	let totalRawPrice = 0;
 	let pricePerMeter: number = 0;
@@ -33,6 +37,7 @@
 		description: '',
 		price: 0
 	};
+
 	let customAreaMeter: number = 0;
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
@@ -52,7 +57,7 @@
 		file: undefined
 	};
 
-	onMount(() => {
+	onMount(async () => {
 		if (data.seat_layout[0]?.excel_preview_url) {
 			preview_url = `${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
 				data.seat_layout[0]?.excel_preview_url
@@ -79,10 +84,47 @@
 
 		extraDiscount.price = data.seat_layout[0]?.extra_discount;
 
+		// give the id to return service
 		if (data?.seat_layout[0]?.areas) {
 			areas = JSON.parse(data?.seat_layout[0]?.areas);
+			console.log('areas', areas);
+			// Map serviceIds for each area
+			const servicesPromises = areas.map(async (area) => {
+				const serviceIds = area.services.map((service) => service.serviceId);
+				const areaServices = await returnServices(serviceIds);
+
+				return {
+					area: area.area,
+					services: areaServices
+				};
+			});
+
+			// Wait for all promises to resolve
+			const areasWithServices = await Promise.all(servicesPromises);
+
+			// Convert array to an object indexed by area
+			areasWithServices.forEach((areaWithServices) => {
+				servicesByArea[areaWithServices.area] = areaWithServices.services;
+			});
+
+			// console.log(data?.seat_layout[0]?.areas);
 		}
 	});
+
+	// return services by depend serviceId
+	async function returnServices(servicesId: any) {
+		let services: any = [];
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				services = result.data;
+			});
+		return services;
+	}
+
 	function reserveSeat() {
 		if (!reservedSeatData?.file) {
 			showNotification = true;
@@ -240,9 +282,63 @@
 		});
 		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
+
+	// return service
+	let showModal = false;
+	let currentServices: any = [];
+
+	const openServicesModal = async (areaIndex) => {
+		const area = areas[areaIndex];
+		if (area && area.services) {
+			const serviceIds = area.services.map((service) => service.serviceId);
+			try {
+				const services = await returnServices(serviceIds);
+				console.log('result ', services);
+				currentServices = services;
+				showModal = true;
+			} catch (error) {
+				console.error('Error fetching services:', error);
+				currentServices = [];
+			}
+		}
+	};
+
+	// Function to calculate price based on user input and service details
+	function calculatePrice(service, quantity) {
+		console.log('sksafk', service);
+		if (service.unlimitedFree) {
+			return 0;
+		} else {
+			return service.discount ? quantity * service.discount : quantity * service.price;
+		}
+	}
+
+	let servicesData = {};
+
+	// to determine it is free or should be pay money
+	function getUnlimitedFreeStatus(serviceId) {
+		for (let area of areas) {
+			const service = area.services.find((s) => s.serviceId === serviceId);
+			servicesData = service;
+			console.log('////', servicesData);
+			if (service) {
+				return service.unlimitedFree;
+			}
+		}
+		return null;
+	}
+
+	let userQuantity: number[] = [];
+	function handleQuantityChange(index, event) {
+		userQuantity[index] = parseFloat(event.target.value) || 0;
+		console.log('userQuantity :', userQuantity);
+	}
+
+ 
 </script>
 
 <!-- comment  -->
+
 <div class="w-full flex flex-col items-start p-10">
 	<img
 		src={import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + data.image_map}
@@ -261,6 +357,7 @@
 					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}$
 				</p>
 			</div>
+
 			<div>
 				{#each areas as availableSeatArea, index}
 					{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
@@ -302,6 +399,58 @@
 										{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
 											(+discountedPrice * +availableSeatArea.area)}$
 									</p>
+								{/if}
+							</div>
+
+							<!-- modal to add services -->
+							<div>
+								<Button on:click={() => openServicesModal(index)}>Add service</Button>
+
+								{#if showModal}
+									<Modal
+										title="List of Services available to this area"
+										bind:open={showModal}
+										autoclose
+									>
+										<p>Please , select your desire services</p>
+										{#if currentServices.length > 0}
+											<ul class="list-disc pl-5 space-y-2">
+												{#each currentServices as service, index}
+													<li class="flex justify-start items-center gap-2 py-2">
+														<Checkbox />
+														<img
+															class="w-12 h-12 object-cover rounded-lg"
+															src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+																service.icon
+															}`}
+															alt="icon"
+														/>
+														<span>Title: {service.languages[0].title}</span>
+														<span>
+															<Input
+																type="number"
+																size="sm"
+																placeholder="quantity"
+																bind:value={userQuantity[index]}
+																on:change={() => handleQuantityChange(index, event)}
+															/>
+														</span>
+
+														{#if !getUnlimitedFreeStatus(service.id)}
+															<span
+																>Price : <span class="bg-green-400 p-2 rounded-md"
+																	>{calculatePrice(service, userQuantity)}</span
+																></span
+															>
+															<span>Discount :{service.discount}</span>
+														{/if}
+													</li>
+												{/each}
+											</ul>
+										{:else}
+											<p>No services available.</p>
+										{/if}
+									</Modal>
 								{/if}
 							</div>
 						</div>
