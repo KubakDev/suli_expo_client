@@ -231,7 +231,7 @@
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		console.log('result', reservedSeatData);
-		// dispatch('reserveSeat', reservedSeatData);
+		dispatch('reserveSeat', reservedSeatData);
 	}
 
 	function addAreaToReservedSeatData(index: number, number: number, area: string) {
