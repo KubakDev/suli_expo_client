@@ -192,6 +192,7 @@ const ar = {
 		user_image: 'تحميل صورة المستخدم',
 		string: ''
 	},
+	         
 	email_template: {
 		dear: 'عزيزي/عزيزتي',
 		thanks:
