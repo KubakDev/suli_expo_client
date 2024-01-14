@@ -315,6 +315,8 @@
 				<p class="text-sm md:text-lg mt-1">
 					{$LL.reservation.manual_area_description()}
 				</p>
+                                <br />
+				{$LL.reservation.new_description()}
 				<!-- <div class="flex gap-2 justify-between items-center my-2">
 					<div class=" text-start text-2xl font-medium my-2">
 						<div class="flex items-center">
