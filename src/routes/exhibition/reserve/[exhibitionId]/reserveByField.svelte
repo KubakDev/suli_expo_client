@@ -104,7 +104,7 @@
 		if (data?.seat_layout[0]?.services) {
 			existServices = JSON.parse(data?.seat_layout[0]?.services);
 		}
-		console.log(existServices);
+		// console.log(existServices);
 	});
 
 	// modal
@@ -130,6 +130,7 @@
 		} else {
 			delete selectedServices[serviceId];
 		}
+		calculateTotalPriceForServices();
 	}
 	let quantityExceededMessages: any = {};
 
@@ -151,9 +152,8 @@
 				selectedServices[serviceId] = { serviceId, quantity };
 			}
 		}
+		calculateTotalPriceForServices();
 	}
-
-	let aggregateTotalPrice = 0;
 
 	function confirmServiceSelection() {
 		reservedSeatData.services = Object.values(selectedServices).map((service) => {
@@ -168,8 +168,7 @@
 			let totalPrice =
 				maxFreeCount === 0 ? 0 : calculatePrice(price, discount, maxFreeCount, service.quantity);
 
-			aggregateTotalPrice += totalPrice; // get the total all services price
-			console.log(totalPrice, 'totalPrice');
+			// console.log(totalPrice, 'totalPrice');
 			return {
 				serviceId: service.serviceId,
 				quantity: service.quantity,
@@ -178,9 +177,6 @@
 			};
 		});
 
-		document.querySelector(
-			'.service-price'
-		).textContent = `Services price: ${aggregateTotalPrice} $`;
 		// Reset the selected services
 		selectedServices = {};
 		showModal = false;
@@ -212,6 +208,9 @@
 	}
 
 	function reserveSeat() {
+		//    find total_price
+		reservedSeatData.total_price = totalPrice + totalPriceForServices;
+
 		confirmServiceSelection();
 
 		if (!reservedSeatData?.file) {
@@ -232,7 +231,7 @@
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		console.log('result', reservedSeatData);
-		// dispatch('reserveSeat', reservedSeatData);
+		dispatch('reserveSeat', reservedSeatData);
 	}
 
 	function addAreaToReservedSeatData(index: number, number: number, area: string) {
@@ -311,63 +310,35 @@
 		});
 		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
+
+	// find total price for services
+	let totalPriceForServices = 0;
+	function calculateTotalPriceForServices() {
+		totalPriceForServices = 0; // Reset the total price
+
+		Object.values(selectedServices).forEach((service) => {
+			const serviceDetail = detailedServices.find((detail) => detail.id === service.serviceId);
+			const existingService = existServices.find((s) => s.serviceId === service.serviceId);
+
+			// Check if the service is marked as unlimitedFree
+			if (existingService && existingService.unlimitedFree) {
+				return;
+			}
+
+			let price = serviceDetail.price;
+			let discount = serviceDetail.discount;
+			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
+
+			// Check if the quantity is within the maxFreeCount
+			if (service.quantity <= maxFreeCount) {
+				return;
+			}
+
+			let serviceTotalPrice = calculatePrice(price, discount, maxFreeCount, service.quantity);
+			totalPriceForServices += serviceTotalPrice;
+		});
+	}
 </script>
-
-<!-- showing modal  -->
-<Button on:click={() => openServicesModal()}>Add service</Button>
-{#if showModal}
-	<Modal title="List of Services available to this area" bind:open={showModal} autoclose>
-		<p>Please, select your desired services</p>
-		<ul>
-			{#each detailedServices as item}
-				<li class="flex justify-start items-center">
-					<Checkbox on:change={(e) => handleServiceSelection(item.id, e)} />
-					<span>
-						<img
-							class="w-12 h-12 object-cover rounded-lg"
-							src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
-							alt="icon"
-						/></span
-					>
-					<span>{item.languages[0].title}</span>
-					<span>
-						<Input
-							type="number"
-							size="sm"
-							placeholder="quantity"
-							on:input={(e) => handleQuantityChange(item.id, e)}
-						/>
-
-						<p class="text-red-500">
-							{#if quantityExceededMessages[item.id]}
-								<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
-							{/if}
-						</p></span
-					>
-					<span>
-						{#each existServices as service}
-							{#if service.serviceId === item.id}
-								<div>
-									{#if !service.unlimitedFree}
-										<span class="mx-2">
-											Price: {calculatePrice(
-												item.price,
-												item.discount,
-												service.maxFreeCount,
-												selectedServices[item.id]?.quantity || 0
-											)}
-										</span>
-										<span class="mx-2"> Discount: {item.discount}</span>
-									{/if}
-								</div>
-							{/if}
-						{/each}
-					</span>
-				</li>
-			{/each}
-		</ul>
-	</Modal>
-{/if}
 
 <!-- comment  -->
 <div class="w-full flex flex-col items-start p-10">
@@ -508,24 +479,24 @@
 								{totalRawPrice}$
 							</p>
 						{/if}
-						<p
-							class="text-start text-md md:text-xl font-medium justify-center flex my-2"
-							style="color: {$currentMainThemeColors.primaryColor};"
-						>
+						<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
 							{totalPrice}$
-						</p>
+						</div>
 					</div>
 				</div>
 
 				<!-- Service Price -->
-				<div class="flex justify-end items-center">
-					<span>Services price:{x} $</span>
+				<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
+					<span>Services price:{totalPriceForServices} $</span>
 				</div>
 			</div>
 
 			<!-- Total Price -->
-			<div class="flex justify-end items-center">
-				<span>Total price: {totalPrice + x}$</span>
+			<div
+				class="text-start text-md md:text-xl font-medium justify-end flex my-2"
+				style="color: {$currentMainThemeColors.primaryColor};"
+			>
+				<span>Total price: {totalPrice + totalPriceForServices}$</span>
 			</div>
 		</div>
 	</div>
@@ -564,6 +535,67 @@
 		bind:value={reservedSeatData.comment}
 	/>
 	<div class="block md:flex justify-end w-full mt-8">
+		<div class="mx-2">
+			<!-- showing modal  -->
+			<Button on:click={() => openServicesModal()}>Add service</Button>
+			{#if showModal}
+				<Modal title="List of Services available to this area" bind:open={showModal} autoclose>
+					<p>Please, select your desired services</p>
+					<ul>
+						{#each detailedServices as item}
+							<li class="flex justify-start items-center py-4">
+								<Checkbox on:change={(e) => handleServiceSelection(item.id, e)} />
+								<span>
+									<img
+										class="w-12 h-12 object-cover rounded-lg"
+										src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
+										alt="icon"
+									/></span
+								>
+								<span class="mx-2">{item.languages[0].title}</span>
+								<span>
+									<Input
+										type="number"
+										size="sm"
+										placeholder="quantity"
+										on:input={(e) => handleQuantityChange(item.id, e)}
+										min="0"
+									/>
+
+									<p class="text-red-500">
+										{#if quantityExceededMessages[item.id]}
+											<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
+										{/if}
+									</p></span
+								>
+								<span>
+									{#each existServices as service}
+										{#if service.serviceId === item.id}
+											<div>
+												{#if !service.unlimitedFree}
+													<span class="mx-2">
+														Price: {calculatePrice(
+															item.price,
+															item.discount,
+															service.maxFreeCount,
+															selectedServices[item.id]?.quantity || 0
+														)}
+													</span>
+													<span class="mx-2">
+														Discount: {item.discount ? item.discount : 'Not Available'}</span
+													>
+												{/if}
+											</div>
+										{/if}
+									{/each}
+								</span>
+							</li>
+						{/each}
+					</ul>
+				</Modal>
+			{/if}
+		</div>
+
 		<div class="w-full md:w-auto">
 			<Button
 				on:click={() => (defaultModal = true)}
@@ -646,6 +678,7 @@
 		>
 			{$LL.reservation.reserve()}
 		</Button>
+
 		<!-- <Button
 			on:click={contractPreview}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
