@@ -65,6 +65,7 @@
 	});
 
 	async function reserveSeat() {
+		console.log('///////////', reserveSeatData);
 		let fileUrl = '';
 		showNotification = false;
 		defaultModal = false;
@@ -75,6 +76,7 @@
 		}
 		let extention = reserveSeatData.file.name.split('.').pop();
 		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
+
 		if (exhibition.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS) {
 			reserveSeatData.area.map((area: any) => {
 				let existingSeatAreaIndex = existingSeatArea.findIndex((x: any) => x.area == area.area);
@@ -107,7 +109,9 @@
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
 						file_url: fileUrl,
-						extra_discount_checked: reserveSeatData.extraDiscountChecked
+						extra_discount_checked: reserveSeatData.extraDiscountChecked,
+						services: reserveSeatData.services,
+						total_price: reserveSeatData.total_price
 					})
 					.then(async () => {
 						data.supabase
@@ -163,7 +167,6 @@
 						});
 					});
 			} else {
-				console.log('hi seat');
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -174,13 +177,15 @@
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
 						file_url: fileUrl,
-						services: reserveSeatData.services
+						services: JSON.stringify(reserveSeatData.services),
+						total_price: reserveSeatData.total_price
 					})
 					.then(async (Response: any) => {
 						if (Response.error) {
 							alert('unknown error occurred ');
 							return;
 						}
+
 						defaultModal = true;
 						seatReserved = true;
 						selectedSeat.set(null);

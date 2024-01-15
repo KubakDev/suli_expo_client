@@ -178,7 +178,7 @@
 		});
 
 		// Reset the selected services
-		selectedServices = {};
+		// selectedServices = {};
 		showModal = false;
 	}
 
@@ -208,7 +208,7 @@
 	}
 
 	function reserveSeat() {
-		//    find total_price
+		//find total_price
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
 
 		confirmServiceSelection();
@@ -230,7 +230,7 @@
 		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
-		console.log('result', reservedSeatData);
+		// console.log('result', reservedSeatData);
 		dispatch('reserveSeat', reservedSeatData);
 	}
 
