@@ -65,7 +65,6 @@
 	});
 
 	async function reserveSeat() {
-		console.log('///////////', reserveSeatData);
 		let fileUrl = '';
 		showNotification = false;
 		defaultModal = false;

@@ -79,22 +79,22 @@
 		}
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
 		discountedPrice = data.seat_layout[0]?.discounted_price;
-		discountedDescription =
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
-				(privacyLang: any) => privacyLang.language == locale
-			).discount_description ??
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
-				(privacyLang: any) => privacyLang.language == 'en'
-			).discount_description ??
-			'';
-		extraDiscount.description =
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
-				(privacyLang: any) => privacyLang.language == locale
-			).extra_discount_description ??
-			data.seat_layout[0]?.seat_privacy_policy_lang.find(
-				(privacyLang: any) => privacyLang.language == 'en'
-			).extra_discount_description ??
-			'';
+		// discountedDescription =
+		// 	data.seat_layout[0]?.seat_privacy_policy_lang.find(
+		// 		(privacyLang: any) => privacyLang.language == locale
+		// 	).discount_description ??
+		// 	data.seat_layout[0]?.seat_privacy_policy_lang.find(
+		// 		(privacyLang: any) => privacyLang.language == 'en'
+		// 	).discount_description ??
+		// 	'';
+		// extraDiscount.description =
+		// 	data.seat_layout[0]?.seat_privacy_policy_lang.find(
+		// 		(privacyLang: any) => privacyLang.language == locale
+		// 	).extra_discount_description ??
+		// 	data.seat_layout[0]?.seat_privacy_policy_lang.find(
+		// 		(privacyLang: any) => privacyLang.language == 'en'
+		// 	).extra_discount_description ??
+		// 	'';
 
 		extraDiscount.price = data.seat_layout[0]?.extra_discount;
 
@@ -121,6 +121,7 @@
 
 	let selectedServices: any = {};
 	let x = 0;
+
 	function handleServiceSelection(serviceId: number, event: any) {
 		const isChecked = event.target.checked;
 		const quantity = selectedServices[serviceId]?.quantity || 0;
@@ -134,16 +135,14 @@
 	}
 	let quantityExceededMessages: any = {};
 
-	function handleQuantityChange(serviceId: any, event) {
+	function handleQuantityChange(serviceId: number, event: any) {
 		const quantity = parseInt(event.target.value) || 0;
 		const maxQuantity = existServices.find(
 			(service) => service.serviceId === serviceId
 		)?.maxQuantityPerUser;
 
 		if (quantity > maxQuantity!) {
-			quantityExceededMessages[
-				serviceId
-			] = `Maximum allowed quantity for this service is ${maxQuantity}.`;
+			quantityExceededMessages[serviceId] = `{$LL.reservation.messageToValidation()}`;
 		} else {
 			quantityExceededMessages[serviceId] = '';
 			if (selectedServices[serviceId]) {
@@ -156,26 +155,35 @@
 	}
 
 	function confirmServiceSelection() {
-		reservedSeatData.services = Object.values(selectedServices).map((service) => {
-			const serviceDetail = detailedServices.find((detail) => detail.id === service.serviceId);
-			const existingService = existServices.find((s) => s.serviceId === service.serviceId);
+		reservedSeatData.services = Object.values(selectedServices)
+			.map((service) => {
+				const serviceDetail = detailedServices.find((detail) => detail.id === service.serviceId);
+				const existingService = existServices.find((s) => s.serviceId === service.serviceId);
 
-			let price = serviceDetail.price;
-			let discount = serviceDetail.discount;
-			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
+				// Additional check: proceed only if the service is selected and has a valid quantity
+				if (
+					selectedServices[service.serviceId] &&
+					selectedServices[service.serviceId].quantity > 0
+				) {
+					let price = serviceDetail.price;
+					let discount = serviceDetail.discount;
+					let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
 
-			// If maxFreeCount is 0, set totalPrice to 0, otherwise calculate the price
-			let totalPrice =
-				maxFreeCount === 0 ? 0 : calculatePrice(price, discount, maxFreeCount, service.quantity);
+					// Calculate the total price
+					let totalPrice =
+						maxFreeCount === 0
+							? 0
+							: calculatePrice(price, discount, maxFreeCount, service.quantity);
 
-			// console.log(totalPrice, 'totalPrice');
-			return {
-				serviceId: service.serviceId,
-				quantity: service.quantity,
-				totalPrice: totalPrice,
-				serviceDetail: serviceDetail
-			};
-		});
+					return {
+						serviceId: service.serviceId,
+						quantity: service.quantity,
+						totalPrice: totalPrice,
+						serviceDetail: serviceDetail
+					};
+				}
+			})
+			.filter((service) => service != null); // Remove undefined entries
 
 		// Reset the selected services
 		// selectedServices = {};
@@ -230,8 +238,8 @@
 		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
-		// console.log('result', reservedSeatData);
-		dispatch('reserveSeat', reservedSeatData);
+		console.log('result', reservedSeatData);
+		// dispatch('reserveSeat', reservedSeatData);
 	}
 
 	function addAreaToReservedSeatData(index: number, number: number, area: string) {
@@ -465,13 +473,13 @@
 			</div>
 
 			<div
-				class="w-full mt-6 border-t-2 p-2 flex justify-end"
+				class="flex flex-col justify-end mt-6 border-t-2 p-2"
 				style="border-color: {$currentMainThemeColors.backgroundColor}"
 			>
 				<!-- Area Price -->
-				<div class="text-start text-md md:text-xl font-medium justify-center flex items-center">
+				<div class="text-start text-md md:text-xl font-medium flex items-center">
 					<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-						Area price:
+						{$LL.reservation.areaPrice()}
 					</p>
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
@@ -486,17 +494,16 @@
 				</div>
 
 				<!-- Service Price -->
-				<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
-					<span>Services price:{totalPriceForServices} $</span>
+				<div class="text-start text-md md:text-xl font-medium my-2">
+					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} $</span>
 				</div>
-			</div>
-
-			<!-- Total Price -->
-			<div
-				class="text-start text-md md:text-xl font-medium justify-end flex my-2"
-				style="color: {$currentMainThemeColors.primaryColor};"
-			>
-				<span>Total price: {totalPrice + totalPriceForServices}$</span>
+				<!-- Total Price -->
+				<div
+					class="text-start text-md md:text-xl font-medium my-2"
+					style="color: {$currentMainThemeColors.primaryColor};"
+				>
+					<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}$</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -539,8 +546,11 @@
 			<!-- showing modal  -->
 			<Button on:click={() => openServicesModal()}>Add service</Button>
 			{#if showModal}
-				<Modal title="List of Services available to this area" bind:open={showModal} autoclose>
-					<p>Please, select your desired services</p>
+				<Modal title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
+					<p class="text-gray-400">
+						{$LL.reservation.modalInfo()}
+					</p>
+
 					<ul>
 						{#each detailedServices as item}
 							<li class="flex justify-start items-center py-4">
@@ -560,6 +570,7 @@
 										placeholder="quantity"
 										on:input={(e) => handleQuantityChange(item.id, e)}
 										min="0"
+										disabled={!selectedServices[item.id]}
 									/>
 
 									<p class="text-red-500">
@@ -574,15 +585,21 @@
 											<div>
 												{#if !service.unlimitedFree}
 													<span class="mx-2">
-														Price: {calculatePrice(
-															item.price,
-															item.discount,
-															service.maxFreeCount,
-															selectedServices[item.id]?.quantity || 0
-														)}
+														{$LL.reservation.priceSeat()}
+														<span class="bg-green-400 rounded-lg p-2 text-white">
+															{calculatePrice(
+																item.price,
+																item.discount,
+																service.maxFreeCount,
+																selectedServices[item.id]?.quantity || 0
+															)}
+														</span>
 													</span>
 													<span class="mx-2">
-														Discount: {item.discount ? item.discount : 'Not Available'}</span
+														{$LL.reservation.discountSeat()}
+														{item.discount
+															? item.discount
+															: `{$LL.reservation.notAvailable()}`}</span
 													>
 												{/if}
 											</div>
