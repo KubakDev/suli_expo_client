@@ -23,6 +23,7 @@
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
+
 	let areas: {
 		area: string;
 		quantity: number;
@@ -39,29 +40,32 @@
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
 	let extraDiscountChecked = false;
+	let quantityExceededMessages: any = {};
 
+	let reservedServices: any[] = [];
 	let reservedSeatData: {
 		area: {
 			id: number;
 			area: string;
 			quantity: number;
 		}[];
+		services: {
+			serviceId: number;
+			totalPrice: number;
+			quantity: number;
+			serviceDetail: [];
+		}[];
+		extraDiscountChecked?: boolean;
 		comment: string;
-		file: string;
+		total_price: number;
+		file: File | undefined;
 	} = {
 		area: [],
+		services: [],
 		comment: '',
-		file: ''
+		file: undefined,
+		total_price: 0
 	};
-
-	let existServices: {
-		serviceId: number;
-		maxFreeCount: number;
-		maxQuantityPerUser: number;
-		unlimitedFree: boolean;
-	}[] = [];
-
-	let seatServices: any[] = [];
 
 	let reservedAreas: any[] = [];
 	let currentActiveSeat = data.seat_layout?.find((seat: any) => seat.is_active == true);
@@ -72,7 +76,6 @@
 	});
 
 	function onMountData() {
-		console.log(currentActiveSeat);
 		preview_url = currentActiveSeat?.excel_preview_url;
 
 		pricePerMeter = currentActiveSeat?.price_per_meter;
@@ -101,140 +104,23 @@
 		}
 		areas = currentActiveSeat?.areas ? JSON.parse(currentActiveSeat?.areas ?? '') : undefined;
 
-		if (currentActiveSeat?.services) {
-			const responseData = JSON.parse(currentActiveSeat?.services);
-			updateServicesWithResponse(responseData);
-			console.log(reservationData.services);
-			// existServices = ;
-		}
-
 		getCompanyReservedData();
 	}
 
-	////////////////////////////
-	// get the current services that exist in db
-	function updateServicesWithResponse(responseData: any) {
-		responseData.forEach((responseService) => {
-			const serviceIndex = seatServices.findIndex(
-				(service) => service.serviceId === responseService.serviceId
-			);
-			if (serviceIndex !== -1) {
-				seatServices[serviceIndex] = {
-					...seatServices[serviceIndex],
-					...responseService,
-					selected: true,
-					unlimitedFree: responseService.unlimitedFree ?? seatServices[serviceIndex].unlimitedFree // Set unlimitedFree based on the database value, defaulting to the existing value in seatServices
-				};
-			}
-		});
-	}
-
-	// modal
-	let showModal = false;
-	let detailedServices: any = [];
-
-	const openServicesModal = async () => {
-		if (existServices.length > 0) {
-			const serviceIds = existServices.map((service) => service.serviceId);
-			detailedServices = await returnServices(serviceIds);
-			showModal = true;
-		}
-	};
-
-	// return services by depend serviceId
-	async function returnServices(servicesId: any) {
-		let services: any = [];
-		await supabase
-			.from('seat_services')
-			.select('*,languages:seat_services_languages!inner(*)')
-			.eq('languages.language', locale)
-			.in('id', servicesId)
-			.then((result) => {
-				services = result.data;
-			});
-		// console.log('////', services);
-		return services;
-	}
-
-	const handleCheckboxChange = (serviceId: number, checked: boolean) => {
-		const index = seatServices.findIndex((service) => service.id === serviceId);
-		if (index !== -1) {
-			seatServices[index].selected = checked;
-
-			// If the service is deselected, reset its fields
-			if (!checked) {
-				seatServices[index].maxFreeCount = 0;
-				seatServices[index].maxQuantityPerUser = 0;
-				seatServices[index].unlimitedFree = false;
-			}
-		}
-
-		calculateTotalPriceForServices();
-	};
-
-	let selectedServices: any = {};
-
-	let quantityExceededMessages: any = {};
-
-	function handleQuantityChange(serviceId: number, field: string, value: number) {
-		const index = seatServices?.findIndex((service) => service.id === serviceId);
-		if (index !== -1) {
-			// Convert value to a number if it's one of the numeric fields
-			if (field === 'maxFreeCount' || field === 'maxQuantityPerUser') {
-				seatServices[index][field] = Number(value);
-			} else {
-				seatServices[index][field] = value;
-			}
-		}
-		calculateTotalPriceForServices();
-	}
-
-	//    find new price by depend quantity
-	function calculatePrice(price: number, discount: number, maxFreeCount: number, quantity: number) {
-		if (quantity <= maxFreeCount) {
-			return price;
-		} else {
-			let findCalculation = discount ? quantity * discount : quantity * price;
-			return findCalculation;
-		}
-	}
-
-	// find total price for services
-	let totalPriceForServices = 0;
-	function calculateTotalPriceForServices() {
-		totalPriceForServices = 0; // Reset the total price
-
-		Object.values(selectedServices).forEach((service: any) => {
-			const serviceDetail = detailedServices.find((detail: any) => detail.id === service.serviceId);
-			const existingService = existServices.find((s) => s.serviceId === service.serviceId);
-
-			// Check if the service is marked as unlimitedFree
-			if (existingService && existingService.unlimitedFree) {
-				return;
-			}
-
-			let price = serviceDetail.price;
-			let discount = serviceDetail.discount;
-			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
-
-			// Check if the quantity is within the maxFreeCount
-			if (service.quantity <= maxFreeCount) {
-				return;
-			}
-
-			let serviceTotalPrice = calculatePrice(price, discount, maxFreeCount, service.quantity);
-			totalPriceForServices += serviceTotalPrice;
-		});
-	}
-	/////////////////////////////////////
-
 	async function getCompanyReservedData() {
-		console.log(reservationData);
+		reservedServices = reservationData.services.map((serviceString) => {
+			let serviceObject = JSON.parse(serviceString);
+			return { ...serviceObject, selected: true };
+		});
+		console.log(reservedServices);
+
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
 			area: JSON.parse(reservationData.reserved_areas),
 			comment: reservationData.comment,
-			file: reservationData.file_url
+			file: reservationData.file_url,
+			services: reservedServices,
+			total_price: reservationData.total_price
 		};
 
 		let allReservedArea = reservedAreas?.map((reservedArea) => {
@@ -255,6 +141,96 @@
 		});
 		calculateTotalPrice();
 	}
+	//////////////////////////////////////////
+	// return services by depend serviceId
+	async function returnServicesForThisSeat(servicesId: any) {
+		let services: any = [];
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				services = result.data;
+			});
+		// console.log('////', services);
+		return services;
+	}
+
+	let showModal = false;
+	let detailedServices: any = [];
+
+	const openServicesModal = async () => {
+		await fetchAndMarkReservedServices();
+		showModal = true;
+	};
+
+	async function fetchAndMarkReservedServices() {
+		let serviceIds = JSON.parse(currentActiveSeat.services).map((service) => service.serviceId);
+		let allServices = await returnServicesForThisSeat(serviceIds);
+
+		allServices.forEach((service) => {
+			const reservedService = reservedServices.find((rs) => rs.serviceId === service.id);
+			service.selected = !!reservedService;
+			if (reservedService) {
+				service.quantity = reservedService.quantity;
+				service.initialQuantity = reservedService.quantity; // Store the initial quantity
+				service.initialTotalPrice = reservedService.totalPrice; // Store the initial total price
+			} else {
+				service.quantity = 0;
+				service.initialQuantity = 0;
+				service.initialTotalPrice = 0;
+			}
+		});
+
+		detailedServices = allServices;
+		showModal = true;
+	}
+
+	function handleServiceSelection(serviceId, event) {
+		const isChecked = event.target.checked;
+
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			// Update the 'selected' property based on the checkbox state
+			detailedServices[serviceIndex].selected = isChecked;
+
+			// Reset quantity to 0 if the service is deselected
+			if (!isChecked) {
+				detailedServices[serviceIndex].quantity = 0;
+			}
+
+			// Trigger Svelte to re-render the component
+			detailedServices = [...detailedServices];
+		}
+	}
+
+	function handleQuantityChange(serviceId, event) {
+		const newQuantity = parseInt(event.target.value) || 0; // Parse the input value to an integer
+
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			// Update the 'quantity' property
+			detailedServices[serviceIndex].quantity = newQuantity;
+
+			// Trigger Svelte to re-render the component
+			detailedServices = [...detailedServices];
+		}
+	}
+
+	//  find new price by depend quantity
+	function calculatePrice(price: number, discount: number, maxFreeCount: number, quantity: number) {
+		if (quantity <= maxFreeCount) {
+			return 0; // Assuming services are free up to maxFreeCount
+		} else {
+			let findCalculation = discount ? quantity * discount : quantity * price;
+			return findCalculation;
+		}
+	}
+
+	/////////////////////////////
 
 	function checkExtraDiscount() {
 		extraDiscountChecked = !extraDiscountChecked;
@@ -276,24 +252,6 @@
 	let fileError = false;
 	let validFile = false;
 	let errorMessage = '';
-
-	// function handleFileChange(event: any) {
-	// 	const file = event.target.files[0];
-
-	// 	imageFile_excel = file;
-
-	// 	const reader = new FileReader();
-
-	// 	const randomText = getRandomTextNumber();
-	// 	fileName_excel = `${randomText}_${file.name}`;
-
-	// 	reader.readAsDataURL(file);
-	// 	if (file) {
-	// 		fileName = file.name;
-	// 	} else {
-	// 		selectedFile = null;
-	// 	}
-	// }
 
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
@@ -464,6 +422,12 @@
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
+	}
+
+	$: {
+		console.log('//////////');
+		console.log(detailedServices);
+		console.log(reservedServices);
 	}
 </script>
 
@@ -640,10 +604,9 @@
 				class="my-3"
 				bind:value={reservedSeatData.comment}
 			/>
-
 			<div class="block md:flex justify-end w-full mt-8">
 				<div class="mx-2">
-					<!-- showing modal  -->
+					<!-- show modal -->
 					<Button on:click={() => openServicesModal()}>
 						{$LL.reservation.addService()}
 					</Button>
@@ -654,58 +617,66 @@
 							</p>
 
 							<ul>
-								{#each detailedServices as service}
+								{#each detailedServices as item}
 									<li class="flex justify-start items-center py-4">
 										<Checkbox
-											checked={service.selected}
-											on:change={(e) => handleCheckboxChange(service.id, e.target.checked)}
+											checked={item.selected}
+											on:change={(e) => handleServiceSelection(item.id, e)}
 										/>
 										<span>
 											<img
 												class="w-12 h-12 mx-2 object-cover rounded-lg"
-												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${service.icon}`}
+												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
 												alt="icon"
 											/></span
 										>
-										<span class="mx-2">{service.languages[0].title}</span>
+										<span class="mx-2">{item.languages[0].title}</span>
+
 										<span>
 											<Input
 												type="number"
 												size="sm"
 												placeholder="quantity"
-												on:input={(e) =>
-													handleQuantityChange(service.id, 'maxQuantityPerUser', e.target.value)}
+												value={item.quantity}
+												on:input={(e) => handleQuantityChange(item.id, e)}
 												min="0"
-												disabled={!service.selected}
+												disabled={!item.selected}
 											/>
+										</span>
+										<!-- <span>
+					 
 
-											<p class="text-red-500">
-												{#if quantityExceededMessages[service.id]}
-													<p class="text-red-500">{quantityExceededMessages[service.id]}</p>
-												{/if}
-											</p></span
-										>
+						<p class="text-red-500">
+							{#if quantityExceededMessages[item.id]}
+								<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
+							{/if}
+						</p></span
+					> -->
+
 										<span>
-											{#each existServices as service}
-												{#if service.serviceId === service.id}
+											{item.price}
+											{#each reservedServices as service}
+												{#if service.serviceId === item.id}
 													<div>
 														{#if !service.unlimitedFree}
 															<span class="mx-2">
 																{$LL.reservation.priceSeat()}
 																<span class="bg-green-400 rounded-lg p-2 text-white">
-																	{calculatePrice(
-																		service.price,
-																		service.discount,
-																		service.maxFreeCount,
-																		selectedServices[service.id]?.quantity || 0
-																	)}
+																	{item.selected
+																		? item.quantity !== item.initialQuantity
+																			? calculatePrice(
+																					item.price,
+																					item.discount,
+																					item.maxFreeCount,
+																					item.quantity
+																			  )
+																			: item.initialTotalPrice
+																		: 0}
 																</span>
 															</span>
 															<span class="mx-2">
 																{$LL.reservation.discountSeat()}
-																{service.discount
-																	? service.discount
-																	: $LL.reservation.notAvailable()}
+																{item.discount ? item.discount : $LL.reservation.notAvailable()}
 															</span>
 														{/if}
 													</div>
