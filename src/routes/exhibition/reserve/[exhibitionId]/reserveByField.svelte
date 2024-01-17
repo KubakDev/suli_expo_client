@@ -142,7 +142,7 @@
 		)?.maxQuantityPerUser;
 
 		if (quantity > maxQuantity!) {
-			quantityExceededMessages[serviceId] = `{$LL.reservation.messageToValidation()}`;
+			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({ maxQuantity });
 		} else {
 			quantityExceededMessages[serviceId] = '';
 			if (selectedServices[serviceId]) {
@@ -557,7 +557,7 @@
 								<Checkbox on:change={(e) => handleServiceSelection(item.id, e)} />
 								<span>
 									<img
-										class="w-12 h-12 object-cover rounded-lg"
+										class="w-12 h-12 mx-2 object-cover rounded-lg"
 										src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
 										alt="icon"
 									/></span
@@ -597,10 +597,8 @@
 													</span>
 													<span class="mx-2">
 														{$LL.reservation.discountSeat()}
-														{item.discount
-															? item.discount
-															: `{$LL.reservation.notAvailable()}`}</span
-													>
+														{item.discount ? item.discount : $LL.reservation.notAvailable()}
+													</span>
 												{/if}
 											</div>
 										{/if}

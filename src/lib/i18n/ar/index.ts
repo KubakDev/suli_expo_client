@@ -125,16 +125,15 @@ const ar = {
 			pending: 'معلق'
 		},
 		available_area: 'المساحة المتاحة',
-		areaPrice: 'Area Price :',
-		servicesPrice: 'Services Price :',
-		totalPrice: 'Total Price :',
-		modalTitle: 'List of Services available to this area',
-		modalInfo:
-			'Please, select checkBox and enter the number of quantity to insert your desired services',
-		priceSeat: 'Price :',
-		discountSeat: 'Discount :',
-		notAvailable: 'Not Available',
-		messageToValidation: '`Maximum allowed quantity for this service is ${maxQuantity}.`',
+		areaPrice: ': سعر المنطقة ',
+		servicesPrice: ': سعر الخدمات ',
+		totalPrice: ': السعر الكلي ',
+		modalTitle: 'قائمة الخدمات المتاحة لهذه المنطقة',
+		modalInfo: '  يرجى اختيار مربع الاختيار وإدخال عدد الكميات لإدراج الخدمات التي ترغب بها',
+		priceSeat: ': السعر ',
+		discountSeat: ' : الخصم ',
+		notAvailable: 'غير متوفر',
+		messageToValidation: 'الحد الأقصى المسموح به لهذه الخدمة هو ${maxQuantity}.',
 		measure: {
 			m: 'متر'
 		},

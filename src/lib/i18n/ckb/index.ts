@@ -130,16 +130,16 @@ const ckb = {
 			pending: 'لە چاوەڕوانی'
 		},
 		available_area: 'روبەری پێویست',
-		areaPrice: 'Area Price :',
-		servicesPrice: 'Services Price :',
-		totalPrice: 'Total Price :',
-		modalTitle: 'List of Services available to this area',
+		areaPrice: ': نرخی ناوچە ',
+		servicesPrice: ': نرخی خزمەتگوزارییەکان ',
+		totalPrice: ': نرخی گشتی  ',
+		modalTitle: 'لیستی خزمەتگوزارییەکانی بەردەست بۆ ئەم ناوچەیە',
 		modalInfo:
-			'Please, select checkBox and enter the number of quantity to insert your desired services',
-		priceSeat: 'Price :',
-		discountSeat: 'Discount :',
-		notAvailable: 'Not Available',
-		messageToValidation: '`Maximum allowed quantity for this service is ${maxQuantity}.`',
+			' تکایە، دوگمەی دیاریکردن هەڵبژێرە و ژمارەی پێویستی بنوسە بۆ داخڵکردنی خزمەتگوزارییە کە',
+		priceSeat: 'نرخ :',
+		discountSeat: 'داشکاندن :',
+		notAvailable: 'بەردەست نییە',
+		messageToValidation: 'زۆرترین ژمارەی رێگەپێدراو بۆ ئەم خزمەتگوزارییە   ${maxQuantity} ',
 		measure: {
 			m: 'مەتر'
 		},
