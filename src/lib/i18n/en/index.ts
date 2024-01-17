@@ -128,6 +128,7 @@ const en = {
 		},
 		available_area: 'Available area',
 		areaPrice: 'Area Price :',
+		addService: 'Add Service',
 		servicesPrice: 'Services Price :',
 		totalPrice: 'Total Price :',
 		modalTitle: 'List of Services available to this area',

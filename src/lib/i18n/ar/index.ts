@@ -126,6 +126,7 @@ const ar = {
 		},
 		available_area: 'المساحة المتاحة',
 		areaPrice: ': سعر المنطقة ',
+		addService: 'إضافة خدمة',
 		servicesPrice: ': سعر الخدمات ',
 		totalPrice: ': السعر الكلي ',
 		modalTitle: 'قائمة الخدمات المتاحة لهذه المنطقة',

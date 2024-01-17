@@ -324,8 +324,8 @@
 	function calculateTotalPriceForServices() {
 		totalPriceForServices = 0; // Reset the total price
 
-		Object.values(selectedServices).forEach((service) => {
-			const serviceDetail = detailedServices.find((detail) => detail.id === service.serviceId);
+		Object.values(selectedServices).forEach((service: any) => {
+			const serviceDetail = detailedServices.find((detail: any) => detail.id === service.serviceId);
 			const existingService = existServices.find((s) => s.serviceId === service.serviceId);
 
 			// Check if the service is marked as unlimitedFree
@@ -544,7 +544,9 @@
 	<div class="block md:flex justify-end w-full mt-8">
 		<div class="mx-2">
 			<!-- showing modal  -->
-			<Button on:click={() => openServicesModal()}>Add service</Button>
+			<Button on:click={() => openServicesModal()}>
+				{$LL.reservation.addService()}
+			</Button>
 			{#if showModal}
 				<Modal title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
 					<p class="text-gray-400">

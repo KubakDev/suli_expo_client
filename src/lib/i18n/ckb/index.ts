@@ -131,6 +131,7 @@ const ckb = {
 		},
 		available_area: 'روبەری پێویست',
 		areaPrice: ': نرخی ناوچە ',
+		addService: 'خزمەتگوزاری زیاد بکە',
 		servicesPrice: ': نرخی خزمەتگوزارییەکان ',
 		totalPrice: ': نرخی گشتی  ',
 		modalTitle: 'لیستی خزمەتگوزارییەکانی بەردەست بۆ ئەم ناوچەیە',

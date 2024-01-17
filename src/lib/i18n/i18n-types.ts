@@ -463,6 +463,10 @@ type RootTranslation = {
 		 */
 		areaPrice: string
 		/**
+		 * A​d​d​ ​S​e​r​v​i​c​e
+		 */
+		addService: string
+		/**
 		 * S​e​r​v​i​c​e​s​ ​P​r​i​c​e​ ​:
 		 */
 		servicesPrice: string
@@ -1233,6 +1237,10 @@ export type TranslationFunctions = {
 		 * Area Price :
 		 */
 		areaPrice: () => LocalizedString
+		/**
+		 * Add Service
+		 */
+		addService: () => LocalizedString
 		/**
 		 * Services Price :
 		 */
