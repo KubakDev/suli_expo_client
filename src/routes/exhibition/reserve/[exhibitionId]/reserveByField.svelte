@@ -238,7 +238,6 @@
 		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
-		console.log('result', reservedSeatData);
 		dispatch('reserveSeat', reservedSeatData);
 	}
 

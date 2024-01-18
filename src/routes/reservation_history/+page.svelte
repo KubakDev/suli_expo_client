@@ -85,6 +85,8 @@
 				object_id: new Date().getTime(),
 				comment: reservedSeatData.comment,
 				reserved_areas: JSON.stringify(reservedSeatData.area),
+				services: reservedSeatData.services,
+				total_price: reservationData.total_price,
 				status: ReservationStatusEnum.PENDING,
 				type: reservationData?.exhibition?.seat_layout[0]?.type,
 				file_url: reservationData.file_url,

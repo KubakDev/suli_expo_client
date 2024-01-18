@@ -23,6 +23,7 @@
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
+
 	let areas: {
 		area: string;
 		quantity: number;
@@ -39,29 +40,33 @@
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
 	let extraDiscountChecked = false;
+	let quantityExceededMessages: any = {};
+	let totalPriceForServices = 0;
 
+	let reservedServices: any[] = [];
 	let reservedSeatData: {
 		area: {
 			id: number;
 			area: string;
 			quantity: number;
 		}[];
+		services: {
+			serviceId: number;
+			totalPrice: number;
+			quantity: number;
+			serviceDetail: [];
+		}[];
+		extraDiscountChecked?: boolean;
 		comment: string;
-		file: string;
+		total_price: number;
+		file: File | undefined;
 	} = {
 		area: [],
+		services: [],
 		comment: '',
-		file: ''
+		file: undefined,
+		total_price: 0
 	};
-
-	let existServices: {
-		serviceId: number;
-		maxFreeCount: number;
-		maxQuantityPerUser: number;
-		unlimitedFree: boolean;
-	}[] = [];
-
-	let seatServices: any[] = [];
 
 	let reservedAreas: any[] = [];
 	let currentActiveSeat = data.seat_layout?.find((seat: any) => seat.is_active == true);
@@ -72,7 +77,6 @@
 	});
 
 	function onMountData() {
-		console.log(currentActiveSeat);
 		preview_url = currentActiveSeat?.excel_preview_url;
 
 		pricePerMeter = currentActiveSeat?.price_per_meter;
@@ -101,140 +105,22 @@
 		}
 		areas = currentActiveSeat?.areas ? JSON.parse(currentActiveSeat?.areas ?? '') : undefined;
 
-		if (currentActiveSeat?.services) {
-			const responseData = JSON.parse(currentActiveSeat?.services);
-			updateServicesWithResponse(responseData);
-			console.log(reservationData.services);
-			// existServices = ;
-		}
-
 		getCompanyReservedData();
 	}
 
-	////////////////////////////
-	// get the current services that exist in db
-	function updateServicesWithResponse(responseData: any) {
-		responseData.forEach((responseService) => {
-			const serviceIndex = seatServices.findIndex(
-				(service) => service.serviceId === responseService.serviceId
-			);
-			if (serviceIndex !== -1) {
-				seatServices[serviceIndex] = {
-					...seatServices[serviceIndex],
-					...responseService,
-					selected: true,
-					unlimitedFree: responseService.unlimitedFree ?? seatServices[serviceIndex].unlimitedFree // Set unlimitedFree based on the database value, defaulting to the existing value in seatServices
-				};
-			}
-		});
-	}
-
-	// modal
-	let showModal = false;
-	let detailedServices: any = [];
-
-	const openServicesModal = async () => {
-		if (existServices.length > 0) {
-			const serviceIds = existServices.map((service) => service.serviceId);
-			detailedServices = await returnServices(serviceIds);
-			showModal = true;
-		}
-	};
-
-	// return services by depend serviceId
-	async function returnServices(servicesId: any) {
-		let services: any = [];
-		await supabase
-			.from('seat_services')
-			.select('*,languages:seat_services_languages!inner(*)')
-			.eq('languages.language', locale)
-			.in('id', servicesId)
-			.then((result) => {
-				services = result.data;
-			});
-		// console.log('////', services);
-		return services;
-	}
-
-	const handleCheckboxChange = (serviceId: number, checked: boolean) => {
-		const index = seatServices.findIndex((service) => service.id === serviceId);
-		if (index !== -1) {
-			seatServices[index].selected = checked;
-
-			// If the service is deselected, reset its fields
-			if (!checked) {
-				seatServices[index].maxFreeCount = 0;
-				seatServices[index].maxQuantityPerUser = 0;
-				seatServices[index].unlimitedFree = false;
-			}
-		}
-
-		calculateTotalPriceForServices();
-	};
-
-	let selectedServices: any = {};
-
-	let quantityExceededMessages: any = {};
-
-	function handleQuantityChange(serviceId: number, field: string, value: number) {
-		const index = seatServices?.findIndex((service) => service.id === serviceId);
-		if (index !== -1) {
-			// Convert value to a number if it's one of the numeric fields
-			if (field === 'maxFreeCount' || field === 'maxQuantityPerUser') {
-				seatServices[index][field] = Number(value);
-			} else {
-				seatServices[index][field] = value;
-			}
-		}
-		calculateTotalPriceForServices();
-	}
-
-	//    find new price by depend quantity
-	function calculatePrice(price: number, discount: number, maxFreeCount: number, quantity: number) {
-		if (quantity <= maxFreeCount) {
-			return price;
-		} else {
-			let findCalculation = discount ? quantity * discount : quantity * price;
-			return findCalculation;
-		}
-	}
-
-	// find total price for services
-	let totalPriceForServices = 0;
-	function calculateTotalPriceForServices() {
-		totalPriceForServices = 0; // Reset the total price
-
-		Object.values(selectedServices).forEach((service: any) => {
-			const serviceDetail = detailedServices.find((detail: any) => detail.id === service.serviceId);
-			const existingService = existServices.find((s) => s.serviceId === service.serviceId);
-
-			// Check if the service is marked as unlimitedFree
-			if (existingService && existingService.unlimitedFree) {
-				return;
-			}
-
-			let price = serviceDetail.price;
-			let discount = serviceDetail.discount;
-			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
-
-			// Check if the quantity is within the maxFreeCount
-			if (service.quantity <= maxFreeCount) {
-				return;
-			}
-
-			let serviceTotalPrice = calculatePrice(price, discount, maxFreeCount, service.quantity);
-			totalPriceForServices += serviceTotalPrice;
-		});
-	}
-	/////////////////////////////////////
-
 	async function getCompanyReservedData() {
-		console.log(reservationData);
+		reservedServices = reservationData.services.map((serviceString) => {
+			let serviceObject = JSON.parse(serviceString);
+			return { ...serviceObject, selected: true };
+		});
+
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
 			area: JSON.parse(reservationData.reserved_areas),
 			comment: reservationData.comment,
-			file: reservationData.file_url
+			file: reservationData.file_url,
+			services: reservedServices,
+			total_price: reservationData.total_price
 		};
 
 		let allReservedArea = reservedAreas?.map((reservedArea) => {
@@ -254,6 +140,237 @@
 			}
 		});
 		calculateTotalPrice();
+	}
+	//////////////////////////////////////////
+	// return services by depend serviceId
+	async function returnServicesForThisSeat(servicesId: any) {
+		let services: any = [];
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				services = result.data;
+			});
+
+		return services;
+	}
+
+	let showModal = false;
+	let detailedServices: any = [];
+
+	const openServicesModal = async () => {
+		await fetchAndMarkReservedServices();
+		showModal = true;
+	};
+
+	async function fetchAndMarkReservedServices() {
+		let currentServices = JSON.parse(currentActiveSeat.services) || [];
+		let reservedServicesData = reservationData.services.map((serviceString) =>
+			JSON.parse(serviceString)
+		);
+
+		let allServiceIds = currentServices.map((service) => service.serviceId);
+		let allServices = await returnServicesForThisSeat(allServiceIds);
+
+		allServices.forEach((service) => {
+			let reservedService = reservedServicesData.find((rs) => rs.serviceId === service.id);
+
+			if (reservedService) {
+				// For reserved services, use the data from reservationData
+				service.selected = true;
+				service.quantity = reservedService.quantity;
+				service.totalPrice = reservedService.totalPrice;
+			} else {
+				// For unreserved services, set default values
+				service.selected = false;
+				service.quantity = 0;
+				service.totalPrice = 0;
+			}
+
+			// Assign maxFreeCount from currentServices
+			let matchedService = currentServices.find((cs) => cs.serviceId === service.id);
+			service.maxFreeCount = matchedService ? parseInt(matchedService.maxFreeCount) || 0 : 0;
+			service.unlimitedFree = matchedService.unlimitedFree;
+		});
+
+		detailedServices = allServices;
+		showModal = true;
+	}
+
+	function handleServiceSelection(serviceId: number, event: any) {
+		const isChecked = event.target.checked;
+
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			detailedServices[serviceIndex].selected = isChecked;
+
+			if (!isChecked) {
+				detailedServices[serviceIndex].quantity = 0;
+			}
+
+			detailedServices = [...detailedServices];
+		}
+		calculateTotalPriceForServices();
+	}
+
+	function handleQuantityChange(serviceId: any, event: any) {
+		const newQuantity = parseInt(event.target.value) || 0;
+
+		// Parse the 'services' string to an array
+		let servicesArray;
+		try {
+			servicesArray = JSON.parse(currentActiveSeat?.services || '[]');
+		} catch (error) {
+			console.error('Error parsing services data:', error);
+			return;
+		}
+
+		// Find the service details for the given serviceId
+		const serviceDetails = servicesArray.find((service) => service.serviceId === serviceId);
+		if (!serviceDetails) {
+			console.error('Service not found for serviceId:', serviceId);
+			return;
+		}
+		const maxQuantity = serviceDetails.maxQuantityPerUser;
+
+		// Check if the new quantity exceeds the maxQuantityPerUser
+		if (newQuantity > maxQuantity) {
+			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({ maxQuantity });
+			return;
+		}
+
+		quantityExceededMessages[serviceId] = '';
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			detailedServices[serviceIndex].quantity = newQuantity;
+			detailedServices = [...detailedServices];
+		}
+
+		calculateTotalPriceForServices();
+	}
+
+	//  find new price by depend quantity
+	function calculatePrice(
+		price: number,
+		discount: number,
+		maxFreeCount: number,
+		quantity: number,
+		unlimitedFree: boolean
+	) {
+		// If unlimitedFree is true, set price to 0 and return 0
+		if (unlimitedFree) {
+			return 0;
+		}
+
+		// If the quantity is less than or equal to maxFreeCount, return 0
+		if (quantity <= maxFreeCount) {
+			return 0;
+		} else {
+			// Calculate new price based on discount and quantity
+			return discount ? quantity * discount : quantity * price;
+		}
+	}
+
+	// find total price for services
+
+	function calculateTotalPriceForServices() {
+		totalPriceForServices = 0;
+
+		Object.values(detailedServices).forEach((service: any) => {
+			// Find the detailed service data
+			const serviceDetail = detailedServices.find((detail: any) => detail.id === service.id);
+
+			// Check if the serviceDetail is defined
+			if (!serviceDetail) {
+				return;
+			}
+
+			// Retrieve the existing service data
+			const existingService = reservedServices.find((s) => s.serviceId === service.id);
+
+			// Check for unlimited free service
+			if (existingService && existingService.unlimitedFree) {
+				service.totalPrice = 0;
+				return;
+			}
+
+			// Use properties with safety checks
+			let price = serviceDetail.price || 0;
+			let discount = serviceDetail.discount || 0;
+			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
+
+			// Calculate the total price for the service
+			if (service.quantity <= maxFreeCount) {
+				service.totalPrice = 0;
+			} else {
+				service.totalPrice = calculatePrice(
+					price,
+					discount,
+					maxFreeCount,
+					service.quantity,
+					service.unlimitedFree
+				);
+			}
+
+			totalPriceForServices += service.totalPrice;
+		});
+	}
+
+	/////////////////////////////
+	async function reserveSeat() {
+		confirmServiceSelection();
+		reservedSeatData.total_price = totalPrice + totalPriceForServices;
+		reservedSeatData.services = reservedServices;
+
+		reservedSeatData.area.push({
+			id: areas.length,
+			area: customAreaMeter.toString(),
+			quantity: customAreaQuantity
+		});
+		reservationData.extra_discount_checked = extraDiscountChecked;
+
+		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
+
+		reservedSeatArea?.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1) {
+				areas[existingSeatAreaIndex].quantity =
+					+areas[existingSeatAreaIndex].quantity + +area.quantity;
+			}
+		});
+		reservedSeatData?.area?.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
+				areas[existingSeatAreaIndex].quantity =
+					areas[existingSeatAreaIndex].quantity - area.quantity;
+			}
+		});
+		console.log(reservedSeatData);
+		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
+		setTimeout(() => {
+			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
+		}, 10);
+	}
+
+	function confirmServiceSelection() {
+		reservedServices = detailedServices
+			.map((service) => {
+				if (service.selected) {
+					return {
+						serviceId: service.id,
+						quantity: service.quantity,
+						totalPrice: service.totalPrice,
+						serviceDetail: service // assuming serviceDetail should have all the service's info
+					};
+				}
+				return null;
+			})
+			.filter((service) => service != null); // Remove null entries for unselected services
+		showModal = false;
 	}
 
 	function checkExtraDiscount() {
@@ -276,24 +393,6 @@
 	let fileError = false;
 	let validFile = false;
 	let errorMessage = '';
-
-	// function handleFileChange(event: any) {
-	// 	const file = event.target.files[0];
-
-	// 	imageFile_excel = file;
-
-	// 	const reader = new FileReader();
-
-	// 	const randomText = getRandomTextNumber();
-	// 	fileName_excel = `${randomText}_${file.name}`;
-
-	// 	reader.readAsDataURL(file);
-	// 	if (file) {
-	// 		fileName = file.name;
-	// 	} else {
-	// 		selectedFile = null;
-	// 	}
-	// }
 
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
@@ -326,37 +425,17 @@
 		}
 	}
 
-	async function reserveSeat() {
-		// console.log('first ///');
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
+	function calculateTotalPrice() {
+		totalPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
-		reservationData.extra_discount_checked = extraDiscountChecked;
-
-		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
-
-		reservedSeatArea?.map((area: any) => {
-			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
-			if (existingSeatAreaIndex > -1) {
-				areas[existingSeatAreaIndex].quantity =
-					+areas[existingSeatAreaIndex].quantity + +area.quantity;
-			}
+		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		totalRawPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
 		});
-		reservedSeatData?.area?.map((area: any) => {
-			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
-			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
-				areas[existingSeatAreaIndex].quantity =
-					areas[existingSeatAreaIndex].quantity - area.quantity;
-			}
-		});
-
-		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
-		// console.log('first', reservedSeatData);
-		setTimeout(() => {
-			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
-		}, 10);
+		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 
 	async function handleAddClick() {
@@ -445,19 +524,6 @@
 	async function addCustomArea(number: number) {
 		customAreaQuantity = number;
 		calculateTotalPrice();
-	}
-
-	function calculateTotalPrice() {
-		totalPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
-		});
-		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
-		totalRawPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
-		});
-		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 
 	function exportFile(reservation: any) {
@@ -582,30 +648,37 @@
 			</div> -->
 					</div>
 
-					<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
-						<div
-							class=" text-start text-md md:text-xl font-medium justify-center flex items-center"
-						>
+					<div
+						class="flex flex-col justify-end mt-6 border-t-2 p-2"
+						style="border-color: {$currentMainThemeColors.backgroundColor}"
+					>
+						<!-- Area Price -->
+						<div class="text-start text-md md:text-xl font-medium flex items-center">
 							<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-								{$LL.reservation.total_price()} :
+								{$LL.reservation.areaPrice()}
 							</p>
 							<div class="mx-4">
-								{#if discountedPrice}
-									<p
-										class="text-start justify-center flex my-2 line-through text-xs md:text-xl
-						"
-									>
+								{#if discountedPrice || extraDiscountChecked}
+									<p class="text-start justify-center flex my-2 line-through text-xs md:text-xl">
 										{totalRawPrice}$
 									</p>
 								{/if}
-
-								<p
-									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="color:{$currentMainThemeColors.primaryColor}"
-								>
+								<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
 									{totalPrice}$
-								</p>
+								</div>
 							</div>
+						</div>
+
+						<!-- Service Price -->
+						<div class="text-start text-md md:text-xl font-medium my-2">
+							<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} $</span>
+						</div>
+						<!-- Total Price -->
+						<div
+							class="text-start text-md md:text-xl font-medium my-2"
+							style="color: {$currentMainThemeColors.primaryColor};"
+						>
+							<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}$</span>
 						</div>
 					</div>
 				</div>
@@ -640,10 +713,9 @@
 				class="my-3"
 				bind:value={reservedSeatData.comment}
 			/>
-
 			<div class="block md:flex justify-end w-full mt-8">
 				<div class="mx-2">
-					<!-- showing modal  -->
+					<!-- show modal -->
 					<Button on:click={() => openServicesModal()}>
 						{$LL.reservation.addService()}
 					</Button>
@@ -654,63 +726,67 @@
 							</p>
 
 							<ul>
-								{#each detailedServices as service}
+								{#each detailedServices as item}
 									<li class="flex justify-start items-center py-4">
 										<Checkbox
-											checked={service.selected}
-											on:change={(e) => handleCheckboxChange(service.id, e.target.checked)}
+											checked={item.selected}
+											on:change={(e) => handleServiceSelection(item.id, e)}
 										/>
 										<span>
 											<img
 												class="w-12 h-12 mx-2 object-cover rounded-lg"
-												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${service.icon}`}
+												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
 												alt="icon"
 											/></span
 										>
-										<span class="mx-2">{service.languages[0].title}</span>
+										<span class="mx-2">{item.languages[0].title}</span>
+
 										<span>
 											<Input
+												class="w-20"
 												type="number"
 												size="sm"
 												placeholder="quantity"
-												on:input={(e) =>
-													handleQuantityChange(service.id, 'maxQuantityPerUser', e.target.value)}
+												value={item.quantity}
+												on:input={(e) => handleQuantityChange(item.id, e)}
 												min="0"
-												disabled={!service.selected}
+												disabled={!item.selected}
 											/>
-
 											<p class="text-red-500">
-												{#if quantityExceededMessages[service.id]}
-													<p class="text-red-500">{quantityExceededMessages[service.id]}</p>
+												{#if quantityExceededMessages[item.id]}
+													<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
 												{/if}
-											</p></span
-										>
-										<span>
-											{#each existServices as service}
-												{#if service.serviceId === service.id}
-													<div>
-														{#if !service.unlimitedFree}
-															<span class="mx-2">
-																{$LL.reservation.priceSeat()}
-																<span class="bg-green-400 rounded-lg p-2 text-white">
-																	{calculatePrice(
-																		service.price,
-																		service.discount,
-																		service.maxFreeCount,
-																		selectedServices[service.id]?.quantity || 0
-																	)}
-																</span>
-															</span>
-															<span class="mx-2">
-																{$LL.reservation.discountSeat()}
-																{service.discount
-																	? service.discount
-																	: $LL.reservation.notAvailable()}
-															</span>
-														{/if}
-													</div>
-												{/if}
-											{/each}
+											</p>
+										</span>
+
+										<span class="mx-2 flex justify-center items-center">
+											{#if !item.unlimitedFree}
+												{$LL.reservation.priceSeat()}
+												<span
+													class="font-bold p-2"
+													style="color :{$currentMainThemeColors.primaryColor}"
+												>
+													{calculatePrice(
+														item.price,
+														item.discount,
+														item.maxFreeCount,
+														item.quantity,
+														item.unlimitedFree
+													)}
+												</span>
+											{:else}
+												<span
+													class="font-bold"
+													style="color :{$currentMainThemeColors.primaryColor}">Free</span
+												>
+											{/if}
+										</span>
+
+										<span class="mx-2">
+											{#if !item.unlimitedFree}
+												{$LL.reservation.discountSeat()}
+												{item.discount ? item.discount : $LL.reservation.notAvailable()}
+											{/if}
 										</span>
 									</li>
 								{/each}
