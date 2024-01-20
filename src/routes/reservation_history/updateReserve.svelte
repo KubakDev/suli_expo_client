@@ -109,9 +109,14 @@
 	}
 
 	async function getCompanyReservedData() {
-		reservedServices = reservationData.services.map((serviceString) => {
+		reservedServices = reservationData.services.map((serviceString: any) => {
 			let serviceObject = JSON.parse(serviceString);
 			return { ...serviceObject, selected: true };
+		});
+
+		totalPriceForServices = 0;
+		reservedServices.forEach((service) => {
+			totalPriceForServices += service.totalPrice;
 		});
 
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
@@ -141,7 +146,7 @@
 		});
 		calculateTotalPrice();
 	}
-	//////////////////////////////////////////
+
 	// return services by depend serviceId
 	async function returnServicesForThisSeat(servicesId: any) {
 		let services: any = [];
@@ -203,7 +208,7 @@
 		const isChecked = event.target.checked;
 
 		// Find the service in the detailedServices array
-		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		const serviceIndex = detailedServices.findIndex((service: any) => service.id === serviceId);
 		if (serviceIndex !== -1) {
 			detailedServices[serviceIndex].selected = isChecked;
 
@@ -219,7 +224,6 @@
 	function handleQuantityChange(serviceId: any, event: any) {
 		const newQuantity = parseInt(event.target.value) || 0;
 
-		// Parse the 'services' string to an array
 		let servicesArray;
 		try {
 			servicesArray = JSON.parse(currentActiveSeat?.services || '[]');
@@ -228,7 +232,6 @@
 			return;
 		}
 
-		// Find the service details for the given serviceId
 		const serviceDetails = servicesArray.find((service) => service.serviceId === serviceId);
 		if (!serviceDetails) {
 			console.error('Service not found for serviceId:', serviceId);
@@ -253,7 +256,28 @@
 		calculateTotalPriceForServices();
 	}
 
-	//  find new price by depend quantity
+	// find total price for services
+	function calculateTotalPriceForServices() {
+		totalPriceForServices = 0;
+
+		detailedServices.forEach((service) => {
+			if (service.selected) {
+				let maxFreeCount = service.maxFreeCount || 0;
+				let unlimitedFree = service.unlimitedFree || false;
+
+				service.totalPrice = calculatePrice(
+					service.price,
+					service.discount,
+					maxFreeCount,
+					service.quantity,
+					unlimitedFree
+				);
+
+				totalPriceForServices += service.totalPrice;
+			}
+		});
+	}
+
 	function calculatePrice(
 		price: number,
 		discount: number,
@@ -261,66 +285,14 @@
 		quantity: number,
 		unlimitedFree: boolean
 	) {
-		// If unlimitedFree is true, set price to 0 and return 0
-		if (unlimitedFree) {
-			return 0;
-		}
-
-		// If the quantity is less than or equal to maxFreeCount, return 0
-		if (quantity <= maxFreeCount) {
+		if (unlimitedFree || quantity <= maxFreeCount) {
 			return 0;
 		} else {
-			// Calculate new price based on discount and quantity
-			return discount ? quantity * discount : quantity * price;
+			let discountedPrice = discount ? discount : price;
+			return discount ? discount * quantity : quantity * price;
 		}
 	}
 
-	// find total price for services
-
-	function calculateTotalPriceForServices() {
-		totalPriceForServices = 0;
-
-		Object.values(detailedServices).forEach((service: any) => {
-			// Find the detailed service data
-			const serviceDetail = detailedServices.find((detail: any) => detail.id === service.id);
-
-			// Check if the serviceDetail is defined
-			if (!serviceDetail) {
-				return;
-			}
-
-			// Retrieve the existing service data
-			const existingService = reservedServices.find((s) => s.serviceId === service.id);
-
-			// Check for unlimited free service
-			if (existingService && existingService.unlimitedFree) {
-				service.totalPrice = 0;
-				return;
-			}
-
-			// Use properties with safety checks
-			let price = serviceDetail.price || 0;
-			let discount = serviceDetail.discount || 0;
-			let maxFreeCount = existingService ? existingService.maxFreeCount : 0;
-
-			// Calculate the total price for the service
-			if (service.quantity <= maxFreeCount) {
-				service.totalPrice = 0;
-			} else {
-				service.totalPrice = calculatePrice(
-					price,
-					discount,
-					maxFreeCount,
-					service.quantity,
-					service.unlimitedFree
-				);
-			}
-
-			totalPriceForServices += service.totalPrice;
-		});
-	}
-
-	/////////////////////////////
 	async function reserveSeat() {
 		confirmServiceSelection();
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
@@ -349,7 +321,7 @@
 					areas[existingSeatAreaIndex].quantity - area.quantity;
 			}
 		});
-		console.log(reservedSeatData);
+
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
@@ -360,17 +332,40 @@
 		reservedServices = detailedServices
 			.map((service) => {
 				if (service.selected) {
+					let maxFreeCount = service.maxFreeCount || 0;
+					let unlimitedFree = service.unlimitedFree || false;
+					let totalPrice = calculatePrice(
+						service.price,
+						service.discount,
+						maxFreeCount,
+						service.quantity,
+						unlimitedFree
+					);
+
 					return {
 						serviceId: service.id,
 						quantity: service.quantity,
-						totalPrice: service.totalPrice,
-						serviceDetail: service // assuming serviceDetail should have all the service's info
+						totalPrice: totalPrice,
+						serviceDetail: service
 					};
 				}
 				return null;
 			})
-			.filter((service) => service != null); // Remove null entries for unselected services
+			.filter((service) => service != null);
 		showModal = false;
+	}
+
+	function calculateTotalPrice() {
+		totalPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
+		});
+		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		totalRawPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
+		});
+		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 
 	function checkExtraDiscount() {
@@ -423,19 +418,6 @@
 				errorMessage = 'Excel file required';
 			}
 		}
-	}
-
-	function calculateTotalPrice() {
-		totalPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
-		});
-		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
-		totalRawPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
-		});
-		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
 	}
 
 	async function handleAddClick() {
@@ -716,7 +698,11 @@
 			<div class="block md:flex justify-end w-full mt-8">
 				<div class="mx-2">
 					<!-- show modal -->
-					<Button on:click={() => openServicesModal()}>
+					<Button
+						class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+						on:click={() => openServicesModal()}
+					>
 						{$LL.reservation.addService()}
 					</Button>
 					{#if showModal}
@@ -727,7 +713,7 @@
 
 							<ul>
 								{#each detailedServices as item}
-									<li class="flex justify-start items-center py-4">
+									<li class="flex justify-start items-center pt-5">
 										<Checkbox
 											checked={item.selected}
 											on:change={(e) => handleServiceSelection(item.id, e)}
@@ -752,11 +738,6 @@
 												min="0"
 												disabled={!item.selected}
 											/>
-											<p class="text-red-500">
-												{#if quantityExceededMessages[item.id]}
-													<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
-												{/if}
-											</p>
 										</span>
 
 										<span class="mx-2 flex justify-center items-center">
@@ -789,6 +770,11 @@
 											{/if}
 										</span>
 									</li>
+									<p class="text-red-500">
+										{#if quantityExceededMessages[item.id]}
+											<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
+										{/if}
+									</p>
 								{/each}
 							</ul>
 						</Modal>
