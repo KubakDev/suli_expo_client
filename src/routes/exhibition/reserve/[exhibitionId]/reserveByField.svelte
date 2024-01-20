@@ -190,8 +190,7 @@
 		if (quantity <= maxFreeCount) {
 			return 0;
 		} else {
-			let discountedPrice = discount ? discount : price;
-			return (quantity - maxFreeCount) * discountedPrice;
+		return discount ? discount * quantity : quantity * price;
 		}
 	}
 
