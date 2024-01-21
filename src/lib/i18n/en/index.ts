@@ -128,6 +128,17 @@ const en = {
 			pending: 'PENDING'
 		},
 		available_area: 'Available area',
+		areaPrice: 'Area Price :',
+		addService: 'Add Service',
+		servicesPrice: 'Services Price :',
+		totalPrice: 'Total Price :',
+		modalTitle: 'List of Services available to this area',
+		modalInfo:
+			'Please, select checkBox and enter the number of quantity to insert your desired services',
+		priceSeat: 'Price :',
+		discountSeat: 'Discount :',
+		notAvailable: 'Not Available',
+		messageToValidation: '`Maximum allowed quantity for this service is {maxQuantity}.`',
 		measure: {
 			m: 'Meter'
 		},

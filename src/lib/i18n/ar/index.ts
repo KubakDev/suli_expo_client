@@ -126,6 +126,16 @@ const ar = {
 			pending: 'معلق'
 		},
 		available_area: 'المساحة المتاحة',
+		areaPrice: ': سعر المنطقة ',
+		addService: 'إضافة خدمة',
+		servicesPrice: ': سعر الخدمات ',
+		totalPrice: ': السعر الكلي ',
+		modalTitle: 'قائمة الخدمات المتاحة لهذه المنطقة',
+		modalInfo: '  يرجى اختيار مربع الاختيار وإدخال عدد الكميات لإدراج الخدمات التي ترغب بها',
+		priceSeat: ': السعر ',
+		discountSeat: ' : الخصم ',
+		notAvailable: 'غير متوفر',
+		messageToValidation: 'الحد الأقصى المسموح به لهذه الخدمة هو {maxQuantity}.',
 		measure: {
 			m: 'متر'
 		},

@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal, Checkbox } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox, Input } from 'flowbite-svelte';
 	import moment from 'moment';
 	import { currentUser } from '../../stores/currentUser';
 	import { generateDocx } from '../../utils/generateContract';
@@ -23,6 +23,7 @@
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
+
 	let areas: {
 		area: string;
 		quantity: number;
@@ -39,19 +40,34 @@
 	let customAreaQuantity: number = 1;
 	let preview_url: string = '';
 	let extraDiscountChecked = false;
+	let quantityExceededMessages: any = {};
+	let totalPriceForServices = 0;
+
+	let reservedServices: any[] = [];
 	let reservedSeatData: {
 		area: {
 			id: number;
 			area: string;
 			quantity: number;
 		}[];
+		services: {
+			serviceId: number;
+			totalPrice: number;
+			quantity: number;
+			serviceDetail: [];
+		}[];
+		extraDiscountChecked?: boolean;
 		comment: string;
-		file: string;
+		total_price: number;
+		file: File | undefined;
 	} = {
 		area: [],
+		services: [],
 		comment: '',
-		file: ''
+		file: undefined,
+		total_price: 0
 	};
+
 	let reservedAreas: any[] = [];
 	let currentActiveSeat = data.seat_layout?.find((seat: any) => seat.is_active == true);
 
@@ -93,11 +109,23 @@
 	}
 
 	async function getCompanyReservedData() {
+		reservedServices = reservationData.services.map((serviceString: any) => {
+			let serviceObject = JSON.parse(serviceString);
+			return { ...serviceObject, selected: true };
+		});
+
+		totalPriceForServices = 0;
+		reservedServices.forEach((service) => {
+			totalPriceForServices += service.totalPrice;
+		});
+
 		reservedAreas = JSON.parse(reservationData.reserved_areas);
 		reservedSeatData = {
 			area: JSON.parse(reservationData.reserved_areas),
 			comment: reservationData.comment,
-			file: reservationData.file_url
+			file: reservationData.file_url,
+			services: reservedServices,
+			total_price: reservationData.total_price
 		};
 
 		let allReservedArea = reservedAreas?.map((reservedArea) => {
@@ -118,6 +146,227 @@
 		});
 		calculateTotalPrice();
 	}
+
+	// return services by depend serviceId
+	async function returnServicesForThisSeat(servicesId: any) {
+		let services: any = [];
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				services = result.data;
+			});
+
+		return services;
+	}
+
+	let showModal = false;
+	let detailedServices: any = [];
+
+	const openServicesModal = async () => {
+		await fetchAndMarkReservedServices();
+		showModal = true;
+	};
+
+	async function fetchAndMarkReservedServices() {
+		let currentServices = JSON.parse(currentActiveSeat.services) || [];
+		let reservedServicesData = reservationData.services.map((serviceString) =>
+			JSON.parse(serviceString)
+		);
+
+		let allServiceIds = currentServices.map((service) => service.serviceId);
+		let allServices = await returnServicesForThisSeat(allServiceIds);
+
+		allServices.forEach((service) => {
+			let reservedService = reservedServicesData.find((rs) => rs.serviceId === service.id);
+
+			if (reservedService) {
+				// For reserved services, use the data from reservationData
+				service.selected = true;
+				service.quantity = reservedService.quantity;
+				service.totalPrice = reservedService.totalPrice;
+			} else {
+				// For unreserved services, set default values
+				service.selected = false;
+				service.quantity = 0;
+				service.totalPrice = 0;
+			}
+
+			// Assign maxFreeCount from currentServices
+			let matchedService = currentServices.find((cs) => cs.serviceId === service.id);
+			service.maxFreeCount = matchedService ? parseInt(matchedService.maxFreeCount) || 0 : 0;
+			service.unlimitedFree = matchedService.unlimitedFree;
+		});
+
+		detailedServices = allServices;
+		showModal = true;
+	}
+
+	function handleServiceSelection(serviceId: number, event: any) {
+		const isChecked = event.target.checked;
+
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service: any) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			detailedServices[serviceIndex].selected = isChecked;
+
+			if (!isChecked) {
+				detailedServices[serviceIndex].quantity = 0;
+			}
+
+			detailedServices = [...detailedServices];
+		}
+		calculateTotalPriceForServices();
+	}
+
+	function handleQuantityChange(serviceId: any, event: any) {
+		const newQuantity = parseInt(event.target.value) || 0;
+
+		let servicesArray;
+		try {
+			servicesArray = JSON.parse(currentActiveSeat?.services || '[]');
+		} catch (error) {
+			console.error('Error parsing services data:', error);
+			return;
+		}
+
+		const serviceDetails = servicesArray.find((service) => service.serviceId === serviceId);
+		if (!serviceDetails) {
+			console.error('Service not found for serviceId:', serviceId);
+			return;
+		}
+		const maxQuantity = serviceDetails.maxQuantityPerUser;
+
+		// Check if the new quantity exceeds the maxQuantityPerUser
+		if (newQuantity > maxQuantity) {
+			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({ maxQuantity });
+			return;
+		}
+
+		quantityExceededMessages[serviceId] = '';
+		// Find the service in the detailedServices array
+		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		if (serviceIndex !== -1) {
+			detailedServices[serviceIndex].quantity = newQuantity;
+			detailedServices = [...detailedServices];
+		}
+
+		calculateTotalPriceForServices();
+	}
+
+	// find total price for services
+	function calculateTotalPriceForServices() {
+		totalPriceForServices = 0;
+
+		detailedServices.forEach((service) => {
+			if (service.selected) {
+				let maxFreeCount = service.maxFreeCount || 0;
+				let unlimitedFree = service.unlimitedFree || false;
+
+				service.totalPrice = calculatePrice(
+					service.price,
+					service.discount,
+					maxFreeCount,
+					service.quantity,
+					unlimitedFree
+				);
+
+				totalPriceForServices += service.totalPrice;
+			}
+		});
+	}
+
+	function calculatePrice(
+		price: number,
+		discount: number,
+		maxFreeCount: number,
+		quantity: number,
+		unlimitedFree: boolean
+	) {
+		if (unlimitedFree || quantity <= maxFreeCount) {
+			return 0;
+		} else {
+			 return discount ? discount * quantity : quantity * price;
+		}
+	}
+
+	async function reserveSeat() {
+		confirmServiceSelection();
+		reservedSeatData.total_price = totalPrice + totalPriceForServices;
+		reservedSeatData.services = reservedServices;
+
+		reservedSeatData.area.push({
+			id: areas.length,
+			area: customAreaMeter.toString(),
+			quantity: customAreaQuantity
+		});
+		reservationData.extra_discount_checked = extraDiscountChecked;
+
+		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
+
+		reservedSeatArea?.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1) {
+				areas[existingSeatAreaIndex].quantity =
+					+areas[existingSeatAreaIndex].quantity + +area.quantity;
+			}
+		});
+		reservedSeatData?.area?.map((area: any) => {
+			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
+			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
+				areas[existingSeatAreaIndex].quantity =
+					areas[existingSeatAreaIndex].quantity - area.quantity;
+			}
+		});
+
+		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
+		setTimeout(() => {
+			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
+		}, 10);
+	}
+
+	function confirmServiceSelection() {
+		reservedServices = detailedServices
+			.map((service) => {
+				if (service.selected) {
+					let maxFreeCount = service.maxFreeCount || 0;
+					let unlimitedFree = service.unlimitedFree || false;
+					let totalPrice = calculatePrice(
+						service.price,
+						service.discount,
+						maxFreeCount,
+						service.quantity,
+						unlimitedFree
+					);
+
+					return {
+						serviceId: service.id,
+						quantity: service.quantity,
+						totalPrice: totalPrice,
+						serviceDetail: service
+					};
+				}
+				return null;
+			})
+			.filter((service) => service != null);
+		showModal = false;
+	}
+
+	function calculateTotalPrice() {
+		totalPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
+		});
+		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		totalRawPrice = 0;
+		reservedSeatData.area?.map((seatArea) => {
+			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
+		});
+		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
+	}
+
 	function checkExtraDiscount() {
 		extraDiscountChecked = !extraDiscountChecked;
 		discountedPrice = extraDiscountChecked
@@ -138,24 +387,6 @@
 	let fileError = false;
 	let validFile = false;
 	let errorMessage = '';
-
-	// function handleFileChange(event: any) {
-	// 	const file = event.target.files[0];
-
-	// 	imageFile_excel = file;
-
-	// 	const reader = new FileReader();
-
-	// 	const randomText = getRandomTextNumber();
-	// 	fileName_excel = `${randomText}_${file.name}`;
-
-	// 	reader.readAsDataURL(file);
-	// 	if (file) {
-	// 		fileName = file.name;
-	// 	} else {
-	// 		selectedFile = null;
-	// 	}
-	// }
 
 	function handleFileChange(event: any) {
 		const file = event.target.files[0];
@@ -186,39 +417,6 @@
 				errorMessage = 'Excel file required';
 			}
 		}
-	}
-
-	async function reserveSeat() {
-		// console.log('first ///');
-		reservedSeatData.area.push({
-			id: areas.length,
-			area: customAreaMeter.toString(),
-			quantity: customAreaQuantity
-		});
-		reservationData.extra_discount_checked = extraDiscountChecked;
-
-		let reservedSeatArea = JSON.parse(reservationData.reserved_areas);
-
-		reservedSeatArea?.map((area: any) => {
-			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
-			if (existingSeatAreaIndex > -1) {
-				areas[existingSeatAreaIndex].quantity =
-					+areas[existingSeatAreaIndex].quantity + +area.quantity;
-			}
-		});
-		reservedSeatData?.area?.map((area: any) => {
-			let existingSeatAreaIndex = areas.findIndex((x: any) => x.area == area.area);
-			if (existingSeatAreaIndex > -1 && area.quantity > 0) {
-				areas[existingSeatAreaIndex].quantity =
-					areas[existingSeatAreaIndex].quantity - area.quantity;
-			}
-		});
-
-		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
-		// console.log('first', reservedSeatData);
-		setTimeout(() => {
-			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
-		}, 10);
 	}
 
 	async function handleAddClick() {
@@ -309,21 +507,7 @@
 		calculateTotalPrice();
 	}
 
-	function calculateTotalPrice() {
-		totalPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
-		});
-		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
-		totalRawPrice = 0;
-		reservedSeatData.area?.map((seatArea) => {
-			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
-		});
-		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
-	}
-
 	function exportFile(reservation: any) {
-		console.log(reservation);
 		window.open(
 			import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_FILE_URL + '/' + reservation?.file_url
 		);
@@ -445,30 +629,37 @@
 			</div> -->
 					</div>
 
-					<div class="w-full mt-6 border-t-2 p-2 flex justify-end">
-						<div
-							class=" text-start text-md md:text-xl font-medium justify-center flex items-center"
-						>
+					<div
+						class="flex flex-col justify-end mt-6 border-t-2 p-2"
+						style="border-color: {$currentMainThemeColors.backgroundColor}"
+					>
+						<!-- Area Price -->
+						<div class="text-start text-md md:text-xl font-medium flex items-center">
 							<p class="min-w-[120px] text-start text-xl font-medium justify-center flex">
-								{$LL.reservation.total_price()} :
+								{$LL.reservation.areaPrice()}
 							</p>
 							<div class="mx-4">
-								{#if discountedPrice}
-									<p
-										class="text-start justify-center flex my-2 line-through text-xs md:text-xl
-						"
-									>
+								{#if discountedPrice || extraDiscountChecked}
+									<p class="text-start justify-center flex my-2 line-through text-xs md:text-xl">
 										{totalRawPrice}$
 									</p>
 								{/if}
-
-								<p
-									class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-									style="color:{$currentMainThemeColors.primaryColor}"
-								>
+								<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
 									{totalPrice}$
-								</p>
+								</div>
 							</div>
+						</div>
+
+						<!-- Service Price -->
+						<div class="text-start text-md md:text-xl font-medium my-2">
+							<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} $</span>
+						</div>
+						<!-- Total Price -->
+						<div
+							class="text-start text-md md:text-xl font-medium my-2"
+							style="color: {$currentMainThemeColors.primaryColor};"
+						>
+							<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}$</span>
 						</div>
 					</div>
 				</div>
@@ -504,6 +695,91 @@
 				bind:value={reservedSeatData.comment}
 			/>
 			<div class="block md:flex justify-end w-full mt-8">
+				<div class="mx-2">
+					<!-- show modal -->
+					<Button
+						class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+						on:click={() => openServicesModal()}
+					>
+						{$LL.reservation.addService()}
+					</Button>
+					{#if showModal}
+						<Modal title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
+							<p class="text-gray-400">
+								{$LL.reservation.modalInfo()}
+							</p>
+
+							<ul>
+								{#each detailedServices as item}
+									<li class="flex justify-start items-center pt-5">
+										<Checkbox
+											checked={item.selected}
+											on:change={(e) => handleServiceSelection(item.id, e)}
+										/>
+										<span>
+											<img
+												class="w-12 h-12 mx-2 object-cover rounded-lg"
+												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
+												alt="icon"
+											/></span
+										>
+										<span class="mx-2">{item.languages[0].title}</span>
+
+										<span>
+											<Input
+												class="w-20"
+												type="number"
+												size="sm"
+												placeholder="quantity"
+												value={item.quantity}
+												on:input={(e) => handleQuantityChange(item.id, e)}
+												min="0"
+												disabled={!item.selected}
+											/>
+										</span>
+
+										<span class="mx-2 flex justify-center items-center">
+											{#if !item.unlimitedFree}
+												{$LL.reservation.priceSeat()}
+												<span
+													class="font-bold p-2"
+													style="color :{$currentMainThemeColors.primaryColor}"
+												>
+													{calculatePrice(
+														item.price,
+														item.discount,
+														item.maxFreeCount,
+														item.quantity,
+														item.unlimitedFree
+													)}
+												</span>
+											{:else}
+												<span
+													class="font-bold"
+													style="color :{$currentMainThemeColors.primaryColor}">Free</span
+												>
+											{/if}
+										</span>
+
+										<!-- <span class="mx-2">
+											{#if !item.unlimitedFree}
+												{$LL.reservation.discountSeat()}
+												{item.discount ? item.discount : $LL.reservation.notAvailable()}
+											{/if}
+										</span> -->
+									</li>
+									<p class="text-red-500">
+										{#if quantityExceededMessages[item.id]}
+											<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
+										{/if}
+									</p>
+								{/each}
+							</ul>
+						</Modal>
+					{/if}
+				</div>
+
 				<div class="w-full md:w-auto">
 					<Button
 						class="w-full md:w-auto md:my-0 my-1"

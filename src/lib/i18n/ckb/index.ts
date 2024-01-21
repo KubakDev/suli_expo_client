@@ -132,6 +132,17 @@ const ckb = {
 			pending: 'لە چاوەڕوانی'
 		},
 		available_area: 'روبەری پێویست',
+		areaPrice: ': نرخی ناوچە ',
+		addService: 'خزمەتگوزاری زیاد بکە',
+		servicesPrice: ': نرخی خزمەتگوزارییەکان ',
+		totalPrice: ': نرخی گشتی  ',
+		modalTitle: 'لیستی خزمەتگوزارییەکانی بەردەست بۆ ئەم ناوچەیە',
+		modalInfo:
+			' تکایە، دوگمەی دیاریکردن هەڵبژێرە و ژمارەی پێویستی بنوسە بۆ داخڵکردنی خزمەتگوزارییە کە',
+		priceSeat: 'نرخ :',
+		discountSeat: 'داشکاندن :',
+		notAvailable: 'بەردەست نییە',
+		messageToValidation: 'زۆرترین ژمارەی رێگەپێدراو بۆ ئەم خزمەتگوزارییە {maxQuantity} ',
 		measure: {
 			m: 'مەتر'
 		},

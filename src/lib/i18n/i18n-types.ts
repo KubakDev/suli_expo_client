@@ -458,6 +458,47 @@ type RootTranslation = {
 		 * A​v​a​i​l​a​b​l​e​ ​a​r​e​a
 		 */
 		available_area: string
+		/**
+		 * A​r​e​a​ ​P​r​i​c​e​ ​:
+		 */
+		areaPrice: string
+		/**
+		 * A​d​d​ ​S​e​r​v​i​c​e
+		 */
+		addService: string
+		/**
+		 * S​e​r​v​i​c​e​s​ ​P​r​i​c​e​ ​:
+		 */
+		servicesPrice: string
+		/**
+		 * T​o​t​a​l​ ​P​r​i​c​e​ ​:
+		 */
+		totalPrice: string
+		/**
+		 * L​i​s​t​ ​o​f​ ​S​e​r​v​i​c​e​s​ ​a​v​a​i​l​a​b​l​e​ ​t​o​ ​t​h​i​s​ ​a​r​e​a
+		 */
+		modalTitle: string
+		/**
+		 * P​l​e​a​s​e​,​ ​s​e​l​e​c​t​ ​c​h​e​c​k​B​o​x​ ​a​n​d​ ​e​n​t​e​r​ ​t​h​e​ ​n​u​m​b​e​r​ ​o​f​ ​q​u​a​n​t​i​t​y​ ​t​o​ ​i​n​s​e​r​t​ ​y​o​u​r​ ​d​e​s​i​r​e​d​ ​s​e​r​v​i​c​e​s
+		 */
+		modalInfo: string
+		/**
+		 * P​r​i​c​e​ ​:
+		 */
+		priceSeat: string
+		/**
+		 * D​i​s​c​o​u​n​t​ ​:
+		 */
+		discountSeat: string
+		/**
+		 * N​o​t​ ​A​v​a​i​l​a​b​l​e
+		 */
+		notAvailable: string
+		/**
+		 * `​M​a​x​i​m​u​m​ ​a​l​l​o​w​e​d​ ​q​u​a​n​t​i​t​y​ ​f​o​r​ ​t​h​i​s​ ​s​e​r​v​i​c​e​ ​i​s​ ​{​m​a​x​Q​u​a​n​t​i​t​y​}​.​`
+		 * @param {unknown} maxQuantity
+		 */
+		messageToValidation: RequiredParams<'maxQuantity'>
 		measure: {
 			/**
 			 * M​e​t​e​r
@@ -1192,6 +1233,46 @@ export type TranslationFunctions = {
 		 * Available area
 		 */
 		available_area: () => LocalizedString
+		/**
+		 * Area Price :
+		 */
+		areaPrice: () => LocalizedString
+		/**
+		 * Add Service
+		 */
+		addService: () => LocalizedString
+		/**
+		 * Services Price :
+		 */
+		servicesPrice: () => LocalizedString
+		/**
+		 * Total Price :
+		 */
+		totalPrice: () => LocalizedString
+		/**
+		 * List of Services available to this area
+		 */
+		modalTitle: () => LocalizedString
+		/**
+		 * Please, select checkBox and enter the number of quantity to insert your desired services
+		 */
+		modalInfo: () => LocalizedString
+		/**
+		 * Price :
+		 */
+		priceSeat: () => LocalizedString
+		/**
+		 * Discount :
+		 */
+		discountSeat: () => LocalizedString
+		/**
+		 * Not Available
+		 */
+		notAvailable: () => LocalizedString
+		/**
+		 * `Maximum allowed quantity for this service is {maxQuantity}.`
+		 */
+		messageToValidation: (arg: { maxQuantity: unknown }) => LocalizedString
 		measure: {
 			/**
 			 * Meter

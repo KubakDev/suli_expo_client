@@ -69,12 +69,18 @@
 		showNotification = false;
 		defaultModal = false;
 
-		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
-			showNotification = true;
-			return;
+		// if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
+		// 	showNotification = true;
+		// 	return;
+		// }
+
+		let extension;
+		if (reserveSeatData.file && reserveSeatData.file.size > 0) {
+			extension = reserveSeatData.file.name.split('.').pop();
 		}
-		let extention = reserveSeatData.file.name.split('.').pop();
+
 		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
+
 		if (exhibition.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS) {
 			reserveSeatData.area.map((area: any) => {
 				let existingSeatAreaIndex = existingSeatArea.findIndex((x: any) => x.area == area.area);
@@ -85,14 +91,16 @@
 			});
 		}
 		try {
-			const response = await data.supabase.storage
-				.from('file')
-				.upload(`reserve/${getRandomTextNumber()}.${extention}`, reserveSeatData.file);
+			if (extension) {
+				const response = await data.supabase.storage
+					.from('file')
+					.upload(`reserve/${getRandomTextNumber()}.${extension}`, reserveSeatData.file);
 
-			fileUrl = response?.data?.path;
-			if (!fileUrl) {
-				alert('anUnknown error occurred while uploading the file. Please try again.');
-				return;
+				fileUrl = response?.data?.path;
+				// if (!fileUrl) {
+				// 	alert('anUnknown error occurred while uploading the file. Please try again.');
+				// 	return;
+				// }
 			}
 
 			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
@@ -107,7 +115,9 @@
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
 						file_url: fileUrl,
-						extra_discount_checked: reserveSeatData.extraDiscountChecked
+						extra_discount_checked: reserveSeatData.extraDiscountChecked,
+						services: reserveSeatData.services,
+						total_price: reserveSeatData.total_price
 					})
 					.then(async () => {
 						data.supabase
@@ -163,7 +173,6 @@
 						});
 					});
 			} else {
-				console.log('hi seat');
 				await data.supabase
 					.from('seat_reservation')
 					.insert({
@@ -173,14 +182,16 @@
 						comment: reserveSeatData.comment,
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
-						file_url: fileUrl,
-						services: reserveSeatData.services
+						file_url: fileUrl ?? '',
+						services: JSON.stringify(reserveSeatData.services),
+						total_price: reserveSeatData.total_price
 					})
 					.then(async (Response: any) => {
 						if (Response.error) {
 							alert('unknown error occurred ');
 							return;
 						}
+
 						defaultModal = true;
 						seatReserved = true;
 						selectedSeat.set(null);
