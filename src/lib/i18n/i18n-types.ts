@@ -495,7 +495,7 @@ type RootTranslation = {
 		 */
 		notAvailable: string
 		/**
-		 * `​M​a​x​i​m​u​m​ ​a​l​l​o​w​e​d​ ​q​u​a​n​t​i​t​y​ ​f​o​r​ ​t​h​i​s​ ​s​e​r​v​i​c​e​ ​i​s​ ​$​{​m​a​x​Q​u​a​n​t​i​t​y​}​.​`
+		 * `​M​a​x​i​m​u​m​ ​a​l​l​o​w​e​d​ ​q​u​a​n​t​i​t​y​ ​f​o​r​ ​t​h​i​s​ ​s​e​r​v​i​c​e​ ​i​s​ ​{​m​a​x​Q​u​a​n​t​i​t​y​}​.​`
 		 * @param {unknown} maxQuantity
 		 */
 		messageToValidation: RequiredParams<'maxQuantity'>
@@ -1270,7 +1270,7 @@ export type TranslationFunctions = {
 		 */
 		notAvailable: () => LocalizedString
 		/**
-		 * `Maximum allowed quantity for this service is ${maxQuantity}.`
+		 * `Maximum allowed quantity for this service is {maxQuantity}.`
 		 */
 		messageToValidation: (arg: { maxQuantity: unknown }) => LocalizedString
 		measure: {

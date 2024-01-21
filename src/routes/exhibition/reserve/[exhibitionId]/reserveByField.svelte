@@ -122,11 +122,13 @@
 
 	function handleServiceSelection(serviceId: number, event: any) {
 		const isChecked = event.target.checked;
-		const quantity = selectedServices[serviceId]?.quantity || 0;
 
 		if (isChecked) {
 			selectedServices[serviceId] = selectedServices[serviceId] || { serviceId, quantity: 1 };
 		} else {
+			if (selectedServices[serviceId]) {
+				selectedServices[serviceId].quantity = 0;
+			}
 			delete selectedServices[serviceId];
 		}
 		calculateTotalPriceForServices();
@@ -190,7 +192,7 @@
 		if (quantity <= maxFreeCount) {
 			return 0;
 		} else {
-		return discount ? discount * quantity : quantity * price;
+			return discount ? discount * quantity : quantity * price;
 		}
 	}
 

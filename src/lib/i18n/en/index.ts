@@ -137,7 +137,7 @@ const en = {
 		priceSeat: 'Price :',
 		discountSeat: 'Discount :',
 		notAvailable: 'Not Available',
-		messageToValidation: '`Maximum allowed quantity for this service is ${maxQuantity}.`',
+		messageToValidation: '`Maximum allowed quantity for this service is {maxQuantity}.`',
 		measure: {
 			m: 'Meter'
 		},

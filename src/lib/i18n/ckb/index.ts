@@ -140,7 +140,7 @@ const ckb = {
 		priceSeat: 'نرخ :',
 		discountSeat: 'داشکاندن :',
 		notAvailable: 'بەردەست نییە',
-		messageToValidation: 'زۆرترین ژمارەی رێگەپێدراو بۆ ئەم خزمەتگوزارییە   ${maxQuantity} ',
+		messageToValidation: 'زۆرترین ژمارەی رێگەپێدراو بۆ ئەم خزمەتگوزارییە {maxQuantity} ',
 		measure: {
 			m: 'مەتر'
 		},

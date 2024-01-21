@@ -134,7 +134,7 @@ const ar = {
 		priceSeat: ': السعر ',
 		discountSeat: ' : الخصم ',
 		notAvailable: 'غير متوفر',
-		messageToValidation: 'الحد الأقصى المسموح به لهذه الخدمة هو ${maxQuantity}.',
+		messageToValidation: 'الحد الأقصى المسموح به لهذه الخدمة هو {maxQuantity}.',
 		measure: {
 			m: 'متر'
 		},
