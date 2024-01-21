@@ -217,13 +217,13 @@
 
 		confirmServiceSelection();
 
-		if (!reservedSeatData?.file) {
-			showNotification = true;
-			setTimeout(() => {
-				showNotification = false;
-			}, 3000);
-			return;
-		}
+		// if (!reservedSeatData?.file) {
+		// 	showNotification = true;
+		// 	setTimeout(() => {
+		// 		showNotification = false;
+		// 	}, 3000);
+		// 	return;
+		// }
 		if (customAreaMeter) {
 			reservedSeatData.area.push({
 				id: areas.length,
@@ -599,10 +599,15 @@
 															)}
 														</span>
 													</span>
-													<span class="mx-2">
+													<!-- <span class="mx-2">
 														{$LL.reservation.discountSeat()}
 														{item.discount ? item.discount : $LL.reservation.notAvailable()}
-													</span>
+													</span> -->
+												{:else}
+													<span
+														class="font-bold"
+														style="color :{$currentMainThemeColors.primaryColor}">Free</span
+													>
 												{/if}
 											</div>
 										{/if}
@@ -695,13 +700,22 @@
 		</div>
 
 		<Button
-			disabled={!reservedSeatData?.file}
 			on:click={reserveSeat}
 			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 		>
 			{$LL.reservation.reserve()}
 		</Button>
+
+		<!--require upload file -->
+		<!-- <Button
+			disabled={!reservedSeatData?.file}
+			on:click={reserveSeat}
+			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
+			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+		>
+			{$LL.reservation.reserve()}
+		</Button> -->
 
 		<!-- <Button
 			on:click={contractPreview}
@@ -714,7 +728,7 @@
 	</div>
 </div>
 
-{#if showNotification}
+<!-- {#if showNotification}
 	<Toast
 		color="red"
 		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
@@ -727,7 +741,7 @@
 
 		{$LL.reservation.warning_message()}
 	</Toast>
-{/if}
+{/if} -->
 
 <style>
 	.file-input__input {

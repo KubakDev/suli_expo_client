@@ -288,8 +288,7 @@
 		if (unlimitedFree || quantity <= maxFreeCount) {
 			return 0;
 		} else {
-			let discountedPrice = discount ? discount : price;
-			return discount ? discount * quantity : quantity * price;
+			 return discount ? discount * quantity : quantity * price;
 		}
 	}
 
@@ -763,12 +762,12 @@
 											{/if}
 										</span>
 
-										<span class="mx-2">
+										<!-- <span class="mx-2">
 											{#if !item.unlimitedFree}
 												{$LL.reservation.discountSeat()}
 												{item.discount ? item.discount : $LL.reservation.notAvailable()}
 											{/if}
-										</span>
+										</span> -->
 									</li>
 									<p class="text-red-500">
 										{#if quantityExceededMessages[item.id]}

@@ -69,11 +69,16 @@
 		showNotification = false;
 		defaultModal = false;
 
-		if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
-			showNotification = true;
-			return;
+		// if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
+		// 	showNotification = true;
+		// 	return;
+		// }
+
+		let extension;
+		if (reserveSeatData.file && reserveSeatData.file.size > 0) {
+			extension = reserveSeatData.file.name.split('.').pop();
 		}
-		let extention = reserveSeatData.file.name.split('.').pop();
+
 		let existingSeatArea = JSON.parse(exhibition.seat_layout[0]?.areas);
 
 		if (exhibition.seat_layout[0]?.type == SeatsLayoutTypeEnum.AREAFIELDS) {
@@ -86,14 +91,16 @@
 			});
 		}
 		try {
-			const response = await data.supabase.storage
-				.from('file')
-				.upload(`reserve/${getRandomTextNumber()}.${extention}`, reserveSeatData.file);
+			if (extension) {
+				const response = await data.supabase.storage
+					.from('file')
+					.upload(`reserve/${getRandomTextNumber()}.${extension}`, reserveSeatData.file);
 
-			fileUrl = response?.data?.path;
-			if (!fileUrl) {
-				alert('anUnknown error occurred while uploading the file. Please try again.');
-				return;
+				fileUrl = response?.data?.path;
+				// if (!fileUrl) {
+				// 	alert('anUnknown error occurred while uploading the file. Please try again.');
+				// 	return;
+				// }
 			}
 
 			if (exhibition.seat_layout[0].type == SeatsLayoutTypeEnum.AREAFIELDS) {
@@ -175,7 +182,7 @@
 						comment: reserveSeatData.comment,
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
-						file_url: fileUrl,
+						file_url: fileUrl ?? '',
 						services: JSON.stringify(reserveSeatData.services),
 						total_price: reserveSeatData.total_price
 					})

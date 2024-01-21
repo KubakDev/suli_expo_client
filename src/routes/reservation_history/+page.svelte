@@ -73,10 +73,11 @@
 	async function updateReserveData(reservationData: any, reservedSeatData: any, areas: any) {
 		showNotification = false;
 
-		if (!reservationData.file_url) {
-			showNotification = true;
-			return;
-		}
+		// if (!reservationData.file_url) {
+		// 	showNotification = true;
+		// 	return;
+		// }
+		
 		data.supabase
 			.from('seat_reservation')
 			.update({
