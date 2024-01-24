@@ -395,6 +395,10 @@ type RootTranslation = {
 		 */
 		manual_area_description: string
 		/**
+		 * D​e​a​r​ ​P​a​r​t​i​c​i​p​a​n​t​ ​T​h​e​s​e​ ​p​r​i​c​e​s​ ​a​r​e​ ​o​n​l​y​ ​t​h​e​ ​p​r​i​c​e​ ​o​f​ ​t​h​e​ ​l​a​n​d​ ​a​r​e​a​ ​w​i​t​h​o​u​t​ ​a​n​y​ ​s​e​r​v​i​c​e​s​ ​s​u​c​h​ ​a​s​ ​(​p​a​r​t​i​t​i​o​n​,​ ​c​a​r​p​e​t​,​ ​t​a​b​l​e​,​ ​c​h​a​i​r​,​ ​e​t​c​.​ ​.​.​.​)
+		 */
+		new_description: string
+		/**
 		 * A​d​d
 		 */
 		add_file: string
@@ -1169,6 +1173,10 @@ export type TranslationFunctions = {
 		 * More than 36 meter (the area has to be a multiple of nine such as 45 , 54 m , 63m etc..	)
 		 */
 		manual_area_description: () => LocalizedString
+		/**
+		 * Dear Participant These prices are only the price of the land area without any services such as (partition, carpet, table, chair, etc. ...)
+		 */
+		new_description: () => LocalizedString
 		/**
 		 * Add
 		 */

@@ -353,6 +353,16 @@
 		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
 	<div class="w-full my-6" />
+
+	<div
+		class="w-full flex justify-center py-3"
+		style="color: {$currentMainThemeColors.primaryColor}"
+	>
+		<div class="w-full lg:w-8/12">
+			{$LL.reservation.new_description()}
+		</div>
+	</div>
+
 	<div
 		class="w-full flex justify-center"
 		style="color: {$currentMainThemeColors.overlaySecondaryColor} !important;"
@@ -361,7 +371,7 @@
 			<div class="w-full flex items-center my-2 justify-between">
 				<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
 				<p class="mx-6 text-sm md:text-xl">
-					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}$
+					{$LL.reservation.price_per_each_meter()}:{pricePerMeter}
 				</p>
 			</div>
 			<div>
@@ -386,7 +396,7 @@
 							<p
 								class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2 min-w-[70px]"
 							>
-								{+pricePerMeter * +availableSeatArea.area} $
+								{+pricePerMeter * +availableSeatArea.area}
 							</p>
 							<div class="lg:mx-4 min-w-[70px]">
 								<p
@@ -395,7 +405,7 @@
 									}`}
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-										(+pricePerMeter * +availableSeatArea.area)}$
+										(+pricePerMeter * +availableSeatArea.area)}
 								</p>
 								{#if discountedPrice}
 									<p
@@ -403,7 +413,7 @@
 										style="color: {$currentMainThemeColors.primaryColor};"
 									>
 										{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-											(+discountedPrice * +availableSeatArea.area)}$
+											(+discountedPrice * +availableSeatArea.area)}
 									</p>
 								{/if}
 							</div>
@@ -481,25 +491,25 @@
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
 							<p class="text-start justify-center flex my-2 line-through text-xs md:text-xl">
-								{totalRawPrice}$
+								{totalRawPrice}
 							</p>
 						{/if}
 						<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
-							{totalPrice}$
+							{totalPrice}
 						</div>
 					</div>
 				</div>
 
 				<!-- Service Price -->
 				<div class="text-start text-md md:text-xl font-medium my-2">
-					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} $</span>
+					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>
 				</div>
 				<!-- Total Price -->
 				<div
 					class="text-start text-md md:text-xl font-medium my-2"
 					style="color: {$currentMainThemeColors.primaryColor};"
 				>
-					<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}$</span>
+					<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}</span>
 				</div>
 			</div>
 		</div>
