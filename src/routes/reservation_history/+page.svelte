@@ -72,12 +72,12 @@
 	}
 	async function updateReserveData(reservationData: any, reservedSeatData: any, areas: any) {
 		showNotification = false;
-
+		//  comment
 		// if (!reservationData.file_url) {
 		// 	showNotification = true;
 		// 	return;
 		// }
-		
+
 		data.supabase
 			.from('seat_reservation')
 			.update({
@@ -87,7 +87,7 @@
 				comment: reservedSeatData.comment,
 				reserved_areas: JSON.stringify(reservedSeatData.area),
 				services: reservedSeatData.services,
-				total_price: reservationData.total_price,
+				total_price: reservedSeatData.total_price,
 				status: ReservationStatusEnum.PENDING,
 				type: reservationData?.exhibition?.seat_layout[0]?.type,
 				file_url: reservationData.file_url,
