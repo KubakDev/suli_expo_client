@@ -294,6 +294,7 @@
 
 	async function reserveSeat() {
 		confirmServiceSelection();
+
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
 		reservedSeatData.services = reservedServices;
 
@@ -320,7 +321,6 @@
 					areas[existingSeatAreaIndex].quantity - area.quantity;
 			}
 		});
-
 		dispatch('updateReserveSeat', { reservedSeatData, reservationData, areas });
 		setTimeout(() => {
 			reservedSeatData.area.splice(reservedSeatData.area.length - 1, 1);
