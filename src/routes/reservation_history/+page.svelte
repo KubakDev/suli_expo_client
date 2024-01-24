@@ -72,7 +72,7 @@
 	}
 	async function updateReserveData(reservationData: any, reservedSeatData: any, areas: any) {
 		showNotification = false;
-
+		//  comment
 		// if (!reservationData.file_url) {
 		// 	showNotification = true;
 		// 	return;
