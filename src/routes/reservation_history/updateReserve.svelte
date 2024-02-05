@@ -927,6 +927,8 @@
 					</Modal>
 				</div>
 
+
+				
 				<Button
 					on:click={reserveSeat}
 					class="w-full md:w-auto md:mx-2 md:my-0 my-1"
