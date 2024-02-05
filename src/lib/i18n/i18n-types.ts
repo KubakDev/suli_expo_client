@@ -503,6 +503,10 @@ type RootTranslation = {
 		 * @param {unknown} maxQuantity
 		 */
 		messageToValidation: RequiredParams<'maxQuantity'>
+		/**
+		 * `​P​l​e​a​s​e​ ​e​n​s​u​r​e​ ​t​h​a​t​ ​y​o​u​ ​h​a​v​e​ ​e​n​t​e​r​e​d​ ​a​ ​v​a​l​i​d​ ​q​u​a​n​t​i​t​y​ ​f​o​r​ ​t​h​e​ ​s​e​r​v​i​c​e​s​.​`
+		 */
+		messageToValidationBeforeReserve: string
 		measure: {
 			/**
 			 * M​e​t​e​r
@@ -1281,6 +1285,10 @@ export type TranslationFunctions = {
 		 * `Maximum allowed quantity for this service is {maxQuantity}.`
 		 */
 		messageToValidation: (arg: { maxQuantity: unknown }) => LocalizedString
+		/**
+		 * `Please ensure that you have entered a valid quantity for the services.`
+		 */
+		messageToValidationBeforeReserve: () => LocalizedString
 		measure: {
 			/**
 			 * Meter

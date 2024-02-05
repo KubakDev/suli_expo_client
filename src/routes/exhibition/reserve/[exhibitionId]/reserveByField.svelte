@@ -12,12 +12,14 @@
 	import { fly } from 'svelte/transition';
 	import { convertNumberToWord } from '../../../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
+	import { Alert } from 'flowbite-svelte';
+	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
-
+	let showToast = false;
 	let showNotification = false;
 	let defaultModal = false;
 	let areas: {
@@ -112,7 +114,11 @@
 	const openServicesModal = async () => {
 		if (existServices.length > 0) {
 			const serviceIds = existServices.map((service) => service.serviceId);
-			detailedServices = await returnServices(serviceIds);
+			let data = await returnServices(serviceIds);
+
+			// filter data if service quantity is <= 0 skip
+			data = data.filter((service: any) => service.quantity > 0);
+			detailedServices = data;
 			showModal = true;
 		}
 	};
@@ -136,14 +142,40 @@
 
 	let quantityExceededMessages: any = {};
 
-	function handleQuantityChange(serviceId: number, quantity: number) {
-		const maxQuantity = existServices.find(
-			(service) => service.serviceId === serviceId
+	// get service
+	async function returnService(serviceId: any) {
+		let service = null;
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.eq('id', serviceId)
+			.then((result: any) => {
+				if (result?.data.length > 0) {
+					service = result?.data[0];
+				}
+			});
+
+		return service;
+	}
+
+	let isValidQuantity = true;
+	async function handleQuantityChange(serviceId: number, quantity: number) {
+		const maxQuantity = existServices?.find(
+			(service) => service?.serviceId === serviceId
 		)?.maxQuantityPerUser;
 
-		if (quantity > maxQuantity) {
-			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({ maxQuantity });
+		let x: any = await returnService(serviceId);
+
+		if (quantity > maxQuantity || quantity > x.quantity) {
+			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({
+				maxQuantity: x.quantity
+			});
+
+			isValidQuantity = false;
 		} else {
+			showToast = false;
+			isValidQuantity = true;
 			quantityExceededMessages[serviceId] = '';
 			if (selectedServices[serviceId]) {
 				selectedServices[serviceId].quantity = quantity;
@@ -156,8 +188,10 @@
 
 	function confirmServiceSelection() {
 		reservedSeatData.services = Object.values(selectedServices)
-			.map((service) => {
-				const serviceDetail = detailedServices.find((detail) => detail.id === service.serviceId);
+			.map((service: any) => {
+				const serviceDetail = detailedServices.find(
+					(detail: any) => detail.id === service.serviceId
+				);
 				const existingService = existServices.find((s) => s.serviceId === service.serviceId);
 
 				if (existingService && existingService.unlimitedFree) {
@@ -168,8 +202,8 @@
 						serviceDetail: serviceDetail
 					};
 				} else if (
-					selectedServices[service.serviceId] &&
-					selectedServices[service.serviceId].quantity > 0
+					selectedServices[service?.serviceId] &&
+					selectedServices[service?.serviceId].quantity > 0
 				) {
 					let price = serviceDetail.price;
 					let discount = serviceDetail.discount;
@@ -177,8 +211,8 @@
 
 					let totalPrice = calculatePrice(price, discount, maxFreeCount, service.quantity);
 					return {
-						serviceId: service.serviceId,
-						quantity: service.quantity,
+						serviceId: service?.serviceId,
+						quantity: service?.quantity,
 						totalPrice: totalPrice,
 						serviceDetail: serviceDetail
 					};
@@ -212,6 +246,14 @@
 	}
 
 	function reserveSeat() {
+		if (!isValidQuantity) {
+			setTimeout(() => {
+				showToast = true;
+			}, 1000);
+			return;
+		}
+
+		showToast = false;
 		//find total_price
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
 
@@ -735,6 +777,8 @@
 		>
 			{$LL.reservation.preview_contract()}
 		</Button> -->
+
+		<!-- required service quantity is more than the number that available -->
 	</div>
 </div>
 
@@ -750,8 +794,18 @@
 		</svelte:fragment>
 
 		{$LL.reservation.warning_message()}
+
 	</Toast>
 {/if} -->
+
+<!-- check the quantity if it is not valid -->
+
+{#if showToast}
+	<Alert color="red" rounded={false} class="border-y-4">
+		<InfoCircleSolid slot="icon" class="w-4 h-4" />
+		{$LL.reservation.messageToValidationBeforeReserve()}
+	</Alert>
+{/if}
 
 <style>
 	.file-input__input {

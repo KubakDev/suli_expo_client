@@ -108,7 +108,8 @@ const en = {
 		manual_area: 'you can add area manually here',
 		manual_area_description:
 			'More than 36 meter (the area has to be a multiple of nine such as 45 , 54 m , 63m etc..	)',
-		new_description: 'Dear Participant These prices are only the price of the land area without any services such as (partition, carpet, table, chair, etc. ...)',
+		new_description:
+			'Dear Participant These prices are only the price of the land area without any services such as (partition, carpet, table, chair, etc. ...)',
 		add_file: 'Add',
 		cancel_file: 'cancel',
 		required_file: 'Required',
@@ -139,6 +140,8 @@ const en = {
 		discountSeat: 'Discount :',
 		notAvailable: 'Not Available',
 		messageToValidation: '`Maximum allowed quantity for this service is {maxQuantity}.`',
+		messageToValidationBeforeReserve:
+			'`Please ensure that you have entered a valid quantity for the services.`',
 		measure: {
 			m: 'Meter'
 		},
