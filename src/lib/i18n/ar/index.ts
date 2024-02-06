@@ -106,7 +106,8 @@ const ar = {
 		comment_placeholder: 'من فضلك اكتب تعليق',
 		manual_area: 'يمكنك إضافة المساحة يدوياً هنا',
 		manual_area_description: 'يجب أن تكون المنطقة من مضاعفات تسعة مثل (٤٥م ، ٥٤م ، ٦٣م إلخ)		',
-		new_description: 'عزيزي المشارك  ، هذه الأسعار هي فقط سعر مساحة الأرض بدون أي خدمات مثل (تقسيم، سجادة، طاولة، كرسي، الخ...)',
+		new_description:
+			'عزيزي المشارك  ، هذه الأسعار هي فقط سعر مساحة الأرض بدون أي خدمات مثل (تقسيم، سجادة، طاولة، كرسي، الخ...)',
 		add_file: 'إضافة',
 		cancel_file: 'إلغاء',
 		required_file: 'مطلوب',
@@ -136,6 +137,7 @@ const ar = {
 		discountSeat: ' : الخصم ',
 		notAvailable: 'غير متوفر',
 		messageToValidation: 'الحد الأقصى المسموح به لهذه الخدمة هو {maxQuantity}.',
+		messageToValidationBeforeReserve: '`يرجى التأكد من إدخال كمية صحيحة للخدمات.`',
 		measure: {
 			m: 'متر'
 		},
@@ -202,7 +204,7 @@ const ar = {
 		user_image: 'تحميل صورة المستخدم',
 		string: ''
 	},
-	         
+
 	email_template: {
 		dear: 'عزيزي/عزيزتي',
 		thanks:

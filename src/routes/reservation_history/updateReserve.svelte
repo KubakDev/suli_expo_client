@@ -3,7 +3,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import { Textarea, Button, NumberInput, Modal, Checkbox, Input } from 'flowbite-svelte';
+	import { Textarea, Button, NumberInput, Modal, Checkbox, Input, Alert } from 'flowbite-svelte';
 	import moment from 'moment';
 	import { currentUser } from '../../stores/currentUser';
 	import { generateDocx } from '../../utils/generateContract';
@@ -13,6 +13,7 @@
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import SeatComponent from './seatComponent.svelte';
+	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -23,7 +24,7 @@
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
-
+	let showToast = false;
 	let areas: {
 		area: string;
 		quantity: number;
@@ -82,22 +83,22 @@
 		pricePerMeter = currentActiveSeat?.price_per_meter;
 		discountedPrice = currentActiveSeat?.discounted_price;
 
-		discountedDescription =
-			currentActiveSeat?.seat_privacy_policy_lang?.find(
-				(privacyLang: any) => privacyLang.language == locale
-			).discount_description ??
-			currentActiveSeat?.seat_privacy_policy_lang?.find(
-				(privacyLang: any) => privacyLang.language == 'en'
-			).discount_description ??
-			'';
-		extraDiscount.description =
-			currentActiveSeat?.seat_privacy_policy_lang?.find(
-				(privacyLang: any) => privacyLang.language == locale
-			).extra_discount_description ??
-			currentActiveSeat?.seat_privacy_policy_lang?.find(
-				(privacyLang: any) => privacyLang.language == 'en'
-			).extra_discount_description ??
-			'';
+		// discountedDescription =
+		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
+		// 		(privacyLang: any) => privacyLang.language == locale
+		// 	).discount_description ??
+		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
+		// 		(privacyLang: any) => privacyLang.language == 'en'
+		// 	).discount_description ??
+		// 	'';
+		// extraDiscount.description =
+		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
+		// 		(privacyLang: any) => privacyLang.language == locale
+		// 	).extra_discount_description ??
+		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
+		// 		(privacyLang: any) => privacyLang.language == 'en'
+		// 	).extra_discount_description ??
+		// 	'';
 		extraDiscount.price = currentActiveSeat?.extra_discount;
 		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
 		if (extraDiscountChecked) {
@@ -221,7 +222,25 @@
 		calculateTotalPriceForServices();
 	}
 
-	function handleQuantityChange(serviceId: any, event: any) {
+	// get service
+	async function returnService(serviceId: any) {
+		let service = null;
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.eq('id', serviceId)
+			.then((result: any) => {
+				if (result?.data.length > 0) {
+					service = result?.data[0];
+				}
+			});
+
+		return service;
+	}
+
+	let isValidQuantity = true;
+	async function handleQuantityChange(serviceId: any, event: any) {
 		const newQuantity = parseInt(event.target.value) || 0;
 
 		let servicesArray;
@@ -239,12 +258,19 @@
 		}
 		const maxQuantity = serviceDetails.maxQuantityPerUser;
 
+		let x: any = await returnService(serviceId);
+
 		// Check if the new quantity exceeds the maxQuantityPerUser
-		if (newQuantity > maxQuantity) {
-			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({ maxQuantity });
+		if (newQuantity > maxQuantity || newQuantity > x.quantity) {
+			isValidQuantity = false;
+			quantityExceededMessages[serviceId] = $LL.reservation.messageToValidation({
+				maxQuantity: x.quantity
+			});
 			return;
 		}
 
+		showToast = false;
+		isValidQuantity = true;
 		quantityExceededMessages[serviceId] = '';
 		// Find the service in the detailedServices array
 		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
@@ -293,6 +319,15 @@
 	}
 
 	async function reserveSeat() {
+		if (!isValidQuantity) {
+			setTimeout(() => {
+				showToast = true;
+			}, 1000);
+			return;
+		}
+
+		showToast = false;
+
 		confirmServiceSelection();
 
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
@@ -912,7 +947,17 @@
 	{:else}
 		<SeatComponent seatLayout={currentActiveSeat} {reservationData} />
 	{/if}
+
+	<!-- check the quantity if it is not valid -->
+	{#if showToast}
+		<Alert color="red" rounded={false} class="border-y-4">
+			<InfoCircleSolid slot="icon" class="w-4 h-4" />
+			{$LL.reservation.messageToValidationBeforeReserve()}
+		</Alert>
+	{/if}
 {/if}
+
+<!-- check the quantity if it is not valid -->
 
 <style>
 	.file-input__input {
