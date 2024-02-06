@@ -156,6 +156,7 @@
 			.select('*,languages:seat_services_languages!inner(*)')
 			.eq('languages.language', locale)
 			.in('id', servicesId)
+			.order('position', { ascending: true })
 			.then((result) => {
 				services = result.data;
 			});
@@ -757,21 +758,23 @@
 
 							<ul>
 								{#each detailedServices as item}
-									<li class="flex justify-start items-center pt-5">
+									<li
+										class="grid grid-cols-12 pt-5 items-center border-b border-b-0.1 pb-2 border-gray-500"
+									>
 										<Checkbox
 											checked={item.selected}
 											on:change={(e) => handleServiceSelection(item.id, e)}
 										/>
-										<span>
+										<span class="col-span-1">
 											<img
-												class="w-12 h-12 mx-2 object-cover rounded-lg"
+												class="w-12 h-12 object-cover rounded-lg"
 												src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
 												alt="icon"
 											/></span
 										>
-										<span class="mx-2">{item.languages[0].title}</span>
+										<span class="mx-2 text-sm col-span-6">{item.languages[0].title}</span>
 
-										<span>
+										<span class="col-span-2">
 											<Input
 												class="w-20"
 												type="number"
@@ -784,7 +787,7 @@
 											/>
 										</span>
 
-										<span class="mx-2 flex justify-center items-center">
+										<span class="col-span-2">
 											{#if !item.unlimitedFree}
 												{$LL.reservation.priceSeat()}
 												<span
