@@ -202,7 +202,7 @@
 			service.unlimitedFree = matchedService.unlimitedFree;
 		});
 
-		detailedServices = allServices.filter((service) => service.quantity > 0);
+		detailedServices = allServices;
 
 		showModal = true;
 	}
