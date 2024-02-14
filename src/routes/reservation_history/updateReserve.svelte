@@ -202,7 +202,8 @@
 			service.unlimitedFree = matchedService.unlimitedFree;
 		});
 
-		detailedServices = allServices;
+		detailedServices = allServices.filter((service) => service.quantity > 0);
+
 		showModal = true;
 	}
 
@@ -747,6 +748,7 @@
 						class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						on:click={() => openServicesModal()}
+						disabled={reservationData.status != ReservationStatus.PENDING}
 					>
 						{$LL.reservation.addService()}
 					</Button>
