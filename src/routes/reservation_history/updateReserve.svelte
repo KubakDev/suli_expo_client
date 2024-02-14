@@ -203,6 +203,7 @@
 		});
 
 		detailedServices = allServices;
+
 		showModal = true;
 	}
 
@@ -747,8 +748,9 @@
 						class="w-full md:w-auto md:mx-2 md:my-0 my-1"
 						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						on:click={() => openServicesModal()}
-				        	disabled={reservationData.status != ReservationStatus.PENDING}
->
+						disabled={reservationData.status != ReservationStatus.PENDING}
+					>
+
 						{$LL.reservation.addService()}
 					</Button>
 					{#if showModal}
