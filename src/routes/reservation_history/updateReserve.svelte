@@ -750,6 +750,7 @@
 						on:click={() => openServicesModal()}
 						disabled={reservationData.status != ReservationStatus.PENDING}
 					>
+
 						{$LL.reservation.addService()}
 					</Button>
 					{#if showModal}
