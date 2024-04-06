@@ -183,8 +183,8 @@
 						status: ReservationStatusEnum.PENDING,
 						type: exhibition.seat_layout[0].type,
 						file_url: fileUrl ?? '',
-						services: JSON.stringify(reserveSeatData.services),
-						total_price: reserveSeatData.total_price
+						services: reserveSeatData.services,
+						total_price: reserveSeatData.total_price ? reserveSeatData.total_price : 0
 					})
 					.then(async (Response: any) => {
 						if (Response.error) {
@@ -528,7 +528,7 @@
 								</div>
 							{:else}
 								<div class=" w-full flex justify-end items-center">
-									<Button on:click={reserveSeat} disabled={!acceptedPrivacyPolicy || !excelFileName}
+									<Button on:click={reserveSeat} disabled={!acceptedPrivacyPolicy}
 										>{$LL.reservation.privacy_policy.accept()}</Button
 									>
 									<div class="w-[2px]" />
