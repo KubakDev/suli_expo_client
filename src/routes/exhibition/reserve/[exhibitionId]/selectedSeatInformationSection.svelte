@@ -30,7 +30,8 @@
 		exhibition_id: +$page.params.exhibitionId,
 		object_id: 0,
 		services: [],
-		status: ReservationStatusEnum.PENDING
+		status: ReservationStatusEnum.PENDING,
+		total_price: 0
 	};
 	let objectDetail = $selectedSeat?.objectDetail;
 	$: totalPrice = +$selectedSeat?.objectDetail?.price ?? 0;
@@ -74,12 +75,14 @@
 				}
 			});
 	}
+
 	function countTotalPrice() {
 		totalPrice = +objectDetail?.price;
 		for (let price of servicesPrice) {
 			totalPrice += price.totalPrice;
 		}
 	}
+
 	function reserveThisSeat() {
 		if (!$currentUser?.uid) {
 			localStorage.setItem('reservedExhibitionId', $page.params.exhibitionId);
@@ -89,7 +92,7 @@
 		reserveSeatData.company_id = $currentUser.id;
 		reserveSeatData.services = servicesPrice;
 		reserveSeatData.object_id = $selectedSeat.id;
-
+		reserveSeatData.total_price = totalPrice;
 		dispatch('reserveSeat', reserveSeatData);
 	}
 	function descriptionLanguage() {
@@ -221,6 +224,7 @@
 											let priceResult = paidService.serviceDetail.discount
 												? +paidService.serviceDetail.discount
 												: +paidService.serviceDetail.price;
+
 											let freeCountResult = paidService.maxFreeCount ?? 0;
 											let countPaidService = +number.detail - freeCountResult;
 											if (countPaidService <= 0) countPaidService = 0;
@@ -235,6 +239,7 @@
 														: priceResult * countPaidService;
 													servicePrice.quantity = +number.detail;
 												}
+												countTotalPrice();
 											} else {
 												let serviceDetailData = {
 													discount: paidService.serviceDetail.discount,
@@ -252,9 +257,8 @@
 													serviceDetail: serviceDetailData
 												});
 												servicesPrice = [...servicesPrice];
+												countTotalPrice();
 											}
-
-											countTotalPrice();
 										}}
 										serviceQuantity={paidService?.serviceDetail?.quantity}
 										maxQuantityPerUser={paidService?.maxQuantityPerUser}
@@ -270,7 +274,9 @@
 											</p>
 											<p class="text-xl font-bold">{paidService.serviceDetail.discount}$</p>
 										{:else}
-											<p class="text-xl font-bold">{paidService.serviceDetail.price}$</p>
+											<p class="text-xl font-bold">
+												Price {paidService.serviceDetail.price} $
+											</p>
 										{/if}
 									</div>
 									<div>
