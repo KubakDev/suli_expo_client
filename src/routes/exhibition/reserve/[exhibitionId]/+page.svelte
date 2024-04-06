@@ -628,7 +628,6 @@
 		margin: 0 auto;
 		transition: background-color 0.3s;
 	}
-
 	.file-input__label:hover {
 		background-color: #f7f2f2;
 	}
