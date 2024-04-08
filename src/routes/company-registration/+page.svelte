@@ -242,7 +242,7 @@
 							previewPassportImages = [...previewPassportImages, reader.result];
 						}
 					};
-					// console.log(previewPassportImages);
+
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -252,7 +252,6 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					// console.log('///', passportFiles);
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -282,7 +281,7 @@
 							previewUserImages = [...previewUserImages, reader.result];
 						}
 					};
-					// console.log(previewUserImages);
+					 
 					reader.readAsDataURL(compressedFile);
 
 					const randomText = getRandomTextNumber();
@@ -292,7 +291,7 @@
 						fileName: newFileName,
 						file: compressedFile
 					});
-					// console.log(userImageFiles);
+					 
 				} catch (error) {
 					console.error('Error compressing image', error);
 				}
@@ -396,8 +395,6 @@
 			];
 		}
 	}
-
-	 
 </script>
 
 <form class="flex min-h-screen justify-center items-center w-full p-8">

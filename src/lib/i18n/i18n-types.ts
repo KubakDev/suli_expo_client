@@ -276,6 +276,34 @@ type RootTranslation = {
 	 */
 	moreVideos: string
 	reservation: {
+		/**
+		 * R​e​j​e​c​t​e​d​ ​B​y​ ​U​s​e​r
+		 */
+		RejectedByUser: string
+		/**
+		 * Q​u​a​n​t​i​t​y​ ​:
+		 */
+		quantity: string
+		/**
+		 * P​r​i​c​e​ ​P​e​r​ ​S​e​r​v​i​c​e​ ​:
+		 */
+		pricePerService: string
+		/**
+		 * T​o​t​a​l​ ​P​r​i​c​e​ ​F​o​r​ ​T​h​i​s​ ​S​e​r​v​i​c​e​ ​:
+		 */
+		totalPriceForThisService: string
+		/**
+		 * L​e​s​s​ ​t​h​a​n
+		 */
+		lessThan: string
+		/**
+		 * i​s​ ​F​r​e​e
+		 */
+		isFree: string
+		/**
+		 * F​r​e​e
+		 */
+		free: string
 		pending: {
 			/**
 			 * y​o​u​ ​a​l​r​e​a​d​y​ ​r​e​s​e​r​v​e​d​ ​t​h​i​s​ ​s​e​a​t​ ​w​i​t​h​ ​s​t​a​t​u​s
@@ -1059,6 +1087,34 @@ export type TranslationFunctions = {
 	 */
 	moreVideos: () => LocalizedString
 	reservation: {
+		/**
+		 * Rejected By User
+		 */
+		RejectedByUser: () => LocalizedString
+		/**
+		 * Quantity :
+		 */
+		quantity: () => LocalizedString
+		/**
+		 * Price Per Service :
+		 */
+		pricePerService: () => LocalizedString
+		/**
+		 * Total Price For This Service :
+		 */
+		totalPriceForThisService: () => LocalizedString
+		/**
+		 * Less than
+		 */
+		lessThan: () => LocalizedString
+		/**
+		 * is Free
+		 */
+		isFree: () => LocalizedString
+		/**
+		 * Free
+		 */
+		free: () => LocalizedString
 		pending: {
 			/**
 			 * you already reserved this seat with status

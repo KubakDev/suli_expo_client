@@ -213,11 +213,22 @@
 									{moment(reservation.created_at).format('HH:MM:SS')}
 								</div>
 							</div>
-							<div
-								class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
-							>
-								{$LL.reservation.statuses[reservation.status]()}
+							<div class="flex flex-col py-2">
+								<div
+									class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
+								>
+									{$LL.reservation.statuses[reservation.status]()}
+								</div>
+								{#if reservation?.rejected_by_user}
+									<div
+										style="color: {$currentMainThemeColors.overlaySecondaryColor}"
+										class=" text-sm"
+									>
+										  {$LL.reservation.RejectedByUser()}
+									</div>
+								{/if}
 							</div>
+
 							<!-- svelte-ignore a11y-click-events-have-key-events -->
 							<!-- svelte-ignore a11y-no-static-element-interactions -->
 							<div
@@ -266,8 +277,23 @@
 						{selectedReservation.status}
 					</div>
 					{#if selectedReservation.status == ReservationStatus.PENDING}
-						<Button color="alternative" on:click={() => (cancelReserveModal = true)}
-							>Cancel Reservation</Button
+						<button
+							class="
+							text-center
+							font-medium
+							focus:ring-4
+							focus:outline-none
+							inline-flex
+							items-center
+							justify-center
+							px-5
+							py-2.5
+							text-sm
+							text-[#F44336]
+							border
+							 hover:text-[#D32F2F]
+							rounded-lg"
+							on:click={() => (cancelReserveModal = true)}>Cancel Reservation</button
 						>
 					{/if}
 				</div>
