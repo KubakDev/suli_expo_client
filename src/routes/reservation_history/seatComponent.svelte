@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Canvas } from 'fabric/fabric-impl';
 	import { onMount } from 'svelte';
+	import { LL, locale } from '$lib/i18n/i18n-svelte';
 
 	export let seatLayout: any;
 	export let reservationData: any;
@@ -109,31 +110,36 @@
 </script>
 
 {#if fabric}
-	<div class="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 my-6 px-6 text-black">
+	<div
+		style={`${$locale === 'en' ? 'direction:ltr' : 'direction:rtl'}`}
+		class="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 my-6 px-6 text-black"
+	>
 		{#each services as service}
-			<div
-				class="h-[100px] w-full bg-[#edeeec] border-2 border-[#dadddd] rounded-md flex justify-around items-center"
-			>
-				<div class="flex flex-col justify-center items-center">
-					<p class="text-xl font-bold">
-						{service.serviceDetail.title}
+			<div class="service-item">
+				<p class="service-title p-2">
+					{service.serviceDetail.title}
+				</p>
+				<div class="my-2 border w-full" />
+				<div class="service-details mt-4">
+					<p class="service-quantity">
+						{$LL.reservation.quantity()} <span>{service.quantity}</span>
 					</p>
-					<p>
-						{service.quantity}
-					</p>
-				</div>
-
-				<div class="flex flex-col justify-center items-center">
 					{#if service.serviceDetail.discount}
-						<p class="text-sm" style="text-decoration: line-through;">
-							{service.serviceDetail.discount}
+						<p class="service-discount">
+							{$LL.reservation.discountSeat()}{service.serviceDetail.discount}
 						</p>
 					{/if}
-					<p class="text-xl font-bold">{service.serviceDetail.price}</p>
+					<p class="service-price">
+						{$LL.reservation.pricePerService()}
+						{service.serviceDetail.price}$
+					</p>
 				</div>
-				<div class="flex flex-col justify-center items-center">
-					<p class="text-sm">Total Price</p>
-					<p class="text-xl font-bold">{service.totalPrice}</p>
+				<div class="service-total mb-2">
+					<p>
+						{$LL.reservation.totalPriceForThisService()}<span class="total-price"
+							>{service.totalPrice}$</span
+						>
+					</p>
 				</div>
 			</div>
 		{/each}
@@ -143,3 +149,61 @@
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
+
+<style>
+	.service-item {
+		height: auto;
+		width: 100%;
+		background-color: #edeeec;
+		border: 2px solid #dadddd;
+		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		padding: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		margin-bottom: 15px;
+	}
+
+	.service-title {
+		font-size: 1rem;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.service-details {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 0 10px;
+	}
+
+	.service-quantity,
+	.service-discount,
+	.service-price {
+		font-size: 1rem;
+		color: #666;
+	}
+
+	.service-discount {
+		text-decoration: line-through;
+		color: #999;
+	}
+
+	.service-total {
+		display: flex;
+		width: 100%;
+		justify-content: flex-end;
+		align-items: center;
+		padding-right: 10px;
+	}
+
+	.total-price {
+		font-size: 1.25rem;
+		font-weight: bold;
+		color: #333;
+		margin-left: 5px;
+	}
+</style>

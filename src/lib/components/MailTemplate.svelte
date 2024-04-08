@@ -10,9 +10,6 @@
 	export let exhibition: ExhibitionModel;
 	export let companyData: CompanyModel;
 	export let reserveSeatData: ReserveSeatModel;
-	onMount(() => {
-		console.log($locale);
-	});
 </script>
 
 <div style={$locale == 'ar' || $locale == 'ckb' ? 'direction: rtl' : ''}>

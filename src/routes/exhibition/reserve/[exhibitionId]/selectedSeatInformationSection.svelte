@@ -153,6 +153,7 @@
 		<Button color="alternative">{$LL.reservation.pending.no()}</Button>
 	</div>
 </Modal>
+
 <div class="h-full w-full" style="overflow-y: auto;">
 	{#if $totalReservedSeat}
 		<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
@@ -196,26 +197,58 @@
 				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.services.title()}
 				</p>
-				<div class="flex w-full justify-between py-4">
-					<div class="w-full">
-						<p>{$LL.reservation.services.free_services()}</p>
 
-						<ul class="list-disc">
-							{#each $selectedFreeSeatServices as freeService}
-								<li>{freeService?.serviceDetail?.languages[0]?.title}</li>
-							{/each}
-						</ul>
-					</div>
-				</div>
 				<div class="flex w-full justify-between py-4">
 					<div class="w-full">
-						<p>{$LL.reservation.services.paid_services()}</p>
 						{#each $selectedPaidSeatServices as paidService}
-							<div class="my-1 flex justify-between items-center flex-wrap">
-								<p class=" text-xl">
+							<div class="flex justify-start items-center">
+								<img
+									src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
+										paidService?.serviceDetail?.icon
+									}`}
+									alt="image of service"
+									class="w-12 h-12 object-cover rounded"
+								/>
+								<p class="text-xl mx-2">
 									{paidService?.serviceDetail?.languages[0]?.title}
 								</p>
-								<div class="w-[150px]">
+							</div>
+							<div class="my-1 flex justify-between gap-4 items-center">
+								<div
+									class="bg-[#edeeec] min-h-12 py-2 lg:w-1/2 border-[#dadddd] border-2 rounded-md flex flex-col justify-between px-2 items-center w-full my-3"
+								>
+									<div class="flex flex-col justify-start items-center">
+										{#if paidService?.serviceDetail?.discount}
+											<p class="text-sm" style="text-decoration: line-through;">
+												{paidService.serviceDetail.price}$
+											</p>
+											<p class="text-base font-bold">{paidService.serviceDetail.discount}$</p>
+										{:else}
+											<p class="text-base font-bold">
+												{$LL.reservation.pricePerService()}
+												{paidService.serviceDetail.price} $
+											</p>
+										{/if}
+									</div>
+									<div>
+										{#if paidService.maxFreeCount > 0}
+											<p class=" ">
+												{$LL.reservation.lessThan()}
+												<span class="text-[#e1b168] font-bold text-base mx-1">
+													{paidService.maxFreeCount + 1}
+												</span>
+												{$LL.reservation.isFree()}
+											</p>
+										{/if}
+
+										{#if paidService.unlimitedFree}
+											<p class="text-[#e1b168] font-bold text-base mx-1">
+												{$LL.reservation.free()}
+											</p>
+										{/if}
+									</div>
+								</div>
+								<div class="lg:w-1/2 w-full">
 									<InputNumberButton
 										on:numberChanged={(number) => {
 											let servicePrice = servicesPrice.find(
@@ -264,41 +297,15 @@
 										maxQuantityPerUser={paidService?.maxQuantityPerUser}
 									/>
 								</div>
-								<div
-									class="bg-[#edeeec] min-h-12 py-2 min-w-32 border-[#dadddd] border-2 rounded-md flex justify-between px-2 items-center w-full my-3"
-								>
-									<div class="flex flex-col justify-center items-center">
-										{#if paidService?.serviceDetail?.discount}
-											<p class="text-sm" style="text-decoration: line-through;">
-												{paidService.serviceDetail.price}$
-											</p>
-											<p class="text-xl font-bold">{paidService.serviceDetail.discount}$</p>
-										{:else}
-											<p class="text-xl font-bold">
-												Price {paidService.serviceDetail.price} $
-											</p>
-										{/if}
-									</div>
-									<div>
-										{#if paidService.maxFreeCount > 0}
-											<p class=" ">
-												less <span class="text-[#e1b168] font-bold text-2xl mx-1">
-													{paidService.maxFreeCount + 1}
-												</span>
-												is free
-											</p>
-										{/if}
-									</div>
-								</div>
 							</div>
+							<div class="border w-full my-5" />
 						{/each}
 					</div>
 				</div>
 			</div>
 			<div class="w-full">
-				<div class="w-full h-[2px] bg-[var(--lightPrimaryColor)]" />
-				<div class="w-full flex justify-between">
-					<h1 class="text-2xl my-6">{$LL.reservation.total_price()}</h1>
+				<div class="w-full flex justify-between items-center">
+					<h1 class="text-lg">{$LL.reservation.total_price()}</h1>
 					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
 				</div>
 				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}

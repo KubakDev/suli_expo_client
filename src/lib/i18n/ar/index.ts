@@ -74,6 +74,13 @@ const ar = {
 	moreVideos: 'المزيد من الفيديوهات',
 	total_company_reserve: 'إجمالي حجوزات الشركات',
 	reservation: {
+		RejectedByUser: 'تم رفضه من قبل المستخدم',
+		quantity: 'الكمية :',
+		pricePerService: 'السعر لكل خدمة :',
+		totalPriceForThisService: 'السعر الإجمالي لهذه الخدمة :',
+		lessThan:  'أقل من',
+		isFree: 'مجاني',
+		free: ' مجاني',
 		pending: {
 			description: 'لقد قمت بالفعل بحجز هذا المقعد بحالة',
 			status: 'قيد الانتظار',

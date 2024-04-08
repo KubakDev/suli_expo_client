@@ -75,6 +75,13 @@ const ckb = {
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	reservation: {
+		RejectedByUser: 'هەڵوەشاندنەوەی لەلایەن بەکارهێنەرەوە',
+		quantity: 'بڕ :',
+		pricePerService: 'نرخی هەر خزمەتگوزارییەک :',
+		totalPriceForThisService: 'نرخی گشتی بۆ ئەم خزمەتگوزارییە :',
+		lessThan: 'کەمتر لە',
+		isFree: 'بێبەرامبەرە',
+		free: ' بێبەرامبەرە',
 		pending: {
 			description: 'تۆ پیشتر داواکاریت ناردووە بۆ ئەم شوێنە ، ئێستا لە دۆخی',
 			status: 'چاوەڕوانیدایە',

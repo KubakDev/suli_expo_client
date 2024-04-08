@@ -74,6 +74,13 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
+		RejectedByUser: 'Rejected By User',
+		quantity: 'Quantity :',
+		pricePerService: 'Price Per Service :',
+		totalPriceForThisService: 'Total Price For This Service :',
+		lessThan: 'Less than',
+		isFree: 'is Free',
+		free: 'Free',
 		pending: {
 			description: 'you already reserved this seat with status',
 			status: 'Pending',

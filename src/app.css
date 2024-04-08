@@ -173,11 +173,11 @@ video {
 	}
 }
 .pending {
-	background-color: #37d6ff;
+	background-color: #FFCC00  !important;
 }
 .reject {
-	background-color: #d91010;
+	background-color: #F44336 ;
 }
 .accept {
-	background-color: #00bf2d;
+	background-color: #388E3C ;
 }
