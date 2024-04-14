@@ -108,7 +108,6 @@
 	};
 </script>
 
-
 {#if fabric}
 	<div class="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 my-6 px-6 text-black">
 		{#each services as service}

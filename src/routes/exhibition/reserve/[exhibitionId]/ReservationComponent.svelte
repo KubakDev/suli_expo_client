@@ -290,28 +290,43 @@
 	}
 
 	function handleTouchStart(event: any) {
+		console.log('Touch start', event.touches);
 		if (event.touches.length === 2) {
-			// Check if two fingers are placed on the screen
 			initialDistance = getTouchesDistance(event.touches);
-			initialZoom = canvas && canvas.getZoom();
+			initialZoom = canvas.getZoom();
+			console.log('Initial distance and zoom', initialDistance, initialZoom);
 		}
 	}
 
-	function handleTouchMove(event: any) {
+	function handleTouchMove(event: TouchEvent) {
 		if (initialDistance && event.touches.length === 2) {
+			// Get new distance between the touches
 			const newDistance = getTouchesDistance(event.touches);
 			const distanceRatio = newDistance / initialDistance;
 			const newZoom = initialZoom * distanceRatio;
 
-			const touchMidpoint = {
+			// Assuming you want to zoom into the midpoint between the two touches
+			const midpoint = {
 				x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
 				y: (event.touches[0].clientY + event.touches[1].clientY) / 2
 			};
 
-			// We need to calculate the correct point to zoom into
-			// Convert touch point to canvas coordinates
-			const point = canvas && canvas.getPointer(touchMidpoint);
-			canvas && canvas.zoomToPoint(point, newZoom);
+			// Creating a fake pointer event because Fabric.js getPointer method expects an event
+			const fakeEvent = new PointerEvent('pointermove', {
+				clientX: midpoint.x,
+				clientY: midpoint.y,
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			});
+			if (canvas) {
+				// Now use this fake event with getPointer
+				const point = canvas.getPointer(fakeEvent, true);
+
+				// Apply zoom
+				canvas.zoomToPoint(new fabric.Point(point.x, point.y), newZoom);
+				canvas.requestRenderAll();
+			}
 		}
 	}
 
@@ -353,7 +368,6 @@
 			</div>
 		</div>
 		<div bind:this={container} class=" w-full relative overflow-hidden">
-			<canvas id="canvas" class="h-full w-full fabric-canvas" />
 			<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 		</div>
 	</div>
