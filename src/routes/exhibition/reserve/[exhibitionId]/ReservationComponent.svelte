@@ -344,10 +344,8 @@
 				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
 		</div>
-		<!-- Zoom buttons -->
-		<button on:click={zoomIn}>+</button>
-		<button on:click={zoomOut}>-</button>
-		<button on:click={zoomInOnObject}>Zoom In to Object</button>
+		 
+		 
 	</div>
 
 	<div bind:this={container} class=" w-full relative overflow-hidden">
