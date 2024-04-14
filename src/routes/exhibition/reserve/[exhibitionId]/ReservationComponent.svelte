@@ -277,6 +277,57 @@
 			});
 		}
 	}
+
+	let initialDistance: any = null;
+	let initialZoom: any = null;
+
+	function getTouchesDistance(touches: any) {
+		const touch1 = touches[0];
+		const touch2 = touches[1];
+		return Math.sqrt(
+			Math.pow(touch1.clientX - touch2.clientX, 2) + Math.pow(touch1.clientY - touch2.clientY, 2)
+		);
+	}
+
+	function handleTouchStart(event: any) {
+		if (event.touches.length === 2) {
+			// Check if two fingers are placed on the screen
+			initialDistance = getTouchesDistance(event.touches);
+			initialZoom = canvas && canvas.getZoom();
+		}
+	}
+
+	function handleTouchMove(event: any) {
+		if (initialDistance && event.touches.length === 2) {
+			const newDistance = getTouchesDistance(event.touches);
+			const distanceRatio = newDistance / initialDistance;
+			const newZoom = initialZoom * distanceRatio;
+
+			const touchMidpoint = {
+				x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+				y: (event.touches[0].clientY + event.touches[1].clientY) / 2
+			};
+
+			// We need to calculate the correct point to zoom into
+			// Convert touch point to canvas coordinates
+			const point = canvas && canvas.getPointer(touchMidpoint);
+			canvas && canvas.zoomToPoint(point, newZoom);
+		}
+	}
+
+	function handleTouchEnd(event: any) {
+		// Reset initial values
+		initialDistance = null;
+		initialZoom = null;
+	}
+
+	// Assuming canvasElement is a reference to your <canvas> DOM element
+	const canvasElement = document.getElementById('canvas');
+	if (canvasElement) {
+		canvasElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+		canvasElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+		canvasElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+	}
 </script>
 
 {#if fabric}
