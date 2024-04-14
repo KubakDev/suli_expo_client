@@ -39,6 +39,7 @@
 		}
 	});
 	function onSubmit() {
+		console.log('form', form);
 		loading = true;
 	}
 

@@ -315,7 +315,7 @@
 
 							{#if $selectedSeat}
 								<div
-									class="pt-20 md:pt-0 2xl:hidden md:h-3/4 absolute bg-white rounded-xl h-screen w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
+									class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-screen w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
 									in:fly={{ x: -200, duration: 500 }}
 									out:fly={{ x: 200, duration: 500 }}
 								>
@@ -388,8 +388,8 @@
 			{:else}
 				<section class="w-full flex-1 overflow-x-hidden">
 					<div class="px-0 lg:px-32 3xl:px-72 w-full">
-						<div class="w-full flex items-center 2xl:px-20 flex-wrap bg-white p-4 mt-4 rounded">
-							<div class="  mx-2 rounded-xl w-full 2xl:w-[69%]">
+						<div class="h-full w-full flex items-center flex-wrap bg-white p-4 mt-4 rounded">
+							<div class="mx-2 rounded-xl w-full 2xl:w-[69%]">
 								<div class="reservation-container">
 									{#if exhibition?.seat_layout}
 										<ReservationComponent

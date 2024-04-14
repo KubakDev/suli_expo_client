@@ -45,7 +45,6 @@
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
-			checkAndEnableZoom();
 		}
 	});
 
@@ -57,6 +56,7 @@
 		container.style.height = `${containerWidth / aspectRatio}px`;
 
 		const currentHeight = containerWidth / aspectRatio;
+
 		if (canvas) {
 			canvas.setDimensions({
 				width: containerWidth,
@@ -85,7 +85,15 @@
 				if (canvas)
 					canvas.loadFromJSON(data[0]?.design, async () => {
 						canvas.forEachObject((obj: any) => {
-							obj.set('selectable', false);
+							obj.set('hasControls', false);
+							obj.set('hasBorders', false);
+							obj.set('lockMovementX', false);
+							obj.set('lockMovementY', false);
+							obj.set('lockRotation', false);
+							obj.set('lockScalingX', false);
+							obj.set('lockScalingY', false);
+							obj.set('lockUniScaling', false);
+							obj.set('selectable', true);
 							obj.set('lockMovementX', true);
 							obj.set('lockMovementY', true);
 
@@ -261,36 +269,51 @@
 		}
 	}
 	//////////////////////
-
-	// Detect gesture event
-	// For mobile, you'd handle touch events in a similar way by measuring the distance between touches.
-	const enableCanvasZoom = () => {
-		console.log('Zoom enabled');
-		canvas.on('mouse:wheel', function (opt) {
-			var delta = opt.e.deltaY;
-			var zoom = canvas.getZoom();
-			zoom *= 0.999 ** delta;
-			if (zoom > 20) zoom = 20;
-			if (zoom < 0.01) zoom = 0.01;
-			canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-			opt.e.preventDefault();
-			opt.e.stopPropagation();
-		});
-	};
-
-	// Call this function when the seats are fully loaded and conditions are satisfied for zooming.
-	const checkAndEnableZoom = () => {
-		console.log('Checking and enabling zoom');
-		if (data && data[0]?.design?.loaded) {
-			// Assuming 'loaded' is a flag indicating seat data is fully ready
-			enableCanvasZoom();
+	function zoomIn() {
+		let zoom = canvas.getZoom();
+		zoom += 0.1;
+		if (zoom > 5) zoom = 5;
+		canvas.setZoom(zoom);
+		canvas.renderAll();
+	}
+	function zoomOut() {
+		let zoom = canvas.getZoom();
+		zoom -= 0.1;
+		if (zoom < 0.1) zoom = 0.1;
+		canvas.setZoom(zoom);
+		canvas.renderAll();
+	}
+	function zoomInOnObject() {
+		console.log(fabric);
+		const activeObject = canvas.getActiveObject();
+		if (!activeObject) {
+			console.warn('No object selected for zooming.');
+			return;
 		}
-	};
+
+		// Calculate the zoom factor based on object size and a desired factor
+		const desiredZoomFactor = 2; // Adjust this factor to control zoom intensity
+		const objectWidthZoom = canvas.getWidth() / activeObject.getScaledWidth();
+		const objectHeightZoom = canvas.getHeight() / activeObject.getScaledHeight();
+		const zoomLevel = Math.min(objectWidthZoom, objectHeightZoom) / desiredZoomFactor;
+
+		// Calculate the center of the object
+		const center = activeObject.getCenterPoint();
+
+		// Zoom and pan to the object
+		fabric.then((Response: any) => {
+			canvas.viewportCenterObject(activeObject); // Centers the viewport on the object
+			canvas.setZoom(zoomLevel); // Sets the zoom level calculated
+			canvas.requestRenderAll();
+		});
+	}
+
+	//////////////////////
 </script>
 
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
-		<div class="w-full flex justify-center md:mt-10">
+		<!-- <div class="w-full flex justify-center md:mt-10">
 			<div class="flex justify-center items-center">
 				<div
 					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
@@ -309,10 +332,29 @@
 				/>
 				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
-		</div>
-		<div bind:this={container} class=" w-full relative overflow-hidden">
-			<canvas id="canvas" class="h-full w-full fabric-canvas" />
-			<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
-		</div>
+		</div> -->
+		<!-- Zoom buttons -->
+		<button on:click={zoomIn}>+</button>
+		<button on:click={zoomOut}>-</button>
+		<button on:click={zoomInOnObject}>Zoom In to Object</button>
+	</div>
+	<div bind:this={container} class=" w-full relative overflow-hidden">
+		<canvas id="canvas" class="h-full w-full fabric-canvas" />
+		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
+
+<style>
+	button {
+		background-color: #c12020;
+		border: none;
+		padding: 10px;
+		border-radius: 5px;
+		font-size: 16px;
+		margin: 2px;
+	}
+
+	button:hover {
+		background-color: #debfbf;
+	}
+</style>
