@@ -125,6 +125,17 @@
 		if (fabric) {
 		}
 		getPreviousReserveSeatData();
+
+		canvas.on('mouse:wheel', function (opt) {
+			var delta = opt.e.deltaY;
+			var zoom = canvas.getZoom();
+			zoom *= 0.999 ** delta;
+			if (zoom > 20) zoom = 20;
+			if (zoom < 0.01) zoom = 0.01;
+			canvas.setZoom(zoom);
+			opt.e.preventDefault();
+			opt.e.stopPropagation();
+		});
 	};
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
