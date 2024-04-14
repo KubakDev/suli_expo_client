@@ -338,6 +338,7 @@
 		<button on:click={zoomOut}>-</button>
 		<button on:click={zoomInOnObject}>Zoom In to Object</button>
 	</div>
+
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
