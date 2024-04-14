@@ -20,7 +20,7 @@
 
 	let fabric: any;
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas | null = null;
+	let canvas: Canvas;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
@@ -45,6 +45,7 @@
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
+			checkAndEnableZoom();
 		}
 	});
 
@@ -72,7 +73,7 @@
 				selection: false
 			});
 			adjustCanvasSize();
-			attachEventHandlers();
+
 			if (canvas) {
 				const width = data[0]?.design?.width;
 
@@ -260,89 +261,31 @@
 		}
 	}
 	//////////////////////
-	function attachEventHandlers() {
-		if (canvas) {
-			canvas.on('mouse:wheel', function (opt) {
-				var delta = opt.e.deltaY;
-				var zoom = canvas && canvas.getZoom();
-				// If zoom is null, assign a default zoom level, for example 1
-				zoom ??= 1; // If zoom is null or undefined, set it to 1
 
-				zoom *= 0.999 ** delta;
-				if (zoom > 20) zoom = 20;
-				if (zoom < 0.01) zoom = 0.01;
-				canvas && canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-				opt.e.preventDefault();
-				opt.e.stopPropagation();
-			});
+	// Detect gesture event
+	// For mobile, you'd handle touch events in a similar way by measuring the distance between touches.
+	const enableCanvasZoom = () => {
+		console.log('Zoom enabled');
+		canvas.on('mouse:wheel', function (opt) {
+			var delta = opt.e.deltaY;
+			var zoom = canvas.getZoom();
+			zoom *= 0.999 ** delta;
+			if (zoom > 20) zoom = 20;
+			if (zoom < 0.01) zoom = 0.01;
+			canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+			opt.e.preventDefault();
+			opt.e.stopPropagation();
+		});
+	};
+
+	// Call this function when the seats are fully loaded and conditions are satisfied for zooming.
+	const checkAndEnableZoom = () => {
+		console.log('Checking and enabling zoom');
+		if (data && data[0]?.design?.loaded) {
+			// Assuming 'loaded' is a flag indicating seat data is fully ready
+			enableCanvasZoom();
 		}
-	}
-
-	let initialDistance: any = null;
-	let initialZoom: any = null;
-
-	function getTouchesDistance(touches: any) {
-		const touch1 = touches[0];
-		const touch2 = touches[1];
-		return Math.sqrt(
-			Math.pow(touch1.clientX - touch2.clientX, 2) + Math.pow(touch1.clientY - touch2.clientY, 2)
-		);
-	}
-
-	function handleTouchStart(event: any) {
-		console.log('Touch start', event.touches);
-		if (event.touches.length === 2) {
-			initialDistance = getTouchesDistance(event.touches);
-			initialZoom = canvas.getZoom();
-			console.log('Initial distance and zoom', initialDistance, initialZoom);
-		}
-	}
-
-	function handleTouchMove(event: TouchEvent) {
-		if (initialDistance && event.touches.length === 2) {
-			// Get new distance between the touches
-			const newDistance = getTouchesDistance(event.touches);
-			const distanceRatio = newDistance / initialDistance;
-			const newZoom = initialZoom * distanceRatio;
-
-			// Assuming you want to zoom into the midpoint between the two touches
-			const midpoint = {
-				x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
-				y: (event.touches[0].clientY + event.touches[1].clientY) / 2
-			};
-
-			// Creating a fake pointer event because Fabric.js getPointer method expects an event
-			const fakeEvent = new PointerEvent('pointermove', {
-				clientX: midpoint.x,
-				clientY: midpoint.y,
-				bubbles: true,
-				cancelable: true,
-				composed: true
-			});
-			if (canvas) {
-				// Now use this fake event with getPointer
-				const point = canvas.getPointer(fakeEvent, true);
-
-				// Apply zoom
-				canvas.zoomToPoint(new fabric.Point(point.x, point.y), newZoom);
-				canvas.requestRenderAll();
-			}
-		}
-	}
-
-	function handleTouchEnd(event: any) {
-		// Reset initial values
-		initialDistance = null;
-		initialZoom = null;
-	}
-
-	// Assuming canvasElement is a reference to your <canvas> DOM element
-	const canvasElement = document.getElementById('canvas');
-	if (canvasElement) {
-		canvasElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-		canvasElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-		canvasElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-	}
+	};
 </script>
 
 {#if fabric}
