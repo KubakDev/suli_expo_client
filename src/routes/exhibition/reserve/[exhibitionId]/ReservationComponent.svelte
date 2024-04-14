@@ -20,7 +20,7 @@
 
 	let fabric: any;
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas;
+	let canvas: Canvas | null = null;
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
@@ -29,6 +29,7 @@
 		top: 0,
 		left: 0
 	};
+
 	let freeServices: any = [];
 	let paidServices: any = [];
 	let reserveSeatData: ReserveSeatModel = {
@@ -36,8 +37,10 @@
 		exhibition_id: +$page.params.exhibitionId,
 		object_id: 0,
 		services: [],
-		status: ReservationStatusEnum.PENDING
+		status: ReservationStatusEnum.PENDING,
+		total_price: 0
 	};
+
 	onMount(async () => {
 		fabric = import('fabric');
 		if (data) {
@@ -59,7 +62,7 @@
 				height: currentHeight
 			});
 		}
-		canvas.renderAll();
+		canvas && canvas.renderAll();
 	};
 	const loadSeats = async () => {
 		fabric.then((Response: any) => {
@@ -69,6 +72,7 @@
 				selection: false
 			});
 			adjustCanvasSize();
+			attachEventHandlers();
 			if (canvas) {
 				const width = data[0]?.design?.width;
 
@@ -77,80 +81,39 @@
 				const containerHeight = container?.offsetHeight;
 				const widthRatio = containerWidth / width;
 				const heightRatio = containerHeight / height;
-				canvas.loadFromJSON(data[0]?.design, async () => {
-					canvas.forEachObject((obj: any) => {
-						obj.set('selectable', false);
-						obj.set('lockMovementX', true);
-						obj.set('lockMovementY', true);
+				if (canvas)
+					canvas.loadFromJSON(data[0]?.design, async () => {
+						canvas.forEachObject((obj: any) => {
+							obj.set('selectable', false);
+							obj.set('lockMovementX', true);
+							obj.set('lockMovementY', true);
 
-						obj.setCoords();
+							obj.setCoords();
+						});
+						canvas.on('mouse:down', handleMouseDown);
+						canvas.on('mouse:over', handleMouseOver);
+						canvas.on('mouse:out', handleMouseOut);
+						await tick(); // wait for the next update cycle
+						canvas.forEachObject((obj: any) => {
+							const scaleX = obj.scaleX;
+							const scaleY = obj.scaleY;
+							const left = obj.left;
+							const top = obj.top;
+							const tempScaleX = scaleX * widthRatio;
+							const tempScaleY = scaleY * heightRatio;
+							const tempLeft = left * widthRatio;
+							const tempTop = top * heightRatio;
+							obj.scaleX = tempScaleX;
+							obj.scaleY = tempScaleY;
+							obj.left = tempLeft;
+							obj.top = tempTop;
+							obj.setCoords();
+						});
+						canvas.renderAll();
 					});
-					canvas.on('mouse:down', handleMouseDown);
-					canvas.on('mouse:over', handleMouseOver);
-					canvas.on('mouse:out', handleMouseOut);
-					await tick(); // wait for the next update cycle
-					canvas.forEachObject((obj: any) => {
-						const scaleX = obj.scaleX;
-						const scaleY = obj.scaleY;
-						const left = obj.left;
-						const top = obj.top;
-						const tempScaleX = scaleX * widthRatio;
-						const tempScaleY = scaleY * heightRatio;
-						const tempLeft = left * widthRatio;
-						const tempTop = top * heightRatio;
-						obj.scaleX = tempScaleX;
-						obj.scaleY = tempScaleY;
-						obj.left = tempLeft;
-						obj.top = tempTop;
-						obj.setCoords();
-					});
-					canvas.renderAll();
-				});
 			}
 		});
 		if (fabric) {
-			// const canvasElement: any = document.getElementById('canvas');
-			// canvas = new fabric.fabric.Canvas(canvasElement, {
-			// 	hoverCursor: 'default',
-			// 	selection: false
-			// });
-			// adjustCanvasSize();
-			// if (canvas) {
-			// 	const width = data[0]?.design?.width;
-			// 	const height = data[0]?.design?.height;
-			// 	const containerWidth = container?.offsetWidth;
-			// 	const containerHeight = container?.offsetHeight;
-			// 	const widthRatio = containerWidth / width;
-			// 	const heightRatio = containerHeight / height;
-			// 	canvas.loadFromJSON(data[0]?.design, async () => {
-			// 		canvas.forEachObject((obj: any) => {
-			// 			obj.set('selectable', false);
-			// 			obj.set('lockMovementX', true);
-			// 			obj.set('lockMovementY', true);
-			// 			obj.setCoords();
-			// 		});
-			// 		canvas.on('mouse:down', handleMouseDown);
-			// 		canvas.on('mouse:over', handleMouseOver);
-			// 		canvas.on('mouse:out', handleMouseOut);
-			// 		await tick(); // wait for the next update cycle
-			// 		canvas.forEachObject((obj: any) => {
-			// 			const scaleX = obj.scaleX;
-			// 			const scaleY = obj.scaleY;
-			// 			const left = obj.left;
-			// 			const top = obj.top;
-			// 			const tempScaleX = scaleX * widthRatio;
-			// 			const tempScaleY = scaleY * heightRatio;
-			// 			const tempLeft = left * widthRatio;
-			// 			const tempTop = top * heightRatio;
-			// 			obj.scaleX = tempScaleX;
-			// 			obj.scaleY = tempScaleY;
-			// 			obj.left = tempLeft;
-			// 			obj.top = tempTop;
-			// 			obj.setCoords();
-			// 		});
-			// 		canvas.renderAll();
-			// 	});
-			// }
 		}
 		getPreviousReserveSeatData();
 	};
@@ -294,6 +257,24 @@
 					}
 				});
 			}
+		}
+	}
+	//////////////////////
+	function attachEventHandlers() {
+		if (canvas) {
+			canvas.on('mouse:wheel', function (opt) {
+				var delta = opt.e.deltaY;
+				var zoom = canvas && canvas.getZoom();
+				// If zoom is null, assign a default zoom level, for example 1
+				zoom ??= 1; // If zoom is null or undefined, set it to 1
+
+				zoom *= 0.999 ** delta;
+				if (zoom > 20) zoom = 20;
+				if (zoom < 0.01) zoom = 0.01;
+				canvas && canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+				opt.e.preventDefault();
+				opt.e.stopPropagation();
+			});
 		}
 	}
 </script>
