@@ -313,7 +313,7 @@
 
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
-		<!-- <div class="w-full flex justify-center md:mt-10">
+		<div class="w-full flex justify-center md:mt-10">
 			<div class="flex justify-center items-center">
 				<div
 					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
@@ -332,7 +332,7 @@
 				/>
 				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
-		</div> -->
+		</div>
 		<!-- Zoom buttons -->
 		<button on:click={zoomIn}>+</button>
 		<button on:click={zoomOut}>-</button>
