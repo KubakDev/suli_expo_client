@@ -320,7 +320,9 @@
 				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
 		</div>
-		<canvas id="canvas" class="h-full w-full fabric-canvas" />
-		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
+		<div bind:this={container} class=" w-full relative overflow-hidden">
+			<canvas id="canvas" class="h-full w-full fabric-canvas" />
+			<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
+		</div>
 	</div>
 {/if}

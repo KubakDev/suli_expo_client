@@ -387,10 +387,10 @@
 				</section>
 			{:else}
 				<section class="w-full flex-1 overflow-x-hidden">
-					<div class="px-0 lg:px-32 3xl:px-72 w-full h-full">
-						<div class="w-full h-full flex items-center 2xl:px-20 flex-wrap">
-							<div class="bg-[#f5f5f5] h-3/4 mx-2 rounded-xl w-full 2xl:w-[69%]">
-								<div class=" items-center sm:h-auto h-screen flex flex-col justify-around">
+					<div class="px-0 lg:px-32 3xl:px-72 w-full">
+						<div class="w-full flex items-center 2xl:px-20 flex-wrap bg-white p-4 m-4 rounded">
+							<div class="  mx-2 rounded-xl w-full 2xl:w-[69%]">
+								<div class="reservation-container">
 									{#if exhibition?.seat_layout}
 										<ReservationComponent
 											data={exhibition?.seat_layout}
@@ -401,7 +401,7 @@
 								</div>
 							</div>
 
-							<div class="hidden 2xl:flex h-3/4 bg-[#f5f5f5] rounded-xl py-4" style="width: 29%;">
+							<div class="hidden 2xl:flex h-3/4 rounded-xl py-4" style="width: 29%;">
 								{#if $selectedSeat}
 									<SelectedSeatInformationSection
 										supabase={data.supabase}
@@ -587,6 +587,9 @@
 		{$LL.reservation.warning_message()}
 	</Toast>
 {/if}
+<div />
+
+<div class="my-10" />
 
 <style>
 	.file-input__input {
@@ -637,5 +640,14 @@
 		.file-input__label {
 			width: 66.67%;
 		}
+	}
+
+	.flex-1 {
+		flex: 1;
+		min-height: 0;
+	}
+	.reservation-component {
+		width: 100%;
+		height: 100%;
 	}
 </style>
