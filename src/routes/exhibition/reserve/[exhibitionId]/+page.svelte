@@ -388,7 +388,7 @@
 			{:else}
 				<section class="w-full flex-1 overflow-x-hidden">
 					<div class="px-0 lg:px-32 3xl:px-72 w-full">
-						<div class="w-full flex items-center 2xl:px-20 flex-wrap bg-white p-4 m-4 rounded">
+						<div class="w-full flex items-center 2xl:px-20 flex-wrap bg-white p-4 mt-4 rounded">
 							<div class="  mx-2 rounded-xl w-full 2xl:w-[69%]">
 								<div class="reservation-container">
 									{#if exhibition?.seat_layout}
@@ -645,9 +645,5 @@
 	.flex-1 {
 		flex: 1;
 		min-height: 0;
-	}
-	.reservation-component {
-		width: 100%;
-		height: 100%;
 	}
 </style>
