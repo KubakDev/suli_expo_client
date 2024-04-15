@@ -13,7 +13,6 @@
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	// import { fabric } from 'fabric';
-	import Hammer from 'hammerjs';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -21,9 +20,8 @@
 
 	let fabric: any;
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas | null = null;
+	let canvas: any;
 	let container: any;
-	let mc: Hammer.Manager | null = null;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
 	let selectableObjectTotalPrice: number = 0;
@@ -31,6 +29,7 @@
 		top: 0,
 		left: 0
 	};
+
 	let freeServices: any = [];
 	let paidServices: any = [];
 	let reserveSeatData: ReserveSeatModel = {
@@ -49,50 +48,23 @@
 		}
 	});
 
-	function setupHammer() {
-		const canvasElement = (canvas as any).upperCanvasEl as HTMLElement;
-		if (canvasElement) {
-			mc = new Hammer(canvasElement);
-			mc.get('pinch').set({ enable: true });
-			mc.on('pinch', zoomCanvas);
-			mc.on('pan', handlePan);
-			mc.on('tap', handleTap);
-		}
-	}
-
-	function zoomCanvas(event: any) {
-		if (!canvas) return;
-		var pinchScale = event.scale;
-		var newZoom = canvas.getZoom() * pinchScale;
-		canvas.zoomToPoint({ x: event.center.x, y: event.center.y }, newZoom);
-		event.preventDefault();
-	}
-
-	function handlePan(event: any) {
-		if (!canvas) return;
-		const deltaX = event.deltaX;
-		const deltaY = event.deltaY;
-		canvas.relativePan(new fabric.Point(deltaX, deltaY));
-	}
-
-	function handleTap(event: any) {
-		// Handle tap events if necessary
-	}
-
 	const adjustCanvasSize = () => {
-		if (!data[0] || !canvas) return;
 		const width = data[0]?.design?.width;
 		const height = data[0]?.design?.height;
 		const aspectRatio = width / height;
 		const containerWidth = container?.offsetWidth;
 		container.style.height = `${containerWidth / aspectRatio}px`;
-		canvas.setDimensions({
-			width: containerWidth,
-			height: containerWidth / aspectRatio
-		});
-		canvas.renderAll();
-	};
 
+		const currentHeight = containerWidth / aspectRatio;
+
+		if (canvas) {
+			canvas.setDimensions({
+				width: containerWidth,
+				height: currentHeight
+			});
+		}
+		canvas && canvas.renderAll();
+	};
 	const loadSeats = async () => {
 		fabric.then((Response: any) => {
 			const canvasElement: any = document.getElementById('canvas');
@@ -100,7 +72,6 @@
 				hoverCursor: 'default',
 				selection: false
 			});
-			setupHammer();
 			adjustCanvasSize();
 
 			if (canvas) {
@@ -149,18 +120,12 @@
 						});
 						canvas.renderAll();
 					});
-
-				/////////////////////////
-				console.log(canvas);
-
-				//////////////////
 			}
 		});
 		if (fabric) {
 		}
 		getPreviousReserveSeatData();
 	};
-
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
 		addSelectedSeat(undefined);
@@ -342,11 +307,16 @@
 			canvas.requestRenderAll();
 		});
 	}
-	////////////////////////////////////////
+
+	//////////////////////
 </script>
 
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
+		<!-- Zoom buttons -->
+		<button on:click={zoomIn}>+</button>
+		<button on:click={zoomOut}>-</button>
+		<!-- <button on:click={zoomInOnObject}>Zoom In to Object</button> -->
 		<div class="w-full flex justify-center md:mt-10">
 			<div class="flex justify-center items-center">
 				<div
@@ -367,10 +337,6 @@
 				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
 			</div>
 		</div>
-		<!-- Zoom buttons -->
-		<button on:click={zoomIn}>+</button>
-		<button on:click={zoomOut}>-</button>
-		<!-- <button on:click={zoomInOnObject}>Zoom In to Object</button> -->
 	</div>
 
 	<div bind:this={container} class=" w-full relative overflow-hidden">
