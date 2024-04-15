@@ -102,6 +102,21 @@
 						opt.e.preventDefault();
 						opt.e.stopPropagation();
 					});
+					// Event handler for pinch zoom
+					canvas.on('touch:gesture', (event: any) => {
+						if (event.e.touches && event.e.touches.length === 2) {
+							// Pinch gesture
+							let zoom = canvas.getZoom();
+							zoom *= event.e.scale;
+							if (zoom > 5) zoom = 5;
+							if (zoom < 1) zoom = 1;
+							const point = new fabric.Point(event.self.x, event.self.y);
+							canvas.zoomToPoint(point, zoom);
+							event.e.preventDefault();
+							event.e.stopPropagation();
+						}
+					});
+
 					await tick(); // wait for the next update cycle
 					canvas.forEachObject((obj: any) => {
 						const scaleX = obj.scaleX;
