@@ -48,6 +48,74 @@
 		}
 	});
 
+	function setupCanvasInteractions() {
+		let lastPinchZoomLength: any = null;
+		interface TouchPosition {
+			lastX: number;
+			lastY: number;
+		}
+
+		// Create a variable to manage the position
+		let touchPosition: TouchPosition = { lastX: 0, lastY: 0 };
+		const handleTouchMove = (e: TouchEvent) => {
+			if (e.touches.length === 2) {
+				// Handle pinch zoom
+				const touch1 = e.touches[0];
+				const touch2 = e.touches[1];
+				const distance = Math.sqrt(
+					Math.pow(touch2.pageX - touch1.pageX, 2) + Math.pow(touch2.pageY - touch1.pageY, 2)
+				);
+
+				if (lastPinchZoomLength !== null) {
+					const scaleChange = distance / lastPinchZoomLength;
+					canvas.zoomToPoint(
+						new fabric.Point(canvas.getWidth() / 2, canvas.getHeight() / 2),
+						canvas.getZoom() * scaleChange
+					);
+				}
+
+				lastPinchZoomLength = distance;
+				e.preventDefault();
+			} else if (
+				e.touches.length === 1 &&
+				'upperCanvasEl' in canvas &&
+				e.target === canvas.upperCanvasEl
+			) {
+				// Handle pan
+				const touch = e.touches[0];
+				const xChange = touch.clientX - touchPosition.lastX;
+				const yChange = touch.clientY - touchPosition.lastY;
+
+				const newLeft = xChange + canvas.viewportTransform![4];
+				const newTop = yChange + canvas.viewportTransform![5];
+
+				canvas.viewportTransform![4] = newLeft;
+				canvas.viewportTransform![5] = newTop;
+				canvas.requestRenderAll();
+
+				touchPosition.lastX = touch.clientX;
+				touchPosition.lastY = touch.clientY;
+			}
+		};
+
+		const handleTouchStart = (e: TouchEvent) => {
+			if (e.touches.length === 1) {
+				const touch = e.touches[0];
+				touchPosition.lastX = touch.clientX;
+				touchPosition.lastY = touch.clientY;
+			}
+		};
+
+		const canvasElement = document.getElementById('canvas');
+		if (canvasElement) {
+			canvasElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+			canvasElement.addEventListener('touchstart', handleTouchStart);
+			canvasElement.addEventListener('touchend', () => {
+				lastPinchZoomLength = null;
+			});
+		}
+	}
+
 	const adjustCanvasSize = () => {
 		const width = data[0]?.design?.width;
 		const height = data[0]?.design?.height;
@@ -120,22 +188,16 @@
 						});
 						canvas.renderAll();
 					});
+
+				/////////////////////////
+				console.log(canvas);
+				setupCanvasInteractions();
+				//////////////////
 			}
 		});
 		if (fabric) {
 		}
 		getPreviousReserveSeatData();
-
-		canvas.on('mouse:wheel', function (opt) {
-			var delta = opt.e.deltaY;
-			var zoom = canvas.getZoom();
-			zoom *= 0.999 ** delta;
-			if (zoom > 20) zoom = 20;
-			if (zoom < 0.01) zoom = 0.01;
-			canvas.setZoom(zoom);
-			opt.e.preventDefault();
-			opt.e.stopPropagation();
-		});
 	};
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
@@ -347,7 +409,7 @@
 		<!-- Zoom buttons -->
 		<button on:click={zoomIn}>+</button>
 		<button on:click={zoomOut}>-</button>
-		<button on:click={zoomInOnObject}>Zoom In to Object</button>
+		<!-- <button on:click={zoomInOnObject}>Zoom In to Object</button> -->
 	</div>
 
 	<div bind:this={container} class=" w-full relative overflow-hidden">
