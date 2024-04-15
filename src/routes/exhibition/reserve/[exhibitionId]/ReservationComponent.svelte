@@ -272,53 +272,39 @@
 	function zoomIn() {
 		let zoom = canvas.getZoom();
 		zoom += 0.1;
-		if (zoom > 5) zoom = 5;
+		if (zoom > 7) zoom = 7;
 		canvas.setZoom(zoom);
+		canvas.setWidth(canvas.getWidth() * zoom);
+		canvas.setHeight(canvas.getHeight() * zoom);
+		adjustScrollbars();
 		canvas.renderAll();
 	}
+
 	function zoomOut() {
 		let zoom = canvas.getZoom();
 		zoom -= 0.1;
 		if (zoom < 0.1) zoom = 0.1;
 		canvas.setZoom(zoom);
+		canvas.setWidth(canvas.getWidth() / zoom);
+		canvas.setHeight(canvas.getHeight() / zoom);
+		adjustScrollbars();
 		canvas.renderAll();
 	}
-	function zoomInOnObject() {
-		console.log(fabric);
-		const activeObject = canvas.getActiveObject();
-		if (!activeObject) {
-			console.warn('No object selected for zooming.');
-			return;
-		}
 
-		// Calculate the zoom factor based on object size and a desired factor
-		const desiredZoomFactor = 2; // Adjust this factor to control zoom intensity
-		const objectWidthZoom = canvas.getWidth() / activeObject.getScaledWidth();
-		const objectHeightZoom = canvas.getHeight() / activeObject.getScaledHeight();
-		const zoomLevel = Math.min(objectWidthZoom, objectHeightZoom) / desiredZoomFactor;
-
-		// Calculate the center of the object
-		const center = activeObject.getCenterPoint();
-
-		// Zoom and pan to the object
-		fabric.then((Response: any) => {
-			canvas.viewportCenterObject(activeObject); // Centers the viewport on the object
-			canvas.setZoom(zoomLevel); // Sets the zoom level calculated
-			canvas.requestRenderAll();
-		});
+	function adjustScrollbars() {
+		const zoom = canvas.getZoom();
+		container.style.overflow = zoom > 1 ? 'scroll' : 'hidden';
 	}
-
 	//////////////////////
 </script>
 
 {#if fabric}
-
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<!-- Zoom buttons -->
 		<button on:click={zoomIn}>+</button>
 		<button on:click={zoomOut}>-</button>
-		<!-- <button on:click={zoomInOnObject}>Zoom In to Object</button> -->
-		<div class="w-full flex justify-center md:mt-10">
+
+		<div class="w-full flex justify-center md:mt-10 my-4">
 			<div class="flex justify-center items-center">
 				<div
 					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
@@ -340,13 +326,19 @@
 		</div>
 	</div>
 
-	<div bind:this={container} class=" w-full relative overflow-hidden">
+	<div bind:this={container} class=" w-full relative border-2 rounded">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
 
 <style>
+	.container {
+		width: 100%; /* or your specific width */
+		overflow: hidden; /* Updated in JavaScript based on zoom */
+		position: relative;
+	}
+
 	button {
 		background-color: #c12020;
 		border: none;
