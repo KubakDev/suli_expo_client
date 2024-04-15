@@ -312,6 +312,7 @@
 </script>
 
 {#if fabric}
+
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<!-- Zoom buttons -->
 		<button on:click={zoomIn}>+</button>
