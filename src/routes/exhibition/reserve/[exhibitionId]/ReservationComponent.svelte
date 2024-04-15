@@ -269,6 +269,7 @@
 		}
 	}
 	//////////////////////
+
 	function zoomIn() {
 		let zoom = canvas.getZoom();
 		zoom += 0.1;
@@ -334,8 +335,9 @@
 
 <style>
 	.container {
-		width: 100%; /* or your specific width */
-		overflow: hidden; /* Updated in JavaScript based on zoom */
+		width: 100%;
+		overflow-x: auto; /* Allows horizontal scrolling */
+		overflow-y: auto; /* Allows vertical scrolling */
 		position: relative;
 	}
 
@@ -350,5 +352,11 @@
 
 	button:hover {
 		background-color: #debfbf;
+	}
+
+	@media (max-width: 768px) {
+		.container {
+			min-height: 500px;
+		}
 	}
 </style>
