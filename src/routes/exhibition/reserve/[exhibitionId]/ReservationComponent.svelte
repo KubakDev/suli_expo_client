@@ -21,9 +21,9 @@
 
 	let fabric: any;
 	let previousReserveSeatData: any = [];
-	let canvas: any;
-
+	let canvas: Canvas | null = null;
 	let container: any;
+	let mc: Hammer.Manager | null = null;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
 	let selectableObjectTotalPrice: number = 0;
@@ -41,17 +41,44 @@
 		status: ReservationStatusEnum.PENDING,
 		total_price: 0
 	};
-	// After canvas initialization
-	const mc = new Hammer(canvas.upperCanvasEl);
-	mc.get('pinch').set({ enable: true });
 
 	onMount(async () => {
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
+			setupHammer();
 		}
 	});
 
+	function setupHammer() {
+		const canvasElement = (canvas as any).upperCanvasEl as HTMLElement;
+		if (canvasElement) {
+			mc = new Hammer(canvasElement);
+			mc.get('pinch').set({ enable: true });
+			mc.on('pinch', zoomCanvas);
+			mc.on('pan', handlePan);
+			mc.on('tap', handleTap);
+		}
+	}
+
+	function zoomCanvas(event: any) {
+		if (!canvas) return;
+		var pinchScale = event.scale;
+		var newZoom = canvas.getZoom() * pinchScale;
+		canvas.zoomToPoint({ x: event.center.x, y: event.center.y }, newZoom);
+		event.preventDefault();
+	}
+
+	function handlePan(event: any) {
+		if (!canvas) return;
+		const deltaX = event.deltaX;
+		const deltaY = event.deltaY;
+		canvas.relativePan(new fabric.Point(deltaX, deltaY));
+	}
+
+	function handleTap(event: any) {
+		// Handle tap events if necessary
+	}
 	const adjustCanvasSize = () => {
 		const width = data[0]?.design?.width;
 		const height = data[0]?.design?.height;
@@ -64,7 +91,7 @@
 		if (canvas) {
 			canvas.setDimensions({
 				width: containerWidth,
-				height: currentHeight
+				height: containerWidth / aspectRatio
 			});
 		}
 		canvas && canvas.renderAll();
@@ -135,6 +162,7 @@
 		}
 		getPreviousReserveSeatData();
 	};
+
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
 		addSelectedSeat(undefined);
@@ -317,27 +345,6 @@
 		});
 	}
 	////////////////////////////////////////
-
-	////////////**************///////////
-	mc.on('pinch', zoomCanvas);
-	function zoomCanvas(event: any) {
-		var pinchScale = event.scale;
-		var newZoom = canvas.getZoom() * pinchScale;
-		canvas.zoomToPoint({ x: event.center.x, y: event.center.y }, newZoom);
-		event.preventDefault();
-	}
-
-	mc.on('pan', function (event: any) {
-		// Handle dragging here
-		const deltaX = event.deltaX;
-		const deltaY = event.deltaY;
-		canvas.relativePan(new fabric.Point(deltaX, deltaY));
-	});
-
-	mc.on('tap', function (event: any) {
-		// Handle tap events if necessary
-	});
-	////////////**************///////////
 </script>
 
 {#if fabric}
