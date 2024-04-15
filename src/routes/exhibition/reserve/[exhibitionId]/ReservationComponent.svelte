@@ -73,7 +73,6 @@
 				selection: false
 			});
 			adjustCanvasSize();
-
 			if (canvas) {
 				const width = data[0]?.design?.width;
 
@@ -82,44 +81,45 @@
 				const containerHeight = container?.offsetHeight;
 				const widthRatio = containerWidth / width;
 				const heightRatio = containerHeight / height;
-				if (canvas)
-					canvas.loadFromJSON(data[0]?.design, async () => {
-						canvas.forEachObject((obj: any) => {
-							obj.set('hasControls', false);
-							obj.set('hasBorders', false);
-							obj.set('lockMovementX', false);
-							obj.set('lockMovementY', false);
-							obj.set('lockRotation', false);
-							obj.set('lockScalingX', false);
-							obj.set('lockScalingY', false);
-							obj.set('lockUniScaling', false);
-							obj.set('selectable', true);
-							obj.set('lockMovementX', true);
-							obj.set('lockMovementY', true);
+				canvas.loadFromJSON(data[0]?.design, async () => {
+					canvas.forEachObject((obj: any) => {
+						obj.set('selectable', false);
+						obj.set('lockMovementX', true);
+						obj.set('lockMovementY', true);
 
-							obj.setCoords();
-						});
-						canvas.on('mouse:down', handleMouseDown);
-						canvas.on('mouse:over', handleMouseOver);
-						canvas.on('mouse:out', handleMouseOut);
-						await tick(); // wait for the next update cycle
-						canvas.forEachObject((obj: any) => {
-							const scaleX = obj.scaleX;
-							const scaleY = obj.scaleY;
-							const left = obj.left;
-							const top = obj.top;
-							const tempScaleX = scaleX * widthRatio;
-							const tempScaleY = scaleY * heightRatio;
-							const tempLeft = left * widthRatio;
-							const tempTop = top * heightRatio;
-							obj.scaleX = tempScaleX;
-							obj.scaleY = tempScaleY;
-							obj.left = tempLeft;
-							obj.top = tempTop;
-							obj.setCoords();
-						});
-						canvas.renderAll();
+						obj.setCoords();
 					});
+					canvas.on('mouse:down', handleMouseDown);
+					canvas.on('mouse:over', handleMouseOver);
+					canvas.on('mouse:out', handleMouseOut);
+					canvas.on('mouse:wheel', (opt: any) => {
+						const delta = opt.e.deltaY;
+						let zoom = canvas.getZoom();
+						zoom *= 0.999 ** delta;
+						if (zoom > 5) zoom = 5;
+						if (zoom < 0.1) zoom = 0.1;
+						canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+						opt.e.preventDefault();
+						opt.e.stopPropagation();
+					});
+					await tick(); // wait for the next update cycle
+					canvas.forEachObject((obj: any) => {
+						const scaleX = obj.scaleX;
+						const scaleY = obj.scaleY;
+						const left = obj.left;
+						const top = obj.top;
+						const tempScaleX = scaleX * widthRatio;
+						const tempScaleY = scaleY * heightRatio;
+						const tempLeft = left * widthRatio;
+						const tempTop = top * heightRatio;
+						obj.scaleX = tempScaleX;
+						obj.scaleY = tempScaleY;
+						obj.left = tempLeft;
+						obj.top = tempTop;
+						obj.setCoords();
+					});
+					canvas.renderAll();
+				});
 			}
 		});
 		if (fabric) {
@@ -269,16 +269,14 @@
 		}
 	}
 	//////////////////////
-
 	function zoomIn() {
 		let zoom = canvas.getZoom();
 		zoom += 0.1;
-		if (zoom > 7) zoom = 7;
+		if (zoom > 5) zoom = 5;
 		canvas.setZoom(zoom);
-		canvas.setWidth(canvas.getWidth() * zoom);
-		canvas.setHeight(canvas.getHeight() * zoom);
-		adjustScrollbars();
 		canvas.renderAll();
+		container.scrollLeft = 0;
+		container.scrollTop = 0;
 	}
 
 	function zoomOut() {
@@ -286,16 +284,17 @@
 		zoom -= 0.1;
 		if (zoom < 0.1) zoom = 0.1;
 		canvas.setZoom(zoom);
-		canvas.setWidth(canvas.getWidth() / zoom);
-		canvas.setHeight(canvas.getHeight() / zoom);
-		adjustScrollbars();
 		canvas.renderAll();
+		container.scrollLeft = 0;
+		container.scrollTop = 0;
 	}
-
-	function adjustScrollbars() {
-		const zoom = canvas.getZoom();
-		container.style.overflow = zoom > 1 ? 'scroll' : 'hidden';
-	}
+	const handleScroll = () => {
+		const scrollTop = container.scrollTop;
+		const scrollLeft = container.scrollLeft;
+		canvas.setZoom(1);
+		canvas.absolutePan({ x: scrollLeft, y: scrollTop });
+		canvas.renderAll();
+	};
 	//////////////////////
 </script>
 
@@ -327,20 +326,13 @@
 		</div>
 	</div>
 
-	<div bind:this={container} class=" w-full relative border-2 rounded">
+	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
 
 <style>
-	.container {
-		width: 100%;
-		overflow-x: auto; /* Allows horizontal scrolling */
-		overflow-y: auto; /* Allows vertical scrolling */
-		position: relative;
-	}
-
 	button {
 		background-color: #c12020;
 		border: none;
@@ -352,11 +344,5 @@
 
 	button:hover {
 		background-color: #debfbf;
-	}
-
-	@media (max-width: 768px) {
-		.container {
-			min-height: 500px;
-		}
 	}
 </style>
