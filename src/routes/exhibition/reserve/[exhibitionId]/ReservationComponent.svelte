@@ -46,7 +46,6 @@
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
-			setupHammer();
 		}
 	});
 
@@ -79,23 +78,21 @@
 	function handleTap(event: any) {
 		// Handle tap events if necessary
 	}
+
 	const adjustCanvasSize = () => {
+		if (!data[0] || !canvas) return;
 		const width = data[0]?.design?.width;
 		const height = data[0]?.design?.height;
 		const aspectRatio = width / height;
 		const containerWidth = container?.offsetWidth;
 		container.style.height = `${containerWidth / aspectRatio}px`;
-
-		const currentHeight = containerWidth / aspectRatio;
-
-		if (canvas) {
-			canvas.setDimensions({
-				width: containerWidth,
-				height: containerWidth / aspectRatio
-			});
-		}
-		canvas && canvas.renderAll();
+		canvas.setDimensions({
+			width: containerWidth,
+			height: containerWidth / aspectRatio
+		});
+		canvas.renderAll();
 	};
+
 	const loadSeats = async () => {
 		fabric.then((Response: any) => {
 			const canvasElement: any = document.getElementById('canvas');
@@ -103,6 +100,7 @@
 				hoverCursor: 'default',
 				selection: false
 			});
+			setupHammer();
 			adjustCanvasSize();
 
 			if (canvas) {
