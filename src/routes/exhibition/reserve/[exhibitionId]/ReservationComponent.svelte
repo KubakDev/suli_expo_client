@@ -316,8 +316,8 @@
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<!-- Zoom buttons -->
-		<button on:click={zoomIn}>+</button>
-		<button on:click={zoomOut}>-</button>
+		<!-- <button on:click={zoomIn}>+</button>
+		<button on:click={zoomOut}>-</button> -->
 
 		<div class="w-full flex justify-center md:mt-10 my-4">
 			<div class="flex justify-center items-center">
