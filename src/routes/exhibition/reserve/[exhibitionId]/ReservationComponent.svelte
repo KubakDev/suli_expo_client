@@ -13,6 +13,7 @@
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	// import { fabric } from 'fabric';
+	import Hammer from 'hammerjs';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
@@ -20,7 +21,8 @@
 
 	let fabric: any;
 	let previousReserveSeatData: any = [];
-	let canvas: Canvas;
+	let canvas: any;
+
 	let container: any;
 	let selectedObject: any = undefined;
 	let selectableObjectServices: {}[] = [];
@@ -29,7 +31,6 @@
 		top: 0,
 		left: 0
 	};
-
 	let freeServices: any = [];
 	let paidServices: any = [];
 	let reserveSeatData: ReserveSeatModel = {
@@ -40,6 +41,9 @@
 		status: ReservationStatusEnum.PENDING,
 		total_price: 0
 	};
+	// After canvas initialization
+	const mc = new Hammer(canvas.upperCanvasEl);
+	mc.get('pinch').set({ enable: true });
 
 	onMount(async () => {
 		fabric = import('fabric');
@@ -47,74 +51,6 @@
 			await loadSeats();
 		}
 	});
-
-	function setupCanvasInteractions() {
-		let lastPinchZoomLength: any = null;
-		interface TouchPosition {
-			lastX: number;
-			lastY: number;
-		}
-
-		// Create a variable to manage the position
-		let touchPosition: TouchPosition = { lastX: 0, lastY: 0 };
-		const handleTouchMove = (e: TouchEvent) => {
-			if (e.touches.length === 2) {
-				// Handle pinch zoom
-				const touch1 = e.touches[0];
-				const touch2 = e.touches[1];
-				const distance = Math.sqrt(
-					Math.pow(touch2.pageX - touch1.pageX, 2) + Math.pow(touch2.pageY - touch1.pageY, 2)
-				);
-
-				if (lastPinchZoomLength !== null) {
-					const scaleChange = distance / lastPinchZoomLength;
-					canvas.zoomToPoint(
-						new fabric.Point(canvas.getWidth() / 2, canvas.getHeight() / 2),
-						canvas.getZoom() * scaleChange
-					);
-				}
-
-				lastPinchZoomLength = distance;
-				e.preventDefault();
-			} else if (
-				e.touches.length === 1 &&
-				'upperCanvasEl' in canvas &&
-				e.target === canvas.upperCanvasEl
-			) {
-				// Handle pan
-				const touch = e.touches[0];
-				const xChange = touch.clientX - touchPosition.lastX;
-				const yChange = touch.clientY - touchPosition.lastY;
-
-				const newLeft = xChange + canvas.viewportTransform![4];
-				const newTop = yChange + canvas.viewportTransform![5];
-
-				canvas.viewportTransform![4] = newLeft;
-				canvas.viewportTransform![5] = newTop;
-				canvas.requestRenderAll();
-
-				touchPosition.lastX = touch.clientX;
-				touchPosition.lastY = touch.clientY;
-			}
-		};
-
-		const handleTouchStart = (e: TouchEvent) => {
-			if (e.touches.length === 1) {
-				const touch = e.touches[0];
-				touchPosition.lastX = touch.clientX;
-				touchPosition.lastY = touch.clientY;
-			}
-		};
-
-		const canvasElement = document.getElementById('canvas');
-		if (canvasElement) {
-			canvasElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-			canvasElement.addEventListener('touchstart', handleTouchStart);
-			canvasElement.addEventListener('touchend', () => {
-				lastPinchZoomLength = null;
-			});
-		}
-	}
 
 	const adjustCanvasSize = () => {
 		const width = data[0]?.design?.width;
@@ -191,7 +127,7 @@
 
 				/////////////////////////
 				console.log(canvas);
-				setupCanvasInteractions();
+
 				//////////////////
 			}
 		});
@@ -380,8 +316,28 @@
 			canvas.requestRenderAll();
 		});
 	}
+	////////////////////////////////////////
 
-	//////////////////////
+	////////////**************///////////
+	mc.on('pinch', zoomCanvas);
+	function zoomCanvas(event: any) {
+		var pinchScale = event.scale;
+		var newZoom = canvas.getZoom() * pinchScale;
+		canvas.zoomToPoint({ x: event.center.x, y: event.center.y }, newZoom);
+		event.preventDefault();
+	}
+
+	mc.on('pan', function (event: any) {
+		// Handle dragging here
+		const deltaX = event.deltaX;
+		const deltaY = event.deltaY;
+		canvas.relativePan(new fabric.Point(deltaX, deltaY));
+	});
+
+	mc.on('tap', function (event: any) {
+		// Handle tap events if necessary
+	});
+	////////////**************///////////
 </script>
 
 {#if fabric}
