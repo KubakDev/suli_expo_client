@@ -138,7 +138,7 @@
 			</div>
 		{/each}
 	</div>
-	<div bind:this={container} class=" w-full relative overflow-hidden">
+	<div bind:this={container} class=" w-full relative overflow-hidden border-t py-2">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
