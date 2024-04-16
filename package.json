@@ -120,6 +120,7 @@
 		"svelte-email": "^0.0.4",
 		"svelte-fast-marquee": "^0.4.1",
 		"svelte-flatpickr": "^3.3.3",
+		"svelte-gestures": "^4.0.0",
 		"svelte-image": "^0.2.9",
 		"svelte-pdf": "^1.0.20",
 		"svelte-select": "^5.6.1",

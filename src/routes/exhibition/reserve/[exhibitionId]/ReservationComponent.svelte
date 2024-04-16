@@ -65,6 +65,7 @@
 		}
 		canvas && canvas.renderAll();
 	};
+
 	const loadSeats = async () => {
 		fabric.then((Response: any) => {
 			const canvasElement: any = document.getElementById('canvas');
@@ -86,36 +87,43 @@
 						obj.set('selectable', false);
 						obj.set('lockMovementX', true);
 						obj.set('lockMovementY', true);
-
 						obj.setCoords();
 					});
 					canvas.on('mouse:down', handleMouseDown);
 					canvas.on('mouse:over', handleMouseOver);
 					canvas.on('mouse:out', handleMouseOut);
-					canvas.on('mouse:wheel', (opt: any) => {
-						const delta = opt.e.deltaY;
-						let zoom = canvas.getZoom();
-						zoom *= 0.999 ** delta;
-						if (zoom > 5) zoom = 5;
-						if (zoom < 0.1) zoom = 0.1;
-						canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-						opt.e.preventDefault();
-						opt.e.stopPropagation();
-					});
+					// canvas.on('mouse:wheel', (opt: any) => {
+					// 	const delta = opt.e.deltaY;
+					// 	let zoom = canvas.getZoom();
+					// 	zoom *= 0.999 ** delta;
+					// 	if (zoom > 5) zoom = 5;
+					// 	if (zoom < 0.1) zoom = 0.1;
+					// 	canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+					// 	opt.e.preventDefault();
+					// 	opt.e.stopPropagation();
+					// });
 					// Event handler for pinch zoom
-					canvas.on('touch:gesture', (event: any) => {
-						if (event.e.touches && event.e.touches.length === 2) {
-							// Pinch gesture
-							let zoom = canvas.getZoom();
-							zoom *= event.e.scale;
-							if (zoom > 5) zoom = 5;
-							if (zoom < 1) zoom = 1;
-							const point = new fabric.Point(event.self.x, event.self.y);
-							canvas.zoomToPoint(point, zoom);
-							event.e.preventDefault();
-							event.e.stopPropagation();
-						}
-					});
+					// canvas.on('touch:gesture', (event: any) => {
+					// 	if (event.e.touches && event.e.touches.length === 2) {
+					// 		// Pinch gesture
+					// 		let zoom = canvas.getZoom();
+					// 		zoom *= event.e.scale;
+					// 		if (zoom > 5) zoom = 5;
+					// 		if (zoom < 1) zoom = 1;
+					// 		const point = new fabric.Point(event.self.x, event.self.y);
+					// 		canvas.zoomToPoint(point, zoom);
+					// 		event.e.preventDefault();
+					// 		event.e.stopPropagation();
+					// 	}
+					// });
+					// canvas.on('touch:drag', (event: any) => {
+					// 	console.log('drag', event);
+					// 	const delta = new fabric.Point(
+					// 		event.self.x - event.self.lastX,
+					// 		event.self.y - event.self.lastY
+					// 	);
+					// 	canvas.relativePan(delta);
+					// });
 
 					await tick(); // wait for the next update cycle
 					canvas.forEachObject((obj: any) => {
@@ -141,6 +149,7 @@
 		}
 		getPreviousReserveSeatData();
 	};
+
 	const handleMouseDown = (event: any) => {
 		selectedObject = undefined;
 		addSelectedSeat(undefined);
@@ -166,6 +175,7 @@
 			top: pointer.y
 		};
 	};
+
 	async function addServiceDetailForSelectableObject(object: any) {
 		let servicesId = object.services.map((service: any) => service.id);
 		freeServices = [];
@@ -200,6 +210,7 @@
 			});
 		setSeatDataLoading(false);
 	}
+
 	const handleMouseOver = (event: any) => {
 		const object = event.target;
 		if (
@@ -213,6 +224,7 @@
 			canvas.renderAll();
 		}
 	};
+
 	const handleMouseOut = (event: any) => {
 		// const object = event.target;
 		// if (!selectedObject && !object?.objectDetail?.reserve) {
@@ -220,6 +232,7 @@
 		// 	canvas.renderAll();
 		// }
 	};
+
 	function clearSelectedDesign() {
 		canvas.forEachObject((obj: any) => {
 			for (let reservedSeat of previousReserveSeatData) {
@@ -228,6 +241,7 @@
 			canvas.renderAll();
 		});
 	}
+
 	async function getPreviousReserveSeatData() {
 		await supabase
 			.from('seat_reservation')
@@ -241,6 +255,7 @@
 				}
 			});
 	}
+
 	async function checkIfTheSeatSold(reservedSeat: any) {
 		for (let object of data[0].design?.objects) {
 			if (object?.id == reservedSeat?.object_id) {
@@ -283,33 +298,26 @@
 			}
 		}
 	}
-	//////////////////////
-	function zoomIn() {
-		let zoom = canvas.getZoom();
-		zoom += 0.1;
-		if (zoom > 5) zoom = 5;
-		canvas.setZoom(zoom);
-		canvas.renderAll();
-		container.scrollLeft = 0;
-		container.scrollTop = 0;
-	}
 
-	function zoomOut() {
-		let zoom = canvas.getZoom();
-		zoom -= 0.1;
-		if (zoom < 0.1) zoom = 0.1;
-		canvas.setZoom(zoom);
-		canvas.renderAll();
-		container.scrollLeft = 0;
-		container.scrollTop = 0;
-	}
-	const handleScroll = () => {
-		const scrollTop = container.scrollTop;
-		const scrollLeft = container.scrollLeft;
-		canvas.setZoom(1);
-		canvas.absolutePan({ x: scrollLeft, y: scrollTop });
-		canvas.renderAll();
-	};
+	//////////////////////
+	// function zoomIn() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom += 0.1;
+	// 	if (zoom > 5) zoom = 5;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
+	// function zoomOut() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom -= 0.1;
+	// 	if (zoom < 0.1) zoom = 0.1;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
 	//////////////////////
 </script>
 
@@ -348,7 +356,7 @@
 {/if}
 
 <style>
-	button {
+	/* button {
 		background-color: #c12020;
 		border: none;
 		padding: 10px;
@@ -359,5 +367,5 @@
 
 	button:hover {
 		background-color: #debfbf;
-	}
+	} */
 </style>
