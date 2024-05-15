@@ -59,26 +59,36 @@
 		}
 	}
 
-	async function sendEmailWithQRCode(email: string, id: number) {
-		try {
-			const response = await fetch('/form/send-email', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, id })
-			});
+function sendEmailWithQRCode(email: string, id: number): Promise<boolean> {
+    return fetch('/api/form/email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            id: id
+        })
+    })
+    .then((res) => {
+        if (res.status === 200) {
+            return res.json().then(data => {
+                console.log('Email sent:', data);
+                return true;
+            });
+        } else {
+            console.error('Failed to send email:', res.status);
+            return res.text().then(text => {
+                throw new Error(`Failed to send email: ${text}`);
+            });
+        }
+    })
+    .catch((err) => {
+        console.error('Error in sending email:', err);
+        throw err;
+    });
+}
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			const result = await response.json();
-			console.log('Email sending result:', result);
-			return true;
-		} catch (error) {
-			console.error('Error sending email:', error);
-			return false;
-		}
-	}
 </script>
 
 <div class="md:container lg:px-5 py-10 mx-auto flex justify-center">
