@@ -68,6 +68,10 @@ type RootTranslation = {
 	 */
 	home: string
 	/**
+	 * F​o​r​m
+	 */
+	form: string
+	/**
 	 * A​b​o​u​t
 	 */
 	about: string
@@ -878,6 +882,10 @@ export type TranslationFunctions = {
 	 * Home
 	 */
 	home: () => LocalizedString
+	/**
+	 * Form
+	 */
+	form: () => LocalizedString
 	/**
 	 * About
 	 */

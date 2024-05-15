@@ -1,182 +1,371 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { fabric } from 'fabric';
+	import { onMount, tick } from 'svelte';
+	import type { Canvas } from 'fabric/fabric-impl';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { page } from '$app/stores';
+	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
+	import {
+		addSelectedSeat,
+		addSelectedPaidSeatServices,
+		addSelectedFreeSeatServices,
+		setSeatDataLoading,
+		addPreviousReserveSeatData
+	} from './seatReservationStore';
+	import { LL } from '$lib/i18n/i18n-svelte';
+	// import { fabric } from 'fabric';
 
-	let canvas: fabric.Canvas;
-	let container: HTMLElement;
+	export let data: any;
+	export let supabase: SupabaseClient;
+	export let locale: string;
 
-	let isDragging = false;
-	let lastPosX = 0;
-	let lastPosY = 0;
+	let fabric: any;
+	let previousReserveSeatData: any = [];
+	let canvas: any;
+	let container: any;
+	let selectedObject: any = undefined;
+	let selectableObjectServices: {}[] = [];
+	let selectableObjectTotalPrice: number = 0;
+	let popupPosition = {
+		top: 0,
+		left: 0
+	};
 
-	onMount(() => {
-		canvas = new fabric.Canvas('my-fabric-canvas', {
-			selection: false // Disable group selection
-		});
+	let freeServices: any = [];
+	let paidServices: any = [];
+	let reserveSeatData: ReserveSeatModel = {
+		company_id: 0,
+		exhibition_id: +$page.params.exhibitionId,
+		object_id: 0,
+		services: [],
+		status: ReservationStatusEnum.PENDING,
+		total_price: 0
+	};
 
-		addInteractiveObjects();
-		setupMultiTouchZoom();
-		updateCanvasSize();
+	onMount(async () => {
+		fabric = import('fabric');
+		if (data) {
+			await loadSeats();
+		}
 	});
 
-	function addInteractiveObjects() {
-		const rectangle = new fabric.Rect({
-			left: 100,
-			top: 100,
-			fill: 'red',
-			width: 60,
-			height: 70,
-			hasControls: false,
-			lockMovementX: true,
-			lockMovementY: true
-		});
-		canvas.add(rectangle);
+	const adjustCanvasSize = () => {
+		const width = data[0]?.design?.width;
+		const height = data[0]?.design?.height;
+		const aspectRatio = width / height;
+		const containerWidth = container?.offsetWidth;
+		container.style.height = `${containerWidth / aspectRatio}px`;
 
-		const circle = new fabric.Circle({
-			radius: 30,
-			fill: 'green',
-			left: 200,
-			top: 200,
-			hasControls: false,
-			lockMovementX: true,
-			lockMovementY: true
-		});
-		canvas.add(circle);
-	}
+		const currentHeight = containerWidth / aspectRatio;
 
-	function getDistance(touch1: { x: number; y: number }, touch2: { x: number; y: number }) {
-		const dx = touch1.x - touch2.x;
-		const dy = touch1.y - touch2.y;
-		return Math.sqrt(dx * dx + dy * dy);
-	}
+		if (canvas) {
+			canvas.setDimensions({
+				width: containerWidth,
+				height: currentHeight
+			});
+		}
+		canvas && canvas.renderAll();
+	};
 
-	function setupMultiTouchZoom() {
-		let lastDist = 0;
+	const loadSeats = async () => {
+		fabric.then((Response: any) => {
+			const canvasElement: any = document.getElementById('canvas');
+			canvas = new Response.fabric.Canvas(canvasElement, {
+				hoverCursor: 'default',
+				selection: false
+			});
+			adjustCanvasSize();
+			if (canvas) {
+				const width = data[0]?.design?.width;
 
-		canvas.on('mouse:down', (opt) => {
-			isDragging = true;
-			lastPosX = opt.e.clientX;
-			lastPosY = opt.e.clientY;
-		});
+				const height = data[0]?.design?.height;
+				const containerWidth = container?.offsetWidth;
+				const containerHeight = container?.offsetHeight;
+				const widthRatio = containerWidth / width;
+				const heightRatio = containerHeight / height;
+				canvas.loadFromJSON(data[0]?.design, async () => {
+					canvas.forEachObject((obj: any) => {
+						obj.set('selectable', false);
+						obj.set('lockMovementX', true);
+						obj.set('lockMovementY', true);
+						obj.setCoords();
+					});
+					canvas.on('mouse:down', handleMouseDown);
+					canvas.on('mouse:over', handleMouseOver);
+					canvas.on('mouse:out', handleMouseOut);
+					// canvas.on('mouse:wheel', (opt: any) => {
+					// 	const delta = opt.e.deltaY;
+					// 	let zoom = canvas.getZoom();
+					// 	zoom *= 0.999 ** delta;
+					// 	if (zoom > 5) zoom = 5;
+					// 	if (zoom < 0.1) zoom = 0.1;
+					// 	canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+					// 	opt.e.preventDefault();
+					// 	opt.e.stopPropagation();
+					// });
+					// Event handler for pinch zoom
+					// canvas.on('touch:gesture', (event: any) => {
+					// 	if (event.e.touches && event.e.touches.length === 2) {
+					// 		// Pinch gesture
+					// 		let zoom = canvas.getZoom();
+					// 		zoom *= event.e.scale;
+					// 		if (zoom > 5) zoom = 5;
+					// 		if (zoom < 1) zoom = 1;
+					// 		const point = new fabric.Point(event.self.x, event.self.y);
+					// 		canvas.zoomToPoint(point, zoom);
+					// 		event.e.preventDefault();
+					// 		event.e.stopPropagation();
+					// 	}
+					// });
+					// canvas.on('touch:drag', (event: any) => {
+					// 	console.log('drag', event);
+					// 	const delta = new fabric.Point(
+					// 		event.self.x - event.self.lastX,
+					// 		event.self.y - event.self.lastY
+					// 	);
+					// 	canvas.relativePan(delta);
+					// });
 
-		canvas.on('mouse:move', (opt) => {
-			if (isDragging) {
-				const e = opt.e;
-				const container = document.querySelector('.canvas-container');
-				if (container) {
-					container.scrollLeft -= e.clientX - lastPosX;
-					container.scrollTop -= e.clientY - lastPosY;
-				}
-				lastPosX = e.clientX;
-				lastPosY = e.clientY;
+					await tick(); // wait for the next update cycle
+					canvas.forEachObject((obj: any) => {
+						const scaleX = obj.scaleX;
+						const scaleY = obj.scaleY;
+						const left = obj.left;
+						const top = obj.top;
+						const tempScaleX = scaleX * widthRatio;
+						const tempScaleY = scaleY * heightRatio;
+						const tempLeft = left * widthRatio;
+						const tempTop = top * heightRatio;
+						obj.scaleX = tempScaleX;
+						obj.scaleY = tempScaleY;
+						obj.left = tempLeft;
+						obj.top = tempTop;
+						obj.setCoords();
+					});
+					canvas.renderAll();
+				});
 			}
 		});
+		if (fabric) {
+		}
+		getPreviousReserveSeatData();
+	};
 
-		canvas.on('mouse:up', () => {
-			isDragging = false;
-		});
-		canvas.on('touch:gesture', (opt) => {
-			const e = opt.e as TouchEvent;
-			if (e.touches && e.touches.length == 2) {
-				const touch1 = e.touches[0];
-				const touch2 = e.touches[1];
+	const handleMouseDown = (event: any) => {
+		selectedObject = undefined;
+		addSelectedSeat(undefined);
+		if (
+			previousReserveSeatData.some(
+				(x: any) => x.object_id == event.target?.id && x.status == 'accept'
+			)
+		)
+			return;
+		selectedObject = event.target?.objectDetail;
+		clearSelectedDesign();
+		if (!selectedObject?.selectable) return;
 
-				// Calculate the distance between the two touch points
-				const currentDist = getDistance(
-					{
-						x: touch1.clientX,
-						y: touch1.clientY
-					},
-					{
-						x: touch2.clientX,
-						y: touch2.clientY
+		addSelectedSeat(event.target);
+		selectableObjectTotalPrice = +selectedObject?.price;
+		selectableObjectServices = [];
+		if (!selectedObject) return;
+		reserveSeatData.object_id = event?.target?.id;
+		addServiceDetailForSelectableObject(event.target?.objectDetail);
+		const pointer = canvas.getPointer(event.e);
+		popupPosition = {
+			left: pointer.x,
+			top: pointer.y
+		};
+	};
+
+	async function addServiceDetailForSelectableObject(object: any) {
+		let servicesId = object.services.map((service: any) => service.id);
+		freeServices = [];
+		paidServices = [];
+		addSelectedFreeSeatServices([]);
+		addSelectedPaidSeatServices([]);
+		setSeatDataLoading(true);
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				freeServices = [];
+				paidServices = [];
+				addSelectedFreeSeatServices([]);
+				addSelectedPaidSeatServices([]);
+				result.data?.forEach((service: any) => {
+					let selectedObjectService = selectedObject.services.find(
+						(item: any) => item.id === service.id
+					);
+					selectedObjectService.serviceDetail = service;
+					if (selectedObjectService.isFree) {
+						freeServices = [...freeServices, selectedObjectService];
+						addSelectedFreeSeatServices(freeServices);
+					} else {
+						paidServices = [...paidServices, selectedObjectService];
+						addSelectedPaidSeatServices(paidServices);
 					}
-				);
+				});
+				selectedObject = { ...selectedObject };
+			});
+		setSeatDataLoading(false);
+	}
 
-				if (lastDist === 0) {
-					lastDist = currentDist;
-				}
+	const handleMouseOver = (event: any) => {
+		const object = event.target;
+		if (
+			object?.objectDetail &&
+			object?.objectDetail?.selectable &&
+			!object?.objectDetail?.reserve
+		) {
+			// object.set('stroke', '#8d93a5');
+			// object.set('strokeWidth', 3);
+			object.hoverCursor = 'pointer';
+			canvas.renderAll();
+		}
+	};
 
-				// Calculate the scale factor between the new distance and the last distance
-				const scaleFactor = currentDist / lastDist;
+	const handleMouseOut = (event: any) => {
+		// const object = event.target;
+		// if (!selectedObject && !object?.objectDetail?.reserve) {
+		// 	object?.set('stroke', '');
+		// 	canvas.renderAll();
+		// }
+	};
 
-				// Apply the scale factor uniformly to the canvas zoom level
-				const newZoom = canvas.getZoom() * scaleFactor;
-				canvas.setZoom(newZoom);
-				updateCanvasSize(newZoom); // Ensure the canvas size updates with zoom
-
-				// Update the lastDist for the next move
-				lastDist = currentDist;
-
-				// This recalculates the canvas layout to accommodate changes in zoom
-				canvas.requestRenderAll();
+	function clearSelectedDesign() {
+		canvas.forEachObject((obj: any) => {
+			for (let reservedSeat of previousReserveSeatData) {
+				checkIfTheSeatSold(reservedSeat);
 			}
-		});
-
-		// Reset lastDist after the gesture ends
-		canvas.on('touch:gesture:end', () => {
-			lastDist = 0;
+			canvas.renderAll();
 		});
 	}
 
-	function updateCanvasSize(zoomLevel: number = 1) {
-		const baseWidth = 800; // Set to your canvas's original width
-		const baseHeight = 600; // Set to your canvas's original height
-		const newWidth = baseWidth * zoomLevel;
-		const newHeight = baseHeight * zoomLevel;
+	async function getPreviousReserveSeatData() {
+		await supabase
+			.from('seat_reservation')
+			.select('*,company(*)')
+			.eq('exhibition_id', +$page.params.exhibitionId)
+			.then((response) => {
+				previousReserveSeatData = response.data;
+				addPreviousReserveSeatData(previousReserveSeatData);
+				for (let reservedSeat of previousReserveSeatData) {
+					checkIfTheSeatSold(reservedSeat);
+				}
+			});
+	}
 
-		canvas.setWidth(newWidth);
-		canvas.setHeight(newHeight);
-		const canvasEl = canvas.getElement();
-		if (canvasEl) {
-			canvasEl.style.width = `${newWidth}px`;
-			canvasEl.style.height = `${newHeight}px`;
+	async function checkIfTheSeatSold(reservedSeat: any) {
+		for (let object of data[0].design?.objects) {
+			if (object?.id == reservedSeat?.object_id) {
+				canvas.forEachObject((obj: any) => {
+					if (obj.id == object.id) {
+						if (reservedSeat.status == 'accept') {
+							obj.set({
+								objectDetail: {
+									...object.objectDetail,
+									reserve: true
+								}
+							});
+						}
+						if (reservedSeat.status == 'pending') {
+							obj.set('fill', '#A0B0C2');
+							obj.set('stroke', '#A0B0C2');
+							obj.set('strokeWidth', 3);
+						} else if (reservedSeat.status == 'accept') {
+							obj.set('fill', '#ff176b');
+							obj.set('stroke', '#ff176b');
+							obj.set('strokeWidth', 3);
+						}
+						if (obj.type == 'group') {
+							obj.forEachObject((child: any) => {
+								if (reservedSeat.status == 'pending') {
+									child.set('fill', '#A0B0C2');
+									child.set('stroke', '#A0B0C2');
+									child.set('strokeWidth', 3);
+								} else if (reservedSeat.status == 'accept') {
+									child.set('fill', '#ff176b');
+									child.set('stroke', '#ff176b');
+									child.set('strokeWidth', 3);
+								}
+							});
+						}
+						obj.setCoords();
+						canvas.renderAll();
+					}
+				});
+			}
 		}
-		canvas.calcOffset();
 	}
 
-	function zoomIn() {
-		const newZoom = canvas.getZoom() * 1.1;
-		canvas.setZoom(newZoom);
-		updateCanvasSize(newZoom);
-		adjustScroll(newZoom);
-	}
-
-	function zoomOut() {
-		const newZoom = canvas.getZoom() * 0.9;
-		canvas.setZoom(newZoom);
-		updateCanvasSize(newZoom);
-		adjustScroll(newZoom);
-	}
-
-	function adjustScroll(zoomLevel: number) {
-		const container = document.querySelector('.canvas-container');
-		if (container) {
-			const scrollX = (container.scrollWidth * zoomLevel - container.offsetWidth) / 2;
-			const scrollY = (container.scrollHeight * zoomLevel - container.offsetHeight) / 2;
-			container.scrollTo(scrollX, scrollY);
-		}
-	}
+	//////////////////////
+	// function zoomIn() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom += 0.1;
+	// 	if (zoom > 5) zoom = 5;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
+	// function zoomOut() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom -= 0.1;
+	// 	if (zoom < 0.1) zoom = 0.1;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
+	//////////////////////
 </script>
 
-<div class="canvas-container">
-	<canvas id="my-fabric-canvas" />
-</div>
+{#if fabric}
+	<div bind:this={container} class=" w-full relative overflow-hidden">
+		<!-- Zoom buttons -->
+		<!-- <button on:click={zoomIn}>+</button>
+		<button on:click={zoomOut}>-</button> -->
 
-<button on:click={zoomIn}>Zoom In</button>
-<button on:click={zoomOut}>Zoom Out</button>
+		<div class="w-full flex justify-center md:mt-10 my-4">
+			<div class="flex justify-center items-center">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.selected()}</p>
+			</div>
+			<div class="flex justify-center items-center mx-8">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#FF176B] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.reserved()}</p>
+			</div>
+			<div class="flex justify-center items-center">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#A0B0C2] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
+			</div>
+		</div>
+	</div>
+
+	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded">
+		<canvas id="canvas" class="h-full w-full fabric-canvas" />
+		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
+	</div>
+{/if}
 
 <style>
-	.canvas-container {
-		position: relative;
-		overflow: scroll;
-		width: 800px; /* or 100% for full width */
-		height: 600px; /* Adjust as needed */
+	/* button {
+		background-color: #c12020;
+		border: none;
+		padding: 10px;
+		border-radius: 5px;
+		font-size: 16px;
+		margin: 2px;
 	}
 
-	canvas {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
+	button:hover {
+		background-color: #debfbf;
+	} */
 </style>

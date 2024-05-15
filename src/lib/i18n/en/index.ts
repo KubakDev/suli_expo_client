@@ -18,6 +18,7 @@ const en = {
 		loginForm: 'Login Form'
 	},
 	home: 'Home',
+	form: 'Form',
 	about: 'About',
 	contact: 'Contact',
 	news: 'News',
