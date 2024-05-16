@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { PageData } from '../$types';
-	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { countries } from './countries';
+	import { currentMainThemeColors } from '../../stores/darkMode';
+	import QRCode from 'qrcode';
+	import type { PageData } from '../$types';
 
 	let name = '';
 	let companyName = '';
@@ -18,6 +19,7 @@
 
 	async function handleSubmit() {
 		try {
+			// Inserting data
 			const insertResponse = await data.supabase.from('UserRegistration').insert({
 				name,
 				companyName,
@@ -34,6 +36,7 @@
 				throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
 			}
 
+			// Fetching the inserted data using email as the identifier
 			const fetchResponse = await data.supabase
 				.from('UserRegistration')
 				.select('*')
@@ -44,9 +47,14 @@
 				throw new Error(`Fetch operation failed: ${fetchResponse.error.message}`);
 			}
 
-			const userId = fetchResponse.data.id;
+			const userId = fetchResponse.data.id.toString();
+			const qrCodeUrl = `https://localhost:5173/form/user/${userId}`;
+			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
-			const emailSent = await sendEmailWithQRCode(email, userId);
+			console.log('Generated QR Code:', qrCode);
+
+			// Sending email
+			const emailSent = await sendEmailWithQRCode(email, qrCode);
 
 			if (emailSent) {
 				message = 'Data inserted and email sent successfully';
@@ -59,36 +67,35 @@
 		}
 	}
 
-function sendEmailWithQRCode(email: string, id: number): Promise<boolean> {
-    return fetch('/api/form/email', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email,
-            id: id
-        })
-    })
-    .then((res) => {
-        if (res.status === 200) {
-            return res.json().then(data => {
-                console.log('Email sent:', data);
-                return true;
-            });
-        } else {
-            console.error('Failed to send email:', res.status);
-            return res.text().then(text => {
-                throw new Error(`Failed to send email: ${text}`);
-            });
-        }
-    })
-    .catch((err) => {
-        console.error('Error in sending email:', err);
-        throw err;
-    });
-}
+	async function sendEmailWithQRCode(email: string, qrCode: string) {
+		try {
+			const response = await fetch('/api/form/email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email, qrCode })
+			});
 
+			const resultText = await response.text();
+			try {
+				const result = JSON.parse(resultText);
+				console.log('Email sending result:', result);
+
+				if (!response.ok) {
+					console.error('Email sending failed:', result.error);
+					return false;
+				}
+				return true;
+			} catch (jsonError) {
+				console.error('Failed to parse JSON:', resultText); // Log the raw response text
+				return false;
+			}
+		} catch (error) {
+			console.error('Error sending email:', error);
+			return false;
+		}
+	}
 </script>
 
 <div class="md:container lg:px-5 py-10 mx-auto flex justify-center">

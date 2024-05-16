@@ -1,4 +1,4 @@
-import type { RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent } from './$types';
 
 export async function get(event: RequestEvent) {
 	const { id } = event.params;
