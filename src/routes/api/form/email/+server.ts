@@ -4,13 +4,8 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 export const POST: RequestHandler = async ({ request }: any) => {
 	try {
 		const { email, qrCode } = await request.json();
-		console.log('Received request to send email to:', email);
-		console.log('QR Code:', qrCode);
-
 		const adminEmail: string = import.meta.env.VITE_PRIVATE_EMAIL;
 		const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD;
-		// const adminEmail = 'shajwan.namiq2023@gmail.com';
-		// const password = 'shajwan2023SALIH';
 
 		if (!adminEmail || !password) {
 			throw new Error('Email credentials are not set');
@@ -32,7 +27,7 @@ export const POST: RequestHandler = async ({ request }: any) => {
 		console.log('Sending email to:', transporter);
 
 		const mailOptions = {
-			from: `"Your Name" <${adminEmail}>`,
+			from: `"SulyExpo" <${adminEmail}>`,
 			to: email,
 			subject: 'Your QR Code',
 			html: `<p>Scan this QR code:</p><img src="${qrCode}" alt="QR Code" />`

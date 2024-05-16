@@ -3,6 +3,7 @@
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import QRCode from 'qrcode';
 	import type { PageData } from '../$types';
+	import { getRandomTextNumber } from '../../utils/getRandomText';
 
 	let name = '';
 	let companyName = '';
@@ -16,6 +17,7 @@
 	let message = '';
 
 	export let data: PageData;
+	const userPageUrl: string = import.meta.env.VITE_BASE_URL;
 
 	async function handleSubmit() {
 		try {
@@ -48,13 +50,32 @@
 			}
 
 			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `https://localhost:5173/form/${fetchResponse.count}/user/${userId}`;
+			const qrCodeUrl = `${userPageUrl}/${userId}`;
 			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
 			console.log('Generated QR Code:', qrCode);
 
+			// Convert the QR code data URL to a blob
+			const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
+			const fileName = `QR/${getRandomTextNumber()}.png`;
+
+			// Upload the QR code to Supabase storage
+			const uploadResponse = await data.supabase.storage
+				.from('image')
+				.upload(fileName, qrCodeBlob, {
+					contentType: 'image/png'
+				});
+
+			if (uploadResponse.error) {
+				throw new Error(`Upload operation failed: ${uploadResponse.error.message}`);
+			}
+
+			// Fetch the public URL of the uploaded QR code
+			const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
+			console.log('QR Code Public URL:', publicUrl);
+
 			// Sending email
-			const emailSent = await sendEmailWithQRCode(email, qrCode);
+			const emailSent = await sendEmailWithQRCode(email, publicUrl);
 
 			if (emailSent) {
 				message = 'Data inserted and email sent successfully';
@@ -67,14 +88,16 @@
 		}
 	}
 
-	async function sendEmailWithQRCode(email: string, qrCode: string) {
+	async function sendEmailWithQRCode(email: string, qrCodeUrl: string) {
+		console.log('QR Code URL:////////////////////', qrCodeUrl);
+
 		try {
 			const response = await fetch('/api/form/email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ email, qrCode })
+				body: JSON.stringify({ email, qrCode: qrCodeUrl })
 			});
 
 			const resultText = await response.text();
@@ -88,7 +111,7 @@
 				}
 				return true;
 			} catch (jsonError) {
-				console.error('Failed to parse JSON:', resultText); // Log the raw response text
+				console.error('Failed to parse JSON:', resultText);
 				return false;
 			}
 		} catch (error) {

@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import type { PageLoad } from '../../../../company-registration/$types';
+	import type { PageLoad } from '../../company-registration/$types';
 
 	export const load: PageLoad = async ({ params, fetch }: any) => {
 		const { id } = params;
