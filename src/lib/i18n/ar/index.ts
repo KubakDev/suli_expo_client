@@ -17,6 +17,7 @@ const ar = {
 		loginForm: ' تسجيل الدخول'
 	},
 	home: 'الصفحة الرئيسية',
+	form: 'نموذج',
 	about: 'معلومات عنا',
 	contact: 'اتصل بنا',
 	news: 'أخبار',
@@ -78,7 +79,7 @@ const ar = {
 		quantity: 'الكمية :',
 		pricePerService: 'السعر لكل خدمة :',
 		totalPriceForThisService: 'السعر الإجمالي لهذه الخدمة :',
-		lessThan:  'أقل من',
+		lessThan: 'أقل من',
 		isFree: 'مجاني',
 		free: ' مجاني',
 		pending: {
@@ -244,6 +245,25 @@ const ar = {
 			regard: 'يعتبر',
 			team: 'SulyExpo فريق'
 		}
+	},
+	registrationForm: {
+		userInfo: 'معلومات المستخدم',
+		title: 'مرحبا بكم في معرض ',
+		subtitle: 'يرجى ملء نموذج التسجيل',
+		userName: 'الاسم الكامل',
+		email: 'البريد الإلكتروني',
+		country: 'البلد',
+		city: 'المدينة',
+		companyName: 'اسم الشركة',
+		fieldWork: 'مجال العمل',
+		jobGrade: 'الدرجة الوظيفية',
+		phoneNumber: 'رقم الهاتف',
+		hotelBooking: 'هل تحتاج إلى حجز فندق؟',
+		invalidEmail: 'تنسيق البريد الإلكتروني غير صالح.',
+		existEmail: 'البريد الإلكتروني موجود بالفعل في قاعدة البيانات.',
+		insertData: 'تم إدخال البيانات وإرسال البريد الإلكتروني بنجاح',
+		emailFailureMessage: 'تم إدخال البيانات لكن فشل إرسال البريد الإلكتروني',
+		failureMessage: 'حدث خطأ. قد لا يتم إدخال البيانات أو إرسال البريد الإلكتروني.'
 	}
 } satisfies BaseTranslation;
 export default ar;
