@@ -24,7 +24,7 @@ export const POST: RequestHandler = async ({ request }: any) => {
 			}
 		});
 
-		console.log('Sending email to:', transporter);
+		// console.log('Sending email to:', transporter);
 
 		const mailOptions = {
 			from: `"SulyExpo" <${adminEmail}>`,
@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ request }: any) => {
 		};
 
 		const info = await transporter.sendMail(mailOptions);
-		console.log('Email sent: ', info.response);
+		// console.log('Email sent: ', info.response);
 
 		return json({ message: 'Email sent successfully' });
 	} catch (error) {

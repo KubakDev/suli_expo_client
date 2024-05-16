@@ -50,10 +50,10 @@
 			}
 
 			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `${userPageUrl}/${userId}`;
+			const qrCodeUrl = `${userPageUrl}/user/${userId}`;
 			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
-			console.log('Generated QR Code:', qrCode);
+			// console.log('Generated QR Code:', qrCode);
 
 			// Convert the QR code data URL to a blob
 			const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
@@ -72,7 +72,7 @@
 
 			// Fetch the public URL of the uploaded QR code
 			const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
-			console.log('QR Code Public URL:', publicUrl);
+			// console.log('QR Code Public URL:', publicUrl);
 
 			// Sending email
 			const emailSent = await sendEmailWithQRCode(email, publicUrl);
@@ -89,7 +89,7 @@
 	}
 
 	async function sendEmailWithQRCode(email: string, qrCodeUrl: string) {
-		console.log('QR Code URL:////////////////////', qrCodeUrl);
+		// console.log('QR Code URL:////////////////////', qrCodeUrl);
 
 		try {
 			const response = await fetch('/api/form/email', {
@@ -103,7 +103,7 @@
 			const resultText = await response.text();
 			try {
 				const result = JSON.parse(resultText);
-				console.log('Email sending result:', result);
+				// console.log('Email sending result:', result);
 
 				if (!response.ok) {
 					console.error('Email sending failed:', result.error);
