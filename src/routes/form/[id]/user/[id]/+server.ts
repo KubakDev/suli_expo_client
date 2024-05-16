@@ -1,4 +1,4 @@
-import type { RequestEvent } from './$types';
+import type { RequestEvent } from '../../../../api/form/user/[id]/$types';
 
 export async function get(event: RequestEvent) {
 	const { id } = event.params;

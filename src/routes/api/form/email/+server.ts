@@ -7,10 +7,10 @@ export const POST: RequestHandler = async ({ request }: any) => {
 		console.log('Received request to send email to:', email);
 		console.log('QR Code:', qrCode);
 
-		// const adminEmail: string = import.meta.env.VITE_PRIVATE_EMAIL;
-		// const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD;
-		const adminEmail = 'shajwan.namiq2023@gmail.com';
-		const password = 'shajwan2023SALIH';
+		const adminEmail: string = import.meta.env.VITE_PRIVATE_EMAIL;
+		const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD;
+		// const adminEmail = 'shajwan.namiq2023@gmail.com';
+		// const password = 'shajwan2023SALIH';
 
 		if (!adminEmail || !password) {
 			throw new Error('Email credentials are not set');
@@ -18,13 +18,18 @@ export const POST: RequestHandler = async ({ request }: any) => {
 
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.gmail.com',
-			port: 587,
-			secure: false,
+			port: 465,
+			secure: true,
 			auth: {
 				user: adminEmail,
 				pass: password
+			},
+			tls: {
+				rejectUnauthorized: false
 			}
 		});
+
+		console.log('Sending email to:', transporter);
 
 		const mailOptions = {
 			from: `"Your Name" <${adminEmail}>`,
