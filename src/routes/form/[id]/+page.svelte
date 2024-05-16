@@ -1,32 +1,28 @@
-<script context="module" lang="ts">
-	import type { PageLoad } from '../../company-registration/$types';
-
-	export const load: PageLoad = async ({ params, fetch }: any) => {
-		const { id } = params;
-
-		const response = await fetch(`/api/user/${id}`);
-		const user = await response.json();
-
-		if (response.ok) {
-			return { user };
-		} else {
-			throw new Error(user.error || 'Failed to fetch user data');
-		}
-	};
-</script>
-
 <script lang="ts">
-	export let data: { user: any };
+	import { onMount, onDestroy } from 'svelte';
+	export let data: any;
+	import { page } from '$app/stores';
+	console.log(data);
+	let user: any = {};
+
+	onMount(async () => {
+		const { data: res, error } = await data.supabase
+			.from('UserRegistration')
+			.select('*')
+			.eq('id', $page.params.id)
+			.single();
+		user = res;
+		console.log(user);
+	});
 </script>
 
 <div>
-	<h1>Welcome, {data.user.name}!</h1>
-	<p>Company Name: {data.user.companyName}</p>
-	<p>Field Work: {data.user.fieldWork}</p>
-	<p>Job Grade: {data.user.jobGrade}</p>
-	<p>Phone Number: {data.user.phoneNumber}</p>
-	<p>Email: {data.user.email}</p>
-	<p>Country: {data.user.country}</p>
-	<p>City: {data.user.city}</p>
-	<p>Hotel Booking: {data.user.hotelBooking}</p>
+	<p>Company Name: {user.companyName}</p>
+	<p>Field Work: {user.fieldWork}</p>
+	<p>Job Grade: {user.jobGrade}</p>
+	<p>Phone Number: {user.phoneNumber}</p>
+	<p>Email: {user.email}</p>
+	<p>Country: {user.country}</p>
+	<p>City: {user.city}</p>
+	<p>Hotel Booking: {user.hotelBooking}</p>
 </div>

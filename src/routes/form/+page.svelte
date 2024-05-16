@@ -50,7 +50,7 @@
 			}
 
 			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `${userPageUrl}/user/${userId}`;
+			const qrCodeUrl = `${userPageUrl}/form/${userId}`;
 			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
 			// console.log('Generated QR Code:', qrCode);
