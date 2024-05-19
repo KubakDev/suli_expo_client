@@ -169,6 +169,9 @@
 		city = '';
 		hotelBooking = 'No';
 	}
+
+	let direction = 'ltr';
+	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
 </script>
 
 <section class="bg-gray-200 w-full min-h-screen flex items-center justify-center">
@@ -211,7 +214,7 @@
 					dir="ltr"
 					on:submit|preventDefault={handleSubmit}
 				>
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="name" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.userName()}
 						</label>
@@ -223,7 +226,7 @@
 							required
 						/>
 					</div>
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="email" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.email()}
 						</label>
@@ -235,8 +238,7 @@
 							required
 						/>
 					</div>
-
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="companyName" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.companyName()}
 						</label>
@@ -248,8 +250,7 @@
 							required
 						/>
 					</div>
-
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="fieldWork" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.fieldWork()}
 						</label>
@@ -261,7 +262,7 @@
 							required
 						/>
 					</div>
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="jobGrade" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.jobGrade()}
 						</label>
@@ -273,8 +274,7 @@
 							required
 						/>
 					</div>
-
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="phoneNumber" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.phoneNumber()}
 						</label>
@@ -286,7 +286,7 @@
 							required
 						/>
 					</div>
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="hotelBooking" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.hotelBooking()}
 						</label>
@@ -300,8 +300,7 @@
 							<option value="Yes">Yes</option>
 						</select>
 					</div>
-
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="country" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.country()}
 						</label>
@@ -317,8 +316,7 @@
 							{/each}
 						</select>
 					</div>
-
-					<div class="col-span-6 md:col-span-3">
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="city" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.city()}
 						</label>
@@ -330,8 +328,10 @@
 							required
 						/>
 					</div>
-
-					<div class="col-span-6 flex justify-end items-center w-full gap-4">
+					<div
+						class="col-span-6 flex justify-end items-center w-full gap-4"
+						style="direction: {direction};"
+					>
 						<button
 							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 							class="inline-block shrink-0 rounded-md border px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent focus:outline-none focus:ring"
