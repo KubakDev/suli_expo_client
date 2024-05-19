@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ request }: any) => {
 		}
 
 		const transporter = nodemailer.createTransport({
-			host: 'smtp.gmail.com',
+			host: 's808.sureserver.com',
 			port: 465,
 			secure: true,
 			auth: {

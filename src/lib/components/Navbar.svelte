@@ -73,10 +73,6 @@
 		{
 			title: 'contact',
 			url: '/contact'
-		},
-		{
-			title: 'form',
-			url: '/form'
 		}
 	];
 	type TranslationFunctions = {
