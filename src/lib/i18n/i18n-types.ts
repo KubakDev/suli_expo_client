@@ -68,6 +68,10 @@ type RootTranslation = {
 	 */
 	home: string
 	/**
+	 * F​o​r​m
+	 */
+	form: string
+	/**
 	 * A​b​o​u​t
 	 */
 	about: string
@@ -825,6 +829,76 @@ type RootTranslation = {
 			team: string
 		}
 	}
+	registrationForm: {
+		/**
+		 * U​s​e​r​ ​I​n​f​o​r​m​a​t​i​o​n
+		 */
+		userInfo: string
+		/**
+		 * W​e​l​c​o​m​e​ ​t​o​ ​S​u​l​y​E​x​p​o
+		 */
+		title: string
+		/**
+		 * P​l​e​a​s​e​ ​f​i​l​l​ ​o​u​t​ ​y​o​u​r​ ​r​e​g​i​s​t​r​a​t​i​o​n
+		 */
+		subtitle: string
+		/**
+		 * F​u​l​l​N​a​m​e
+		 */
+		userName: string
+		/**
+		 * E​m​a​i​l
+		 */
+		email: string
+		/**
+		 * C​o​u​n​t​r​y
+		 */
+		country: string
+		/**
+		 * C​i​t​y
+		 */
+		city: string
+		/**
+		 * C​o​m​p​a​n​y​ ​N​a​m​e
+		 */
+		companyName: string
+		/**
+		 * F​i​e​l​d​ ​W​o​r​k
+		 */
+		fieldWork: string
+		/**
+		 * J​o​b​ ​G​r​a​d​e
+		 */
+		jobGrade: string
+		/**
+		 * P​h​o​n​e​ ​N​u​m​b​e​r
+		 */
+		phoneNumber: string
+		/**
+		 * D​o​ ​y​o​u​ ​n​e​e​d​ ​h​o​t​e​l​ ​b​o​o​k​i​n​g​ ​?
+		 */
+		hotelBooking: string
+		/**
+		 * I​n​v​a​l​i​d​ ​e​m​a​i​l​ ​f​o​r​m​a​t​.
+		 */
+		invalidEmail: string
+		/**
+		 * E​m​a​i​l​ ​a​l​r​e​a​d​y​ ​e​x​i​s​t​s​ ​i​n​ ​t​h​e​ ​d​a​t​a​b​a​s​e​.
+		 */
+		existEmail: string
+		/**
+		 * D​a​t​a​ ​i​n​s​e​r​t​e​d​ ​a​n​d​ ​e​m​a​i​l​ ​s​e​n​t​ ​s​u​c​c​e​s​s​f​u​l​l​y
+		 */
+		insertData: string
+		/**
+		 * D​a​t​a​ ​i​n​s​e​r​t​e​d​ ​b​u​t​ ​e​m​a​i​l​ ​s​e​n​d​i​n​g​ ​f​a​i​l​e​d
+		 */
+		emailFailureMessage: string
+		/**
+		 * A​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d​.​ ​D​a​t​a​ ​m​a​y​ ​n​o​t​ ​b​e​ ​i​n​s​e​r​t​e​d​ ​o​r​ ​e​m​a​i​l​ ​m​a​y​ ​n​o​t​ ​b​e​ ​s​e​n​t​.
+		 */
+		failureMessage: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -878,6 +952,10 @@ export type TranslationFunctions = {
 	 * Home
 	 */
 	home: () => LocalizedString
+	/**
+	 * Form
+	 */
+	form: () => LocalizedString
 	/**
 	 * About
 	 */
@@ -1634,6 +1712,76 @@ export type TranslationFunctions = {
 			 */
 			team: () => LocalizedString
 		}
+	}
+	registrationForm: {
+		/**
+		 * User Information
+		 */
+		userInfo: () => LocalizedString
+		/**
+		 * Welcome to SulyExpo
+		 */
+		title: () => LocalizedString
+		/**
+		 * Please fill out your registration
+		 */
+		subtitle: () => LocalizedString
+		/**
+		 * FullName
+		 */
+		userName: () => LocalizedString
+		/**
+		 * Email
+		 */
+		email: () => LocalizedString
+		/**
+		 * Country
+		 */
+		country: () => LocalizedString
+		/**
+		 * City
+		 */
+		city: () => LocalizedString
+		/**
+		 * Company Name
+		 */
+		companyName: () => LocalizedString
+		/**
+		 * Field Work
+		 */
+		fieldWork: () => LocalizedString
+		/**
+		 * Job Grade
+		 */
+		jobGrade: () => LocalizedString
+		/**
+		 * Phone Number
+		 */
+		phoneNumber: () => LocalizedString
+		/**
+		 * Do you need hotel booking ?
+		 */
+		hotelBooking: () => LocalizedString
+		/**
+		 * Invalid email format.
+		 */
+		invalidEmail: () => LocalizedString
+		/**
+		 * Email already exists in the database.
+		 */
+		existEmail: () => LocalizedString
+		/**
+		 * Data inserted and email sent successfully
+		 */
+		insertData: () => LocalizedString
+		/**
+		 * Data inserted but email sending failed
+		 */
+		emailFailureMessage: () => LocalizedString
+		/**
+		 * An error occurred. Data may not be inserted or email may not be sent.
+		 */
+		failureMessage: () => LocalizedString
 	}
 }
 

@@ -214,7 +214,7 @@
 		try {
 			const { error } = await data.supabase.auth.signOut();
 			if (error) throw error;
-			 currentUser.set(null);
+			currentUser.set(null);
 			goto('/');
 		} catch (err) {}
 	}

@@ -18,6 +18,7 @@ const en = {
 		loginForm: 'Login Form'
 	},
 	home: 'Home',
+	form: 'Form',
 	about: 'About',
 	contact: 'Contact',
 	news: 'News',
@@ -175,7 +176,6 @@ const en = {
 		alertText: 'Do you have account?',
 		warning: 'Password must be at least 6 characters long.'
 	},
-
 	loggin: {
 		message: 'Please Check Your Email for reset password',
 		login: 'Login',
@@ -248,6 +248,25 @@ const en = {
 			regard: 'Regards',
 			team: 'SulyExpo Team'
 		}
+	},
+	registrationForm: {
+		userInfo: 'User Information',
+		title: 'Welcome to SulyExpo',
+		subtitle: 'Please fill out your registration',
+		userName: 'FullName',
+		email: 'Email',
+		country: 'Country',
+		city: 'City',
+		companyName: 'Company Name',
+		fieldWork: 'Field Work',
+		jobGrade: 'Job Grade',
+		phoneNumber: 'Phone Number',
+		hotelBooking: 'Do you need hotel booking ?',
+		invalidEmail: 'Invalid email format.',
+		existEmail: 'Email already exists in the database.',
+		insertData: 'Data inserted and email sent successfully',
+		emailFailureMessage: 'Data inserted but email sending failed',
+		failureMessage: 'An error occurred. Data may not be inserted or email may not be sent.'
 	}
 } satisfies BaseTranslation;
 

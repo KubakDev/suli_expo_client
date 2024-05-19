@@ -18,6 +18,7 @@ const ckb = {
 		loginForm: 'فۆڕمی چونەژوورەوە'
 	},
 	home: 'سەرەکی',
+	form: 'فۆڕم',
 	about: 'دەربارە',
 	contact: 'پەیوەندی',
 	news: 'هەواڵەکان',
@@ -250,6 +251,25 @@ const ckb = {
 			regard: 'لەگەڵ ڕێزدا',
 			team: 'SulyExpo تیمی'
 		}
+	},
+	registrationForm: {
+		userInfo: 'زانیاری بەکارهێنەر',
+		title: 'بەخێربێیت بۆ  پێشەنگای',
+		subtitle: 'تکایە فۆرمی تۆمارکردن پڕ بکەوە',
+		userName: 'ناوی تەواو',
+		email: 'ئیمەیل',
+		country: 'وڵات',
+		city: 'شار',
+		companyName: 'ناوی کۆمپانیا',
+		fieldWork: 'میدانی کار',
+		jobGrade: 'پلەی کار',
+		phoneNumber: 'ژمارەی مۆبایل',
+		hotelBooking: 'پێویستت بە حەجزی ئۆتێل هەیە؟',
+		invalidEmail: 'فۆڕماتی ئیمەیل نادروستە.',
+		existEmail: 'ئیمەیل پێشتر هەیە.',
+		insertData: 'زانیاریەکان تۆمارکرا و هەژمارەکە سەرکەوتوو بوو بۆ ناردن',
+		emailFailureMessage: ' زانیاریەکان تۆمارکرا بەڵام ناردنی ئیمەیلەکە سەرکەوتوو نەبوو ',
+		failureMessage: 'هەڵەیەک روویدا. زانیاریەکان ناتوانرێت تۆمار بکرێت یان ئیمەیل نە نێردرا.'
 	}
 } satisfies Translation;
 export default ckb;
