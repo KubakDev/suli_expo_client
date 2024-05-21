@@ -6,6 +6,8 @@
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { onMount } from 'svelte';
+	import { profileStore } from '../../stores/userStore';
 
 	let name = '';
 	let companyName = '';
@@ -172,6 +174,19 @@
 
 	let direction = 'ltr';
 	$: if ($locale === 'ckb' || $locale === 'ar') direction = 'rtl';
+
+	///////// get required fields from db  ////////
+	let profiles: any[] = [];
+
+	onMount(async () => {
+		const userData = await profileStore.get(data.supabase);
+		if (userData) {
+			profiles = userData;
+		}
+	});
+
+	$: profiles;
+	$: userTitle = profiles[0]?.title ? JSON.parse(profiles[0].title)[$locale] : '';
 </script>
 
 <section class="bg-gray-200 w-full min-h-screen flex items-center justify-center">
@@ -179,6 +194,7 @@
 		<div class="bg-white p-12 rounded-lg shadow-md w-full">
 			<h1 class="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
 				{$LL.registrationForm.title()}
+				{userTitle}
 			</h1>
 
 			<p class="mt-4 leading-relaxed text-gray-500 text-lg text-center">

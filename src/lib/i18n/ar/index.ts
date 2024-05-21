@@ -247,8 +247,8 @@ const ar = {
 		}
 	},
 	registrationForm: {
-		userInfo: 'معلومات المستخدم',
-		title: 'مرحبا بكم في معرض ',
+		userInfo: 'معلومات المستخدم ل',
+		title: 'مرحبا بكم في ',
 		subtitle: 'يرجى ملء نموذج التسجيل',
 		userName: 'الاسم الكامل',
 		email: 'البريد الإلكتروني',

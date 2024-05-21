@@ -253,8 +253,8 @@ const ckb = {
 		}
 	},
 	registrationForm: {
-		userInfo: 'زانیاری بەکارهێنەر',
-		title: 'بەخێربێیت بۆ  پێشەنگای',
+		userInfo: 'زانیاری بەکارهێنەر بۆ',
+		title: 'بەخێربێیت بۆ ',
 		subtitle: 'تکایە فۆرمی تۆمارکردن پڕ بکەوە',
 		userName: 'ناوی تەواو',
 		email: 'ئیمەیڵ',
