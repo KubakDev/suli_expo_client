@@ -34,6 +34,19 @@
 
 	$: profiles;
 	$: userTitle = profiles[0]?.title ? JSON.parse(profiles[0].title)[$locale] : '';
+
+	// convert data to local
+	function formatDate(dateString: string) {
+		const options: Intl.DateTimeFormatOptions = {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit'
+		};
+		return new Intl.DateTimeFormat($locale, options).format(new Date(dateString));
+	}
 </script>
 
 {#if loading}
@@ -75,6 +88,7 @@
 				{#if profiles[0]?.hotelBooking === 'true' && user.hotelBooking}
 					<p><strong>{$LL.registrationForm.hotelBooking()}:</strong> {user.hotelBooking}</p>
 				{/if}
+				<p><strong>{$LL.registrationForm.createdAt()}:</strong> {formatDate(user.created_at)}</p>
 			</div>
 		</div>
 	</div>

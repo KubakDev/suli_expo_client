@@ -13,8 +13,7 @@ export const load = async ({ fetch, data, depends, params, url }) => {
 		supabaseUrl: import.meta.env.VITE_PUBLIC_SUPABASE_URL,
 		supabaseKey: import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY,
 		event: { fetch },
-		serverSession: data.session,
-
+		serverSession: data.session
 	});
 
 	const {
