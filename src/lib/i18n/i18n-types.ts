@@ -831,11 +831,11 @@ type RootTranslation = {
 	}
 	registrationForm: {
 		/**
-		 * U​s​e​r​ ​I​n​f​o​r​m​a​t​i​o​n
+		 * U​s​e​r​ ​i​n​f​o​r​m​a​t​i​o​n​ ​t​o
 		 */
 		userInfo: string
 		/**
-		 * W​e​l​c​o​m​e​ ​t​o​ ​S​u​l​y​E​x​p​o
+		 * W​e​l​c​o​m​e​ ​t​o
 		 */
 		title: string
 		/**
@@ -1715,11 +1715,11 @@ export type TranslationFunctions = {
 	}
 	registrationForm: {
 		/**
-		 * User Information
+		 * User information to
 		 */
 		userInfo: () => LocalizedString
 		/**
-		 * Welcome to SulyExpo
+		 * Welcome to
 		 */
 		title: () => LocalizedString
 		/**

@@ -250,8 +250,8 @@ const en = {
 		}
 	},
 	registrationForm: {
-		userInfo: 'User Information',
-		title: 'Welcome to SulyExpo',
+		userInfo: 'User information to',
+		title: 'Welcome to',
 		subtitle: 'Please fill out your registration',
 		userName: 'FullName',
 		email: 'Email',
