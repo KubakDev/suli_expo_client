@@ -898,6 +898,10 @@ type RootTranslation = {
 		 * A​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d​.​ ​D​a​t​a​ ​m​a​y​ ​n​o​t​ ​b​e​ ​i​n​s​e​r​t​e​d​ ​o​r​ ​e​m​a​i​l​ ​m​a​y​ ​n​o​t​ ​b​e​ ​s​e​n​t​.
 		 */
 		failureMessage: string
+		/**
+		 * D​a​t​e​ ​c​r​e​a​t​e​d
+		 */
+		createdAt: string
 	}
 }
 
@@ -1782,6 +1786,10 @@ export type TranslationFunctions = {
 		 * An error occurred. Data may not be inserted or email may not be sent.
 		 */
 		failureMessage: () => LocalizedString
+		/**
+		 * Date created
+		 */
+		createdAt: () => LocalizedString
 	}
 }
 

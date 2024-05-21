@@ -266,7 +266,8 @@ const en = {
 		existEmail: 'Email already exists in the database.',
 		insertData: 'Data inserted and email sent successfully',
 		emailFailureMessage: 'Data inserted but email sending failed',
-		failureMessage: 'An error occurred. Data may not be inserted or email may not be sent.'
+		failureMessage: 'An error occurred. Data may not be inserted or email may not be sent.',
+		createdAt:"Date created"
 	}
 } satisfies BaseTranslation;
 
