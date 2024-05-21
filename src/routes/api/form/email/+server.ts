@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
+import { get } from 'svelte/store';
+import { locale as $locale } from '$lib/i18n/i18n-svelte';
 
 const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
@@ -13,12 +15,17 @@ export const POST: RequestHandler = async ({ request }) => {
 		const adminEmail: string = import.meta.env.VITE_PRIVATE_EMAIL;
 		const password: string = import.meta.env.VITE_PRIVATE_EMAIL_PASSWORD;
 
+		const currentLocale = get($locale);
 		if (!adminEmail || !password) {
 			throw new Error('Email credentials are not set');
 		}
 
 		// Fetch profile data
-		const { data: profiles, error } = await supabase.from('userProfile').select('*');
+		const { data: profiles, error } = await supabase
+			.from('userProfile')
+			.select('*')
+			.eq('id', 1)
+			.single();
 
 		if (error) {
 			console.error('Error fetching profile:', error);
@@ -26,9 +33,13 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		const emailSubject =
-			profiles && profiles[0]?.emailSubject ? profiles[0].emailSubject : 'sulyExpo';
+			profiles && profiles.emailSubject
+				? JSON.parse(profiles.emailSubject)[currentLocale]
+				: 'sulyExpo';
 		const emailDescription =
-			profiles && profiles[0]?.emailDescription ? profiles[0].emailDescription : 'Your QR Code';
+			profiles && profiles.emailDescription
+				? JSON.parse(profiles.emailDescription)[currentLocale]
+				: 'Your QR Code';
 
 		const transporter = nodemailer.createTransport({
 			host: 's808.sureserver.com',
