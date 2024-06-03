@@ -141,7 +141,7 @@
 		const response = data.supabase.auth.getSession();
 		response.then(async (res) => {
 			let user: any = res.data.session;
-			const timeToExpiration = user.expires_at - currentTime;
+			const timeToExpiration = (user ? user.expires_at : 0 - currentTime);
 
 			if (timeToExpiration <= 300) {
 				await data.supabase.auth.refreshSession();

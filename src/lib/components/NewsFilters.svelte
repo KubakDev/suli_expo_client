@@ -1,10 +1,10 @@
 <script lang="ts">
 	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
 	import LL, { locale } from "$lib/i18n/i18n-svelte";
-	import { Checkbox, Chevron, Dropdown } from "flowbite-svelte";
+	import { Checkbox, Dropdown } from "flowbite-svelte";
 
 
-	import { ArrowDown, ArrowUp } from "svelte-heros-v2";
+	import { ArrowDown, ArrowUp, ChevronDown } from "svelte-heros-v2";
 	import Constants from "../../utils/constants";
 	import { newsStore } from '../../stores/newsStore';
 	import type { SupabaseClient } from '@supabase/supabase-js';
@@ -89,10 +89,12 @@
     <div class="w-full z-50">
         <button
             class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
-            ><span
-                class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor flex flex-row"
-                ><Chevron>{$LL.filterByExhibition()}</Chevron></span
-            ></button
+            >
+            <span
+                class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor flex flex-row justify-between items-center w-full"
+                >{$LL.filterByExhibition()}<ChevronDown></ChevronDown></span
+            >
+            </button
         >
         <Dropdown class="w-80 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor rounded-lg">
             <div

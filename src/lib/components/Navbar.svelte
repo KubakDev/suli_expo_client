@@ -1,4 +1,5 @@
 <script lang="ts">
+	// import Chevron from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import {
@@ -6,10 +7,8 @@
 		NavLi,
 		NavUl,
 		NavHamburger,
-		Chevron,
 		Avatar,
 		NavBrand,
-		Modal
 	} from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
@@ -21,7 +20,7 @@
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { onDestroy, onMount } from 'svelte';
 	import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
-	import { Moon, Sun } from 'svelte-heros-v2';
+	import { ChevronDoubleDown, ChevronDown, Moon, Sun } from 'svelte-heros-v2';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
 	import { UserSolid } from 'flowbite-svelte-icons';
@@ -546,11 +545,12 @@
 							id={navTitle.title}
 							class="lg:-ml-3 text-center font-medium inline-flex items-center justify-center text-base focus:outline-none focus:ring-0 cursor-pointer lg:text-lg"
 						>
-							<Chevron aligned>
-								<span class="mx-2">
-									{translation[navTitle.title + '']()}
-								</span></Chevron
+						<span class="mx-2 flex justify-center">
+							{translation[navTitle.title + '']()}
+							<ChevronDown aligned>
+								</ChevronDown
 							>
+						</span>
 						</button>
 
 						<ul

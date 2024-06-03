@@ -16,8 +16,6 @@
 	import { getNameRegex } from '../../../utils/urlRegexName';
 	import { getPageType } from '../../../utils/pageType';
 	import { newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
-	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
-	import { Button, Checkbox, Chevron, Dropdown, Label } from 'flowbite-svelte';
 	import NewsFilters from '$lib/components/NewsFilters.svelte';
 	import { incrementNewsViewer, viewAdded_news } from '../../../stores/viewersStore';
 

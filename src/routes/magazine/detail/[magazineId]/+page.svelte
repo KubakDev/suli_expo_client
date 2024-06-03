@@ -7,11 +7,9 @@
 	import RecentItems from '$lib/components/RecentItems.svelte';
 	import {
 		Button,
-		Chevron,
 		Dropdown,
 		DropdownDivider,
 		DropdownItem,
-		GradientButton,
 		Spinner
 	} from 'flowbite-svelte';
 	import { FilePdfSolid } from 'flowbite-svelte-icons';
@@ -20,6 +18,7 @@
 	import Constants from '../../../../utils/constants.js';
 	import { modelToItemModel } from '../../../../models/covertModel.js';
 	import { magazineCurrentThemeColors, currentMainThemeColors } from '../../../../stores/darkMode';
+	import { ChevronDown } from 'svelte-heros-v2';
 
 	export let data;
 	let magazine: MagazineModel | undefined | null;
@@ -57,7 +56,7 @@
 				<div class="flex justify-start mt-4 mx-2">
 					<Button
 						style="background-color:{$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
-						class="w-[12vh]  "><Chevron>{$LL.pdf_file()}</Chevron></Button
+						class="w-[12vh]  ">{$LL.pdf_file()}<ChevronDown></ChevronDown></Button
 					>
 					<Dropdown
 						style="background-color:{$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
