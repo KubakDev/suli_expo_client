@@ -1,72 +1,55 @@
-<!-- <script lang="ts">
-	import { TitleUi } from '$lib/components/TitleUi.svelte';
-	import { LL } from '$lib/i18n/i18n-svelte';
-	//@ts-ignore
-	import Marquee from "svelte-fast-marquee";
-	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
-	import type { ExhibitionModel } from '../../models/exhibitionModel';
-	import TitleUi from './TitleUi.svelte';
-	export let exhibition: ExhibitionModel;
-	export let locale: Locale;
-</script>
-
-{#if exhibition.sponsor_images}
-<TitleUi text={$LL.exhibition_mini_data.Exhibition_Sponsors()} />
-<div class="sponsor-slider flex py-6">
-	<Marquee
-	speed={30}
-	> 
-		<div class="flex flex-row justify-between">
-			{#each exhibition.sponsor_images as sponsor}
-				<img src={sponsor} class="w-48 h-48 object-cover rounded-xl" />
-			{/each}
-		</div>
-	</Marquee>
-</div>
-{/if} -->
-
 <script lang="ts">
-	import { LL } from '$lib/i18n/i18n-svelte';
-	import TitleUi from '$lib/components/TitleUi.svelte';
+	import { onMount } from 'svelte';
+
 	export let images: string[];
 
-	let selectedImage = 0;
+	let currentIndex = 0;
+	let visibleImages: any = [];
 
-	function nextImage() {
-		selectedImage = (selectedImage + 1) % images.length;
+	// Initialize the visible images with the first three images
+	$: updateVisibleImages();
+
+	function updateVisibleImages() {
+		visibleImages = images.slice(currentIndex, currentIndex + 3);
+		if (visibleImages.length < 3) {
+			visibleImages = [...visibleImages, ...images.slice(0, 3 - visibleImages.length)];
+		}
 	}
 
-	setInterval(nextImage, 3000);
+	function nextSlide() {
+		currentIndex = (currentIndex + 1) % images.length;
+		updateVisibleImages();
+	}
+
+	onMount(() => {
+		const interval = setInterval(nextSlide, 4000);
+		return () => clearInterval(interval);
+	});
 </script>
 
-<div class="flex overflow-x-hidden">
-	<div class="animate-marquee flex flex-row-reverse whitespace-nowrap w-full mx-auto py-5">
-		{#each images as image}
-			<!-- svelte-ignore a11y-missing-attribute -->
-			<img
-				src={image}
-				class="w-48 h-32 object-fit rounded-lg mx-6 hover:bg-lightTransparentBackgroundColor hover:p-1 transition-all"
-			/>
-		{/each}
-	</div>
+<div class="slideshow-container">
+	{#each visibleImages as image, index}
+		<div class="slide">
+			<img src={image} alt="Slideshow image" />
+		</div>
+	{/each}
 </div>
 
 <style>
-	.animate-marquee {
-		animation: marquee 17.5s linear infinite;
+	.slideshow-container {
+		display: flex;
+		overflow: hidden;
+		width: 100%;
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
 	}
-
-	.animate-marquee:hover {
-		animation-play-state: paused;
+	.slide {
+		min-width: 33.33%;
+		transition: transform 0.5s ease-in-out;
 	}
-
-	@keyframes marquee {
-		0% {
-			/* Start with images shifted outside viewport */
-			transform: translateX(50%);
-		}
-		100% {
-			transform: translateX(-100%);
-		}
+	img {
+		width: 100%;
+		height: auto;
 	}
 </style>
