@@ -27,11 +27,20 @@
 </script>
 
 {#if images.length > 0}
-<Marquee speed={0.5} hoverSpeed={0.3} class="py-16 gap-2">
-	{#each images as image}
-		<img class="w-32 h-32 p-1" alt="flowbite-svelte icon logo" src="{image}" />
-	{/each}
-</Marquee>
+<div class="w-full h-auto flex justify-center items-center">
+
+	<!-- svelte-ignore a11y-distracting-elements -->
+	<marquee behavior="smooth" direction="left" scrollamount="10" class="w-full h-auto">
+		<div class="flex flex-row">
+		  {#each images as image}
+			<img class="w-32 h-32 p-1 object-contain" alt="flowbite-svelte icon logo" src="{image}" />
+		  {/each}
+		</div>
+	  </marquee>
+	  
+</div>
+<!-- <Marquee speed={0.5} hoverSpeed={0.3} class="py-16 gap-2"> -->
+<!-- </Marquee> -->
 {/if}
 <!-- 
 <style>
