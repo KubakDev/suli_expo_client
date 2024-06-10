@@ -16,10 +16,10 @@
 	import ExhibitionMapImage from '$lib/components/exhibitionMapImage.svelte';
 	import { Carousel } from 'flowbite-svelte';
 	import 'pdfjs-dist/web/pdf_viewer.css';
-	import {
+	const {
 		exhibitionCurrentMainThemeColors,
 		currentMainThemeColors
-	} from '../../../../stores/darkMode';
+	} = require('../../../../stores/darkMode');
 
 	export let data: any;
 	const youtubeRegex =
