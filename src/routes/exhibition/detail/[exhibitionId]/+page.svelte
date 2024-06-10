@@ -25,7 +25,7 @@
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
-	let exhibitionImage: { id: number; name: string; imgurl: string; attribution: string }[] = [];
+	let exhibitionImage: { alt: string; src: string; title: string }[] = [];
 
 	let exhibition: ExhibitionModel;
 	async function getExhibition() {
@@ -48,10 +48,9 @@
 		if (exhibition!.images.length) {
 			exhibitionImage = exhibition!.images.map((image, index) => {
 				return {
-					id: index,
-					name: exhibition.title,
-					imgurl: image,
-					attribution: exhibition.description ?? ''
+					title: exhibition.title,
+					src: image,
+					alt: exhibition.description ?? ''
 				};
 			});
 		}
