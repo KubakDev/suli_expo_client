@@ -261,13 +261,14 @@ const en = {
 		fieldWork: 'Field Work',
 		jobGrade: 'Job Grade',
 		phoneNumber: 'Phone Number',
+		referrer_name: 'Who referred you to our exhibition?',
 		hotelBooking: 'Do you need hotel booking ?',
 		invalidEmail: 'Invalid email format.',
 		existEmail: 'Email already exists in the database.',
 		insertData: 'Data inserted and email sent successfully',
 		emailFailureMessage: 'Data inserted but email sending failed',
 		failureMessage: 'An error occurred. Data may not be inserted or email may not be sent.',
-		createdAt:"Date created"
+		createdAt: 'Date created'
 	}
 } satisfies BaseTranslation;
 

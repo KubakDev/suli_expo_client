@@ -264,6 +264,7 @@ const ckb = {
 		fieldWork: 'بواری کارکردن',
 		jobGrade: 'پلەی کار',
 		phoneNumber: 'ژمارەی مۆبایل',
+		referrer_name: 'کێ پێشنیاری بۆ کردیت بۆ بەشداریکردن لە پێشەنگاکەمان ؟',
 		hotelBooking: 'پێویستت بە حیجزی ئۆتێل هەیە؟',
 		invalidEmail: 'فۆڕماتی ئیمەیڵ نادروستە.',
 		existEmail: 'ئیمەیڵ پێشتر هەیە.',

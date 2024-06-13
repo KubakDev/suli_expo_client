@@ -875,6 +875,10 @@ type RootTranslation = {
 		 */
 		phoneNumber: string
 		/**
+		 * W​h​o​ ​r​e​f​e​r​r​e​d​ ​y​o​u​ ​t​o​ ​o​u​r​ ​e​x​h​i​b​i​t​i​o​n​?
+		 */
+		referrer_name: string
+		/**
 		 * D​o​ ​y​o​u​ ​n​e​e​d​ ​h​o​t​e​l​ ​b​o​o​k​i​n​g​ ​?
 		 */
 		hotelBooking: string
@@ -1762,6 +1766,10 @@ export type TranslationFunctions = {
 		 * Phone Number
 		 */
 		phoneNumber: () => LocalizedString
+		/**
+		 * Who referred you to our exhibition?
+		 */
+		referrer_name: () => LocalizedString
 		/**
 		 * Do you need hotel booking ?
 		 */

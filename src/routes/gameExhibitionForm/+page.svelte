@@ -7,7 +7,7 @@
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { onMount } from 'svelte';
-	import { profileStore } from '../../stores/userStore';
+	import { profileStore } from '../../stores/userStoreGameExhibition';
 	import { Input, Label, Select } from 'flowbite-svelte';
 
 	let name = '';
@@ -18,6 +18,7 @@
 	let email = '';
 	let country = '';
 	let city = '';
+	let referrer_name = '';
 	let hotelBooking = 'No';
 	let message = '';
 	let isLoading = false;
@@ -48,7 +49,7 @@
 		try {
 			// Check if the email already exists in the database
 			const emailCheckResponse = await data.supabase
-				.from('UserRegistration')
+				.from('gameExhibition')
 				.select('*')
 				.eq('email', email);
 
@@ -62,7 +63,7 @@
 			}
 
 			// Inserting data
-			const insertResponse = await data.supabase.from('UserRegistration').insert({
+			const insertResponse = await data.supabase.from('gameExhibition').insert({
 				name,
 				companyName,
 				fieldWork,
@@ -71,6 +72,7 @@
 				email,
 				country,
 				city,
+				referrer_name,
 				hotelBooking
 			});
 
@@ -80,7 +82,7 @@
 
 			// Fetching the inserted data using email as the identifier
 			const fetchResponse = await data.supabase
-				.from('UserRegistration')
+				.from('gameExhibition')
 				.select('*')
 				.eq('email', email)
 				.single();
@@ -90,7 +92,7 @@
 			}
 
 			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `${userPageUrl}/form/${userId}`;
+			const qrCodeUrl = `${userPageUrl}/gameExhibitionForm/${userId}`;
 			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
 			// Convert the QR code data URL to a blob
@@ -134,7 +136,7 @@
 
 	async function sendEmailWithQRCode(email: string, qrCodeUrl: string) {
 		try {
-			const response = await fetch('/api/form/email', {
+			const response = await fetch('/api/gameExhibitionForm/email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -170,6 +172,7 @@
 		email = '';
 		country = '';
 		city = '';
+		referrer_name = '';
 		hotelBooking = 'No';
 	}
 
@@ -341,6 +344,18 @@
 							type="text"
 							id="city"
 							bind:value={city}
+							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+							required
+						/>
+					</div>
+					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
+						<Label for="referrer_name" class="block text-sm font-medium text-gray-700">
+							{$LL.registrationForm.referrer_name()}
+						</Label>
+						<Input
+							type="text"
+							id="referrer_name"
+							bind:value={referrer_name}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
 							required
 						/>

@@ -258,6 +258,7 @@ const ar = {
 		fieldWork: 'مجال العمل',
 		jobGrade: 'الدرجة الوظيفية',
 		phoneNumber: 'رقم الهاتف',
+		referrer_name: "من أحالك إلى معرضنا؟",
 		hotelBooking: 'هل تحتاج إلى حجز فندق؟',
 		invalidEmail: 'تنسيق البريد الإلكتروني غير صالح.',
 		existEmail: 'البريد الإلكتروني موجود بالفعل في قاعدة البيانات.',
