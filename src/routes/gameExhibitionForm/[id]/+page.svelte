@@ -41,7 +41,8 @@
 			year: 'numeric',
 			month: 'long',
 			day: 'numeric',
-			hour: '2-digit'
+			hour: '2-digit',
+			minute: '2-digit'
 		};
 		return new Intl.DateTimeFormat($locale, options).format(new Date(dateString));
 	}
@@ -83,13 +84,13 @@
 				{#if profiles[0]?.city === 'true' && user.city}
 					<p><strong>{$LL.registrationForm.city()}:</strong> {user.city}</p>
 				{/if}
-				{#if profiles[0]?.referrer_name === 'true' && user.referrer_name}
-					<p><strong>{$LL.registrationForm.referrer_name()}:</strong> {user.referrer_name}</p>
-				{/if}
 				{#if profiles[0]?.hotelBooking === 'true' && user.hotelBooking}
 					<p><strong>{$LL.registrationForm.hotelBooking()}:</strong> {user.hotelBooking}</p>
 				{/if}
 				<p><strong>{$LL.registrationForm.createdAt()}:</strong> {formatDate(user.created_at)}</p>
+				{#if profiles[0]?.referrer_name === 'true' && user.referrer_name}
+					<p><strong>{$LL.registrationForm.referrer_name()}:</strong> {user.referrer_name}</p>
+				{/if}
 			</div>
 		</div>
 	</div>
