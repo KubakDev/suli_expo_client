@@ -8,7 +8,6 @@
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { onMount } from 'svelte';
 	import { profileStore } from '../../stores/userStoreGameExhibition';
-	import { Input, Label, Select } from 'flowbite-svelte';
 
 	let name = '';
 	let companyName = '';
@@ -235,10 +234,10 @@
 					on:submit|preventDefault={handleSubmit}
 				>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="name" class="block text-sm font-medium text-gray-700">
+						<label for="name" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.userName()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="name"
 							bind:value={name}
@@ -247,10 +246,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="email" class="block text-sm font-medium text-gray-700">
+						<label for="email" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.email()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="email"
 							bind:value={email}
@@ -259,10 +258,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="companyName" class="block text-sm font-medium text-gray-700">
+						<label for="companyName" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.companyName()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="companyName"
 							bind:value={companyName}
@@ -271,10 +270,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="fieldWork" class="block text-sm font-medium text-gray-700">
+						<label for="fieldWork" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.fieldWork()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="fieldWork"
 							bind:value={fieldWork}
@@ -283,10 +282,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="jobGrade" class="block text-sm font-medium text-gray-700">
+						<label for="jobGrade" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.jobGrade()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="jobGrade"
 							bind:value={jobGrade}
@@ -295,10 +294,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="phoneNumber" class="block text-sm font-medium text-gray-700">
+						<label for="phoneNumber" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.phoneNumber()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="phoneNumber"
 							bind:value={phoneNumber}
@@ -307,10 +306,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="hotelBooking" class="block text-sm font-medium text-gray-700">
+						<label for="hotelBooking" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.hotelBooking()}
-						</Label>
-						<Select
+						</label>
+						<select
 							id="hotelBooking"
 							bind:value={hotelBooking}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
@@ -318,29 +317,29 @@
 						>
 							<option value="No">No</option>
 							<option value="Yes">Yes</option>
-						</Select>
+						</select>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="country" class="block text-sm font-medium text-gray-700">
+						<label for="country" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.country()}
-						</Label>
-						<Select
+						</label>
+						<select
 							id="country"
 							bind:value={country}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
 							required
 						>
-							<option value="" disabled>Select your country</option>
+							<option value="" disabled>select your country</option>
 							{#each countries as country}
 								<option value={country}>{country}</option>
 							{/each}
-						</Select>
+						</select>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="city" class="block text-sm font-medium text-gray-700">
+						<label for="city" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.city()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="city"
 							bind:value={city}
@@ -349,10 +348,10 @@
 						/>
 					</div>
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
-						<Label for="referrer_name" class="block text-sm font-medium text-gray-700">
+						<label for="referrer_name" class="block text-sm font-medium text-gray-700">
 							{$LL.registrationForm.referrer_name()}
-						</Label>
-						<Input
+						</label>
+						<input
 							type="text"
 							id="referrer_name"
 							bind:value={referrer_name}
