@@ -48,7 +48,7 @@
 		try {
 			// Check if the email already exists in the database
 			const emailCheckResponse = await data.supabase
-				.from('gameExhibition')
+				.from('gameExhibitionForm')
 				.select('*')
 				.eq('email', email);
 
@@ -62,7 +62,7 @@
 			}
 
 			// Inserting data
-			const insertResponse = await data.supabase.from('gameExhibition').insert({
+			const insertResponse = await data.supabase.from('gameExhibitionForm').insert({
 				name,
 				companyName,
 				fieldWork,
@@ -81,7 +81,7 @@
 
 			// Fetching the inserted data using email as the identifier
 			const fetchResponse = await data.supabase
-				.from('gameExhibition')
+				.from('gameExhibitionForm')
 				.select('*')
 				.eq('email', email)
 				.single();

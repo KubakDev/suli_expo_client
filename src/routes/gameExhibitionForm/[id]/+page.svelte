@@ -10,7 +10,7 @@
 
 	onMount(async () => {
 		const { data: res, error } = await data.supabase
-			.from('gameExhibition')
+			.from('gameExhibitionForm')
 			.select('*')
 			.eq('id', $page.params.id)
 			.single();
