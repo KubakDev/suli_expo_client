@@ -33,103 +33,105 @@
 		return emailRegex.test(email);
 	}
 
-    // Generate a random number between 1 and 10^15 to ensure complexity
-	function generateComplexNumericId() {
-    return Math.floor(Math.random() * 1e15);
-}
+	async function handleSubmit() {
+		isLoading = true;
+		isLoadingForm = true;
 
-async function handleSubmit() {
-    isLoading = true;
-    isLoadingForm = true;
+		if (!isValidEmail(email)) {
+			dialogMessage = `${$LL.registrationForm.invalidEmail()}`;
+			showDialog = true;
+			isLoading = false;
+			isLoadingForm = false;
+			return;
+		}
 
-    if (!isValidEmail(email)) {
-        dialogMessage = `${$LL.registrationForm.invalidEmail()}`;
-        showDialog = true;
-        isLoading = false;
-        isLoadingForm = false;
-        return;
-    }
+		try {
+			// Check if the email already exists in the database
+			const emailCheckResponse = await data.supabase
+				.from('gameExhibitionForm')
+				.select('*')
+				.eq('email', email);
 
-    try {
-        // Check if the email already exists in the database
-        const emailCheckResponse = await data.supabase
-            .from('gameExhibitionForm')
-            .select('*')
-            .eq('email', email);
+			if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
+				// Email already exists
+				dialogMessage = `${$LL.registrationForm.existEmail()}`;
+				showDialog = true;
+				isLoading = false;
+				isLoadingForm = false;
+				return;
+			}
 
-        if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
-            // Email already exists
-            dialogMessage = `${$LL.registrationForm.existEmail()}`;
-            showDialog = true;
-            isLoading = false;
-            isLoadingForm = false;
-            return;
-        }
+			// Inserting data
+			const insertResponse = await data.supabase.from('gameExhibitionForm').insert({
+				name,
+				companyName,
+				fieldWork,
+				jobGrade,
+				phoneNumber,
+				email,
+				country,
+				city,
+				referrer_name,
+				hotelBooking
+			});
 
-        // Generate a complex numeric ID
-        const uniqueId = generateComplexNumericId();
+			if (insertResponse.error) {
+				throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
+			}
 
-        // Inserting data
-        const insertResponse = await data.supabase.from('gameExhibitionForm').insert({
-            id: uniqueId,
-            name,
-            companyName,
-            fieldWork,
-            jobGrade,
-            phoneNumber,
-            email,
-            country,
-            city,
-            referrer_name,
-            hotelBooking
-        });
+			// Fetching the inserted data using email as the identifier
+			const fetchResponse = await data.supabase
+				.from('gameExhibitionForm')
+				.select('*')
+				.eq('email', email)
+				.single();
 
-        if (insertResponse.error) {
-            throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
-        }
+			if (fetchResponse.error) {
+				throw new Error(`Fetch operation failed: ${fetchResponse.error.message}`);
+			}
 
-        const qrCodeUrl = `${userPageUrl}/gameExhibitionForm/${uniqueId}`;
-        const qrCode = await QRCode.toDataURL(qrCodeUrl);
+			const userId = fetchResponse.data.id.toString();
+			const qrCodeUrl = `${userPageUrl}/gameExhibitionForm/${userId}`;
+			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
-        // Convert the QR code data URL to a blob
-        const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
-        const fileName = `QR/${getRandomTextNumber()}.png`;
+			// Convert the QR code data URL to a blob
+			const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
+			const fileName = `QR/${getRandomTextNumber()}.png`;
 
-        // Upload the QR code to Supabase storage
-        const uploadResponse = await data.supabase.storage
-            .from('image')
-            .upload(fileName, qrCodeBlob, {
-                contentType: 'image/png'
-            });
+			// Upload the QR code to Supabase storage
+			const uploadResponse = await data.supabase.storage
+				.from('image')
+				.upload(fileName, qrCodeBlob, {
+					contentType: 'image/png'
+				});
 
-        if (uploadResponse.error) {
-            throw new Error(`Upload operation failed: ${uploadResponse.error.message}`);
-        }
+			if (uploadResponse.error) {
+				throw new Error(`Upload operation failed: ${uploadResponse.error.message}`);
+			}
 
-        // Fetch the public URL of the uploaded QR code
-        const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
+			// Fetch the public URL of the uploaded QR code
+			const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
 
-        // Sending email
-        const emailSent = await sendEmailWithQRCode(email, publicUrl);
+			// Sending email
+			const emailSent = await sendEmailWithQRCode(email, publicUrl);
 
-        if (emailSent) {
-            dialogMessage = `${$LL.registrationForm.insertData()}`;
-            showDialog = true;
-            resetForm();
-        } else {
-            dialogMessage = `${$LL.registrationForm.emailFailureMessage()}`;
-            showDialog = true;
-        }
-    } catch (error) {
-        console.error('Error occurred:', error);
-        dialogMessage = `${$LL.registrationForm.failureMessage()}`;
-        showDialog = true;
-    } finally {
-        isLoading = false;
-        isLoadingForm = false;
-    }
-}
-
+			if (emailSent) {
+				dialogMessage = `${$LL.registrationForm.insertData()}`;
+				showDialog = true;
+				resetForm();
+			} else {
+				dialogMessage = `${$LL.registrationForm.emailFailureMessage()}`;
+				showDialog = true;
+			}
+		} catch (error) {
+			console.error('Error occurred:', error);
+			dialogMessage = `${$LL.registrationForm.failureMessage()}`;
+			showDialog = true;
+		} finally {
+			isLoading = false;
+			isLoadingForm = false;
+		}
+	}
 
 	async function sendEmailWithQRCode(email: string, qrCodeUrl: string) {
 		try {
