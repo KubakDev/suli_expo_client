@@ -16,9 +16,11 @@
 			class="object-cover h-[130px] w-[130px] rounded-full"
 		/>
 	</div>
-	<div class="text-center py-8 sm:py-6 text-lightOverlayBackground dark:text-darkOverlayBackgroundColor">
+	<div
+		class="text-center py-8 sm:py-6 text-lightOverlayBackground dark:text-darkOverlayBackgroundColor"
+	>
 		<p class="text-xl font-bold mb-2">{staffSection.name}</p>
-		<p class="text-base font-normal uppercase dark:hover:text-blue-500 transition-all">
+		<p class="text-base font-normal uppercase transition-all">
 			{staffSection.title}
 		</p>
 	</div>

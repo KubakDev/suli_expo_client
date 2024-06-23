@@ -184,7 +184,7 @@
 				style="border-color:{$currentMainThemeColors.overlaySecondaryColor}; "
 				class="my-6 sm:mx-auto lg:my-8"
 			/>
-			<div class="sm:flex sm:items-center sm:justify-center">
+			<div class="flex items-center justify-center">
 				<h3 style="color:{$currentMainThemeColors.overlaySecondaryColor}; ">
 					Copyright - SulyExpo ©
 				</h3>

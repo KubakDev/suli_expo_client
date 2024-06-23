@@ -2,14 +2,7 @@
 	// import Chevron from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
-	import {
-		Navbar,
-		NavLi,
-		NavUl,
-		NavHamburger,
-		Avatar,
-		NavBrand,
-	} from 'flowbite-svelte';
+	import { Navbar, NavLi, NavUl, NavHamburger, Avatar, NavBrand } from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { setLocale } from '$lib/i18n/i18n-svelte';
 	import { detectLocale } from '$lib/i18n/i18n-util';
@@ -508,7 +501,7 @@
 		</div>
 
 		<NavUl
-			divClass="w-full md:block md:w-auto justify-center max-w-full items-center p-0 z-[10000]"
+			divClass="w-full md:block md:w-auto justify-center max-w-full items-center p-2 z-[10000]"
 			ulClass="bg-[{$currentMainThemeColors.secondaryColor}] dark:bg-[{$currentMainThemeColors.secondaryColor}] border lg:border-none   {Constants.page_max_width}  mx-auto flex flex-col p-1 lg:py-4 lg:px-0 mt-4 md:flex-row md:space-x-4 justify-between md:justify-center md:mt- md:text-sm  items-center"
 			activeClass="text-[var(--{$themeToggle + 'PrimaryColor'})]"
 			nonActiveClass="text-[var(--{$themeToggle + 'OverlaySecondaryColor'})]"
@@ -545,12 +538,10 @@
 							id={navTitle.title}
 							class="lg:-ml-3 text-center font-medium inline-flex items-center justify-center text-base focus:outline-none focus:ring-0 cursor-pointer lg:text-lg"
 						>
-						<span class="mx-2 flex justify-center">
-							{translation[navTitle.title + '']()}
-							<ChevronDown aligned>
-								</ChevronDown
-							>
-						</span>
+							<span class="mx-2 flex justify-center">
+								{translation[navTitle.title + '']()}
+								<ChevronDown aligned />
+							</span>
 						</button>
 
 						<ul
