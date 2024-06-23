@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { countries } from '../../lib/utils/countries';
 	//@ts-ignore
+   import { v4 as uuidv4 } from 'uuid';
+   //@ts-ignore
 	import QRCode from 'qrcode';
 	import type { PageData } from '../$types';
 	import { getRandomTextNumber } from '../../utils/getRandomText';
@@ -32,104 +34,103 @@
 		return emailRegex.test(email);
 	}
 
-	async function handleSubmit() {
-		isLoading = true;
-		isLoadingForm = true;
 
-		if (!isValidEmail(email)) {
-			dialogMessage = `${$LL.registrationForm.invalidEmail()}`;
-			showDialog = true;
-			isLoading = false;
-			isLoadingForm = false;
-			return;
-		}
+    // Generate a random number between 1 and 10^15 to ensure complexity
+function generateComplexNumericId() {
+    return Math.floor(Math.random() * 1e15);
+}
 
-		try {
-			// Check if the email already exists in the database
-			const emailCheckResponse = await data.supabase
-				.from('UserRegistration')
-				.select('*')
-				.eq('email', email);
+async function handleSubmit() {
+    isLoading = true;
+    isLoadingForm = true;
 
-			if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
-				// Email already exists
-				dialogMessage = `${$LL.registrationForm.existEmail()}`;
-				showDialog = true;
-				isLoading = false;
-				isLoadingForm = false;
-				return;
-			}
+    if (!isValidEmail(email)) {
+        dialogMessage = `${$LL.registrationForm.invalidEmail()}`;
+        showDialog = true;
+        isLoading = false;
+        isLoadingForm = false;
+        return;
+    }
 
-			// Inserting data
-			const insertResponse = await data.supabase.from('UserRegistration').insert({
-				name,
-				companyName,
-				fieldWork,
-				jobGrade,
-				phoneNumber,
-				email,
-				country,
-				city,
-				hotelBooking
-			});
+    try {
+        // Check if the email already exists in the database
+        const emailCheckResponse = await data.supabase
+            .from('UserRegistration')
+            .select('*')
+            .eq('email', email);
 
-			if (insertResponse.error) {
-				throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
-			}
+        if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
+            // Email already exists
+            dialogMessage = `${$LL.registrationForm.existEmail()}`;
+            showDialog = true;
+            isLoading = false;
+            isLoadingForm = false;
+            return;
+        }
 
-			// Fetching the inserted data using email as the identifier
-			const fetchResponse = await data.supabase
-				.from('UserRegistration')
-				.select('*')
-				.eq('email', email)
-				.single();
+        // Generate a complex numeric ID
+        const uniqueId = generateComplexNumericId();
 
-			if (fetchResponse.error) {
-				throw new Error(`Fetch operation failed: ${fetchResponse.error.message}`);
-			}
+        // Inserting data
+        const insertResponse = await data.supabase.from('UserRegistration').insert({
+            id: uniqueId,
+            name,
+            companyName,
+            fieldWork,
+            jobGrade,
+            phoneNumber,
+            email,
+            country,
+            city,
+            hotelBooking
+        });
 
-			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `${userPageUrl}/form/${userId}`;
-			const qrCode = await QRCode.toDataURL(qrCodeUrl);
+        if (insertResponse.error) {
+            throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
+        }
 
-			// Convert the QR code data URL to a blob
-			const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
-			const fileName = `QR/${getRandomTextNumber()}.png`;
+        const qrCodeUrl = `${userPageUrl}/form/${uniqueId}`;
+        const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
-			// Upload the QR code to Supabase storage
-			const uploadResponse = await data.supabase.storage
-				.from('image')
-				.upload(fileName, qrCodeBlob, {
-					contentType: 'image/png'
-				});
+        // Convert the QR code data URL to a blob
+        const qrCodeBlob = await fetch(qrCode).then((res) => res.blob());
+        const fileName = `QR/${getRandomTextNumber()}.png`;
 
-			if (uploadResponse.error) {
-				throw new Error(`Upload operation failed: ${uploadResponse.error.message}`);
-			}
+        // Upload the QR code to Supabase storage
+        const uploadResponse = await data.supabase.storage
+            .from('image')
+            .upload(fileName, qrCodeBlob, {
+                contentType: 'image/png'
+            });
 
-			// Fetch the public URL of the uploaded QR code
-			const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
+        if (uploadResponse.error) {
+            throw new Error(`Upload operation failed: ${uploadResponse.error.message}`);
+        }
 
-			// Sending email
-			const emailSent = await sendEmailWithQRCode(email, publicUrl);
+        // Fetch the public URL of the uploaded QR code
+        const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
 
-			if (emailSent) {
-				dialogMessage = `${$LL.registrationForm.insertData()}`;
-				showDialog = true;
-				resetForm();
-			} else {
-				dialogMessage = `${$LL.registrationForm.emailFailureMessage()}`;
-				showDialog = true;
-			}
-		} catch (error) {
-			console.error('Error occurred:', error);
-			dialogMessage = `${$LL.registrationForm.failureMessage()}`;
-			showDialog = true;
-		} finally {
-			isLoading = false;
-			isLoadingForm = false;
-		}
-	}
+        // Sending email
+        const emailSent = await sendEmailWithQRCode(email, publicUrl);
+
+        if (emailSent) {
+            dialogMessage = `${$LL.registrationForm.insertData()}`;
+            showDialog = true;
+            resetForm();
+        } else {
+            dialogMessage = `${$LL.registrationForm.emailFailureMessage()}`;
+            showDialog = true;
+        }
+    } catch (error) {
+        console.error('Error occurred:', error);
+        dialogMessage = `${$LL.registrationForm.failureMessage()}`;
+        showDialog = true;
+    } finally {
+        isLoading = false;
+        isLoadingForm = false;
+    }
+}
+
 
 	async function sendEmailWithQRCode(email: string, qrCodeUrl: string) {
 		try {

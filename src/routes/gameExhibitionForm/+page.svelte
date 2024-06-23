@@ -8,6 +8,8 @@
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import { onMount } from 'svelte';
 	import { profileStore } from '../../stores/userStoreGameExhibition';
+	//@ts-ignore
+	import { v4 as uuidv4 } from 'uuid';
 
 	let name = '';
 	let companyName = '';
@@ -31,6 +33,11 @@
 	function isValidEmail(email: string): boolean {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailRegex.test(email);
+	}
+
+	// Generate a random number between 1 and 10^15 to ensure complexity
+	function generateComplexNumericId() {
+		return Math.floor(Math.random() * 1e15);
 	}
 
 	async function handleSubmit() {
@@ -61,8 +68,12 @@
 				return;
 			}
 
+			// Generate a complex numeric ID
+			const uniqueId = generateComplexNumericId();
+
 			// Inserting data
 			const insertResponse = await data.supabase.from('gameExhibitionForm').insert({
+				id: uniqueId,
 				name,
 				companyName,
 				fieldWork,
@@ -79,19 +90,7 @@
 				throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
 			}
 
-			// Fetching the inserted data using email as the identifier
-			const fetchResponse = await data.supabase
-				.from('gameExhibitionForm')
-				.select('*')
-				.eq('email', email)
-				.single();
-
-			if (fetchResponse.error) {
-				throw new Error(`Fetch operation failed: ${fetchResponse.error.message}`);
-			}
-
-			const userId = fetchResponse.data.id.toString();
-			const qrCodeUrl = `${userPageUrl}/gameExhibitionForm/${userId}`;
+			const qrCodeUrl = `${userPageUrl}/gameExhibitionForm/${uniqueId}`;
 			const qrCode = await QRCode.toDataURL(qrCodeUrl);
 
 			// Convert the QR code data URL to a blob
