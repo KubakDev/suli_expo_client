@@ -18,9 +18,6 @@
 			staffSectionStore.get($locale, data.supabase);
 		}
 	}
-	onMount(async () => {
-		await aboutSectionStore.get($locale, data?.supabase);
-	});
 </script>
 
 <svelte:head>
