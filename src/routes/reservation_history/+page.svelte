@@ -133,7 +133,7 @@
 			});
 	}
 </script>
-
+ 
 <Modal bind:open={cancelReservationSuccessModal}>
 	<div class="flex justify-center">
 		<LottiePlayer

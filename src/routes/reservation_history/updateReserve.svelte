@@ -43,7 +43,8 @@
 	let extraDiscountChecked = false;
 	let quantityExceededMessages: any = {};
 	let totalPriceForServices = 0;
-
+     let description_seat: string = '';
+    let price_sign: string = '';
 	let reservedServices: any[] = [];
 	let reservedSeatData: {
 		area: {
@@ -77,29 +78,27 @@
 		onMountData();
 	});
 
+
+
+$: {
+		const seatPrivacyPolicy = data.seat_layout[0]?.seat_privacy_policy_lang.find(
+			(privacyLang: any) => privacyLang.language == locale
+		);
+		if (seatPrivacyPolicy) {
+			description_seat = seatPrivacyPolicy.description_seat;
+			price_sign = seatPrivacyPolicy.price_sign;
+		}
+	}
+
+
+
 	function onMountData() {
 		preview_url = currentActiveSeat?.excel_preview_url;
 
 		pricePerMeter = currentActiveSeat?.price_per_meter;
 		discountedPrice = currentActiveSeat?.discounted_price;
-
-		// discountedDescription =
-		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
-		// 		(privacyLang: any) => privacyLang.language == locale
-		// 	).discount_description ??
-		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
-		// 		(privacyLang: any) => privacyLang.language == 'en'
-		// 	).discount_description ??
-		// 	'';
-		// extraDiscount.description =
-		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
-		// 		(privacyLang: any) => privacyLang.language == locale
-		// 	).extra_discount_description ??
-		// 	currentActiveSeat?.seat_privacy_policy_lang?.find(
-		// 		(privacyLang: any) => privacyLang.language == 'en'
-		// 	).extra_discount_description ??
-		// 	'';
-		extraDiscount.price = currentActiveSeat?.extra_discount;
+       
+		 extraDiscount.price = currentActiveSeat?.extra_discount;
 		extraDiscountChecked = reservationData.extra_discount_checked ?? false;
 		if (extraDiscountChecked) {
 			discountedPrice = extraDiscount.price;
@@ -566,23 +565,23 @@
 				style="color: {$currentMainThemeColors.primaryColor}"
 			>
 				<div class="w-full lg:w-8/12">
-					{$LL.reservation.new_description()}
+				  {description_seat}	 
 				</div>
 			</div>
 
 			<div class="w-full flex justify-center">
 				<div class="w-full lg:w-8/12">
-					<div class="w-full flex items-center my-2 justify-between">
+					<div class="w-full flex items-center my-4 justify-between">
 						<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
 						<p class="mx-6 text-sm md:text-xl">
-							{$LL.reservation.price_per_each_meter()}:{pricePerMeter}
+							{$LL.reservation.price_per_each_meter()} : {pricePerMeter} {price_sign}
 						</p>
 					</div>
 					<div>
 						{#each areas as availableSeatArea, index}
 							{#if availableSeatArea.quantity && +availableSeatArea.quantity > 0}
-								<div class="flex gap-2 justify-between items-center my-2">
-									<p class=" text-start text-md md:text-2xl font-medium my-2">
+								<div class="flex gap-2 justify-start items-center my-2">
+									<p class="text-start text-md md:text-2xl font-medium my-2">
 										{availableSeatArea.area}
 										{$LL.reservation.measure.m()}
 									</p>
@@ -600,7 +599,7 @@
 									<p
 										class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
 									>
-										{+pricePerMeter * +availableSeatArea.area}
+										{+pricePerMeter * +availableSeatArea.area} {price_sign}
 									</p>
 									<div class="lg:mx-4">
 										<p
@@ -609,7 +608,7 @@
 											}`}
 										>
 											{(reservedSeatData.area?.find((area) => area.id == index)?.quantity ?? 0) *
-												(+pricePerMeter * +availableSeatArea.area)}
+												(+pricePerMeter * +availableSeatArea.area)} {price_sign}
 										</p>
 										{#if discountedPrice}
 											<p
@@ -617,7 +616,7 @@
 												style="color:{$currentMainThemeColors.primaryColor}"
 											>
 												{(reservedSeatData.area?.find((area) => area.id == index)?.quantity ?? 0) *
-													(+discountedPrice * +availableSeatArea.area)}
+													(+discountedPrice * +availableSeatArea.area)}  
 											</p>
 										{/if}
 									</div>
@@ -626,55 +625,7 @@
 						{/each}
 						<div class="w-full mt-6 border-t-2 p-2 flex justify-end" />
 						<h2 class="text-sm md:text-lg">{$LL.reservation.manual_area()}</h2>
-						<!-- <div class="flex gap-2 justify-between items-center my-2">
-				<div class=" text-start text-2xl font-medium my-2">
-					<div class="flex items-center">
-						<NumberInput
-							bind:value={customAreaMeter}
-							class="max-w-[100px]"
-							on:input={() => {
-								if (customAreaMeter < 0) {
-									customAreaMeter = 0;
-								}
-								calculateTotalPrice();
-							}}
-						/>
-					</div>
-				</div>
-				<div class="my-2">
-					<InputNumberButton
-						unlimited={true}
-						on:numberChanged={(number) => {
-							addCustomArea(+number.detail);
-						}}
-						number={customAreaQuantity}
-						disabled={reservationData.status != ReservationStatus.PENDING}
-					/>
-				</div>
-				<p
-					class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2"
-				>
-					{+pricePerMeter * customAreaMeter} $
-				</p>
-				<div class="lg:mx-4">
-					<p
-						class={` text-start text-sm md:text-xl justify-center flex my-2 ${
-							discountedPrice ? 'line-through text-xs md:text-xl' : 'font-medium '
-						}`}
-					>
-						{customAreaQuantity * (+pricePerMeter * +customAreaMeter)}$
-					</p>
-					{#if discountedPrice}
-						<p
-							class=" text-start text-md md:text-xl font-medium justify-center flex my-2"
-							style="color:{$currentMainThemeColors.primaryColor}"
-						>
-							{customAreaQuantity * (+discountedPrice * +customAreaMeter)}$
-						</p>
-					{/if}
-				</div>
-			</div> -->
-					</div>
+					    </div>
 
 					<div
 						class="flex flex-col justify-end mt-6 border-t-2 p-2"
@@ -688,25 +639,25 @@
 							<div class="mx-4">
 								{#if discountedPrice || extraDiscountChecked}
 									<p class="text-start justify-center flex my-2 line-through text-xs md:text-xl">
-										{totalRawPrice}
+										{totalRawPrice} 
 									</p>
 								{/if}
 								<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
-									{totalPrice}
-								</div>
+									{totalPrice} {price_sign}
+								</div> 
 							</div>
 						</div>
 
 						<!-- Service Price -->
 						<div class="text-start text-md md:text-xl font-medium my-2">
-							<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>
+							<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>{price_sign}
 						</div>
 						<!-- Total Price -->
 						<div
 							class="text-start text-md md:text-xl font-medium my-2"
 							style="color: {$currentMainThemeColors.primaryColor};"
 						>
-							<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}</span>
+							<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}</span> {price_sign}
 						</div>
 					</div>
 				</div>
@@ -754,7 +705,7 @@
 						{$LL.reservation.addService()}
 					</Button>
 					{#if showModal}
-						<Modal title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
+						<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
 							<p class="text-gray-400">
 								{$LL.reservation.modalInfo()}
 							</p>
@@ -803,7 +754,7 @@
 														item.maxFreeCount,
 														item.quantity,
 														item.unlimitedFree
-													)}
+													)} {price_sign}
 												</span>
 											{:else}
 												<span
