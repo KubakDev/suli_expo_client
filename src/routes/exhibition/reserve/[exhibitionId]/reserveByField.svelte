@@ -407,7 +407,7 @@ $: {
 							 	{availableSeatArea.area}
 							 	{$LL.reservation.measure.m()}
 							</p>
-					           	<div class="mx-6 my-2"> 
+					           	<div class="mx-6 my-2 flex justify-center"> 
 								 <InputNumberButton 
 									on:numberChanged={(number) => {
 										addAreaToReservedSeatData(index, +number.detail, availableSeatArea.area);
@@ -470,14 +470,14 @@ $: {
 							</p>
 						{/if}
 						<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
-							{totalPrice} {price_sign}
+						 	{totalPrice} {price_sign}
 						</div>
 					</div>
 				</div>
 
 				<!-- Service Price -->
 				<div class="text-start text-md md:text-xl font-medium my-2">
-					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>{price_sign}
+					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>  {price_sign}
 				</div>
 				<!-- Total Price -->
 				<div
