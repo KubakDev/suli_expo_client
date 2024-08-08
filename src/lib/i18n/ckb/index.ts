@@ -273,7 +273,7 @@ const ckb = {
 		failureMessage: 'هەڵەیەک روویدا. زانیاریەکان ناتوانرێت تۆمار بکرێت یان ئیمەیڵ نە نێردرا.',
 		createdAt: 'بەرواری دروستکردن'
 	},
-	You_have_to_select_at_least_one_area: 'You have to select at least one area',
-	Please_upload_excel_file: 'Please upload excel file'
+	You_have_to_select_at_least_one_area: 'پێویستە بەلایەنی کەم شوێنێک دیاری بکەیت',
+	Please_upload_excel_file: 'تکایە فایلی ئێکزڵ باربکە'
 } satisfies Translation;
 export default ckb;

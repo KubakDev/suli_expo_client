@@ -267,7 +267,7 @@ const ar = {
 		failureMessage: 'حدث خطأ. قد لا يتم إدخال البيانات أو إرسال البريد الإلكتروني.',
 		createdAt: 'تاريخ الإنشاء'
 	},
-	You_have_to_select_at_least_one_area: 'You have to select at least one area',
-	Please_upload_excel_file: 'Please upload excel file'
+	You_have_to_select_at_least_one_area: 'بالإضافة إلى ذلك، يجب عليك تحديد بند واحد على الأقل',
+	Please_upload_excel_file: 'يرجى تحميل ملف إكسل'
 } satisfies BaseTranslation;
 export default ar;
