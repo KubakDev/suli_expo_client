@@ -4,7 +4,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button, Modal, Checkbox, Input } from 'flowbite-svelte';
-	 import { currentMainThemeColors } from '../../../../stores/darkMode';
+	import { currentMainThemeColors } from '../../../../stores/darkMode';
 	import { Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 
@@ -26,12 +26,13 @@
 		maxQuantityPerUser: number;
 		unlimitedFree: boolean;
 	}[] = [];
-  
+
 	let price_sign: string = '';
 	let description_seat: string = '';
 	let totalPrice = 0;
 	let totalRawPrice = 0;
 	let pricePerMeter: number = 0;
+	let isExcelRequired: boolean = false;
 	let discountedPrice: number = 0;
 	let discountedDescription = '';
 	let extraDiscount = {
@@ -67,7 +68,7 @@
 		total_price: 0
 	};
 
-$: {
+	$: {
 		const seatPrivacyPolicy = data.seat_layout[0]?.seat_privacy_policy_lang.find(
 			(privacyLang: any) => privacyLang.language == locale
 		);
@@ -83,9 +84,10 @@ $: {
 				data.seat_layout[0]?.excel_preview_url
 			}`;
 		}
+
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
-		discountedPrice = data.seat_layout[0]?.discounted_price;
-		
+		isExcelRequired = data.seat_layout[0]?.is_excel_required;
+
 		extraDiscount.price = data.seat_layout[0]?.extra_discount;
 
 		if (data?.seat_layout[0]?.areas) {
@@ -236,6 +238,7 @@ $: {
 	}
 
 	function reserveSeat() {
+		errorMessage = '';
 		if (!isValidQuantity) {
 			setTimeout(() => {
 				showToast = true;
@@ -248,7 +251,7 @@ $: {
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
 
 		confirmServiceSelection();
-          if (customAreaMeter) {
+		if (customAreaMeter) {
 			reservedSeatData.area.push({
 				id: areas.length,
 				area: customAreaMeter.toString(),
@@ -258,6 +261,15 @@ $: {
 		reservedSeatData.extraDiscountChecked = extraDiscountChecked;
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
+		if (reservedSeatData.area.length < 1) {
+			errorMessage = $LL.You_have_to_select_at_least_one_area();
+			return;
+		}
+
+		if (isExcelRequired && !reservedSeatData.file) {
+			errorMessage = $LL.Please_upload_excel_file();
+			return;
+		}
 
 		dispatch('reserveSeat', reservedSeatData);
 	}
@@ -336,7 +348,6 @@ $: {
 		fileError = true;
 		validFile = false;
 		selectedFile = null;
-		errorMessage = 'File is required';
 
 		if (file) {
 			const fileExtension = file.name.split('.').pop().toLowerCase();
@@ -344,12 +355,10 @@ $: {
 
 			if (allowedExtensions.includes(fileExtension)) {
 				fileError = false;
-				errorMessage = '';
 				selectedFile = file;
 				fileName = file.name;
 				validFile = true;
 			} else {
-				errorMessage = 'Excel file required';
 			}
 		}
 	}
@@ -377,12 +386,12 @@ $: {
 		class="w-full h-[200px] md:h-[500px] object-cover rounded-lg"
 	/>
 	<div class="w-full my-6" />
-   <div
+	<div
 		class="w-full flex justify-center py-3"
 		style="color: {$currentMainThemeColors.primaryColor}"
 	>
 		<div class="w-full lg:w-8/12">
-      	{description_seat}	 
+			{description_seat}
 		</div>
 	</div>
 
@@ -394,7 +403,8 @@ $: {
 			<div class="w-full flex items-center my-2 justify-between">
 				<p class="text-sm md:text-3xl">{$LL.reservation.available_area()}</p>
 				<p class="mx-6 text-sm md:text-xl">
-				 	{$LL.reservation.price_per_each_meter()} : {pricePerMeter} {price_sign}
+					{$LL.reservation.price_per_each_meter()} : {pricePerMeter}
+					{price_sign}
 				</p>
 			</div>
 			<div>
@@ -404,22 +414,23 @@ $: {
 							<p
 								class=" text-md md:text-2xl font-medium my-2 w-[60px] md:w-[150px] text-center md:text-start"
 							>
-							 	{availableSeatArea.area}
-							 	{$LL.reservation.measure.m()}
+								{availableSeatArea.area}
+								{$LL.reservation.measure.m()}
 							</p>
-					           	<div class="mx-6 my-2 flex justify-center"> 
-								 <InputNumberButton 
+							<div class="mx-6 my-2 flex justify-center">
+								<InputNumberButton
 									on:numberChanged={(number) => {
 										addAreaToReservedSeatData(index, +number.detail, availableSeatArea.area);
 									}}
 									serviceQuantity={availableSeatArea.quantity}
 									maxQuantityPerUser={availableSeatArea.quantity}
-								/> 
+								/>
 							</div>
 							<p
 								class=" text-start text-sm md:text-xl font-medium lg:justify-center hidden md:flex my-2 min-w-[70px]"
 							>
-								{+pricePerMeter * +availableSeatArea.area} {price_sign}
+								{+pricePerMeter * +availableSeatArea.area}
+								{price_sign}
 							</p>
 							<div class="lg:mx-4 min-w-[70px]">
 								<p
@@ -428,7 +439,8 @@ $: {
 									}`}
 								>
 									{(reservedSeatData.area.find((area) => area.id == index)?.quantity ?? 0) *
-										(+pricePerMeter * +availableSeatArea.area)} {price_sign}
+										(+pricePerMeter * +availableSeatArea.area)}
+									{price_sign}
 								</p>
 								{#if discountedPrice}
 									<p
@@ -452,7 +464,7 @@ $: {
 				<p class="text-sm md:text-lg mt-1">
 					{$LL.reservation.manual_area_description()}
 				</p>
-               </div>
+			</div>
 
 			<div
 				class="flex flex-col justify-end mt-6 border-t-2 p-2"
@@ -466,25 +478,28 @@ $: {
 					<div class="mx-4">
 						{#if discountedPrice || extraDiscountChecked}
 							<p class="text-start justify-center flex my-2 line-through text-xs md:text-xl">
-								{totalRawPrice} 
+								{totalRawPrice}
 							</p>
 						{/if}
 						<div class="text-start text-md md:text-xl font-medium justify-center flex my-2">
-						 	{totalPrice} {price_sign}
+							{totalPrice}
+							{price_sign}
 						</div>
 					</div>
 				</div>
 
 				<!-- Service Price -->
 				<div class="text-start text-md md:text-xl font-medium my-2">
-					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>  {price_sign}
+					<span>{$LL.reservation.servicesPrice()} {totalPriceForServices} </span>
+					{price_sign}
 				</div>
 				<!-- Total Price -->
 				<div
 					class="text-start text-md md:text-xl font-medium my-2"
 					style="color: {$currentMainThemeColors.primaryColor};"
 				>
-					<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}</span> {price_sign}
+					<span>{$LL.reservation.totalPrice()} {totalPrice + totalPriceForServices}</span>
+					{price_sign}
 				</div>
 			</div>
 		</div>
@@ -523,6 +538,11 @@ $: {
 		class="my-3"
 		bind:value={reservedSeatData.comment}
 	/>
+	{#if errorMessage}
+		<div class="bg-[#ea7a7a20] w-full p-4 rounded-md text-[#ea7a7a] border-2 border-[#ea7a7a]">
+			{errorMessage}
+		</div>
+	{/if}
 	<div class="block md:flex justify-end w-full mt-8">
 		<div class="mx-2">
 			<!-- showing modal  -->
@@ -530,11 +550,10 @@ $: {
 				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 				on:click={() => openServicesModal()}
 			>
-				 {$LL.reservation.addService()}
+				{$LL.reservation.addService()}
 			</Button>
 			{#if showModal}
 				<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
-				
 					<p class="text-gray-400">
 						{$LL.reservation.modalInfo()}
 					</p>
@@ -584,10 +603,10 @@ $: {
 																item.discount,
 																service.maxFreeCount,
 																selectedServices[item.id]?.quantity || 0
-															)} {price_sign}
+															)}
+															{price_sign}
 														</span>
 													</span>
-												 
 												{:else}
 													<span
 														class="font-bold"
@@ -714,8 +733,6 @@ $: {
 		<!-- required service quantity is more than the number that available -->
 	</div>
 </div>
-
- 
 
 <!-- check the quantity if it is not valid -->
 

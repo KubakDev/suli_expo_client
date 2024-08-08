@@ -258,7 +258,7 @@ const ar = {
 		fieldWork: 'مجال العمل',
 		jobGrade: 'الدرجة الوظيفية',
 		phoneNumber: 'رقم الهاتف',
-		referrer_name: "من أحالك إلى معرضنا؟",
+		referrer_name: 'من أحالك إلى معرضنا؟',
 		hotelBooking: 'هل تحتاج إلى حجز فندق؟',
 		invalidEmail: 'تنسيق البريد الإلكتروني غير صالح.',
 		existEmail: 'البريد الإلكتروني موجود بالفعل في قاعدة البيانات.',
@@ -266,6 +266,8 @@ const ar = {
 		emailFailureMessage: 'تم إدخال البيانات لكن فشل إرسال البريد الإلكتروني',
 		failureMessage: 'حدث خطأ. قد لا يتم إدخال البيانات أو إرسال البريد الإلكتروني.',
 		createdAt: 'تاريخ الإنشاء'
-	}
+	},
+	You_have_to_select_at_least_one_area: 'You have to select at least one area',
+	Please_upload_excel_file: 'Please upload excel file'
 } satisfies BaseTranslation;
 export default ar;

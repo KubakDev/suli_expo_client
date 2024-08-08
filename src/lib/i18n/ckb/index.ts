@@ -272,6 +272,8 @@ const ckb = {
 		emailFailureMessage: ' زانیاریەکان تۆمارکرا بەڵام ناردنی ئیمەیڵەکە سەرکەوتوو نەبوو ',
 		failureMessage: 'هەڵەیەک روویدا. زانیاریەکان ناتوانرێت تۆمار بکرێت یان ئیمەیڵ نە نێردرا.',
 		createdAt: 'بەرواری دروستکردن'
-	}
+	},
+	You_have_to_select_at_least_one_area: 'You have to select at least one area',
+	Please_upload_excel_file: 'Please upload excel file'
 } satisfies Translation;
 export default ckb;

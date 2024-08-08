@@ -907,6 +907,14 @@ type RootTranslation = {
 		 */
 		createdAt: string
 	}
+	/**
+	 * Y​o​u​ ​h​a​v​e​ ​t​o​ ​s​e​l​e​c​t​ ​a​t​ ​l​e​a​s​t​ ​o​n​e​ ​a​r​e​a
+	 */
+	You_have_to_select_at_least_one_area: string
+	/**
+	 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​e​x​c​e​l​ ​f​i​l​e
+	 */
+	Please_upload_excel_file: string
 }
 
 export type TranslationFunctions = {
@@ -1799,6 +1807,14 @@ export type TranslationFunctions = {
 		 */
 		createdAt: () => LocalizedString
 	}
+	/**
+	 * You have to select at least one area
+	 */
+	You_have_to_select_at_least_one_area: () => LocalizedString
+	/**
+	 * Please upload excel file
+	 */
+	Please_upload_excel_file: () => LocalizedString
 }
 
 export type Formatters = {}

@@ -269,7 +269,9 @@ const en = {
 		emailFailureMessage: 'Data inserted but email sending failed',
 		failureMessage: 'An error occurred. Data may not be inserted or email may not be sent.',
 		createdAt: 'Date created'
-	}
+	},
+	You_have_to_select_at_least_one_area: 'You have to select at least one area',
+	Please_upload_excel_file: 'Please upload excel file'
 } satisfies BaseTranslation;
 
 export default en;
