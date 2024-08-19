@@ -86,6 +86,7 @@
 		}
 
 		pricePerMeter = data.seat_layout[0]?.price_per_meter;
+		discountedPrice = data.seat_layout[0]?.discounted_price;
 		isExcelRequired = data.seat_layout[0]?.is_excel_required;
 
 		extraDiscount.price = data.seat_layout[0]?.extra_discount;
@@ -214,9 +215,12 @@
 
 	//    find new price by depend quantity
 	function calculatePrice(price: number, discount: number, maxFreeCount: number, quantity: number) {
+		console.log('111111');
 		if (quantity <= maxFreeCount) {
 			return 0;
 		} else {
+			console.log('sdffffff');
+
 			return discount ? discount * quantity : quantity * price;
 		}
 	}
@@ -280,11 +284,20 @@
 			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
+		console.log(
+			totalPrice,
+			'sdfds',
+			customAreaMeter,
+			customAreaQuantity,
+			discountedPrice,
+			pricePerMeter
+		);
 		totalRawPrice = 0;
 		reservedSeatData.area.map((seatArea) => {
 			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
 		});
-		totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
+		// totalRawPrice += customAreaMeter * customAreaQuantity * pricePerMeter;
+		// totalPrice = totalRawPrice;
 	}
 
 	// find total price for services
@@ -332,6 +345,7 @@
 			});
 		}
 		reservedSeatData = { ...reservedSeatData };
+		console.log('reservedSeatArea', reservedSeatData.area);
 		calculateTotalPrice();
 	}
 
