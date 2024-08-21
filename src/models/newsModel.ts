@@ -1,6 +1,5 @@
 import type { ColorTheme } from "./colorTheme";
-import { exhibition } from '../../../suli_expo_panel/src/stores/exhibitionTypeStore';
-
+ 
 export interface NewsModel {
 	id?: number;
 	exhibition_id: string;

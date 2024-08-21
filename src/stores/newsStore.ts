@@ -13,40 +13,58 @@ const createNewsStore = () => {
 		set: (seatLayout: NewsPaginatedModel) => {
 			set(seatLayout);
 		},
-		get: async (locale: Locales, supabase: SupabaseClient, page: string, limit?:number, asc?:boolean, filters?:any[], startDate?:string, endDate?:string) => {
+		get: async (
+			locale: Locales,
+			supabase: SupabaseClient,
+			page: string,
+			limit?: number,
+			asc?: boolean,
+			filters?: any[],
+			startDate?: string,
+			endDate?: string
+		) => {
 			let query = supabase
 				.from('news')
 				.select('*,languages:news_languages!inner(*)', { count: 'exact' })
 				.eq('languages.language', locale)
-				.order('created_at', { ascending: asc ?? false});
-		
+				.order('created_at', { ascending: asc ?? false });
+
 			if (startDate && endDate) {
 				query = query.gte('created_at', startDate).lte('created_at', endDate);
 			}
-		
-			
+
 			if (filters && filters.length > 0) {
 				page = '1';
 				query = query.in('exhibition_id', filters);
 			}
 
-			query = query.range((parseInt(page) - 1) * Constants.page_limit, parseInt(page) * Constants.page_limit - 1)
+			query = query
+				.range(
+					(parseInt(page) - 1) * Constants.page_limit,
+					parseInt(page) * Constants.page_limit - 1
+				)
 				.limit(limit || Constants.page_limit);
-			
 
 			const result = await query;
-		
+
 			if (result.error) {
 				return null;
 			} else {
-				let news = result.data.map((e) => convertModel<NewsModel>(e, true)) as NewsModel[];
+				// replace the language created_at by created_at of news
+				let news = result.data.map((e) => {
+					return {
+						...convertModel<NewsModel>(e, true),
+						created_at: new Date(e.created_at)
+					} as NewsModel;
+				});
+
 				const newsPaginated = {
 					data: news,
 					page: parseInt(page),
 					count: result.count,
-					pages: Math.ceil((result.count ?? 1) / Constants.page_limit) // this is the total number of pages
+					pages: Math.ceil((result.count ?? 1) / Constants.page_limit)
 				} as NewsPaginatedModel;
-		
+
 				set(newsPaginated);
 				return null;
 			}

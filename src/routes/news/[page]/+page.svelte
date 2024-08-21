@@ -57,16 +57,14 @@
 
 		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
 	});
-	// onDestroy(() => {
-	// 	activeThemeStore.reAddColors();
-	// });
+ 
 	function changePage(page: number) {
 		goto(`/news/${page}`);
 	}
 
 	// count viewers
 	onMount(() => {
-		if (!$viewAdded_news) {
+		 if (!$viewAdded_news) {
 			incrementNewsViewer(data.supabase);
 		}
 	});
