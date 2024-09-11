@@ -215,13 +215,10 @@
 
 	//    find new price by depend quantity
 	function calculatePrice(price: number, discount: number, maxFreeCount: number, quantity: number) {
-		console.log('111111');
-		if (quantity <= maxFreeCount) {
+		 if (quantity <= maxFreeCount) {
 			return 0;
 		} else {
-			console.log('sdffffff');
-
-			return discount ? discount * quantity : quantity * price;
+			 return discount ? discount * quantity : quantity * price;
 		}
 	}
 
@@ -284,15 +281,7 @@
 			totalPrice += +seatArea.quantity * +(discountedPrice ?? pricePerMeter) * +seatArea.area;
 		});
 		totalPrice += customAreaMeter * customAreaQuantity * +(discountedPrice ?? pricePerMeter);
-		console.log(
-			totalPrice,
-			'sdfds',
-			customAreaMeter,
-			customAreaQuantity,
-			discountedPrice,
-			pricePerMeter
-		);
-		totalRawPrice = 0;
+		 totalRawPrice = 0;
 		reservedSeatData.area.map((seatArea) => {
 			totalRawPrice += +seatArea.quantity * pricePerMeter * +seatArea.area;
 		});
@@ -345,8 +334,7 @@
 			});
 		}
 		reservedSeatData = { ...reservedSeatData };
-		console.log('reservedSeatArea', reservedSeatData.area);
-		calculateTotalPrice();
+		 calculateTotalPrice();
 	}
 
 	let imageFile_excel: File | undefined;

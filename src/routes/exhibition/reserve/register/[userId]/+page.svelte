@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { requiredFields, exhibitionID } from '../../../../../stores/requiredFieldStore';
+	import { requiredFields } from '../../../../../stores/requiredFieldStore';
 	import imageCompression from 'browser-image-compression';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
@@ -251,15 +251,16 @@
 			return;
 		}
 
-		if (imageFile) {
-			const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
-			if (!result.logo_url) {
-				alert('anUnknown error occurred while uploading the file. Please try again.');
-				return;
-			} else {
-				result.logo_url = response.data?.path || '';
-			}
-		}
+	if (imageFile) {
+	const response = await data.supabase.storage.from('image').upload(`${fileName}`, imageFile!);
+	
+	if (response.error) {
+		alert('An error occurred while uploading the file. Please try again.');
+		return;
+	}
+	
+	result.logo_url = response.data?.path || '';
+}
 
 		//upload passport image
 		for (let passportFile of passportFiles) {
@@ -333,7 +334,7 @@
 			.then((response: any) => {
 				if (response.error) return;
 				currentUser.set(response.data);
-				goto(`/exhibition/reserve/${$exhibitionID}`);
+				 goto(`/exhibition/1`);
 			});
 	}
 	function removePassportImage(index: number, isPreview: boolean) {
@@ -400,7 +401,7 @@
 		}
 	}
 </script>
-
+ 
 <form class="flex min-h-screen justify-center items-center w-full p-8">
 	<div
 		class="border 200 shadow-md rounded-md p-8 w-full lg:w-1/2 bg-[#f3f3f3] dark:bg-slate-600"
