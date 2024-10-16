@@ -146,7 +146,7 @@
 					class="absolute top-0 right-0 bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-bl-lg"
 					style="transform: translate(10%, -10%); z-index: 10;"
 				>
-					Active
+			     {$LL.exhibition_data.active()}
 				</div>
 			{/if}
 			
@@ -201,7 +201,7 @@
 }
 
 .bg-green-500 {
-	background-color: #48bb78; /* Example color, you can use Tailwind or custom */
+	background-color: var(--lightPrimaryColor);  
 }
 
 .text-white {
@@ -225,5 +225,6 @@
 .rounded-bl-lg {
 	border-bottom-left-radius: 0.5rem;
 }
+ 
 
  </style>

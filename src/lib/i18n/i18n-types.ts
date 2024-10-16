@@ -147,6 +147,12 @@ type RootTranslation = {
 		 */
 		Exhibition_PDF: string
 	}
+	exhibition_data: {
+		/**
+		 * A​c​t​i​v​e
+		 */
+		active: string
+	}
 	/**
 	 * P​r​o​m​o
 	 */
@@ -1047,6 +1053,12 @@ export type TranslationFunctions = {
 		 * Exhibition PDF'S
 		 */
 		Exhibition_PDF: () => LocalizedString
+	}
+	exhibition_data: {
+		/**
+		 * Active
+		 */
+		active: () => LocalizedString
 	}
 	/**
 	 * Promo

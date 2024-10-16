@@ -40,6 +40,9 @@ const ar = {
 		Exhibition_Seats: 'مقاعد المعرض',
 		Exhibition_PDF: 'ملفات PDF للمعرض'
 	},
+	exhibition_data:{
+		"active" :"نشط"
+		},
 	promo: 'العروض',
 	filterByExhibition: 'تصفية حسب المعرض',
 	filterByDate: 'تصفية حسب التاريخ',

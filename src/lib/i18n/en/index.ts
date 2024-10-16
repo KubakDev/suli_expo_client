@@ -41,6 +41,9 @@ const en = {
 		Exhibition_Seats: 'Exhibition Seats',
 		Exhibition_PDF: "Exhibition PDF'S"
 	},
+	exhibition_data:{
+    "active" :"Active"
+	},
 	promo: 'Promo',
 	filterByExhibition: 'Filter By Exhibition',
 	filterByDate: 'Filter By Date',
