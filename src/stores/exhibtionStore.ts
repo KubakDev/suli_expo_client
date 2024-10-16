@@ -102,7 +102,47 @@ const createExhibitionStore = () => {
 
 				return exhibitionPaginated;
 			}
+		},
+		getExhibitionsWithActiveStatus: async (
+			locale: Locales,
+			supabase: SupabaseClient
+		) => {
+			const result = await supabase
+				.from('exhibition')
+				.select(`
+					*,
+					languages:exhibition_languages!inner(*),
+					seat_layout(*)
+				`)
+				.is('deleted_status', null)
+				.eq('languages.language', locale ?? 'en');
+
+			if (result.error) {
+				return null;
+			} else {
+				const exhibitions = result.data.map((e) =>
+					convertModel<ExhibitionModel>(e)
+				) as ExhibitionModel[];
+
+				return exhibitions;  
+			}
+		},
+		getExhibitionActiveStatus: async (supabase: SupabaseClient, id: number) => {
+			const result = await supabase
+				.from('seat_layout')
+				.select('is_active')  // We only need to select the 'is_active' column
+				.eq('exhibition', id);
+		
+			if (result.error) {
+				console.error(result.error);
+				return false;
+			}
+		
+			const activeSeat = result.data.find(entry => entry.is_active === true);
+			return !!activeSeat;  // Return true if any seat layout is active, otherwise false
 		}
+		
+		
 	};
 };
 

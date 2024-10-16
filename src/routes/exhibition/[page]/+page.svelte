@@ -72,18 +72,25 @@
 	}
 
 	async function getExhibitions() {
-		exhibitions = (await exhibitionStore.getPaginated(
-			$locale,
-			data?.supabase,
-			$page.params.page,
-			undefined,
-			$asc
-		)) as ExhibitionPaginatedModel;
+    loading = true; // Set loading to true before the loop
+    exhibitions = (await exhibitionStore.getPaginated(
+        $locale,
+        data?.supabase,
+        $page.params.page,
+        undefined,
+        $asc
+    )) as ExhibitionPaginatedModel;
 
-		loading = false;
+    // Check active status for each exhibition
+	for (const exhibition of exhibitions.data) {
+    exhibition.is_active = await exhibitionStore.getExhibitionActiveStatus(data.supabase, exhibition.id!);
+}
 
-		return exhibitions;
-	}
+
+    loading = false;
+    return exhibitions;
+}
+
 
 	// count viewers
 	onMount(() => {
@@ -125,29 +132,40 @@
 			<div
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
-				{#each exhibitions.data as exhibition, i}
-					<button
-						class="w-full"
-						on:click={() => {
-							openExhibition(exhibition.id || 0);
-						}}
-					>
-						{#if CardComponent}
-							<ExpoCard
-								primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ??
-									Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ??
-									Constants.main_theme.lightOverlayPrimary}
-								title={exhibition.title}
-								thumbnail={exhibition.thumbnail}
-								short_description={exhibition.description}
-								startDate={exhibition.start_date}
-								endDate={exhibition.end_date}
-								cardType={CardComponent || CardType.Simple}
-							/>
-						{/if}
-					</button>
-				{/each}
+			{#each exhibitions.data as exhibition, i}
+	<button
+		class="relative w-full"
+		on:click={() => {
+			openExhibition(exhibition.id || 0);
+		}}
+	>
+		{#if CardComponent}
+			{#if exhibition.is_active} 
+				<!-- Active Badge with nicer design -->
+				<div 
+					class="absolute top-0 right-0 bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-bl-lg"
+					style="transform: translate(10%, -10%); z-index: 10;"
+				>
+					Active
+				</div>
+			{/if}
+			
+			
+			<!-- Card Content -->
+			<ExpoCard
+				primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ?? Constants.main_theme.lightPrimary}
+				overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ?? Constants.main_theme.lightOverlayPrimary}
+				title={exhibition.title}
+				thumbnail={exhibition.thumbnail}
+				short_description={exhibition.description}
+				startDate={exhibition.start_date}
+				endDate={exhibition.end_date}
+				cardType={CardComponent || CardType.Simple}
+			/>
+		{/if}
+	</button>
+{/each}
+
 			</div>
 			<div dir="ltr" class="flex justify-center my-10">
 				{#if exhibitions.count > 10}
@@ -171,3 +189,41 @@
 		</div>
 	</section>
 {/if}
+
+
+<style>
+	.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.bg-green-500 {
+	background-color: #48bb78; /* Example color, you can use Tailwind or custom */
+}
+
+.text-white {
+	color: white;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.px-3 {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.py-1 {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.rounded-bl-lg {
+	border-bottom-left-radius: 0.5rem;
+}
+
+ </style>
