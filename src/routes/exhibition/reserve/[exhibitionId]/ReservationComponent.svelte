@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import type { Canvas } from 'fabric/fabric-impl';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { page } from '$app/stores';
 	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
@@ -332,7 +331,7 @@
 				<div
 					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
 				/>
-				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.selected()}</p>
+			 	<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.selected()}</p>
 			</div>
 			<div class="flex justify-center items-center mx-8">
 				<div

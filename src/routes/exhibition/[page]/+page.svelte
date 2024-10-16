@@ -72,25 +72,18 @@
 	}
 
 	async function getExhibitions() {
-    loading = true; // Set loading to true before the loop
-    exhibitions = (await exhibitionStore.getPaginated(
-        $locale,
-        data?.supabase,
-        $page.params.page,
-        undefined,
-        $asc
-    )) as ExhibitionPaginatedModel;
+  loading = true;
+  exhibitions = (await exhibitionStore.getPaginated(
+    $locale,
+    data?.supabase,
+    $page.params.page,
+    undefined,
+    $asc
+  )) as ExhibitionPaginatedModel;
 
-    // Check active status for each exhibition
-	for (const exhibition of exhibitions.data) {
-    exhibition.is_active = await exhibitionStore.getExhibitionActiveStatus(data.supabase, exhibition.id!);
+  loading = false;
+  return exhibitions;
 }
-
-
-    loading = false;
-    return exhibitions;
-}
-
 
 	// count viewers
 	onMount(() => {

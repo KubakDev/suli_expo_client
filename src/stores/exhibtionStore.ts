@@ -6,7 +6,10 @@ import type { Locales } from '$lib/i18n/i18n-types';
 
 const createExhibitionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
-
+	interface SeatLayout {
+		is_active: boolean;
+	  }
+	  
 	return {
 		subscribe,
 		set: (exhibitionModels: ExhibitionModel[]) => {
@@ -72,37 +75,43 @@ const createExhibitionStore = () => {
 			page: string,
 			limit?: number,
 			asc?: boolean
-		) => {
-			//.info('get exhibition');
+		  ) => {
+			// Join the exhibition and seat_layout tables to get the active status for all exhibitions in the same query.
 			let query = supabase
-				.from('exhibition')
-				.select('*,languages:exhibition_languages!inner(*)', { count: 'exact' })
-				.is('deleted_status', null)
-				.eq('languages.language', locale ?? 'en')
-				.order('position', { ascending: asc ?? false });
-
+			  .from('exhibition')
+			  .select(
+				`*, 
+				languages:exhibition_languages!inner(*), 
+				seat_layout(is_active)`  
+			  )
+			  .is('deleted_status', null)
+			  .eq('languages.language', locale ?? 'en')
+			  .order('position', { ascending: asc ?? false });
+		  
 			query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
-
+		  
 			const result = await query;
-
+		  
 			if (result.error) {
-				//.error(result.error);
-				return null;
+			  return null;
 			} else {
-				const exhibition = result.data.map((e) =>
-					convertModel<ExhibitionModel>(e)
-				) as ExhibitionModel[];
-
-				const exhibitionPaginated = {
-					data: exhibition,
-					page: parseInt(page),
-					count: result.count,
-					pages: Math.ceil((result.count ?? 1) / 10) // this is the total number of pages
-				} as ExhibitionPaginatedModel;
-
-				return exhibitionPaginated;
+			  // Include the `is_active` flag directly from the query result
+			  const exhibition = result.data.map((e) => ({
+				...convertModel<ExhibitionModel>(e),
+				is_active: (e.seat_layout as SeatLayout[]).some((layout: SeatLayout) => layout.is_active), // Check if any layout is active
+			  })) as ExhibitionModel[];
+		  
+			  const exhibitionPaginated = {
+				data: exhibition,
+				page: parseInt(page),
+				count: result.count,
+				pages: Math.ceil((result.count ?? 1) / 10),  
+			  } as ExhibitionPaginatedModel;
+		  
+			  return exhibitionPaginated;
 			}
-		},
+		  },
+		  
 		getExhibitionsWithActiveStatus: async (
 			locale: Locales,
 			supabase: SupabaseClient
@@ -127,22 +136,7 @@ const createExhibitionStore = () => {
 				return exhibitions;  
 			}
 		},
-		getExhibitionActiveStatus: async (supabase: SupabaseClient, id: number) => {
-			const result = await supabase
-				.from('seat_layout')
-				.select('is_active')  // We only need to select the 'is_active' column
-				.eq('exhibition', id);
-		
-			if (result.error) {
-				console.error(result.error);
-				return false;
-			}
-		
-			const activeSeat = result.data.find(entry => entry.is_active === true);
-			return !!activeSeat;  // Return true if any seat layout is active, otherwise false
-		}
-		
-		
+		 
 	};
 };
 
