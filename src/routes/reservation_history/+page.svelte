@@ -104,7 +104,7 @@
 				let activeSeatLayout = reservationData?.exhibition?.seat_layout?.find(
 					(seatLayout: any) => seatLayout.is_active == true
 				);
-				await data.supabase
+			 	await data.supabase
 					.from('seat_layout')
 					.update({
 						areas: JSON.stringify(areas)

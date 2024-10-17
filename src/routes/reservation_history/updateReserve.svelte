@@ -7,7 +7,7 @@
 	import moment from 'moment';
 	import { currentUser } from '../../stores/currentUser';
 	import { generateDocx } from '../../utils/generateContract';
-	import type { Reservation } from '../../models/reservationModel';
+	import type { DetailedService, Reservation, ServiceArrayItem, ServiceDetail } from '../../models/reservationModel';
 	import { ReservationStatus } from '../../models/reservationModel';
 	import { getRandomTextNumber } from '../../utils/getRandomText';
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
@@ -69,6 +69,18 @@
 		file: undefined,
 		total_price: 0
 	};
+
+interface CurrentService {
+    serviceId: number;
+	quantity: number;
+	totalPrice: number;
+	serviceDetail: any[];
+
+}
+
+let currentServices: CurrentService[] = [];
+
+
 
 	let reservedAreas: any[] = [];
 	let currentActiveSeat = data.seat_layout?.find((seat: any) => seat.is_active == true);
@@ -177,10 +189,10 @@ $: {
 			JSON.parse(serviceString)
 		);
 
-		let allServiceIds = currentServices.map((service) => service.serviceId);
+		let allServiceIds :number[]= currentServices.map((service:CurrentService) => service.serviceId);
 		let allServices = await returnServicesForThisSeat(allServiceIds);
 
-		allServices.forEach((service) => {
+		allServices.forEach((service:DetailedService) => {
 			let reservedService = reservedServicesData.find((rs) => rs.serviceId === service.id);
 
 			if (reservedService) {
@@ -196,7 +208,7 @@ $: {
 			}
 
 			// Assign maxFreeCount from currentServices
-			let matchedService = currentServices.find((cs) => cs.serviceId === service.id);
+			let matchedService = currentServices.find((cs:CurrentService) => cs.serviceId === service.id);
 			service.maxFreeCount = matchedService ? parseInt(matchedService.maxFreeCount) || 0 : 0;
 			service.unlimitedFree = matchedService.unlimitedFree;
 		});
@@ -252,7 +264,7 @@ $: {
 			return;
 		}
 
-		const serviceDetails = servicesArray.find((service) => service.serviceId === serviceId);
+		const serviceDetails : ServiceArrayItem | undefined = servicesArray.find((service:ServiceArrayItem) => service.serviceId === serviceId);
 		if (!serviceDetails) {
 			console.error('Service not found for serviceId:', serviceId);
 			return;
@@ -274,7 +286,7 @@ $: {
 		isValidQuantity = true;
 		quantityExceededMessages[serviceId] = '';
 		// Find the service in the detailedServices array
-		const serviceIndex = detailedServices.findIndex((service) => service.id === serviceId);
+		const serviceIndex = detailedServices.findIndex((service:DetailedService) => service.id === serviceId);
 		if (serviceIndex !== -1) {
 			detailedServices[serviceIndex].quantity = newQuantity;
 			detailedServices = [...detailedServices];
@@ -283,18 +295,19 @@ $: {
 		calculateTotalPriceForServices();
 	}
 
+
 	// find total price for services
 	function calculateTotalPriceForServices() {
 		totalPriceForServices = 0;
 
-		detailedServices.forEach((service) => {
+		detailedServices.forEach((service: DetailedService) => {
 			if (service.selected) {
 				let maxFreeCount = service.maxFreeCount || 0;
 				let unlimitedFree = service.unlimitedFree || false;
 
 				service.totalPrice = calculatePrice(
 					service.price,
-					service.discount,
+					service.discount ?? 0,
 					maxFreeCount,
 					service.quantity,
 					unlimitedFree
@@ -365,13 +378,13 @@ $: {
 
 	function confirmServiceSelection() {
 		reservedServices = detailedServices
-			.map((service) => {
+			.map((service: DetailedService) => {
 				if (service.selected) {
 					let maxFreeCount = service.maxFreeCount || 0;
 					let unlimitedFree = service.unlimitedFree || false;
 					let totalPrice = calculatePrice(
 						service.price,
-						service.discount,
+						service.discount ?? 0,
 						maxFreeCount,
 						service.quantity,
 						unlimitedFree

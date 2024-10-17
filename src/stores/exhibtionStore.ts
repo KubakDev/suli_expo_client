@@ -8,8 +8,8 @@ const createExhibitionStore = () => {
 	const { subscribe, set } = writable<ExhibitionModel[]>([]);
 	interface SeatLayout {
 		is_active: boolean;
-	  }
-	  
+	}
+
 	return {
 		subscribe,
 		set: (exhibitionModels: ExhibitionModel[]) => {
@@ -20,7 +20,8 @@ const createExhibitionStore = () => {
 			const result = await supabase
 				.from('exhibition')
 				.select(
-					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*,seat_privacy_policy_lang(*))', { count: 'exact' }
+					'*,languages:exhibition_languages(*),sections:exhibition_sections(*),seat_layout(*,seat_privacy_policy_lang(*))',
+					{ count: 'exact' }
 				)
 				.eq('languages.language', locale)
 				.eq('id', id)
@@ -33,17 +34,14 @@ const createExhibitionStore = () => {
 			} else {
 				let exhibition = convertModel<ExhibitionModel>(result.data, true) as ExhibitionModel;
 
-				//  
-
+				//
 
 				if (exhibition.brochure) {
-					exhibition.brochure = import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
+					exhibition.brochure =
+						import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL + '/' + exhibition.brochure;
 				} else {
 					exhibition.brochure = undefined;
 				}
-
-
-
 
 				return exhibition;
 			}
@@ -75,54 +73,53 @@ const createExhibitionStore = () => {
 			page: string,
 			limit?: number,
 			asc?: boolean
-		  ) => {
+		) => {
 			// Join the exhibition and seat_layout tables to get the active status for all exhibitions in the same query.
 			let query = supabase
-			  .from('exhibition')
-			  .select(
-				`*, 
+				.from('exhibition')
+				.select(
+					`*, 
 				languages:exhibition_languages!inner(*), 
-				seat_layout(is_active)`  
-			  )
-			  .is('deleted_status', null)
-			  .eq('languages.language', locale ?? 'en')
-			  .order('position', { ascending: asc ?? false });
-		  
+				seat_layout(is_active)`
+				)
+				.is('deleted_status', null)
+				.eq('languages.language', locale ?? 'en')
+				.order('position', { ascending: asc ?? false });
+
 			query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
-		  
+
 			const result = await query;
-		  
+
 			if (result.error) {
-			  return null;
+				return null;
 			} else {
-			  // Include the `is_active` flag directly from the query result
-			  const exhibition = result.data.map((e) => ({
-				...convertModel<ExhibitionModel>(e),
-				is_active: (e.seat_layout as SeatLayout[]).some((layout: SeatLayout) => layout.is_active), // Check if any layout is active
-			  })) as ExhibitionModel[];
-		  
-			  const exhibitionPaginated = {
-				data: exhibition,
-				page: parseInt(page),
-				count: result.count,
-				pages: Math.ceil((result.count ?? 1) / 10),  
-			  } as ExhibitionPaginatedModel;
-		  
-			  return exhibitionPaginated;
+				// Include the `is_active` flag directly from the query result
+				const exhibition = result.data.map((e) => ({
+					...convertModel<ExhibitionModel>(e),
+					is_active: (e.seat_layout as SeatLayout[]).some((layout: SeatLayout) => layout.is_active) // Check if any layout is active
+				})) as ExhibitionModel[];
+
+				const exhibitionPaginated = {
+					data: exhibition,
+					page: parseInt(page),
+					count: result.count,
+					pages: Math.ceil((result.count ?? 1) / 10)
+				} as ExhibitionPaginatedModel;
+
+				return exhibitionPaginated;
 			}
-		  },
-		  
-		getExhibitionsWithActiveStatus: async (
-			locale: Locales,
-			supabase: SupabaseClient
-		) => {
+		},
+
+		getExhibitionsWithActiveStatus: async (locale: Locales, supabase: SupabaseClient) => {
 			const result = await supabase
 				.from('exhibition')
-				.select(`
+				.select(
+					`
 					*,
 					languages:exhibition_languages!inner(*),
 					seat_layout(*)
-				`)
+				`
+				)
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en');
 
@@ -133,10 +130,9 @@ const createExhibitionStore = () => {
 					convertModel<ExhibitionModel>(e)
 				) as ExhibitionModel[];
 
-				return exhibitions;  
+				return exhibitions;
 			}
-		},
-		 
+		}
 	};
 };
 
