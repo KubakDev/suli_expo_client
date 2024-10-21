@@ -422,6 +422,7 @@
         <!-- Profile Dropdown -->
         {#if $currentUser && $currentUser.id}
           <div class="relative" bind:this={profileDropdown}>
+          
             <button
               style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
               on:click={toggleDropdownProfile}
