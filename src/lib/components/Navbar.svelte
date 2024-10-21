@@ -589,6 +589,7 @@ console.log("hsdf")
           {/if}
         {/each}
 
+        
         <!-- Mobile Language Dropdown -->
         {#if !showLanguageModal}
           <div class="mt-4">
