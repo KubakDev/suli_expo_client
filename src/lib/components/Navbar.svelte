@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import { LL, locale } from '$lib/i18n/i18n-svelte';
   import type { PageData } from '../../routes/$types';
@@ -13,10 +13,10 @@
   import { currentUser } from '../../stores/currentUser';
   import { goto } from '$app/navigation';
   import { UserSolid } from 'flowbite-svelte-icons';
- 
+
   export let data: PageData;
 
-  // Navigation Titlesa
+  // Navigation Titles
   const navTitles: any = [
     { title: 'home', url: '/' },
     { title: 'news', url: '/news/1' },
@@ -34,12 +34,19 @@
     { title: 'about', url: '/about' },
     { title: 'contact', url: '/contact' }
   ];
- 
+
   $: translation = $LL as unknown as any;
 
+  // Separate dropdown states for desktop
   let dropdownOpen: string = '';  
-  let isMobileMenuOpen: boolean = false; 
   let languageDropdownOpen: boolean = false;  
+  let dropdownOpenProfile: boolean = false;
+
+  // Separate dropdown states for mobile
+  let mobileDropdownOpen: string = '';
+  let mobileLanguageDropdownOpen: boolean = false;
+
+  let isMobileMenuOpen: boolean = false; 
   let showLanguageModal: boolean = !localStorage.getItem('selectedLanguage');  
   let selectedLang: string = data.locale === 'en' ? 'English' : data.locale === 'ar' ? 'العربية' : 'کوردی';
   let activeUrl: string;
@@ -50,18 +57,29 @@
     currentTheme = value;
   });
 
-  let dropdownOpenProfile: boolean = false;
   let notifications: any = [];
 
- // Close all dropdowns
+  // References to desktop dropdown elements
+  let mediaDropdown: HTMLElement;
+  let languageDropdown: HTMLElement;
+  let profileDropdown: HTMLElement;
+
+  // References to mobile dropdown elements
+  let mobileMediaDropdown: HTMLElement;
+  let mobileLanguageDropdown: HTMLElement;
+
+  // Close all dropdowns
   function closeAllDropdowns() {
     dropdownOpen = '';
     languageDropdownOpen = false;
     dropdownOpenProfile = false;
+    // Close mobile dropdowns
+    mobileDropdownOpen = '';
+    mobileLanguageDropdownOpen = false;
   }
 
-
-   function toggleDropdown(title: string) {
+  // Toggle specific dropdown for desktop
+  function toggleDropdown(title: string) {
     if (dropdownOpen === title) {
       dropdownOpen = '';
     } else {
@@ -70,8 +88,18 @@
     }
   }
 
- 
-   function toggleLanguageDropdown() {
+  // Toggle specific dropdown for mobile
+  function toggleMobileDropdown(title: string) {
+    if (mobileDropdownOpen === title) {
+      mobileDropdownOpen = '';
+    } else {
+      closeAllDropdowns();
+      mobileDropdownOpen = title;
+    }
+  }
+
+  // Toggle Language Dropdown for desktop
+  function toggleLanguageDropdown() {
     if (languageDropdownOpen) {
       languageDropdownOpen = false;
     } else {
@@ -80,71 +108,38 @@
     }
   }
 
-  // Handle Language Selection
-  async function langSelect(lang: string) {
-    const localeDetected = detectLocale(() => [lang]);
-    await loadLocaleAsync(localeDetected);
-    setLocale(localeDetected);
-    selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
-    changeLanguage(localeDetected);
-    localStorage.setItem('selectedLanguage', lang);
-    showLanguageModal = false;
-    languageDropdownOpen = false;
-
-    // Reload the page to apply language changes
-    await fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
-
-    // Enable scrolling here
-    document.body.style.overflow = '';
+  // Toggle Language Dropdown for mobile
+  function toggleMobileLanguageDropdown() {
+    if (mobileLanguageDropdownOpen) {
+      mobileLanguageDropdownOpen = false;
+    } else {
+      closeAllDropdowns();
+      mobileLanguageDropdownOpen = true;
+    }
   }
 
-  // Toggle Profile Dropdown
   function toggleDropdownProfile() {
     dropdownOpenProfile = !dropdownOpenProfile;
   }
 
-  // Fetch Notifications
-  async function getAllNotification() {
-    if (!$currentUser?.id) return;
-    notifications = [];
-    const response = await data.supabase
-      .from('notification')
-      .select('*')
-      .eq('company_id', $currentUser.id)
-      .eq('language', data.locale)
-      .neq('seen', true);
-    notifications = response.data || [];
+  // Handle click outside to close dropdowns
+  function handleClickOutside(event: MouseEvent) {
+    const target = event.target as Node;
+    if (
+      mediaDropdown && !mediaDropdown.contains(target) &&
+      languageDropdown && !languageDropdown.contains(target) &&
+      profileDropdown && !profileDropdown.contains(target) &&
+      mobileMediaDropdown && !mobileMediaDropdown.contains(target) &&
+      mobileLanguageDropdown && !mobileLanguageDropdown.contains(target)
+    ) {
+      closeAllDropdowns();
+    }
   }
 
-  // Logout Function
-  async function logoutFunction() {
-console.log("hsdf")
-		try {
-			const { error } = await data.supabase.auth.signOut();
-			if (error) throw error;
-			currentUser.set(null);
-			goto('/');
-		} catch (err) {}
-	}
-
-  // Update Active URL and Previous Page
-  function updateActiveUrl(url: string) {
-    activeUrl = url;
-    previousPageStore.set($page.url.pathname);
-  }
-
-  // Handle Theme Toggle
-  function toggleThemeHandler() {
-    toggleTheme();
-  }
-
-  // Toggle Mobile Menu
-  function toggleMobileMenu() {
-    isMobileMenuOpen = !isMobileMenuOpen;
-  }
-
-  // On Component Mount
+  // Mount the click event listener
   onMount(() => {
+    document.addEventListener('click', handleClickOutside);
+
     // Fetch initial notifications
     getAllNotification();
 
@@ -171,42 +166,80 @@ console.log("hsdf")
 
     return () => {
       // Cleanup on component destroy
+      document.removeEventListener('click', handleClickOutside);
       subscription.unsubscribe();
       document.body.style.overflow = '';
     };
   });
 
-  // Show modal dialog for choosing the language
-  let dropdownOpenLang: boolean = showLanguageModal;
+  // Handle Language Selection
+  async function langSelect(lang: string) {
+    const localeDetected = detectLocale(() => [lang]);
+    await loadLocaleAsync(localeDetected);
+    setLocale(localeDetected);
+    selectedLang = lang === 'en' ? 'English' : lang === 'ar' ? 'العربية' : 'کوردی';
+    changeLanguage(localeDetected);
+    localStorage.setItem('selectedLanguage', lang);
+    showLanguageModal = false;
+    languageDropdownOpen = false;
+    mobileLanguageDropdownOpen = false;
 
-  onMount(() => {
-    const storedLang = localStorage.getItem('selectedLanguage');
-    if (storedLang) {
-      langSelect(storedLang);
-    }
-  });
+    // Reload the page to apply language changes
+    await fetch(`/?lang=${lang}`, { method: 'GET', credentials: 'include' });
 
-  onMount(() => {
-    if (dropdownOpenLang) {
-      document.body.style.overflow = 'hidden';
-    }
-  });
-
-  onDestroy(() => {
+    // Enable scrolling here
     document.body.style.overflow = '';
-  });
+  }
 
+  // Fetch Notifications
+  async function getAllNotification() {
+    if (!$currentUser?.id) return;
+    notifications = [];
+    const response = await data.supabase
+      .from('notification')
+      .select('*')
+      .eq('company_id', $currentUser.id)
+      .eq('language', data.locale)
+      .neq('seen', true);
+    notifications = response.data || [];
+  }
 
+  // Logout Function
+  async function logoutFunction() {
+    try {
+      const { error } = await data.supabase.auth.signOut();
+      if (error) throw error;
+      currentUser.set(null);
+      goto('/');
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  }
 
-   // Reactive style object
+  // Update Active URL and Previous Page
+  function updateActiveUrl(url: string) {
+    activeUrl = url;
+    previousPageStore.set($page.url.pathname);
+  }
+
+  // Handle Theme Toggle
+  function toggleThemeHandler() {
+    toggleTheme();
+  }
+
+  // Toggle Mobile Menu
+  function toggleMobileMenu() {
+    isMobileMenuOpen = !isMobileMenuOpen;
+  }
+
+  // Reactive style object
   $: navbarStyles = {
     backgroundColor: $currentMainThemeColors.secondaryColor,
     color: $currentMainThemeColors.overlaySecondaryColor
   };
-
 </script>
 
- <!-- Language Selection Modal (Only on First Visit) -->
+<!-- Language Selection Modal (Only on First Visit) -->
 {#if showLanguageModal}
   <div class="fixed inset-0 flex items-center justify-center z-50 ">
     <div class="rounded-lg shadow-lg w-80 p-6 text-gray-800 bg-white">
@@ -255,7 +288,7 @@ console.log("hsdf")
       <div class="flex items-center lg:hidden">
         <button
           on:click={toggleMobileMenu}
-          class="p-2 s:outline-none focus:ring-2 focus:ring-inset"
+          class="p-2 outline-none focus:ring-2 focus:ring-inset"
           aria-label="Toggle Mobile Menu"
         >
           {#if isMobileMenuOpen}
@@ -276,11 +309,11 @@ console.log("hsdf")
       <div class="hidden lg:flex space-x-6 items-center">
         {#each navTitles as navTitle}
           {#if navTitle.urls}
-            <!-- Dropdown for Media -->
-            <div class="relative"  >
+            <!-- Dropdown for Media (Desktop) -->
+            <div class="relative" bind:this={mediaDropdown}>
               <button
                 on:click={() => toggleDropdown(navTitle.title)}
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md focus:outline-none"
+                class="dropdown-toggle flex items-center px-3 py-2 text-sm font-medium rounded-md focus:outline-none"
                 aria-haspopup="true"
                 aria-expanded={dropdownOpen === navTitle.title}
                 style="color: {navbarStyles.color};"
@@ -289,13 +322,13 @@ console.log("hsdf")
                 <ChevronDown class="w-4 h-4 ml-1" />
               </button>
               {#if dropdownOpen === navTitle.title}
-                <div class="absolute mt-2 w-48 rounded-md shadow-lg z-50" 
+                <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg z-50" 
                      style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                   <div class="py-1">
                     {#each navTitle.urls as url}
                       <a
                         href={url.url}
-                        class="block px-4 py-2 text-sm"
+                        class="block px-4 py-2 text-sm "
                         on:click={() => toggleDropdown('')}
                         style={
                           activeUrl === url.url
@@ -319,7 +352,10 @@ console.log("hsdf")
                   ? `color:${$currentMainThemeColors.primaryColor};`
                   : `color:${navbarStyles.color};`
               }
-              on:click={() => updateActiveUrl(navTitle.url)}
+              on:click={() => {
+                updateActiveUrl(navTitle.url);
+                closeAllDropdowns();
+              }}
             >
               {translation[navTitle.title]()}
             </a>
@@ -327,11 +363,11 @@ console.log("hsdf")
         {/each}
 
         <!-- Desktop Language Dropdown -->
-        <div class="relative" >
+        <div class="relative" bind:this={languageDropdown}>
           <button
             style="color: {navbarStyles.color};"
             on:click={toggleLanguageDropdown}
-            class="flex items-center px-3 py-2 text-sm font-medium rounded-md focus:outline-none"
+            class="dropdown-toggle flex items-center px-3 py-2 text-sm font-medium rounded-md focus:outline-none"
             aria-haspopup="true"
             aria-expanded={languageDropdownOpen}
           >
@@ -339,24 +375,24 @@ console.log("hsdf")
             <ChevronDown class="w-4 h-4 ml-1" />
           </button>
           {#if languageDropdownOpen}
-            <div class="absolute right-0 mt-2 w-40 rounded-md shadow-lg z-50" 
+            <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-40 rounded-md shadow-lg z-50" 
                  style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                <div class="py-1">
                 <button
                   on:click={() => langSelect('ckb')}
-                  class="w-full text-left px-4 py-2 text-sm"
+                  class="w-full text-left px-4 py-2 text-sm "
                 >
                   کوردی
                 </button>
                 <button
                   on:click={() => langSelect('ar')}
-                  class="w-full text-left px-4 py-2 text-sm"
+                  class="w-full text-left px-4 py-2 text-sm "
                 >
                   العربية
                 </button>
                 <button
                   on:click={() => langSelect('en')}
-                  class="w-full text-left px-4 py-2 text-sm"
+                  class="w-full text-left px-4 py-2 text-sm "
                 >
                   English
                 </button>
@@ -370,7 +406,6 @@ console.log("hsdf")
       <div class="flex items-center space-x-4">
         <!-- Theme Toggle -->
         <button
-          style="hover:background-color: {navbarStyles.color};"
           on:click={toggleThemeHandler}
           class="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 "
           aria-label="Toggle Theme"
@@ -386,7 +421,7 @@ console.log("hsdf")
 
         <!-- Profile Dropdown -->
         {#if $currentUser && $currentUser.id}
-          <div class="relative"  >
+          <div class="relative" bind:this={profileDropdown}>
             <button
               style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
               on:click={toggleDropdownProfile}
@@ -397,7 +432,7 @@ console.log("hsdf")
               <img
                 src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${$currentUser?.logo_url}`}
                 alt="User Avatar"
-                class="w-8 h-8 rounded-full mr-2"
+                class="w-8 h-8 rounded-full mx-2"
               />
               <span>{$currentUser.company_name}</span>
               {#if notifications.length > 0}
@@ -410,13 +445,13 @@ console.log("hsdf")
 
             {#if dropdownOpenProfile}
               <ul
-                class="absolute right-0 mt-2 w-48 rounded shadow-lg z-50"
+                class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 rounded shadow-lg z-50"
                 style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
                 on:click|stopPropagation
               >
                 <li>
                   <button
-                    class="w-full text-left px-4 py-2 text-sm"
+                    class="w-full text-left px-4 py-2 text-sm "
                     on:click={() => {
                       goto(`/exhibition/reserve/register/${$currentUser.uid}`);
                       dropdownOpenProfile = false;
@@ -430,7 +465,7 @@ console.log("hsdf")
                 </li>
                 <li>
                   <button
-                    class="w-full text-left px-4 py-2 text-sm"
+                    class="w-full text-left px-4 py-2 text-sm "
                     on:click={() => {
                       goto('/reservation_history');
                       dropdownOpenProfile = false;
@@ -457,7 +492,7 @@ console.log("hsdf")
                 </li>
                 <li>
                   <button
-                    class="w-full text-left px-4 py-2 text-sm"
+                    class="w-full text-left px-4 py-2 text-sm "
                     on:click={logoutFunction}
                   >
                     <div class="flex items-center">
@@ -482,7 +517,7 @@ console.log("hsdf")
                 {#if notifications.length > 0}
                   <li class="border-t mt-2">
                     <button
-                      class="w-full text-left px-4 py-2 text-sm"
+                      class="w-full text-left px-4 py-2 text-sm "
                       on:click={() => {
                         goto('/notifications');
                         dropdownOpenProfile = false;
@@ -512,7 +547,7 @@ console.log("hsdf")
                   </li>
                 {/if}
                 {#each notifications as notificationData}
-                  <li class="px-4 py-2 text-sm"  
+                  <li class="px-4 py-2 text-sm "  
                    style="color: {navbarStyles.color};">
                     <div class="flex justify-between items-center">
                       <span>{notificationData.exhibition_name}</span>
@@ -539,25 +574,25 @@ console.log("hsdf")
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         {#each navTitles as navTitle}
           {#if navTitle.urls}
-            <!-- Dropdown for Media -->
-            <div class="relative">
+            <!-- Dropdown for Media (Mobile) -->
+            <div class="relative" bind:this={mobileMediaDropdown}>
               <button
-                on:click={() => toggleDropdown(navTitle.title)}
+                on:click={() => toggleMobileDropdown(navTitle.title)}
                 class="flex items-center w-full px-3 py-2 text-base font-medium rounded-md focus:outline-none"
                 aria-haspopup="true"
-                aria-expanded={dropdownOpen === navTitle.title}
+                aria-expanded={mobileDropdownOpen === navTitle.title}
                 style="color: {navbarStyles.color};"
               >
                 <span class="ml-2">{translation[navTitle.title]()}</span>
                 <ChevronDown class="w-4 h-4 ml-1" />
               </button>
-              {#if dropdownOpen === navTitle.title}
+              {#if mobileDropdownOpen === navTitle.title}
                 <div class="ml-4 mt-1 space-y-1" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                   {#each navTitle.urls as url}
                     <a
                       href={url.url}
-                      class="block px-4 py-2 text-sm"
-                      on:click={() => toggleDropdown('')}
+                      class="block px-4 py-2 text-sm "
+                      on:click={() => toggleMobileDropdown('')}
                       style={
                         activeUrl === url.url
                           ? `color:${$currentMainThemeColors.primaryColor};`
@@ -573,7 +608,7 @@ console.log("hsdf")
           {:else}
             <a
               href={navTitle.url}
-              class="block px-3 py-2 text-base font-medium rounded-md"
+              class="block px-3 py-2 text-base font-medium rounded-md "
               on:click={() => {
                 updateActiveUrl(navTitle.url);
                 isMobileMenuOpen = false;  
@@ -589,30 +624,29 @@ console.log("hsdf")
           {/if}
         {/each}
 
-        
         <!-- Mobile Language Dropdown -->
         {#if !showLanguageModal}
-          <div class="mt-4">
+          <div class="mt-4" bind:this={mobileLanguageDropdown}>
             <button
-              on:click={toggleLanguageDropdown}
+              on:click={toggleMobileLanguageDropdown}
               class="flex items-center w-full px-3 py-2 text-base font-medium rounded-md focus:outline-none"
               aria-haspopup="true"
-              aria-expanded={languageDropdownOpen}
+              aria-expanded={mobileLanguageDropdownOpen}
               style="color: {navbarStyles.color};"
             >
               <span class="ml-2">{selectedLang}</span>
               <ChevronDown class="w-4 h-4 ml-1" />
             </button>
-            {#if languageDropdownOpen}
-              <div  class="ml-4 mt-1 space-y-1" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
+            {#if mobileLanguageDropdownOpen}
+              <div class="ml-4 mt-1 space-y-1" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                 <button
                   on:click={() => {
                     langSelect('ckb');
                     isMobileMenuOpen = false;  
                   }}
-                  class="block px-4 py-2 text-sm rounded-md w-full text-left"
+                  class="block px-4 py-2 text-sm rounded-md w-full text-left "
                   style={
-                    activeUrl === 'ckb'
+                    selectedLang === 'ckb'
                       ? `color:${$currentMainThemeColors.primaryColor};`
                       : `color:${navbarStyles.color};`
                   }
@@ -624,9 +658,9 @@ console.log("hsdf")
                     langSelect('ar');
                     isMobileMenuOpen = false;  
                   }}
-                  class="block px-4 py-2 text-sm rounded-md w-full text-left"
+                  class="block px-4 py-2 text-sm rounded-md w-full text-left "
                   style={
-                    activeUrl === 'ar'
+                    selectedLang === 'ar'
                       ? `color:${$currentMainThemeColors.primaryColor};`
                       : `color:${navbarStyles.color};`
                   }
@@ -638,9 +672,9 @@ console.log("hsdf")
                     langSelect('en');
                     isMobileMenuOpen = false;  
                   }}
-                  class="block px-4 py-2 text-sm rounded-md w-full text-left"
+                  class="block px-4 py-2 text-sm rounded-md w-full text-left "
                   style={
-                    activeUrl === 'en'
+                    selectedLang === 'en'
                       ? `color:${$currentMainThemeColors.primaryColor};`
                       : `color:${navbarStyles.color};`
                   }
@@ -686,13 +720,13 @@ console.log("hsdf")
     left: 0;
   }
 
-  /* Hover background for desktop dropdown */
-  .hidden lg:flex .relative:hover .absolute {
-    display: block;
-  }
-
   /* Ensure the dropdown doesn't overflow the screen */
   .absolute {
     z-index: 50;
+  }
+
+  /* Hover background for desktop dropdown */
+  .hidden lg:flex .relative:hover .absolute {
+    display: block;
   }
 </style>
