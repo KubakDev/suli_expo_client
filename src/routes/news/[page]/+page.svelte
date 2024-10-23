@@ -80,7 +80,7 @@
 						text={$LL.news()}
 						borderColor={$newsCurrentThemeColors.primaryColor}
 						textColor={$newsCurrentThemeColors.overlayBackgroundColor}
-					/>
+					/> 
 				</div>
 				<div class="justify-end flex z-10 w-full" />
 			</div>
@@ -89,7 +89,7 @@
 				page={$page.params.page}
 				{selectedExhibition}
 				exhibitionData={$exhibitionStore}
-			/>
+			/> 
 
 			<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{#each $newsStore.data as item, i}

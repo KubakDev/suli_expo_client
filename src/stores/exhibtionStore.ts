@@ -72,7 +72,7 @@ const createExhibitionStore = () => {
 			supabase: SupabaseClient,
 			page: string,
 			limit?: number,
-			asc?: boolean
+			asc?: boolean  
 		) => {
 			// Join the exhibition and seat_layout tables to get the active status for all exhibitions in the same query.
 			let query = supabase
@@ -84,7 +84,7 @@ const createExhibitionStore = () => {
 				)
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
-				.order('position', { ascending: asc ?? false });
+				.order('position', { ascending: asc ?? false }); 
 
 			query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
 
@@ -131,6 +131,26 @@ const createExhibitionStore = () => {
 				) as ExhibitionModel[];
 
 				return exhibitions;
+			}
+		},
+
+		getOrderedByPosition: async (locale: Locales, supabase: SupabaseClient) => {
+			const result = await supabase
+				.from('exhibition')
+				.select('*, languages:exhibition_languages!inner(*)', { count: 'exact' })
+				.is('deleted_status', null)
+				.eq('languages.language', locale ?? 'en')
+				.order('position', { ascending: true }); // Order by position in ascending order
+
+			if (result.error) {
+				return null;
+			} else {
+				const exhibitions = result.data.map((e) =>
+					convertModel<ExhibitionModel>(e)
+				) as ExhibitionModel[];
+
+				set(exhibitions);
+				return null;
 			}
 		}
 	};

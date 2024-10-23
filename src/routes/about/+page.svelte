@@ -46,7 +46,7 @@
 			<div class="text-center pb-12">
 				<h1
 					class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading"
-					style="color: {$currentMainThemeColors.primaryColor};"
+					style="color: {$currentMainThemeColors.overlayBackgroundColor};"
 				>
 					{$LL.successTeam()}
 				</h1>
