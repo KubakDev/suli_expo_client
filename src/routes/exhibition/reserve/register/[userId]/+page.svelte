@@ -505,8 +505,8 @@
 				{#if selectedCountry === 'Other'}
 					<div class="flex gap-2">
 						{#if $requiredFields.includes('country')}<span class="text-red-500">*</span>{/if}
-						<label for="countrySelect" class="mb-3"
-							>{`${$LL.company_info['specific_country']()}`}</label
+						<Label for="countrySelect" class="mb-3"
+							>{`${$LL.company_info['specific_country']()}`}</Label
 						>
 					</div>
 					<Input
