@@ -360,7 +360,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm mx-2"> {$LL.reservation.privacy_policy.checked()} </span>
+								 	<span class="text-sm mx-3"> {$LL.reservation.privacy_policy.checked()} </span>
 								</div>
 							</div>
 						{/if}

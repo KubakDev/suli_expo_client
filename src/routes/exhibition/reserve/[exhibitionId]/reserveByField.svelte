@@ -551,7 +551,8 @@
 			<Button
 				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 				on:click={() => openServicesModal()}
-			>
+			   class="w-full md:w-auto md:my-0 my-1"
+				>
 				{$LL.reservation.addService()}
 			</Button>
 			{#if showModal}
@@ -579,7 +580,7 @@
 								<span class="mx-2 text-sm col-span-6">{item.languages[0].title}</span>
 								<span class="col-span-2">
 									<Input
-										class="w-20"
+										class="w-16"
 										type="number"
 										size="sm"
 										placeholder="quantity"

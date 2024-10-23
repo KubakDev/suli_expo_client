@@ -743,7 +743,7 @@ $: {
 
 										<span class="col-span-2">
 											<Input
-												class="w-20"
+												class="w-16"
 												type="number"
 												size="sm"
 												placeholder="quantity"
