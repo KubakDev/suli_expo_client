@@ -132,6 +132,29 @@
 				}, 3000);
 			});
 	}
+
+
+ function formatLocalDateTime(utcDateString: string) {
+  const date = new Date(utcDateString);
+
+  // Formatting the date as DD/MM/YYYY
+  const localDate = date.toLocaleDateString(undefined, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+
+  // Formatting the time as HH:MM:SS
+  const localTime = date.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false, // Switch to 24-hour format
+  });
+
+  return { localDate, localTime };
+}
+
 </script>
  
 <Modal bind:open={cancelReservationSuccessModal}>
@@ -178,6 +201,9 @@
 		<p class="font-bold">{$LL.reservation.reserveUpdated()}</p>
 	</div>
 </Modal>
+
+
+
 {#if !openEditModal}
 	{#if loading}
 		<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
@@ -192,62 +218,73 @@
 			/>
 		</div>
 	{:else}
-		<div
-			class="w-full flex justify-center items-center overflow-y-auto"
-			style="max-height: calc(100vh);"
-		>
-			<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
-				<div class="w-full">
-					{#each reservations as reservation}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div
-							class=" my-2 py-2 w-full md:w-10/12 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
-							style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor}"
-						>
-							<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
-								{exhibitionName(reservation)}
-							</div>
-							<div class="flex flex-col justify-center items-center text-sm md:text-lg">
-								{moment(reservation.created_at).format('DD/MM/YYYY')}
-								<div>
-									{moment(reservation.created_at).format('HH:MM:SS')}
-								</div>
-							</div>
-							<div class="flex flex-col py-2">
-								<div
-									class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
-								>
-									{$LL.reservation.statuses[reservation.status]()}
-								</div>
-								{#if reservation?.rejected_by_user}
-									<div
-										style="color: {$currentMainThemeColors.overlaySecondaryColor}"
-										class=" text-sm"
-									>
-										  {$LL.reservation.RejectedByUser()}
-									</div>
-								{/if}
-							</div>
+	
+	
+<div
+	class="w-full flex justify-center items-center overflow-y-auto mb-4"
+	style="max-height: calc(100vh);"
+>
+	<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
+		<div class="w-full space-y-4">
+			{#each reservations as reservation}
+				<!-- Reservation Card -->
+				<div
+					class="my-4 py-4 w-full md:w-10/12 shadow-md min-h-[100px] rounded-lg flex flex-col md:flex-row justify-between md:px-8 items-center gap-6"
+					style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
+				>
+					<!-- Exhibition Name -->
+					<div class="w-full md:w-1/3 text-center md:text-left px-4 text-sm md:text-lg font-semibold">
+						{exhibitionName(reservation)}
+					</div>
 
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<!-- svelte-ignore a11y-no-static-element-interactions -->
-							<div
-								class="cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700 rounded-lg p-2.5"
-								on:click={() => {
-									openEditModal = true;
-									selectedExhibition = reservation.exhibition;
-									selectedReservationId = reservation.id;
-									selectedReservation = reservation;
-								}}
-							>
-								<PencilSquare />
-							</div>
+					<!-- Reservation Date and Time -->
+					<div class="w-full md:w-1/3 flex justify-center items-center flex-col md:flex-row md:justify-start md:items-center text-sm md:text-lg">
+						<div class="text-center md:text-left">
+							<p class="font-semibold">{formatLocalDateTime(reservation.created_at).localDate}</p>
+							<p class="text-xs text-gray-500 dark:text-gray-300">
+								{formatLocalDateTime(reservation.created_at).localTime}
+							</p>
 						</div>
-					{/each}
+					</div>
+
+					<!-- Status Badge and Rejection Info -->
+					<div class="w-full md:w-1/3 flex flex-col items-center md:items-end space-y-2">
+						<div
+							class="md:py-2 md:px-6 py-1 px-3 rounded-full text-sm md:text-md text-white flex justify-center items-center"
+							style="background-color: {reservation.status === 'accept' ? 'green' : reservation.status === 'reject' ? 'red' : $currentMainThemeColors.primaryColor};"
+						>
+							{$LL.reservation.statuses[reservation.status]()}
+						</div>
+
+						{#if reservation?.rejected_by_user}
+							<p class="text-sm text-gray-500 dark:text-gray-400">
+								{$LL.reservation.RejectedByUser()}
+							</p>
+						{/if}
+					</div>
+
+					<!-- Edit Button -->
+					<div
+					class="cursor-pointer rounded-lg p-3 transition"
+						on:click={() => {
+							openEditModal = true;
+							selectedExhibition = reservation.exhibition;
+							selectedReservationId = reservation.id;
+							selectedReservation = reservation;
+						}}
+					>
+						<PencilSquare class="w-5 h-5" />
+					</div>
 				</div>
-			</div>
+			{/each}
 		</div>
-	{/if}
+	</div>
+</div>
+
+	
+	
+		{/if}
+
 {:else}
 	<div class="w-full flex justify-center items-center px-4">
 		<div

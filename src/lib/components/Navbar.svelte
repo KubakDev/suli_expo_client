@@ -555,7 +555,7 @@
                       {#if notifications.length > 0}
                         <div class="border-t mt-2">
                           <button
-                            class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                            class="w-full text-left px-3 py-2 text-sm rounded-md"
                             on:click={() => {
                               goto('/notifications');
                               dropdownOpenProfile = false;
