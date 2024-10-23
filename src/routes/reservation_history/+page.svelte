@@ -281,75 +281,72 @@
 	</div>
 </div>
 
-	
-	
-		{/if}
+ {/if}
 
 {:else}
-	<div class="w-full flex justify-center items-center px-4">
-		<div
-			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
-			style="background-color: {selectedReservation.type == 'AreaFields'
-				? $currentMainThemeColors.secondaryColor
-				: '#f5f5f5'};color: {$currentMainThemeColors.overlaySecondaryColor}"
-		>
-			<div class="flex justify-between w-full">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div
-					class="cursor-pointer rounded-lg p-2.5 -mt-6 mx-6"
-					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
-					on:click={() => {
-						openEditModal = false;
-					}}
-				>
-					{#if $locale == 'en'}
-						<ChevronLeft />
-					{:else}
-						<ChevronRight />
-					{/if}
-				</div>
-				<div class="flex items-center -mt-6 px-6">
-					<div class="mx-2 rounded-lg p-2.5 {selectedReservation.status}">
-						{selectedReservation.status}
-					</div>
-					{#if selectedReservation.status == ReservationStatus.PENDING}
-						<button
-							class="
-							text-center
-							font-medium
-							focus:ring-4
-							focus:outline-none
-							inline-flex
-							items-center
-							justify-center
-							px-5
-							py-2.5
-							text-sm
-							text-[#F44336]
-							border
-							 hover:text-[#D32F2F]
-							rounded-lg"
-							on:click={() => (cancelReserveModal = true)}>Cancel Reservation</button
-						>
-					{/if}
-				</div>
-			</div>
-			<UpdateReserve
-				data={selectedExhibition}
-				supabase={data.supabase}
-				locale={$locale}
-				on:updateReserveSeat={(reserveData) => {
-					updateReserveData(
-						reserveData.detail.reservationData,
-						reserveData.detail.reservedSeatData,
-						reserveData.detail.areas
-					);
-				}}
-				reservationData={selectedReservation}
-			/>
-		</div>
-	</div>
+
+
+ <div class="w-full flex justify-center items-center px-4 mt-0">
+  <div
+    class="flex flex-col justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
+    class:bg-gray-100="{selectedReservation.type !== 'AreaFields'}"
+    class:bg-secondary="{selectedReservation.type === 'AreaFields'}"
+    style="color: {$currentMainThemeColors.overlaySecondaryColor}"
+  >
+    <div class="flex justify-between w-full">
+      <!-- Back Button -->
+      <div
+        class="cursor-pointer rounded-lg p-2.5 mt-2 mx-6"
+        style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};"
+        on:click={() => (openEditModal = false)}
+      >
+        {#if $locale === 'en'}
+          <ChevronLeft />
+        {:else}
+          <ChevronRight />
+        {/if}
+      </div>
+
+      <!-- Status and Cancel Button -->
+      <div class="flex items-center px-6">
+        <div class="mx-2 rounded-lg p-2.5 text-gray-100 {selectedReservation.status}">
+        {selectedReservation.status==='accept' 
+		? $LL.reservation.statuses.accept() 
+		: selectedReservation.status==='reject' 
+		? $LL.reservation.statuses.reject() 
+		: $LL.reservation.statuses.pending()}
+        </div>
+        {#if selectedReservation.status === ReservationStatus.PENDING}
+          <button
+            class="text-center font-medium focus:ring-4 focus:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-red-600 border hover:text-red-700 rounded-lg"
+            on:click={() => (cancelReserveModal = true)}
+          >
+            Cancel Reservation
+			
+          </button>
+        {/if}
+      </div>
+    </div>
+
+    <!-- Update Reservation Component -->
+    <UpdateReserve
+      data={selectedExhibition}
+      supabase={data.supabase}
+      locale={$locale}
+      on:updateReserveSeat={(reserveData) => {
+        updateReserveData(
+          reserveData.detail.reservationData,
+          reserveData.detail.reservedSeatData,
+          reserveData.detail.areas
+        );
+      }}
+      reservationData={selectedReservation}
+    />
+  </div>
+</div>
+
+
+	
 {/if}
 {#if showNotification}
 	<Toast

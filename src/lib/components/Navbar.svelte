@@ -9,7 +9,7 @@
   import { changeLanguage } from '../../utils/language';
   import { previousPageStore } from '../../stores/navigationStore';
   import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
-  import { ChevronDown, Moon, Sun } from 'svelte-heros-v2'; // Removed XMark
+  import { ChevronDown, Moon, Sun } from 'svelte-heros-v2';  
   import { currentUser } from '../../stores/currentUser';
   import { goto } from '$app/navigation';
   import { UserSolid } from 'flowbite-svelte-icons';
@@ -316,7 +316,7 @@
 <!-- Main Navbar -->
 <nav style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
  class="relative transition-colors duration-300">
-  <div class="container px-0 mx-2">
+  <div class="  px-0 mx-2">
     <div class="flex items-center lg:justify-center justify-between h-16">
       
       <!-- Left Section: Mobile Menu Button -->
