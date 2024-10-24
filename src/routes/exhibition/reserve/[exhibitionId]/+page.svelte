@@ -512,7 +512,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm"> {$LL.reservation.afterUpload_message()}</span>
+									<span class="text-sm mx-2"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}
