@@ -125,11 +125,12 @@ function toggleOrder() {
 				<div class="justify-end flex z-10 w-full" />
 			</div>
 
+			
 			<div
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 			{#each exhibitions.data as exhibition, i}
-	<button
+	     <button
 		class="relative w-full"
 		on:click={() => {
 			openExhibition(exhibition.id || 0);
