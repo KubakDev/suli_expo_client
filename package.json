@@ -85,6 +85,8 @@
 	"dependencies": {
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
+		"@splidejs/splide": "^4.1.4",
+		"@splidejs/splide-extension-auto-scroll": "^0.5.3",
 		"@syncfusion/ej2-calendars": "^22.1.38",
 		"blob-to-buffer": "^1.2.9",
 		"browser-image-compression": "^2.0.2",

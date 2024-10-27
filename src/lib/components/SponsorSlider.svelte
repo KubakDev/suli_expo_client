@@ -1,73 +1,57 @@
 <script lang="ts">
+	import '@splidejs/splide/css'; 
 	import { onMount } from 'svelte';
-	import { Marquee } from 'flowbite-svelte'
+	import Splide from '@splidejs/splide';
+	import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 	export let images: string[];
 
-	let currentIndex = 0;
-	let visibleImages: any = [];
-
-	// // Initialize the visible images with the first three images
-	// $: updateVisibleImages();
-
-	function updateVisibleImages() {
-		visibleImages = images.slice(currentIndex, currentIndex + 3);
-		if (visibleImages.length < 3) {
-			visibleImages = [...visibleImages, ...images.slice(0, 3 - visibleImages.length)];
-		}
-	}
-
-	// function nextSlide() {
-	// 	currentIndex = (currentIndex + 1) % images.length;
-	// 	updateVisibleImages();
-	// }
-
 	onMount(() => {
-		updateVisibleImages();
+		const splide = new Splide('.splide', {
+			type: 'loop',
+			drag: 'free',
+			focus: 'center',
+			perPage: 5,  // Show 5 sponsors at once
+			gap: '1rem', // Space between sponsors
+			arrows: false, // Hide navigation arrows
+			pagination: false, // Hide pagination dots
+			autoScroll: {
+				speed: 1,
+				pauseOnHover: true,
+			},
+		});
+
+		splide.mount({ AutoScroll });
+
+		return () => {
+			splide.destroy();
+		};
 	});
 </script>
 
 {#if images.length > 0}
-<div class="w-full h-auto flex justify-center items-center">
-
-	<!-- svelte-ignore a11y-distracting-elements -->
-	<marquee behavior="smooth" direction="left" scrollamount="10" class="w-full h-auto">
-		<div class="flex flex-row">
-		  {#each images as image}
-			<img class="w-32 h-32 p-1 object-contain" alt="flowbite-svelte icon logo" src="{image}" />
-		  {/each}
+	<div class="splide">
+		<div class="splide__track">
+			<ul class="splide__list">
+				{#each images as image}
+					<li class="splide__slide">
+						<img
+							class="w-32 h-32  p-1 object-contain"
+							alt="sponsor logo"
+							src={image}
+							loading="eager"
+						/>
+					</li>
+				{/each}
+			</ul>
 		</div>
-	  </marquee>
-	  
-</div>
-<!-- <Marquee speed={0.5} hoverSpeed={0.3} class="py-16 gap-2"> -->
-<!-- </Marquee> -->
+	</div>
 {/if}
-<!-- 
+
 <style>
-	.marquee {
-overflow: hidden; 
-}
-
-.marquee-content {
-  display: flex;
-  animation: scrolling 10s linear infinite;
-}
-
-.marquee-item {
-  flex: 0 0 16vw;
-  margin: 0 1vw;
-/*   flex: 0 0 20vw; */
-/*   margin: 0 2vw; */
-}
-
-.marquee-item img {
-  display: block;
-  width: 100%;
-/*   padding: 0 20px; */
-}
-
-@keyframes scrolling {
-  0% { transform: translateX(0); }
-  100% { transform: translatex(-144vw); }
-}
-</style> -->
+	/* Optional: Add any custom styles here */
+	:global(.splide__slide) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
