@@ -102,8 +102,7 @@
 		opacity: 0;
 		animation: fadeIn 0.5s forwards;
 	}
-
-	@keyframes scroll {
+ 	@keyframes scroll {
 		0% {
 			transform: translateX(0);
 		}
