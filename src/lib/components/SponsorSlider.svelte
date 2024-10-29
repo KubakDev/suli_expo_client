@@ -108,7 +108,6 @@
 			transform: translateX(0);
 		}
 		100% {
-			/* Adjust the transform to match the number of sets */
 			transform: translateX(calc(-33.333%)); /* For 3 sets */
 		}
 	}
