@@ -16,6 +16,7 @@
 
   export let data: PageData;
 
+  
   // Navigation Titles
   const navTitles: any = [
     { title: 'home', url: '/' },
@@ -129,8 +130,8 @@
       mediaDropdown && !mediaDropdown.contains(target) &&
       languageDropdown && !languageDropdown.contains(target) &&
       profileDropdown && !profileDropdown.contains(target) &&
-      mobileMediaDropdown && !mobileMediaDropdown.contains(target) &&
-      mobileLanguageDropdown && !mobileLanguageDropdown.contains(target)
+      (!mobileMediaDropdown || !mobileMediaDropdown.contains(target)) &&
+      (!mobileLanguageDropdown || !mobileLanguageDropdown.contains(target))
     ) {
       closeAllDropdowns();
     }
@@ -412,22 +413,22 @@
           {#if languageDropdownOpen}
             <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-40 rounded-md shadow-lg z-50" 
                  style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
-               <div class="py-1">
+              <div class="py-1">
                 <button
                   on:click={() => langSelect('ckb')}
-                  class="w-full text-left px-4 py-2 text-sm "
+                  class="w-full text-center px-4 py-2 text-sm"
                 >
                   کوردی
                 </button>
                 <button
                   on:click={() => langSelect('ar')}
-                  class="w-full text-left px-4 py-2 text-sm "
+                  class="w-full text-center px-4 py-2 text-sm"
                 >
                   العربية
                 </button>
                 <button
                   on:click={() => langSelect('en')}
-                  class="w-full text-left px-4 py-2 text-sm "
+                  class="w-full text-center px-4 py-2 text-sm"
                 >
                   English
                 </button>
@@ -621,7 +622,7 @@
   style="background-color: transparent;"  
 >
   
-  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
   </svg>
 </button>
@@ -695,14 +696,15 @@
               <ChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileLanguageDropdownOpen ? 'transform rotate-180' : ''}" />
             </button>
             {#if mobileLanguageDropdownOpen}
-              <div class="mt-2 space-y-2 pl-4" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
+              <div class="mt-2 space-y-2 {localStorage.getItem('selectedLanguage') === 'en' ? 'pl-4' : 'pr-4'}" 
+                   style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                 {#each ['کوردی', 'العربية', 'English'] as lang}
                   <button
                     on:click={() => {
                       langSelect(lang === 'کوردی' ? 'ckb' : lang === 'العربية' ? 'ar' : 'en');
                       isMobileMenuOpen = false;
                     }}
-                    class="block w-full px-4 py-2 text-sm text-left rounded-md transition-colors duration-200"
+                    class="block w-full px-4 py-2 text-sm {localStorage.getItem('selectedLanguage') === 'en' ? 'text-left' : 'text-right'} rounded-md transition-colors duration-200"
                     style={
                       selectedLang === lang
                         ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
