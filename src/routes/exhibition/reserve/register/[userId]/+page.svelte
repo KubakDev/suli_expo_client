@@ -7,7 +7,8 @@
 	import { Button, Fileupload, Input, Label } from 'flowbite-svelte';
 	import { currentUser } from '../../../../../stores/currentUser';
 	import { goto } from '$app/navigation';
-	import { currentMainThemeColors } from '../../../../../stores/darkMode';
+	import { currentMainThemeColors } from '../../../../../stores/darkMode'; 
+	import { IconTrash ,IconUpload  } from '@tabler/icons-svelte';
 
 	export let data: any;
 	let imageFile: File | undefined;
@@ -36,8 +37,8 @@
 		passport_number: '',
 		country: '',
 		address: '',
-		passport_image: [],
-		user_image: [],
+		passport_image: [] as string[],
+		user_image: [] as string[],
 		uid: ''
 	};
 
@@ -546,25 +547,8 @@
 							for="fileInput"
 							class="dropzone-label flex justify-center lg:text-base p-2 cursor-pointer hover:bg-gray-100"
 						>
-							<svg
-								class="w-20 h-20"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
-									id="SVGRepo_tracerCarrier"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/><g id="SVGRepo_iconCarrier">
-									<path
-										fill-rule="evenodd"
-										clip-rule="evenodd"
-										d="M8 10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10V11H17C18.933 11 20.5 12.567 20.5 14.5C20.5 16.433 18.933 18 17 18H16C15.4477 18 15 18.4477 15 19C15 19.5523 15.4477 20 16 20H17C20.0376 20 22.5 17.5376 22.5 14.5C22.5 11.7793 20.5245 9.51997 17.9296 9.07824C17.4862 6.20213 15.0003 4 12 4C8.99974 4 6.51381 6.20213 6.07036 9.07824C3.47551 9.51997 1.5 11.7793 1.5 14.5C1.5 17.5376 3.96243 20 7 20H8C8.55228 20 9 19.5523 9 19C9 18.4477 8.55228 18 8 18H7C5.067 18 3.5 16.433 3.5 14.5C3.5 12.567 5.067 11 7 11H8V10ZM15.7071 13.2929L12.7071 10.2929C12.3166 9.90237 11.6834 9.90237 11.2929 10.2929L8.29289 13.2929C7.90237 13.6834 7.90237 14.3166 8.29289 14.7071C8.68342 15.0976 9.31658 15.0976 9.70711 14.7071L11 13.4142V19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19V13.4142L14.2929 14.7071C14.6834 15.0976 15.3166 15.0976 15.7071 14.7071C16.0976 14.3166 16.0976 13.6834 15.7071 13.2929Z"
-										fill="#D3D3D3"
-									/>
-								</g></svg
-							></label
-						>
+							<IconUpload size={80} color="#D3D3D3" />
+						</label>
 					</div>
 
 					<div>
@@ -593,20 +577,7 @@
 												class="rounded-full bg-red-600 hover:bg-red-500 text-white p-1"
 												on:click={() => removePassportImage(index, false)}
 											>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke-width="1.5"
-													stroke="currentColor"
-													class="w-6 h-6"
-												>
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-													/>
-												</svg>
+												<IconTrash size={24} />
 											</button>
 										</div>
 									</div>
@@ -630,20 +601,7 @@
 											class="rounded-full bg-red-600 hover:bg-red-500 text-white p-1"
 											on:click={() => removePassportImage(index, true)}
 										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="1.5"
-												stroke="currentColor"
-												class="w-6 h-6"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-												/>
-											</svg>
+											<IconTrash size={24} />
 										</button>
 									</div>
 								</div>
@@ -675,25 +633,8 @@
 							for="userImageInput"
 							class="dropzone-label flex justify-center lg:text-base p-2 cursor-pointer hover:bg-gray-100"
 						>
-							<svg
-								class="w-20 h-20"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
-									id="SVGRepo_tracerCarrier"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/><g id="SVGRepo_iconCarrier">
-									<path
-										fill-rule="evenodd"
-										clip-rule="evenodd"
-										d="M8 10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10V11H17C18.933 11 20.5 12.567 20.5 14.5C20.5 16.433 18.933 18 17 18H16C15.4477 18 15 18.4477 15 19C15 19.5523 15.4477 20 16 20H17C20.0376 20 22.5 17.5376 22.5 14.5C22.5 11.7793 20.5245 9.51997 17.9296 9.07824C17.4862 6.20213 15.0003 4 12 4C8.99974 4 6.51381 6.20213 6.07036 9.07824C3.47551 9.51997 1.5 11.7793 1.5 14.5C1.5 17.5376 3.96243 20 7 20H8C8.55228 20 9 19.5523 9 19C9 18.4477 8.55228 18 8 18H7C5.067 18 3.5 16.433 3.5 14.5C3.5 12.567 5.067 11 7 11H8V10ZM15.7071 13.2929L12.7071 10.2929C12.3166 9.90237 11.6834 9.90237 11.2929 10.2929L8.29289 13.2929C7.90237 13.6834 7.90237 14.3166 8.29289 14.7071C8.68342 15.0976 9.31658 15.0976 9.70711 14.7071L11 13.4142V19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19V13.4142L14.2929 14.7071C14.6834 15.0976 15.3166 15.0976 15.7071 14.7071C16.0976 14.3166 16.0976 13.6834 15.7071 13.2929Z"
-										fill="#D3D3D3"
-									/>
-								</g></svg
-							></label
-						>
+							<IconUpload size={80} color="#D3D3D3" />
+						</label>
 					</div>
 
 					<div>
@@ -722,20 +663,7 @@
 												class="rounded-full bg-red-600 hover:bg-red-500 text-white p-1"
 												on:click={() => removeUserImage(index, false)}
 											>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke-width="1.5"
-													stroke="currentColor"
-													class="w-6 h-6"
-												>
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-													/>
-												</svg>
+												<IconTrash size={24} />
 											</button>
 										</div>
 									</div>
@@ -759,20 +687,7 @@
 											class="rounded-full bg-red-600 hover:bg-red-500 text-white p-1"
 											on:click={() => removeUserImage(index, true)}
 										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="1.5"
-												stroke="currentColor"
-												class="w-6 h-6"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-												/>
-											</svg>
+											<IconTrash size={24} />
 										</button>
 									</div>
 								</div>

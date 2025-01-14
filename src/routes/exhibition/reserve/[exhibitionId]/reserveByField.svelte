@@ -379,7 +379,7 @@
 		calculateTotalPrice();
 	}
 </script>
-
+  
 <!-- comment  -->
 <div class="w-full flex flex-col items-start p-10">
 	<img

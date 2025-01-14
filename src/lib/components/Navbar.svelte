@@ -481,9 +481,12 @@
 
              {#if dropdownOpenProfile}
       <div
-        class="absolute {dropdownPosition} mt-2 w-40 rounded-lg shadow-lg z-50 overflow-hidden"
-        style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color}; top: 100%; max-width: calc(100vw - 2rem); transition: all 0.3s ease-in-out; max-height: 300px;" 
+        class="absolute {dropdownPosition} mt-2 {dropdownWidth} rounded-lg shadow-lg z-50 overflow-hidden"
+        style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color}; top: 100%; max-width: calc(100vw - 2rem); transition: all 0.3s ease-in-out; {maxDropdownHeight};" 
         on:click|stopPropagation
+        on:keydown|stopPropagation
+        role="menu"
+        tabindex="0"
       >
         <div class="flex flex-col h-full max-h-60 overflow-y-auto">  
           <div class="flex-grow overflow-y-auto custom-scrollbar">
@@ -630,7 +633,7 @@
    <!-- Menu Items -->
         {#each navTitles as navTitle}
           {#if navTitle.urls}
-            <div class="relative mb-4">
+            <div class="relative mb-4" bind:this={mobileMediaDropdown}>
               <button
                 on:click={() => toggleMobileDropdown(navTitle.title)}
                 class="flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md focus:outline-none transition-colors duration-200"
@@ -642,20 +645,20 @@
                 <ChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileDropdownOpen === navTitle.title ? 'transform rotate-180' : ''}" />
               </button>
               {#if mobileDropdownOpen === navTitle.title}
-                <div class="mt-2 space-y-2" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
+                <div class="w-full mt-2 rounded-md shadow-lg" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
                   {#each navTitle.urls as url}
                     <a
                       href={url.url}
-                      class="block px-4 py-2 text-sm rounded-md transition-colors duration-200"
+                      class="block w-full px-4 py-2 text-sm transition-colors duration-200"
+                      style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
+                        activeUrl === url.url
+                          ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
+                          : `color: ${navbarStyles.color};`
+                      }"
                       on:click={() => {
                         toggleMobileDropdown('');
                         isMobileMenuOpen = false;
                       }}
-                      style={
-                        activeUrl === url.url
-                          ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
-                          : `color: ${navbarStyles.color};`
-                      }
                     >
                       {translation[url.title]()}
                     </a>
@@ -684,7 +687,7 @@
 
         <!-- Mobile Language Dropdown -->
         {#if !showLanguageModal}
-          <div class="mt-4">
+          <div class="relative mt-4" bind:this={mobileLanguageDropdown}>
             <button
               on:click={toggleMobileLanguageDropdown}
               class="flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md focus:outline-none transition-colors duration-200"
@@ -692,28 +695,32 @@
               aria-expanded={mobileLanguageDropdownOpen}
               style="color: {navbarStyles.color}; {mobileLanguageDropdownOpen ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
             >
-              <span>{selectedLang}</span>
+              <span style="text-align: {data.locale === 'en' ? 'left' : 'right'}">{selectedLang}</span>
               <ChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileLanguageDropdownOpen ? 'transform rotate-180' : ''}" />
             </button>
             {#if mobileLanguageDropdownOpen}
-              <div class="mt-2 space-y-2 {localStorage.getItem('selectedLanguage') === 'en' ? 'pl-4' : 'pr-4'}" 
-                   style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
-                {#each ['کوردی', 'العربية', 'English'] as lang}
-                  <button
-                    on:click={() => {
-                      langSelect(lang === 'کوردی' ? 'ckb' : lang === 'العربية' ? 'ar' : 'en');
-                      isMobileMenuOpen = false;
-                    }}
-                    class="block w-full px-4 py-2 text-sm {localStorage.getItem('selectedLanguage') === 'en' ? 'text-left' : 'text-right'} rounded-md transition-colors duration-200"
-                    style={
-                      selectedLang === lang
-                        ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
-                        : `color: ${navbarStyles.color};`
-                    }
-                  >
-                    {lang}
-                  </button>
-                {/each}
+              <div 
+                class="w-full rounded-md shadow-lg"
+                style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
+              >
+                <div class="py-1">
+                  {#each ['کوردی', 'العربية', 'English'] as lang}
+                    <button
+                      on:click={() => {
+                        langSelect(lang === 'کوردی' ? 'ckb' : lang === 'العربية' ? 'ar' : 'en');
+                        isMobileMenuOpen = false;
+                      }}
+                      class="block w-full px-4 py-2 text-sm transition-colors duration-200"
+                      style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
+                        selectedLang === lang
+                          ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
+                          : `color: ${navbarStyles.color};`
+                      }"
+                    >
+                      {lang}
+                    </button>
+                  {/each}
+                </div>
               </div>
             {/if}
           </div>

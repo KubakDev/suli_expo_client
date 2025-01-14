@@ -81,6 +81,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tabler/icons-svelte": "^3.28.1",
 		"@lottiefiles/svelte-lottie-player": "^0.3.1",
 		"@rodneylab/svelte-social-icons": "^0.0.28",
 		"@splidejs/splide": "^4.1.4",

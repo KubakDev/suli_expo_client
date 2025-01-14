@@ -287,7 +287,7 @@
 		}
 	}
 </script>
-   
+    
 {#if loaded}
 	{#if exhibition && exhibition.seat_layout[0]}
 		{#if allFieldsPresent}

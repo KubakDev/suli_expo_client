@@ -26,6 +26,9 @@ importers:
       '@syncfusion/ej2-calendars':
         specifier: ^22.2.12
         version: 22.2.12
+      '@tabler/icons-svelte':
+        specifier: ^3.28.1
+        version: 3.28.1(svelte@4.1.2)
       blob-to-buffer:
         specifier: ^1.2.9
         version: 1.2.9
@@ -1261,6 +1264,14 @@ packages:
 
   '@syncfusion/ej2-splitbuttons@22.2.8':
     resolution: {integrity: sha512-+zo3enSHDtD7yDx1frm2+XlFEQV6uKBriE2wGt+vtZnnyzaESqRFEqxOAtQCFxN3RDMmGRiUT6qwiNSXY4rDeQ==}
+
+  '@tabler/icons-svelte@3.28.1':
+    resolution: {integrity: sha512-5qXxp1YHuw2eqYXmg2ais1w9lLgChbnnZMvUIx8xA8ijilqlIJnGjTykbPcAeDBtahA6lcoAzc7kDyI08/Gewg==}
+    peerDependencies:
+      svelte: 4.1.2
+
+  '@tabler/icons@3.28.1':
+    resolution: {integrity: sha512-h7nqKEvFooLtFxhMOC1/2eiV+KRXhBUuDUUJrJlt6Ft6tuMw2eU/9GLQgrTk41DNmIEzp/LI83K9J9UUU8YBYQ==}
 
   '@tailwindcss/forms@0.5.10':
     resolution: {integrity: sha512-utI1ONF6uf/pPNO68kmN1b8rEwNXv3czukalo8VtJH8ksIkZXr3Q3VYudZLkCsDd4Wku120uF02hYK25XGPorw==}
@@ -6218,6 +6229,13 @@ snapshots:
     dependencies:
       '@syncfusion/ej2-base': 22.2.12
       '@syncfusion/ej2-popups': 22.2.11
+
+  '@tabler/icons-svelte@3.28.1(svelte@4.1.2)':
+    dependencies:
+      '@tabler/icons': 3.28.1
+      svelte: 4.1.2
+
+  '@tabler/icons@3.28.1': {}
 
   '@tailwindcss/forms@0.5.10(tailwindcss@3.4.17)':
     dependencies:
