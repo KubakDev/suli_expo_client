@@ -42,6 +42,9 @@ const ckb = {
 		Exhibition_Seats: 'کورسی پێشانگە',
 		Exhibition_PDF: 'فایلی پێشانگا (PDF)'
 	},
+	exhibition_data:{
+		"active" :"چالاک"
+		},
 	promo: 'پرۆمۆ',
 	filterByExhibition: 'فیلتەر بەپێی پێشانگا',
 	filterByDate: 'فیلتەر بەپێی بەروار',

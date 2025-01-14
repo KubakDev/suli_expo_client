@@ -85,7 +85,7 @@
 			</button>
 		{/if}
 	</div>
-	<div class="w-full z-50">
+	<div class="w-full z-10">
 		<button
 			class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
 		>

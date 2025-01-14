@@ -17,7 +17,7 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
-	import { newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
+	import { currentMainThemeColors, newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 
 	export let supabase: SupabaseClient;
 	let CardComponent: any;
@@ -85,8 +85,9 @@
 			</div>
 		</div>
 		{#if $newsSectionStore.length === 0}
-			<div class="flex justify-center items-center">
-				<p class="text-white dark:text-white text-center">
+			<div class="flex justify-center items-center"
+			 style="color:{$currentMainThemeColors.overlayBackgroundColor}">
+				<p class="text-center">
 					{$LL.no_news()}
 				</p>
 			</div>

@@ -26,6 +26,7 @@
 		</Saos>
 	</div>
 
+	
 	<!-- about section -->
 	<section class="body-font overflow-hidden">
 		<Saos animation={'from-bottom 1s cubic-bezier(0.35, 0.5, 0.65, 0.95) both'}>

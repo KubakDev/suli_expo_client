@@ -7,7 +7,7 @@
 	let asc = ascStore;
 
 	function changeOrder() {
-		asc.set(!$asc);
+	 asc.set(!$asc);
 	}
 </script>
 

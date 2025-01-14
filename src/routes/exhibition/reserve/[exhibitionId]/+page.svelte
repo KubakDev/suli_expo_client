@@ -48,7 +48,7 @@
 			.is('deleted_status', null)
 			.single();
 		let activeSeatLayout = response.data.seat_layout.find((x: any) => x.is_active == true);
-		response.data.seat_layout[0] = activeSeatLayout;
+     	response.data.seat_layout[0] = activeSeatLayout;
 		loaded = true;
 		exhibition = response.data;
 	}
@@ -287,7 +287,7 @@
 		}
 	}
 </script>
-
+   
 {#if loaded}
 	{#if exhibition && exhibition.seat_layout[0]}
 		{#if allFieldsPresent}
@@ -301,7 +301,7 @@
 								style="background-color: {$currentMainThemeColors.secondaryColor};color: {$currentMainThemeColors.overlaySecondaryColor}"
 							>
 								{#if exhibition?.seat_layout}
-									<ReserveByFieldComponent
+								 	<ReserveByFieldComponent
 										data={exhibition}
 										supabase={data.supabase}
 										locale={$locale}
@@ -360,7 +360,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm mx-2"> {$LL.reservation.privacy_policy.checked()} </span>
+								 	<span class="text-sm mx-3"> {$LL.reservation.privacy_policy.checked()} </span>
 								</div>
 							</div>
 						{/if}
@@ -386,7 +386,7 @@
 					</Modal>
 				</section>
 			{:else}
-				<section class="w-full flex-1 overflow-x-hidden">
+			 	<section class="w-full flex-1 overflow-x-hidden">
 					<div class="px-0 lg:px-32 3xl:px-72 w-full">
 						<div class="h-full w-full flex items-center flex-wrap bg-white p-4 mt-4 rounded">
 							<div class="mx-2 rounded-xl w-full 2xl:w-[69%]">
@@ -403,7 +403,7 @@
 
 							<div class="hidden 2xl:flex h-3/4 rounded-xl py-4" style="width: 29%;">
 								{#if $selectedSeat}
-									<SelectedSeatInformationSection
+							 		<SelectedSeatInformationSection
 										supabase={data.supabase}
 										on:reserveSeat={(reserveData) => {
 											defaultModal = true;
@@ -421,7 +421,7 @@
 									in:fly={{ x: -200, duration: 500 }}
 									out:fly={{ x: 200, duration: 500 }}
 								>
-									<SelectedSeatInformationSection
+								  	<SelectedSeatInformationSection
 										supabase={data.supabase}
 										on:reserveSeat={(reserveData) => {
 											defaultModal = true;
@@ -512,7 +512,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm"> {$LL.reservation.afterUpload_message()}</span>
+									<span class="text-sm mx-2"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}

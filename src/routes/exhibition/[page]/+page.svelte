@@ -16,10 +16,11 @@
 	import { stringToEnum } from '../../../utils/enumToString.js';
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { exhibitionCurrentMainThemeColors, themeToggle } from '../../../stores/darkMode.js';
+	import { currentMainThemeColors, exhibitionCurrentMainThemeColors, themeToggle } from '../../../stores/darkMode.js';
 	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore.js';
 	import { incrementExhibitionViewer, viewAdded_exhibition } from '../../../stores/viewersStore';
+	import ExhibitionFilter from '$lib/components/ExhibitionFilter.svelte';
 
 	export let data: any;
 	let CardComponent: any;
@@ -39,17 +40,7 @@
 		}
 	}
 
-	$: {
-		if ($locale) {
-			getExhibitions();
-		}
-	}
-
-	$: {
-		if (asc) {
-			getExhibitions();
-		}
-	}
+ 
 
 	onMount(async () => {
 		let pageType = getNameRegex($page.url.pathname);
@@ -70,27 +61,38 @@
 	function changePage(page: number) {
 		goto(`/exhibition/${page}`);
 	}
-
+ 
 	async function getExhibitions() {
-		exhibitions = (await exhibitionStore.getPaginated(
-			$locale,
-			data?.supabase,
-			$page.params.page,
-			undefined,
-			$asc
-		)) as ExhibitionPaginatedModel;
+	loading = true;
+	exhibitions = (await exhibitionStore.getPaginated(
+		$locale,
+		data?.supabase,
+		$page.params.page,
+		undefined,
+		orderAsc
+	)) as ExhibitionPaginatedModel;
 
-		loading = false;
+	loading = false;
+	return exhibitions;
+}
 
-		return exhibitions;
-	}
-
-	// count viewers
+ // count viewers
 	onMount(() => {
 		if (!$viewAdded_exhibition) {
 			incrementExhibitionViewer(data.supabase);
 		}
 	});
+
+ 
+// Add a new reactive variable to manage the order
+let orderAsc = true;  
+
+// Function to toggle the order
+function toggleOrder() {
+	orderAsc = !orderAsc;
+	getExhibitions(); 
+}
+
 </script>
 
 <svelte:head>
@@ -107,7 +109,8 @@
 	>
 		<section class="py-12 {Constants.page_max_width} mx-auto w-full">
 			<div class="flex justify-between items-center mb-12 w-full">
-				<Filters />
+				  <ExhibitionFilter orderAsc={orderAsc} onToggle={toggleOrder} />
+
 				<div
 					in:fade={{ duration: 800 }}
 					out:fade={{ duration: 400 }}
@@ -122,32 +125,46 @@
 				<div class="justify-end flex z-10 w-full" />
 			</div>
 
+			
 			<div
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
-				{#each exhibitions.data as exhibition, i}
-					<button
-						class="w-full"
-						on:click={() => {
-							openExhibition(exhibition.id || 0);
-						}}
-					>
-						{#if CardComponent}
-							<ExpoCard
-								primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ??
-									Constants.main_theme.lightPrimary}
-								overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ??
-									Constants.main_theme.lightOverlayPrimary}
-								title={exhibition.title}
-								thumbnail={exhibition.thumbnail}
-								short_description={exhibition.description}
-								startDate={exhibition.start_date}
-								endDate={exhibition.end_date}
-								cardType={CardComponent || CardType.Simple}
-							/>
-						{/if}
-					</button>
-				{/each}
+			{#each exhibitions.data as exhibition, i}
+	     <button
+		class="relative w-full"
+		on:click={() => {
+			openExhibition(exhibition.id || 0);
+		}}
+	>
+		{#if CardComponent}
+			{#if exhibition.is_active} 
+				<!-- Active Badge with nicer design -->
+				<div  
+					class="absolute top-0 right-0 text-sm font-bold px-3 py-1 rounded-bl-lg"
+					style="transform: translate(10%, -10%); z-index: 10;background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				>
+			       {$LL.exhibition_data.active()}
+				</div>
+			{/if}
+			
+			
+			<!-- Card Content -->
+			<ExpoCard
+				primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ?? Constants.main_theme.lightPrimary}
+				overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ?? Constants.main_theme.lightOverlayPrimary}
+				title={exhibition.title}
+				thumbnail={exhibition.thumbnail}
+				short_description={exhibition.description}
+				startDate={exhibition.start_date}
+				endDate={exhibition.end_date}
+				cardType={CardComponent || CardType.Simple}
+			/>
+        
+	 {/if}
+		
+	</button>
+{/each}
+
 			</div>
 			<div dir="ltr" class="flex justify-center my-10">
 				{#if exhibitions.count > 10}
@@ -171,3 +188,42 @@
 		</div>
 	</section>
 {/if}
+
+
+<style>
+	.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.bg-green-500 {
+	background-color: var(--lightPrimaryColor);  
+}
+
+.text-white {
+	color: white;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.px-3 {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.py-1 {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.rounded-bl-lg {
+	border-bottom-left-radius: 0.5rem;
+}
+ 
+
+ </style>

@@ -1,32 +1,28 @@
 <script lang="ts">
-	import MailTemplate from './../lib/components/MailTemplate.svelte';
 	import HomeSwiper from '$lib/components/HomeSwiper.svelte';
 	import { onMount } from 'svelte';
-	import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
+	// import { seatStore, type SeatLayoutModel } from '../stores/seatReservationStore';
+	// import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { locale } from '$lib/i18n/i18n-svelte';
 	import PromoSection from '$lib/components/PromoSection.svelte';
 	import { exhibitionSectionStore } from '../stores/exhibtionSectionStore';
 	import AboutUsSection from '$lib/components/AboutUsSection.svelte';
 	import ExhibitionSection from '$lib/components/ExhibitionSection.svelte';
 	import NewsSection from '$lib/components/NewsSection/NewsSection.svelte';
-	import SeatReservation from '$lib/components/SeatReservation.svelte';
 	import { UiStore } from '../stores/ui/Ui';
-	import { currentUser } from '../stores/currentUser';
 	import { incrementSulExpoViewer, viewAdded_sulyExpo } from '../stores/viewersStore';
-	import { TwicImg, TwicView } from '@twicpics/components/sveltekit';
-	import {
-		currentMainThemeColors,
+	import { 
 		exhibitionCurrentMainThemeColors,
 		newsCurrentThemeColors
 	} from '../stores/darkMode';
 
 	export let data;
-	let seatLayout: SeatLayoutModel | undefined | null;
+	// let seatLayout: SeatLayoutModel | undefined | null;
 	let exhibitionSection: boolean = false;
 	let newsSection: boolean = false;
 
 	onMount(async () => {
-		seatLayout = await seatStore.get(data.supabase);
+		// seatLayout = await seatStore.get(data.supabase);
 		exhibitionSection = (await UiStore.getPage(data.supabase, 'exhibition')) as boolean;
 		newsSection = (await UiStore.getPage(data.supabase, 'news')) as boolean;
 	});
@@ -62,13 +58,13 @@
 			<PromoSection supabase={data.supabase} />
 		</div>
 
-		<div class=" w-full max-h-300 min-h-128 h-full flex justify-center">
+		<div class=" w-full  h-full flex justify-center">
 			<AboutUsSection supabase={data.supabase} />
 		</div>
 
-		{#if seatLayout}
+		<!-- {#if seatLayout}
 			<SeatReservation {seatLayout} />
-		{/if}
+		{/if} -->
 	</div>
 </div>
 

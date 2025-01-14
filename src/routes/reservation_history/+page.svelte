@@ -104,7 +104,7 @@
 				let activeSeatLayout = reservationData?.exhibition?.seat_layout?.find(
 					(seatLayout: any) => seatLayout.is_active == true
 				);
-				await data.supabase
+			 	await data.supabase
 					.from('seat_layout')
 					.update({
 						areas: JSON.stringify(areas)
@@ -132,6 +132,29 @@
 				}, 3000);
 			});
 	}
+
+
+ function formatLocalDateTime(utcDateString: string) {
+  const date = new Date(utcDateString);
+
+  // Formatting the date as DD/MM/YYYY
+  const localDate = date.toLocaleDateString(undefined, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+
+  // Formatting the time as HH:MM:SS
+  const localTime = date.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false, // Switch to 24-hour format
+  });
+
+  return { localDate, localTime };
+}
+
 </script>
  
 <Modal bind:open={cancelReservationSuccessModal}>
@@ -178,6 +201,9 @@
 		<p class="font-bold">{$LL.reservation.reserveUpdated()}</p>
 	</div>
 </Modal>
+
+
+
 {#if !openEditModal}
 	{#if loading}
 		<div class="flex justify-center min-h[calc(100vh - 120px)] w-full items-center">
@@ -192,127 +218,135 @@
 			/>
 		</div>
 	{:else}
-		<div
-			class="w-full flex justify-center items-center overflow-y-auto"
-			style="max-height: calc(100vh);"
-		>
-			<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
-				<div class="w-full">
-					{#each reservations as reservation}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div
-							class=" my-2 py-2 w-full md:w-10/12 shadow-sm min-h-[80px] rounded-lg flex justify-between md:px-10 items-center gap-3"
-							style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor}"
-						>
-							<div class="max-w-[120px] text-center px-2 md:max-w-full text-sm md:text-lg">
-								{exhibitionName(reservation)}
-							</div>
-							<div class="flex flex-col justify-center items-center text-sm md:text-lg">
-								{moment(reservation.created_at).format('DD/MM/YYYY')}
-								<div>
-									{moment(reservation.created_at).format('HH:MM:SS')}
-								</div>
-							</div>
-							<div class="flex flex-col py-2">
-								<div
-									class={`${reservation.status} md:py-2 md:px-6 py-1 px-2 rounded-full text-sm md:text-md text-white flex justify-center items-center text-center`}
-								>
-									{$LL.reservation.statuses[reservation.status]()}
-								</div>
-								{#if reservation?.rejected_by_user}
-									<div
-										style="color: {$currentMainThemeColors.overlaySecondaryColor}"
-										class=" text-sm"
-									>
-										  {$LL.reservation.RejectedByUser()}
-									</div>
-								{/if}
-							</div>
-
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<!-- svelte-ignore a11y-no-static-element-interactions -->
-							<div
-								class="cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700 rounded-lg p-2.5"
-								on:click={() => {
-									openEditModal = true;
-									selectedExhibition = reservation.exhibition;
-									selectedReservationId = reservation.id;
-									selectedReservation = reservation;
-								}}
-							>
-								<PencilSquare />
-							</div>
-						</div>
-					{/each}
-				</div>
-			</div>
-		</div>
-	{/if}
-{:else}
-	<div class="w-full flex justify-center items-center px-4">
-		<div
-			class="flex flex-col min-h-screen justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
-			style="background-color: {selectedReservation.type == 'AreaFields'
-				? $currentMainThemeColors.secondaryColor
-				: '#f5f5f5'};color: {$currentMainThemeColors.overlaySecondaryColor}"
-		>
-			<div class="flex justify-between w-full">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
+	
+	
+<div
+	class="w-full flex justify-center items-center overflow-y-auto mb-4"
+	style="max-height: calc(100vh);"
+>
+	<div class="flex h-screen justify-center py-12 w-full md:w-3/4 max-w-[1000px] px-4">
+		<div class="w-full space-y-4">
+			{#each reservations as reservation}
+				<!-- Reservation Card -->
 				<div
-					class="cursor-pointer rounded-lg p-2.5 -mt-6 mx-6"
-					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
-					on:click={() => {
-						openEditModal = false;
-					}}
+					class="my-4 py-4 w-full md:w-10/12 shadow-md min-h-[100px] rounded-lg flex flex-col md:flex-row justify-between md:px-8 items-center gap-6"
+					style="background-color: {$currentMainThemeColors.secondaryColor}; color: {$currentMainThemeColors.overlaySecondaryColor};"
 				>
-					{#if $locale == 'en'}
-						<ChevronLeft />
-					{:else}
-						<ChevronRight />
-					{/if}
-				</div>
-				<div class="flex items-center -mt-6 px-6">
-					<div class="mx-2 rounded-lg p-2.5 {selectedReservation.status}">
-						{selectedReservation.status}
+					<!-- Exhibition Name -->
+					<div class="w-full md:w-1/3 text-center md:text-left px-4 text-sm md:text-lg font-semibold">
+						{exhibitionName(reservation)}
 					</div>
-					{#if selectedReservation.status == ReservationStatus.PENDING}
-						<button
-							class="
-							text-center
-							font-medium
-							focus:ring-4
-							focus:outline-none
-							inline-flex
-							items-center
-							justify-center
-							px-5
-							py-2.5
-							text-sm
-							text-[#F44336]
-							border
-							 hover:text-[#D32F2F]
-							rounded-lg"
-							on:click={() => (cancelReserveModal = true)}>Cancel Reservation</button
+
+					<!-- Reservation Date and Time -->
+					<div class="w-full md:w-1/3 flex justify-center items-center flex-col md:flex-row md:justify-start md:items-center text-sm md:text-lg">
+						<div class="text-center md:text-left">
+							<p class="font-semibold">{formatLocalDateTime(reservation.created_at).localDate}</p>
+							<p class="text-xs text-gray-500 dark:text-gray-300">
+								{formatLocalDateTime(reservation.created_at).localTime}
+							</p>
+						</div>
+					</div>
+
+					<!-- Status Badge and Rejection Info -->
+					<div class="w-full md:w-1/3 flex flex-col items-center md:items-end space-y-2">
+						<div
+							class="md:py-2 md:px-6 py-1 px-3 rounded-full text-sm md:text-md text-white flex justify-center items-center"
+							style="background-color: {reservation.status === 'accept' ? 'green' : reservation.status === 'reject' ? 'red' : $currentMainThemeColors.primaryColor};"
 						>
-					{/if}
+							{$LL.reservation.statuses[reservation.status]()}
+						</div>
+
+						{#if reservation?.rejected_by_user}
+							<p class="text-sm text-gray-500 dark:text-gray-400">
+								{$LL.reservation.RejectedByUser()}
+							</p>
+						{/if}
+					</div>
+
+					<!-- Edit Button -->
+					<div
+					class="cursor-pointer rounded-lg p-3 transition"
+						on:click={() => {
+							openEditModal = true;
+							selectedExhibition = reservation.exhibition;
+							selectedReservationId = reservation.id;
+							selectedReservation = reservation;
+						}}
+					>
+						<PencilSquare class="w-5 h-5" />
+					</div>
 				</div>
-			</div>
-			<UpdateReserve
-				data={selectedExhibition}
-				supabase={data.supabase}
-				locale={$locale}
-				on:updateReserveSeat={(reserveData) => {
-					updateReserveData(
-						reserveData.detail.reservationData,
-						reserveData.detail.reservedSeatData,
-						reserveData.detail.areas
-					);
-				}}
-				reservationData={selectedReservation}
-			/>
+			{/each}
 		</div>
 	</div>
+</div>
+
+ {/if}
+
+{:else}
+
+
+ <div class="w-full flex justify-center items-center px-4 mt-0">
+  <div
+    class="flex flex-col justify-center items-center py-12 w-full md:w-3/4 max-w-[1500px] my-12 rounded-md shadow-xl"
+    class:bg-gray-100="{selectedReservation.type !== 'AreaFields'}"
+    class:bg-secondary="{selectedReservation.type === 'AreaFields'}"
+    style="color: {$currentMainThemeColors.overlaySecondaryColor}"
+  >
+    <div class="flex justify-between w-full">
+      <!-- Back Button -->
+      <div
+        class="cursor-pointer rounded-lg p-2.5 mt-2 mx-6"
+        style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};"
+        on:click={() => (openEditModal = false)}
+      >
+        {#if $locale === 'en'}
+          <ChevronLeft />
+        {:else}
+          <ChevronRight />
+        {/if}
+      </div>
+
+      <!-- Status and Cancel Button -->
+      <div class="flex items-center px-6">
+        <div class="mx-2 rounded-lg p-2.5 text-gray-100 {selectedReservation.status}">
+        {selectedReservation.status==='accept' 
+		? $LL.reservation.statuses.accept() 
+		: selectedReservation.status==='reject' 
+		? $LL.reservation.statuses.reject() 
+		: $LL.reservation.statuses.pending()}
+        </div>
+        {#if selectedReservation.status === ReservationStatus.PENDING}
+          <button
+            class="text-center font-medium focus:ring-4 focus:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-red-600 border hover:text-red-700 rounded-lg"
+            on:click={() => (cancelReserveModal = true)}
+          >
+            Cancel Reservation
+			
+          </button>
+        {/if}
+      </div>
+    </div>
+
+    <!-- Update Reservation Component -->
+    <UpdateReserve
+      data={selectedExhibition}
+      supabase={data.supabase}
+      locale={$locale}
+      on:updateReserveSeat={(reserveData) => {
+        updateReserveData(
+          reserveData.detail.reservationData,
+          reserveData.detail.reservedSeatData,
+          reserveData.detail.areas
+        );
+      }}
+      reservationData={selectedReservation}
+    />
+  </div>
+</div>
+
+
+	
 {/if}
 {#if showNotification}
 	<Toast
