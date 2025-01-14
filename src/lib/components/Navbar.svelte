@@ -277,7 +277,7 @@
 {#if showLanguageModal}
   <div class="fixed inset-0 flex items-center justify-center z-50 ">
     <div class="rounded-lg shadow-lg w-80 p-6 text-gray-800 bg-white">
-      <h2 class="text-xl font-semibold mb-4 w-full">
+      <h2 class="text-xl text-center font-semibold mb-4 w-full">
         Select Your Language
       </h2>
       <ul class="space-y-4">

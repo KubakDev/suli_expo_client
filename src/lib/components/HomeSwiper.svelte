@@ -1,13 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { register } from 'swiper/element/bundle';
 	import { carouselStore } from '../../stores/carouselStore';
-	import { Button } from 'flowbite-svelte';
 	import type { Locale } from 'typesafe-i18n/types/runtime/src/core.mjs';
 	import { fade } from 'svelte/transition';
 	import type { SwiperOptions } from 'swiper/types';
-	import SulyButton from './sulyButton.svelte';
-	import Constants from '../../utils/constants';
 
 	export let supabase: any;
 	export let locale: Locale;
@@ -64,8 +60,8 @@
 		class="w-full h-full"
 	>
 		{#if $carouselStore}
-			{#each $carouselStore as c, i}
-				<swiper-slide class="h-full">
+			{#each $carouselStore as c, i} 
+			<swiper-slide class="h-full">
 					<div class="relative flex justify-start w-full" dir={locale === 'en' ? 'ltr' : 'rtl'}>
 						<img
 							class="object-cover w-full h-[300px] lg:h-[50%]"
@@ -101,7 +97,7 @@
 									? 'translate-x-96'
 									: '-translate-x-96'} delay-500 mt-4"
 							>
-								<SulyButton>ReadMore</SulyButton>
+						 
 							</div>
 						</div>
 					</div>

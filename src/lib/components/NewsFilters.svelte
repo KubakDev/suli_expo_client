@@ -90,9 +90,11 @@
 			class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
 		>
 			<span
-				class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor flex flex-row justify-between items-center w-full"
-				>{$LL.filterByExhibition()}<ChevronDown /></span
-			>
+				class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor flex flex-row items-center w-full"
+				>
+				<span class="flex-grow text-center pr-4">{$LL.filterByExhibition()}</span>
+				<ChevronDown />
+			</span>
 		</button>
 		<Dropdown class="w-80 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor rounded-lg">
 			<div class="max-h-64 overflow-y-auto p-2 rounded-sm {Constants.scrollbar_layout}">
