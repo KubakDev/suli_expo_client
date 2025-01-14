@@ -115,6 +115,7 @@
 		"prettier": "^2.8.8",
 		"qrcode": "^1.5.4",
 		"react-modal-image": "^2.6.0",
+		"sharp": "^0.33.5",
 		"svelte-collapsible": "^0.2.2",
 		"svelte-date-range-select": "^1.0.4",
 		"svelte-daterangepicker": "^13.2.0",

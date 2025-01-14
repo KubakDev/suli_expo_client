@@ -113,6 +113,9 @@ importers:
       react-modal-image:
         specifier: ^2.6.0
         version: 2.6.0
+      sharp:
+        specifier: ^0.33.5
+        version: 0.33.5
       svelte-collapsible:
         specifier: ^0.2.2
         version: 0.2.2
