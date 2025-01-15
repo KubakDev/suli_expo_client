@@ -91,7 +91,7 @@
 		});
 	}
 </script>
-
+ 
 {#if fabric}
 	<div
 		bind:this={container}

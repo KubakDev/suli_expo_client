@@ -52,15 +52,22 @@
 		const height = data[0]?.design?.height;
 		const aspectRatio = width / height;
 		const containerWidth = container?.offsetWidth;
-		container.style.height = `${containerWidth / aspectRatio}px`;
+		
+		// Set container height based on aspect ratio
+		const containerHeight = containerWidth / aspectRatio;
+		container.style.height = `${containerHeight}px`;
 
-		const currentHeight = containerWidth / aspectRatio;
-
+		// Set canvas dimensions to match original design dimensions
 		if (canvas) {
 			canvas.setDimensions({
-				width: containerWidth,
-				height: currentHeight
+				width: width,
+				height: height
 			});
+			
+			// Scale canvas to fit container
+			canvas.setZoom(containerWidth / width);
+			canvas.setWidth(containerWidth);
+			canvas.setHeight(containerHeight);
 		}
 		canvas && canvas.renderAll();
 	};
@@ -75,13 +82,15 @@
 			adjustCanvasSize();
 			if (canvas) {
 				const width = data[0]?.design?.width;
-
 				const height = data[0]?.design?.height;
-				const containerWidth = container?.offsetWidth;
-				const containerHeight = container?.offsetHeight;
-				const widthRatio = containerWidth / width;
-				const heightRatio = containerHeight / height;
+				
 				canvas.loadFromJSON(data[0]?.design, async () => {
+					// Set initial canvas dimensions to match design
+					canvas.setDimensions({
+						width: width,
+						height: height
+					});
+
 					canvas.forEachObject((obj: any) => {
 						obj.set('selectable', false);
 						obj.set('lockMovementX', true);
@@ -124,22 +133,10 @@
 					// 	canvas.relativePan(delta);
 					// });
 
-					await tick(); // wait for the next update cycle
-					canvas.forEachObject((obj: any) => {
-						const scaleX = obj.scaleX;
-						const scaleY = obj.scaleY;
-						const left = obj.left;
-						const top = obj.top;
-						const tempScaleX = scaleX * widthRatio;
-						const tempScaleY = scaleY * heightRatio;
-						const tempLeft = left * widthRatio;
-						const tempTop = top * heightRatio;
-						obj.scaleX = tempScaleX;
-						obj.scaleY = tempScaleY;
-						obj.left = tempLeft;
-						obj.top = tempTop;
-						obj.setCoords();
-					});
+					await tick();
+					
+					// Adjust canvas size to container
+					adjustCanvasSize();
 					canvas.renderAll();
 				});
 			}
@@ -319,7 +316,7 @@
 	// }
 	//////////////////////
 </script>
-
+ 
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
 		<!-- Zoom buttons -->
