@@ -11,6 +11,7 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
+	import Hammer from 'hammerjs';
 	// import { fabric } from 'fabric';
 
 	export let data: any;
@@ -51,6 +52,8 @@
 	let startDistance = 0;
 	let lastScale = 1;
 	let lastPinchDistance = 0;
+	let touchBackEl: HTMLDivElement;
+	let canvasContainer: HTMLDivElement;
 
 	const handleZoom = (scale: number, centerX: number, centerY: number, canvas: any, previousScale: number) => {
 		const zoom = canvas.getZoom() * (scale / previousScale);
@@ -71,8 +74,47 @@
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
+			setupTouchControls();
 		}
 	});
+
+	const setupTouchControls = () => {
+		const upperCanvas = document.querySelector('.upper-canvas');
+		if (!upperCanvas) return;
+
+		// Setup Hammer manager for upper canvas
+		const upperCanvasManager = new Hammer.Manager(upperCanvas);
+		const press = new Hammer.Press({ time: 1500 });
+		const tripleTap = new Hammer.Tap({ event: 'tripletap', taps: 3 });
+		
+		upperCanvasManager.add([press, tripleTap]);
+		upperCanvasManager.on('press tripletap', () => {
+			if (touchBackEl) touchBackEl.style.display = "block";
+		});
+
+		// Setup Hammer manager for touch overlay
+		const touchBackManager = new Hammer.Manager(touchBackEl);
+		touchBackManager.add([
+			new Hammer.Press({ time: 1500 }),
+			new Hammer.Tap({ event: 'tripletap', taps: 3 }),
+			new Hammer.Pinch()
+		]);
+
+		touchBackManager.on('press tripletap', () => {
+			touchBackEl.style.display = "none";
+		});
+
+		touchBackManager.on('pinch', (e) => {
+			const zoom = canvas.getZoom() * e.scale;
+			if (zoom > 0.1 && zoom < 5) {
+				canvas.zoomToPoint(
+					{ x: e.center.x, y: e.center.y },
+					zoom
+				);
+				canvas.renderAll();
+			}
+		});
+	};
 
 	const adjustCanvasSize = () => {
 		const width = data[0]?.design?.width;
@@ -362,7 +404,7 @@
 </script>
  
 {#if fabric}
-	<div bind:this={container} class=" w-full relative overflow-hidden">
+	<div bind:this={canvasContainer} class="w-full relative overflow-hidden">
 	 
 		<div class="w-full flex justify-center md:mt-10 my-4">
 			<div class="flex justify-center items-center">
@@ -390,10 +432,38 @@
 		 class="w-full relative overflow-hidden border-2 rounded touch-none"
 		 style="touch-action: none;">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
+		
+		<!-- Touch overlay div -->
+		<div bind:this={touchBackEl}
+			 class="touch-overlay"
+			 style="display: none; touch-action: manipulation;">
+			<div class="overlay-pattern"></div>
+		</div>
 	</div>
 {/if}
 
 <style>
+	.touch-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.1);
+		z-index: 1000;
+	}
+
+	.overlay-pattern {
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+						  linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+						  linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.1) 75%),
+						  linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.1) 75%);
+		background-size: 20px 20px;
+		background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+	}
+
 	:global(.canvas-container) {
 		touch-action: none !important;
 		-webkit-user-select: none;
