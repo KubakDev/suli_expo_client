@@ -50,6 +50,7 @@
 	let previousScale = 1;
 	let startDistance = 0;
 	let lastScale = 1;
+	let lastPinchDistance = 0;
 
 	const handleZoom = (scale: number, centerX: number, centerY: number, canvas: any, previousScale: number) => {
 		const zoom = canvas.getZoom() * (scale / previousScale);
@@ -136,56 +137,55 @@
 						opt.e.preventDefault();
 						opt.e.stopPropagation();
 					});
-					canvas.on('touchstart', (event: any) => {
-						if (event.e.touches.length === 2) {
-							const touch1 = event.e.touches[0];
-							const touch2 = event.e.touches[1];
-							startDistance = Math.hypot(
-								touch2.clientX - touch1.clientX,
-								touch2.clientY - touch1.clientY
-							);
-							lastScale = 1;
-						} else if (event.e.touches.length === 1) {
+					canvas.on('touchstart', (opt: any) => {
+						const evt = opt.e;
+						if (evt.touches.length === 2) {
+							lastPinchDistance = getPinchDistance(evt);
+							currentZoom = canvas.getZoom();
+							evt.preventDefault();
+						} else if (evt.touches.length === 1) {
 							isDragging = true;
-							lastX = event.e.touches[0].clientX;
-							lastY = event.e.touches[0].clientY;
+							lastX = evt.touches[0].clientX;
+							lastY = evt.touches[0].clientY;
 						}
-						event.e.preventDefault();
 					});
-					canvas.on('touchmove', (event: any) => {
-						if (event.e.touches.length === 2) {
-							const touch1 = event.e.touches[0];
-							const touch2 = event.e.touches[1];
+					canvas.on('touchmove', (opt: any) => {
+						const evt = opt.e;
+						evt.preventDefault();
+						
+						if (evt.touches.length === 2) {
+							const distance = getPinchDistance(evt);
+							const change = distance / lastPinchDistance;
 							
-							const distance = Math.hypot(
-								touch2.clientX - touch1.clientX,
-								touch2.clientY - touch1.clientY
-							);
+							let zoom = currentZoom * change;
 							
-							const scale = distance / startDistance;
+							// Limit zoom
+							zoom = Math.min(Math.max(zoom, 0.1), 5);
+							
 							const center = {
-								x: (touch1.clientX + touch2.clientX) / 2,
-								y: (touch1.clientY + touch2.clientY) / 2
+								x: (evt.touches[0].clientX + evt.touches[1].clientX) / 2,
+								y: (evt.touches[0].clientY + evt.touches[1].clientY) / 2
 							};
 							
-							handleZoom(scale, center.x, center.y, canvas, lastScale);
-							lastScale = scale;
-						} else if (isDragging && event.e.touches.length === 1) {
-							const touch = event.e.touches[0];
+							canvas.zoomToPoint(new Response.fabric.Point(center.x, center.y), zoom);
+							canvas.renderAll();
+							
+						} else if (isDragging && evt.touches.length === 1) {
+							const touch = evt.touches[0];
 							const deltaX = touch.clientX - lastX;
 							const deltaY = touch.clientY - lastY;
-
-							const delta = new Response.fabric.Point(deltaX, deltaY);
-							canvas.relativePan(delta);
-
+							
+							canvas.relativePan(new Response.fabric.Point(deltaX, deltaY));
+							
 							lastX = touch.clientX;
 							lastY = touch.clientY;
 						}
-						event.e.preventDefault();
 					});
-					canvas.on('touchend', () => {
+					canvas.on('touchend', (opt: any) => {
 						isDragging = false;
-						initialDistance = 0;
+						if (opt.e.touches.length < 2) {
+							currentZoom = canvas.getZoom();
+						}
 					});
 
 					await tick();
@@ -349,6 +349,15 @@
 			}
 		}
 	}
+
+	function getPinchDistance(evt: TouchEvent) {
+		const touch1 = evt.touches[0];
+		const touch2 = evt.touches[1];
+		return Math.hypot(
+			touch2.clientX - touch1.clientX,
+			touch2.clientY - touch1.clientY
+		);
+	}
  
 </script>
  
@@ -377,20 +386,21 @@
 		</div>
 	</div>
 
-	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded touch-none">
+	<div bind:this={container} 
+		 class="w-full relative overflow-hidden border-2 rounded touch-none"
+		 style="touch-action: none;">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
-		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
 
 <style>
 	:global(.canvas-container) {
-		touch-action: none;
+		touch-action: none !important;
 		-webkit-user-select: none;
 		user-select: none;
 	}
 
 	:global(.fabric-canvas) {
-		touch-action: none;
+		touch-action: none !important;
 	}
 </style>
