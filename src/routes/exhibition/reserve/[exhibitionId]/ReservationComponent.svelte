@@ -100,38 +100,37 @@
 					canvas.on('mouse:down', handleMouseDown);
 					canvas.on('mouse:over', handleMouseOver);
 					canvas.on('mouse:out', handleMouseOut);
-					// canvas.on('mouse:wheel', (opt: any) => {
-					// 	const delta = opt.e.deltaY;
-					// 	let zoom = canvas.getZoom();
-					// 	zoom *= 0.999 ** delta;
-					// 	if (zoom > 5) zoom = 5;
-					// 	if (zoom < 0.1) zoom = 0.1;
-					// 	canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-					// 	opt.e.preventDefault();
-					// 	opt.e.stopPropagation();
-					// });
-					// Event handler for pinch zoom
-					// canvas.on('touch:gesture', (event: any) => {
-					// 	if (event.e.touches && event.e.touches.length === 2) {
-					// 		// Pinch gesture
-					// 		let zoom = canvas.getZoom();
-					// 		zoom *= event.e.scale;
-					// 		if (zoom > 5) zoom = 5;
-					// 		if (zoom < 1) zoom = 1;
-					// 		const point = new fabric.Point(event.self.x, event.self.y);
-					// 		canvas.zoomToPoint(point, zoom);
-					// 		event.e.preventDefault();
-					// 		event.e.stopPropagation();
-					// 	}
-					// });
-					// canvas.on('touch:drag', (event: any) => {
-					// 	console.log('drag', event);
-					// 	const delta = new fabric.Point(
-					// 		event.self.x - event.self.lastX,
-					// 		event.self.y - event.self.lastY
-					// 	);
-					// 	canvas.relativePan(delta);
-					// });
+					canvas.on('mouse:wheel', (opt: any) => {
+						const delta = opt.e.deltaY;
+						let zoom = canvas.getZoom();
+						zoom *= 0.999 ** delta;
+						if (zoom > 5) zoom = 5;
+						if (zoom < 0.1) zoom = 0.1;
+						canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+						opt.e.preventDefault();
+						opt.e.stopPropagation();
+					});
+				 canvas.on('touch:gesture', (event: any) => {
+						if (event.e.touches && event.e.touches.length === 2) {
+							// Pinch gesture
+							let zoom = canvas.getZoom();
+							zoom *= event.e.scale;
+							if (zoom > 5) zoom = 5;
+							if (zoom < 1) zoom = 1;
+							const point = new fabric.Point(event.self.x, event.self.y);
+							canvas.zoomToPoint(point, zoom);
+							event.e.preventDefault();
+							event.e.stopPropagation();
+						}
+					});
+					canvas.on('touch:drag', (event: any) => {
+						console.log('drag', event);
+						const delta = new fabric.Point(
+							event.self.x - event.self.lastX,
+							event.self.y - event.self.lastY
+						);
+						canvas.relativePan(delta);
+					});
 
 					await tick();
 					
@@ -294,35 +293,12 @@
 			}
 		}
 	}
-
-	//////////////////////
-	// function zoomIn() {
-	// 	let zoom = canvas.getZoom();
-	// 	zoom += 0.1;
-	// 	if (zoom > 5) zoom = 5;
-	// 	canvas.setZoom(zoom);
-	// 	canvas.renderAll();
-	// 	container.scrollLeft = 0;
-	// 	container.scrollTop = 0;
-	// }
-	// function zoomOut() {
-	// 	let zoom = canvas.getZoom();
-	// 	zoom -= 0.1;
-	// 	if (zoom < 0.1) zoom = 0.1;
-	// 	canvas.setZoom(zoom);
-	// 	canvas.renderAll();
-	// 	container.scrollLeft = 0;
-	// 	container.scrollTop = 0;
-	// }
-	//////////////////////
+ 
 </script>
  
 {#if fabric}
 	<div bind:this={container} class=" w-full relative overflow-hidden">
-		<!-- Zoom buttons -->
-		<!-- <button on:click={zoomIn}>+</button>
-		<button on:click={zoomOut}>-</button> -->
-
+	 
 		<div class="w-full flex justify-center md:mt-10 my-4">
 			<div class="flex justify-center items-center">
 				<div
@@ -351,17 +327,5 @@
 	</div>
 {/if}
 
-<style>
-	/* button {
-		background-color: #c12020;
-		border: none;
-		padding: 10px;
-		border-radius: 5px;
-		font-size: 16px;
-		margin: 2px;
-	}
-
-	button:hover {
-		background-color: #debfbf;
-	} */
+<style> 
 </style>
