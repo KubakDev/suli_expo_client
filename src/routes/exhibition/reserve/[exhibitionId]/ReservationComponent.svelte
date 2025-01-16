@@ -40,6 +40,30 @@
 		total_price: 0
 	};
 
+	let initialDistance = 0;
+	let currentZoom = 1;
+	let isDragging = false;
+	let lastX = 0;
+	let lastY = 0;
+	let isRotating = false;
+	let initialScale = 1;
+	let previousScale = 1;
+
+	const handleZoom = (scale: number, centerX: number, centerY: number, canvas: any, previousScale: number) => {
+		const zoom = canvas.getZoom() * (scale / previousScale);
+		
+		// Limit zoom range
+		if (zoom > 5 || zoom < 0.1) return;
+		
+		canvas.zoomToPoint({ x: centerX, y: centerY }, zoom);
+	};
+
+	const cancelPreviousAction = (canvas: any) => {
+		isDragging = false;
+		isRotating = false;
+		initialDistance = 0;
+	};
+
 	onMount(async () => {
 		fabric = import('fabric');
 		if (data) {
@@ -110,26 +134,61 @@
 						opt.e.preventDefault();
 						opt.e.stopPropagation();
 					});
-				 canvas.on('touch:gesture', (event: any) => {
+					canvas.on('touch:gesture:start', () => {
+						canvas.getObjects().forEach((o: any) => (o.objectCaching = false));
+						cancelPreviousAction(canvas);
+					});
+					canvas.on('touch:gesture', (event: any) => {
 						if (event.e.touches && event.e.touches.length === 2) {
-							// Pinch gesture
-							let zoom = canvas.getZoom();
-							zoom *= event.e.scale;
-							if (zoom > 5) zoom = 5;
-							if (zoom < 1) zoom = 1;
-							const point = new fabric.Point(event.self.x, event.self.y);
-							canvas.zoomToPoint(point, zoom);
+							const touch1 = event.e.touches[0];
+							const touch2 = event.e.touches[1];
+							
+							// Calculate scale
+							const distance = Math.hypot(
+								touch2.clientX - touch1.clientX,
+								touch2.clientY - touch1.clientY
+							);
+							const scale = distance / initialDistance;
+							
+							// Calculate center point
+							const center = {
+								x: (touch1.clientX + touch2.clientX) / 2,
+								y: (touch1.clientY + touch2.clientY) / 2
+							};
+
+							// Ignore small scale changes
+							if (Math.abs(scale - previousScale) < 0.005) return;
+
+							handleZoom(scale, center.x, center.y, canvas, previousScale);
+							previousScale = scale;
+							
 							event.e.preventDefault();
-							event.e.stopPropagation();
 						}
 					});
-					canvas.on('touch:drag', (event: any) => {
-						console.log('drag', event);
-						const delta = new fabric.Point(
-							event.self.x - event.self.lastX,
-							event.self.y - event.self.lastY
-						);
-						canvas.relativePan(delta);
+					canvas.on('touchstart', (event: any) => {
+						if (event.e.touches.length === 1) {
+							isDragging = true;
+							lastX = event.e.touches[0].clientX;
+							lastY = event.e.touches[0].clientY;
+						}
+					});
+					canvas.on('touchmove', (event: any) => {
+						if (isDragging && event.e.touches.length === 1) {
+							const touch = event.e.touches[0];
+							const deltaX = touch.clientX - lastX;
+							const deltaY = touch.clientY - lastY;
+
+							const delta = new Response.fabric.Point(deltaX, deltaY);
+							canvas.relativePan(delta);
+
+							lastX = touch.clientX;
+							lastY = touch.clientY;
+							event.e.preventDefault();
+						}
+					});
+					canvas.on('touchend', () => {
+						isDragging = false;
+						initialDistance = 0;
 					});
 
 					await tick();
@@ -321,11 +380,20 @@
 		</div>
 	</div>
 
-	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded">
+	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded touch-none">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
 		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
 
-<style> 
+<style>
+	:global(.canvas-container) {
+		touch-action: none;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+
+	:global(.fabric-canvas) {
+		touch-action: none;
+	}
 </style>
