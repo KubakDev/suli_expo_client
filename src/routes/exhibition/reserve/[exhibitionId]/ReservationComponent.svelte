@@ -48,6 +48,8 @@
 	let isRotating = false;
 	let initialScale = 1;
 	let previousScale = 1;
+	let startDistance = 0;
+	let lastScale = 1;
 
 	const handleZoom = (scale: number, centerX: number, centerY: number, canvas: any, previousScale: number) => {
 		const zoom = canvas.getZoom() * (scale / previousScale);
@@ -134,46 +136,41 @@
 						opt.e.preventDefault();
 						opt.e.stopPropagation();
 					});
-					canvas.on('touch:gesture:start', () => {
-						canvas.getObjects().forEach((o: any) => (o.objectCaching = false));
-						cancelPreviousAction(canvas);
-					});
-					canvas.on('touch:gesture', (event: any) => {
-						if (event.e.touches && event.e.touches.length === 2) {
+					canvas.on('touchstart', (event: any) => {
+						if (event.e.touches.length === 2) {
 							const touch1 = event.e.touches[0];
 							const touch2 = event.e.touches[1];
-							
-							// Calculate scale
-							const distance = Math.hypot(
+							startDistance = Math.hypot(
 								touch2.clientX - touch1.clientX,
 								touch2.clientY - touch1.clientY
 							);
-							const scale = distance / initialDistance;
-							
-							// Calculate center point
-							const center = {
-								x: (touch1.clientX + touch2.clientX) / 2,
-								y: (touch1.clientY + touch2.clientY) / 2
-							};
-
-							// Ignore small scale changes
-							if (Math.abs(scale - previousScale) < 0.005) return;
-
-							handleZoom(scale, center.x, center.y, canvas, previousScale);
-							previousScale = scale;
-							
-							event.e.preventDefault();
-						}
-					});
-					canvas.on('touchstart', (event: any) => {
-						if (event.e.touches.length === 1) {
+							lastScale = 1;
+						} else if (event.e.touches.length === 1) {
 							isDragging = true;
 							lastX = event.e.touches[0].clientX;
 							lastY = event.e.touches[0].clientY;
 						}
+						event.e.preventDefault();
 					});
 					canvas.on('touchmove', (event: any) => {
-						if (isDragging && event.e.touches.length === 1) {
+						if (event.e.touches.length === 2) {
+							const touch1 = event.e.touches[0];
+							const touch2 = event.e.touches[1];
+							
+							const distance = Math.hypot(
+								touch2.clientX - touch1.clientX,
+								touch2.clientY - touch1.clientY
+							);
+							
+							const scale = distance / startDistance;
+							const center = {
+								x: (touch1.clientX + touch2.clientX) / 2,
+								y: (touch1.clientY + touch2.clientY) / 2
+							};
+							
+							handleZoom(scale, center.x, center.y, canvas, lastScale);
+							lastScale = scale;
+						} else if (isDragging && event.e.touches.length === 1) {
 							const touch = event.e.touches[0];
 							const deltaX = touch.clientX - lastX;
 							const deltaY = touch.clientY - lastY;
@@ -183,8 +180,8 @@
 
 							lastX = touch.clientX;
 							lastY = touch.clientY;
-							event.e.preventDefault();
 						}
+						event.e.preventDefault();
 					});
 					canvas.on('touchend', () => {
 						isDragging = false;
