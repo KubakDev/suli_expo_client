@@ -11,7 +11,6 @@
 		addPreviousReserveSeatData
 	} from './seatReservationStore';
 	import { LL } from '$lib/i18n/i18n-svelte';
-	import Hammer from 'hammerjs';
 	// import { fabric } from 'fabric';
 
 	export let data: any;
@@ -41,80 +40,12 @@
 		total_price: 0
 	};
 
-	let initialDistance = 0;
-	let currentZoom = 1;
-	let isDragging = false;
-	let lastX = 0;
-	let lastY = 0;
-	let isRotating = false;
-	let initialScale = 1;
-	let previousScale = 1;
-	let startDistance = 0;
-	let lastScale = 1;
-	let lastPinchDistance = 0;
-	let touchBackEl: HTMLDivElement;
-	let canvasContainer: HTMLDivElement;
-
-	const handleZoom = (scale: number, centerX: number, centerY: number, canvas: any, previousScale: number) => {
-		const zoom = canvas.getZoom() * (scale / previousScale);
-		
-		// Limit zoom range
-		if (zoom > 5 || zoom < 0.1) return;
-		
-		canvas.zoomToPoint({ x: centerX, y: centerY }, zoom);
-	};
-
-	const cancelPreviousAction = (canvas: any) => {
-		isDragging = false;
-		isRotating = false;
-		initialDistance = 0;
-	};
-
 	onMount(async () => {
 		fabric = import('fabric');
 		if (data) {
 			await loadSeats();
-			setupTouchControls();
 		}
 	});
-
-	const setupTouchControls = () => {
-		const upperCanvas = document.querySelector('.upper-canvas');
-		if (!upperCanvas) return;
-
-		// Setup Hammer manager for upper canvas
-		const upperCanvasManager = new Hammer.Manager(upperCanvas);
-		const press = new Hammer.Press({ time: 1500 });
-		const tripleTap = new Hammer.Tap({ event: 'tripletap', taps: 3 });
-		
-		upperCanvasManager.add([press, tripleTap]);
-		upperCanvasManager.on('press tripletap', () => {
-			if (touchBackEl) touchBackEl.style.display = "block";
-		});
-
-		// Setup Hammer manager for touch overlay
-		const touchBackManager = new Hammer.Manager(touchBackEl);
-		touchBackManager.add([
-			new Hammer.Press({ time: 1500 }),
-			new Hammer.Tap({ event: 'tripletap', taps: 3 }),
-			new Hammer.Pinch()
-		]);
-
-		touchBackManager.on('press tripletap', () => {
-			touchBackEl.style.display = "none";
-		});
-
-		touchBackManager.on('pinch', (e) => {
-			const zoom = canvas.getZoom() * e.scale;
-			if (zoom > 0.1 && zoom < 5) {
-				canvas.zoomToPoint(
-					{ x: e.center.x, y: e.center.y },
-					zoom
-				);
-				canvas.renderAll();
-			}
-		});
-	};
 
 	const adjustCanvasSize = () => {
 		const width = data[0]?.design?.width;
@@ -169,66 +100,38 @@
 					canvas.on('mouse:down', handleMouseDown);
 					canvas.on('mouse:over', handleMouseOver);
 					canvas.on('mouse:out', handleMouseOut);
-					canvas.on('mouse:wheel', (opt: any) => {
-						const delta = opt.e.deltaY;
-						let zoom = canvas.getZoom();
-						zoom *= 0.999 ** delta;
-						if (zoom > 5) zoom = 5;
-						if (zoom < 0.1) zoom = 0.1;
-						canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-						opt.e.preventDefault();
-						opt.e.stopPropagation();
-					});
-					canvas.on('touchstart', (opt: any) => {
-						const evt = opt.e;
-						if (evt.touches.length === 2) {
-							lastPinchDistance = getPinchDistance(evt);
-							currentZoom = canvas.getZoom();
-							evt.preventDefault();
-						} else if (evt.touches.length === 1) {
-							isDragging = true;
-							lastX = evt.touches[0].clientX;
-							lastY = evt.touches[0].clientY;
-						}
-					});
-					canvas.on('touchmove', (opt: any) => {
-						const evt = opt.e;
-						evt.preventDefault();
-						
-						if (evt.touches.length === 2) {
-							const distance = getPinchDistance(evt);
-							const change = distance / lastPinchDistance;
-							
-							let zoom = currentZoom * change;
-							
-							// Limit zoom
-							zoom = Math.min(Math.max(zoom, 0.1), 5);
-							
-							const center = {
-								x: (evt.touches[0].clientX + evt.touches[1].clientX) / 2,
-								y: (evt.touches[0].clientY + evt.touches[1].clientY) / 2
-							};
-							
-							canvas.zoomToPoint(new Response.fabric.Point(center.x, center.y), zoom);
-							canvas.renderAll();
-							
-						} else if (isDragging && evt.touches.length === 1) {
-							const touch = evt.touches[0];
-							const deltaX = touch.clientX - lastX;
-							const deltaY = touch.clientY - lastY;
-							
-							canvas.relativePan(new Response.fabric.Point(deltaX, deltaY));
-							
-							lastX = touch.clientX;
-							lastY = touch.clientY;
-						}
-					});
-					canvas.on('touchend', (opt: any) => {
-						isDragging = false;
-						if (opt.e.touches.length < 2) {
-							currentZoom = canvas.getZoom();
-						}
-					});
+					// canvas.on('mouse:wheel', (opt: any) => {
+					// 	const delta = opt.e.deltaY;
+					// 	let zoom = canvas.getZoom();
+					// 	zoom *= 0.999 ** delta;
+					// 	if (zoom > 5) zoom = 5;
+					// 	if (zoom < 0.1) zoom = 0.1;
+					// 	canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+					// 	opt.e.preventDefault();
+					// 	opt.e.stopPropagation();
+					// });
+					// Event handler for pinch zoom
+					// canvas.on('touch:gesture', (event: any) => {
+					// 	if (event.e.touches && event.e.touches.length === 2) {
+					// 		// Pinch gesture
+					// 		let zoom = canvas.getZoom();
+					// 		zoom *= event.e.scale;
+					// 		if (zoom > 5) zoom = 5;
+					// 		if (zoom < 1) zoom = 1;
+					// 		const point = new fabric.Point(event.self.x, event.self.y);
+					// 		canvas.zoomToPoint(point, zoom);
+					// 		event.e.preventDefault();
+					// 		event.e.stopPropagation();
+					// 	}
+					// });
+					// canvas.on('touch:drag', (event: any) => {
+					// 	console.log('drag', event);
+					// 	const delta = new fabric.Point(
+					// 		event.self.x - event.self.lastX,
+					// 		event.self.y - event.self.lastY
+					// 	);
+					// 	canvas.relativePan(delta);
+					// });
 
 					await tick();
 					
@@ -392,20 +295,34 @@
 		}
 	}
 
-	function getPinchDistance(evt: TouchEvent) {
-		const touch1 = evt.touches[0];
-		const touch2 = evt.touches[1];
-		return Math.hypot(
-			touch2.clientX - touch1.clientX,
-			touch2.clientY - touch1.clientY
-		);
-	}
- 
+	//////////////////////
+	// function zoomIn() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom += 0.1;
+	// 	if (zoom > 5) zoom = 5;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
+	// function zoomOut() {
+	// 	let zoom = canvas.getZoom();
+	// 	zoom -= 0.1;
+	// 	if (zoom < 0.1) zoom = 0.1;
+	// 	canvas.setZoom(zoom);
+	// 	canvas.renderAll();
+	// 	container.scrollLeft = 0;
+	// 	container.scrollTop = 0;
+	// }
+	//////////////////////
 </script>
  
 {#if fabric}
-	<div bind:this={canvasContainer} class="w-full relative overflow-hidden">
-	 
+	<div bind:this={container} class=" w-full relative overflow-hidden">
+		<!-- Zoom buttons -->
+		<!-- <button on:click={zoomIn}>+</button>
+		<button on:click={zoomOut}>-</button> -->
+
 		<div class="w-full flex justify-center md:mt-10 my-4">
 			<div class="flex justify-center items-center">
 				<div
@@ -428,49 +345,23 @@
 		</div>
 	</div>
 
-	<div bind:this={container} 
-		 class="w-full relative overflow-hidden border-2 rounded touch-none"
-		 style="touch-action: none;">
+	<div bind:this={container} class=" w-full relative overflow-hidden border-2 rounded">
 		<canvas id="canvas" class="h-full w-full fabric-canvas" />
-		
-		<!-- Touch overlay div -->
-		<div bind:this={touchBackEl}
-			 class="touch-overlay"
-			 style="display: none; touch-action: manipulation;">
-			<div class="overlay-pattern"></div>
-		</div>
+		<div class="absolute bottom-10 right-10 w-40 flex justify-between" />
 	</div>
 {/if}
 
 <style>
-	.touch-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.1);
-		z-index: 1000;
+	/* button {
+		background-color: #c12020;
+		border: none;
+		padding: 10px;
+		border-radius: 5px;
+		font-size: 16px;
+		margin: 2px;
 	}
 
-	.overlay-pattern {
-		width: 100%;
-		height: 100%;
-		background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
-						  linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
-						  linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.1) 75%),
-						  linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.1) 75%);
-		background-size: 20px 20px;
-		background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-	}
-
-	:global(.canvas-container) {
-		touch-action: none !important;
-		-webkit-user-select: none;
-		user-select: none;
-	}
-
-	:global(.fabric-canvas) {
-		touch-action: none !important;
-	}
+	button:hover {
+		background-color: #debfbf;
+	} */
 </style>
