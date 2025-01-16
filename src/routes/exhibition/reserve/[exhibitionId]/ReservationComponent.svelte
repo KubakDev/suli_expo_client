@@ -295,26 +295,8 @@
 		}
 	}
 
-	//////////////////////
-	// function zoomIn() {
-	// 	let zoom = canvas.getZoom();
-	// 	zoom += 0.1;
-	// 	if (zoom > 5) zoom = 5;
-	// 	canvas.setZoom(zoom);
-	// 	canvas.renderAll();
-	// 	container.scrollLeft = 0;
-	// 	container.scrollTop = 0;
-	// }
-	// function zoomOut() {
-	// 	let zoom = canvas.getZoom();
-	// 	zoom -= 0.1;
-	// 	if (zoom < 0.1) zoom = 0.1;
-	// 	canvas.setZoom(zoom);
-	// 	canvas.renderAll();
-	// 	container.scrollLeft = 0;
-	// 	container.scrollTop = 0;
-	// }
-	//////////////////////
+
+	
 </script>
  
 {#if fabric}
@@ -352,16 +334,6 @@
 {/if}
 
 <style>
-	/* button {
-		background-color: #c12020;
-		border: none;
-		padding: 10px;
-		border-radius: 5px;
-		font-size: 16px;
-		margin: 2px;
-	}
 
-	button:hover {
-		background-color: #debfbf;
-	} */
+
 </style>
