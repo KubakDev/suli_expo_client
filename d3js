@@ -1,0 +1,334 @@
+<script lang="ts">
+	import { onMount, tick } from 'svelte';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { page } from '$app/stores';
+	import { ReservationStatusEnum, type ReserveSeatModel } from '../../../../models/reserveSeat';
+	import {
+		addSelectedSeat,
+		addSelectedPaidSeatServices,
+		addSelectedFreeSeatServices,
+		setSeatDataLoading,
+		addPreviousReserveSeatData
+	} from './seatReservationStore';
+	import { LL } from '$lib/i18n/i18n-svelte';
+
+	export let data: any;
+	export let supabase: SupabaseClient;
+	export let locale: string;
+
+	let d3: any;
+	let svg: any;
+	let container: HTMLElement;
+	let selectedObject: any = undefined;
+	let selectableObjectServices: {}[] = [];
+	let selectableObjectTotalPrice: number = 0;
+	let popupPosition = {
+		top: 0,
+		left: 0
+	};
+
+	let freeServices: any = [];
+	let paidServices: any = [];
+	let reserveSeatData: ReserveSeatModel = {
+		company_id: 0,
+		exhibition_id: +$page.params.exhibitionId,
+		object_id: 0,
+		services: [],
+		status: ReservationStatusEnum.PENDING,
+		total_price: 0
+	};
+
+	let previousReserveSeatData: any = [];
+
+	let seatGroup: any;
+	let selectedSeatModal = false;
+	let modalPosition = { x: 0, y: 0 };
+
+	onMount(async () => {
+		d3 = await import('d3');
+		await tick();
+		if (data) {
+			await loadSeats();
+			console.log(data);
+		}
+	});
+
+	const adjustSvgSize = () => {
+		if (!container) return;
+
+		const containerWidth = container.offsetWidth;
+		const designWidth = data[0]?.design?.width || 1600;
+		const designHeight = data[0]?.design?.height || 1200;
+		const aspectRatio = designWidth / designHeight;
+		
+		// Set container height based on aspect ratio
+		const containerHeight = containerWidth / aspectRatio;
+		container.style.height = `${containerHeight}px`;
+	};
+
+	const loadSeats = async () => {
+		if (!d3) return;
+
+		const designWidth = data[0]?.design?.width || 1600;
+		const designHeight = data[0]?.design?.height || 1200;
+
+		// Create SVG with exact dimensions from design
+		svg = d3.select('#canvas')
+			.append('svg')
+			.attr('viewBox', `0 0 ${designWidth} ${designHeight}`)
+			.attr('preserveAspectRatio', 'xMidYMid meet')
+			.style('width', '100%')
+			.style('height', '100%');
+
+		// Create background group
+		const backgroundGroup = svg.append('g');
+
+		// Add background image with exact positioning and scaling
+		if (data[0]?.design?.objects?.[0]?.type === 'image') {
+			const bgImage = data[0].design.objects[0];
+			backgroundGroup.append('image')
+				.attr('xlink:href', bgImage.src)
+				.attr('width', bgImage.width * bgImage.scaleX)
+				.attr('height', bgImage.height * bgImage.scaleY)
+				.attr('x', bgImage.left)
+				.attr('y', bgImage.top)
+				.attr('preserveAspectRatio', 'none');
+		}
+
+		// Create seats group
+		seatGroup = svg.append('g');
+
+		// Add all objects with exact positioning and scaling
+		data[0]?.design?.objects.forEach((obj: any, index: number) => {
+			if (index === 0) return; // Skip background image
+
+			if (obj.type === 'rect') {
+				// Create rectangle with exact dimensions and position
+				const rect = seatGroup.append('rect')
+					.attr('id', obj.id)
+					.attr('x', obj.left)
+					.attr('y', obj.top)
+					.attr('width', obj.width * obj.scaleX)
+					.attr('height', obj.height * obj.scaleY)
+					.attr('fill', obj.fill)
+					.attr('rx', obj.rx)
+					.attr('ry', obj.ry)
+					.attr('stroke', obj.stroke)
+					.attr('stroke-width', obj.strokeWidth)
+					.attr('cursor', obj.objectDetail?.selectable ? 'pointer' : 'default')
+					.datum(obj);
+
+				if (obj.objectDetail?.selectable) {
+					addEventListeners(rect);
+				}
+			} else if (obj.type === 'group') {
+				// Create group with exact position
+				const group = seatGroup.append('g')
+					.attr('id', obj.id)
+					.attr('transform', `translate(${obj.left},${obj.top})`);
+
+				// Add all objects in group with exact dimensions
+				obj.objects?.forEach((groupObj: any) => {
+					if (groupObj.type === 'rect') {
+						group.append('rect')
+							.attr('x', groupObj.left)
+							.attr('y', groupObj.top)
+							.attr('width', groupObj.width * groupObj.scaleX)
+							.attr('height', groupObj.height * groupObj.scaleY)
+							.attr('fill', groupObj.fill)
+							.attr('rx', groupObj.rx)
+							.attr('ry', groupObj.ry)
+							.attr('stroke', groupObj.stroke)
+							.attr('stroke-width', groupObj.strokeWidth);
+					} else if (groupObj.type === 'text') {
+						// Add text element to the group
+						group.append('text')
+							.attr('x', groupObj.left)
+							.attr('y', groupObj.top)
+							.attr('fill', groupObj.fill || 'black') // Default fill color
+							.text(groupObj.text)
+							.attr('font-size', groupObj.fontSize || '16px') // Default font size
+							.attr('text-anchor', 'start'); // Align text
+					}
+				});
+
+				if (obj.objectDetail?.selectable) {
+					addEventListeners(group);
+				}
+			}
+		});
+
+		adjustSvgSize();
+		await getPreviousReserveSeatData();
+	};
+
+	const addEventListeners = (element: any) => {
+		element
+			.on('click', (event: any, d: any) => handleMouseDown(event, d))
+			.on('mouseover', (event: any, d: any) => handleMouseOver(event, d))
+			.on('mouseout', (event: any, d: any) => handleMouseOut(event, d));
+	};
+
+	const handleMouseDown = (event: any, d: any) => {
+		selectedObject = undefined;
+		addSelectedSeat(undefined);
+		
+		if (previousReserveSeatData.some(
+			(x: any) => x.object_id == d.id && x.status == 'accept'
+		)) return;
+
+		selectedObject = d.objectDetail;
+		clearSelectedDesign();
+		if (!selectedObject?.selectable) return;
+
+		addSelectedSeat(d);
+		selectableObjectTotalPrice = +selectedObject?.price;
+		selectableObjectServices = [];
+		
+		reserveSeatData.object_id = d.id;
+		addServiceDetailForSelectableObject(d.objectDetail);
+
+		// Calculate modal position
+		const rect = event.currentTarget.getBoundingClientRect();
+		const containerRect = container.getBoundingClientRect();
+		
+		popupPosition = {
+			left: rect.left - containerRect.left + rect.width,
+			top: rect.top - containerRect.top
+		};
+
+		selectedSeatModal = true;
+	};
+
+	const handleMouseOver = (event: any, d: any) => {
+		if (d.objectDetail?.selectable && !d.objectDetail?.reserve) {
+			d3.select(event.currentTarget)
+				.transition()
+				.duration(200)
+				.attr('fill', '#8d93a5');
+		}
+	};
+
+	const handleMouseOut = (event: any, d: any) => {
+		if (!selectedObject && !d.objectDetail?.reserve) {
+			d3.select(event.currentTarget)
+				.transition()
+				.duration(200)
+				.attr('fill', d.fill || '#ccc');
+		}
+	};
+
+	function clearSelectedDesign() {
+		svg.selectAll('rect').each(function(d: any) {
+			for (let reservedSeat of previousReserveSeatData) {
+				checkIfTheSeatSold(reservedSeat);
+			}
+		});
+	}
+
+	async function getPreviousReserveSeatData() {
+		await supabase
+			.from('seat_reservation')
+			.select('*,company(*)')
+			.eq('exhibition_id', +$page.params.exhibitionId)
+			.then((response) => {
+				previousReserveSeatData = response.data;
+				addPreviousReserveSeatData(previousReserveSeatData);
+				for (let reservedSeat of previousReserveSeatData) {
+					checkIfTheSeatSold(reservedSeat);
+				}
+			});
+	}
+
+	function checkIfTheSeatSold(reservedSeat: any) {
+		for (let object of data[0].design?.objects) {
+			if (object?.id == reservedSeat?.object_id) {
+				svg.selectAll('rect')
+					.filter((d: any) => d.id === object.id)
+					.each(function() {
+						const element = d3.select(this);
+						if (reservedSeat.status == 'pending') {
+							element.attr('fill', '#A0B0C2')
+								  .attr('stroke', '#A0B0C2')
+								  .attr('stroke-width', 3);
+						} else if (reservedSeat.status == 'accept') {
+							element.attr('fill', '#ff176b')
+								  .attr('stroke', '#ff176b')
+								  .attr('stroke-width', 3);
+						}
+					});
+			}
+		}
+	}
+
+	async function addServiceDetailForSelectableObject(object: any) {
+		let servicesId = object.services.map((service: any) => service.id);
+		freeServices = [];
+		paidServices = [];
+		addSelectedFreeSeatServices([]);
+		addSelectedPaidSeatServices([]);
+		setSeatDataLoading(true);
+		await supabase
+			.from('seat_services')
+			.select('*,languages:seat_services_languages!inner(*)')
+			.eq('languages.language', locale)
+			.in('id', servicesId)
+			.then((result) => {
+				freeServices = [];
+				paidServices = [];
+				addSelectedFreeSeatServices([]);
+				addSelectedPaidSeatServices([]);
+				result.data?.forEach((service: any) => {
+					let selectedObjectService = selectedObject.services.find(
+						(item: any) => item.id === service.id
+					);
+					selectedObjectService.serviceDetail = service;
+					if (selectedObjectService.isFree) {
+						freeServices = [...freeServices, selectedObjectService];
+						addSelectedFreeSeatServices(freeServices);
+					} else {
+						paidServices = [...paidServices, selectedObjectService];
+						addSelectedPaidSeatServices(paidServices);
+					}
+				});
+				selectedObject = { ...selectedObject };
+			});
+		setSeatDataLoading(false);
+	}
+
+
+</script>
+ 
+{#if d3}
+	<div class="w-full relative overflow-hidden">
+		 	<div class="w-full flex justify-center md:mt-10 my-4">
+			<div class="flex justify-center items-center">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#1782ff] rounded-md shadow-md mx-2"
+				/>
+			 	<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.selected()}</p>
+			</div>
+			<div class="flex justify-center items-center mx-8">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#FF176B] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.reserved()}</p>
+			</div>
+			<div class="flex justify-center items-center">
+				<div
+					class="h-[20px] w-[20px] md:h-[30px] md:w-[30px] bg-[#A0B0C2] rounded-md shadow-md mx-2"
+				/>
+				<p class="font-bold text-xs md:text-md">{$LL.reservation.seat_types.pending()}</p>
+			</div>
+		</div>
+	</div>
+
+<div bind:this={container} class="w-full relative overflow-hidden border-2 rounded">
+	<div id="canvas" class="w-full h-full" />
+</div>
+{/if}
+
+<style>
+
+
+</style>
