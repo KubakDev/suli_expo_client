@@ -345,14 +345,16 @@
 								/>
 							</div>
 							<div class="w-full flex justify-center items-center">
-								<p class="font-bold">{$LL.reservation.reserved()}</p>
+								<p class="text-base font-medium">
+									{$LL.reservation.reserved()}
+								</p>
 							</div>
 						{:else}
 							<div>
-								<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+								<p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
 									{getDescriptionDependOnLanguage() ?? ''}
 								</p>
-								<div class="mt-4 flex">
+								<div class="mt-3 flex">
 									<Checkbox
 										class="cursor-pointer"
 										checked={acceptedPrivacyPolicy}
@@ -360,7 +362,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-								 	<span class="text-sm mx-3"> {$LL.reservation.privacy_policy.checked()} </span>
+									<span class="text-xs mx-2"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}
@@ -447,8 +449,8 @@
 								/>
 							</div>
 							<div class="w-full flex justify-center items-center">
-								<p class="font-bold">
-									The seat is reserved you have to wait until it will accepted
+								<p class="text-base font-medium">
+									{$LL.reservation.reserved()}
 								</p>
 							</div>
 						{:else}
@@ -501,10 +503,10 @@
 								</label>
 							</div>
 							<div>
-								<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+								<p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
 									{getDescriptionDependOnLanguage() ?? 'Title'}
 								</p>
-								<div class="mt-4 flex">
+								<div class="mt-3 flex">
 									<Checkbox
 										class="cursor-pointer"
 										checked={acceptedPrivacyPolicy}
@@ -512,7 +514,7 @@
 											acceptedPrivacyPolicy = !acceptedPrivacyPolicy;
 										}}
 									/>
-									<span class="text-sm mx-2"> {$LL.reservation.afterUpload_message()}</span>
+									<span class="text-xs mx-2"> {$LL.reservation.afterUpload_message()}</span>
 								</div>
 							</div>
 						{/if}
@@ -605,16 +607,15 @@
 		display: inline-flex;
 		align-items: center;
 		border-radius: 4px;
-		font-size: 14px;
+		font-size: 12px;
 		font-weight: 600;
 		color: #fff;
-		font-size: 14px;
-		padding: 10px 12px;
+		padding: 8px 10px;
 		background-color: #e1b168;
 		box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 	}
 	.file-input__label svg {
-		height: 30px;
+		height: 24px;
 		color: #ccc;
 	}
 	.file-display,
@@ -645,5 +646,13 @@
 	.flex-1 {
 		flex: 1;
 		min-height: 0;
+	}
+
+	.file-input__label span.text-gray-600 {
+		font-size: 14px;
+	}
+
+	.file-input__label span.text-gray-400 {
+		font-size: 12px;
 	}
 </style>

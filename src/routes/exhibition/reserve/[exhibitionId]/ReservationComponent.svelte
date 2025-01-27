@@ -47,9 +47,10 @@
 			(seat: any) => String(seat.object_id) === String(seatData.id)
 		);
 		
+		// Only block clicks for accepted reservations
 		if (reservedSeat?.status === ReservationStatusEnum.ACCEPT || 
 			!seatData.objectDetail?.selectable) {
-			return; // Don't allow selection of reserved seats
+			return;
 		}
 
 		// Reset previous selection
@@ -68,13 +69,16 @@
 			}
 		});
 
-		// Set new selection
+		// Set new selection - allow for both unreserved and pending seats
 		const seat = d3.select(event.currentTarget);
 		
-		if (!reservedSeat) {
-			seat.style('fill', '#1782ff')
-				.style('stroke', '#1782ff')
-				.style('stroke-width', 2);
+		if (!reservedSeat || reservedSeat.status === ReservationStatusEnum.PENDING) {
+			// For pending seats, don't change the color but still show services
+			if (!reservedSeat) {
+				seat.style('fill', '#1782ff')
+					.style('stroke', '#1782ff')
+					.style('stroke-width', 2);
+			}
 			
 			selectedObject = seatData.objectDetail;
 			addSelectedSeat(obj);

@@ -178,31 +178,31 @@
 			</div>
 		</div>
 
-		<div class="flex-1 flex flex-col px-6 overflow-hidden">
+		<div class="flex-1 flex flex-col px-4 overflow-hidden">
 			<div class="flex-none">
-				<p class="text-2xl font-bold mb-2" style="color: var(--lightPrimaryColor);">
+				<p class="text-lg font-bold mb-1" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.description()}
 				</p>
-				<p class="py-2 text-center">
+				<p class="py-1 text-sm text-center">
 					{$selectedSeat?.objectDetail?.description ?? descriptionLanguage() ?? ''}
 				</p>
-				<p class="text-2xl font-bold mb-2" style="color: var(--lightPrimaryColor);">
+				<p class="text-lg font-bold mb-1" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.comment()}
 				</p>
 				<Textarea
 					id="textarea-id"
 					placeholder={$LL.reservation.comment_placeholder()}
-					rows="3"
-					class="mb-3"
+					rows="2"
+					class="mb-2 text-sm"
 					bind:value={reserveSeatData.comment}
 				/>
 			</div>
 
 			<div class="flex-1 overflow-y-auto min-h-0">
-				<p class="text-2xl font-bold mb-4" style="color: var(--lightPrimaryColor);">
+				<p class="text-base md:text-lg font-bold mb-2" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.services.title()}
 				</p>
-				<div class="space-y-4">
+				<div class="space-y-2">
 					{#each $selectedPaidSeatServices as paidService}
 						<div class="service-item">
 							<div class="flex justify-start items-center">
@@ -211,34 +211,31 @@
 										paidService?.serviceDetail?.icon
 									}`}
 									alt="image of service"
-									class="w-12 h-12 object-cover rounded"
+									class="w-8 h-8 md:w-10 md:h-10 object-cover rounded"
 								/>
-								<p class="text-xl mx-2">
+								<p class="text-sm md:text-base mx-2">
 									{paidService?.serviceDetail?.languages[0]?.title}
 								</p>
 							</div>
-							<div class="my-1 flex justify-between gap-4 items-center">
-								<div
-									class="bg-[#edeeec] min-h-12 py-2 lg:w-1/2 border-[#dadddd] border-2 rounded-md flex flex-col justify-between px-2 items-center w-full my-3"
-								>
+							<div class="my-1 flex justify-between gap-2 items-center">
+								<div class="bg-[#edeeec] min-h-8 md:min-h-10 py-1 lg:w-1/2 border-[#dadddd] border-2 rounded-md flex flex-col justify-between px-2 items-center w-full my-1 md:my-2">
 									<div class="flex flex-col justify-start items-center">
 										{#if paidService?.serviceDetail?.discount}
-											<p class="text-sm" style="text-decoration: line-through;">
+											<p class="text-[10px] md:text-xs" style="text-decoration: line-through;">
 												{paidService.serviceDetail.price}$
 											</p>
-											<p class="text-base font-bold">{paidService.serviceDetail.discount}$</p>
+											<p class="text-xs md:text-sm font-bold">{paidService.serviceDetail.discount}$</p>
 										{:else}
-											<p class="text-base font-bold">
-												{$LL.reservation.pricePerService()}
+											<p class="text-xs md:text-sm font-bold">
 												{paidService.serviceDetail.price} $
 											</p>
 										{/if}
 									</div>
 									<div>
 										{#if paidService.maxFreeCount > 0}
-											<p class=" ">
+											<p class="text-[10px] md:text-xs">
 												{$LL.reservation.lessThan()}
-												<span class="text-[#e1b168] font-bold text-base mx-1">
+												<span class="text-[#e1b168] font-bold text-xs md:text-sm mx-1">
 													{paidService.maxFreeCount + 1}
 												</span>
 												{$LL.reservation.isFree()}
@@ -246,7 +243,7 @@
 										{/if}
 
 										{#if paidService.unlimitedFree}
-											<p class="text-[#e1b168] font-bold text-base mx-1">
+											<p class="text-[#e1b168] font-bold text-xs md:text-sm mx-1">
 												{$LL.reservation.free()}
 											</p>
 										{/if}
@@ -302,16 +299,16 @@
 									/>
 								</div>
 							</div>
-							<div class="border w-full my-5" />
+							<div class="border-b w-full my-3 md:my-5" />
 						</div>
 					{/each}
 				</div>
 			</div>
 
-			<div class="flex-none mt-4 border-t pt-4">
-				<div class="w-full flex justify-between items-center mb-4">
-					<h1 class="text-lg">{$LL.reservation.total_price()}</h1>
-					<h1 class="text-2xl font-bold">{totalPrice} $</h1>
+			<div class="flex-none mt-2 border-t pt-2">
+				<div class="w-full flex justify-between items-center mb-2">
+					<h1 class="text-base">{$LL.reservation.total_price()}</h1>
+					<h1 class="text-lg font-bold">{totalPrice} $</h1>
 				</div>
 				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}
 					<p class="text-center leading-8">
@@ -365,5 +362,12 @@
 
 	.service-item {
 		min-height: fit-content;
+		font-size: 14px;
+	}
+
+	@media (max-width: 768px) {
+		.service-item {
+			font-size: 12px;
+		}
 	}
 </style>
