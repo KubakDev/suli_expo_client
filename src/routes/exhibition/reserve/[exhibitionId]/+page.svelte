@@ -401,7 +401,7 @@
 								</div>
 							</div>
 
-							<div class="hidden 2xl:flex h-3/4 rounded-xl py-4" style="width: 29%;">
+							 <div class="hidden 2xl:flex h-[calc(100vh-200px)] rounded-xl py-4" style="width: 29%;">
 								{#if $selectedSeat}
 							 		<SelectedSeatInformationSection
 										supabase={data.supabase}
@@ -417,7 +417,7 @@
 							</div>
 							{#if $selectedSeat}
 								<div
-									class="pt-20 md:pt-0 2xl:hidden md:h-3/4 absolute bg-white rounded-xl h-screen w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
+									class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-[calc(100vh-80px)] w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
 									in:fly={{ x: -200, duration: 500 }}
 									out:fly={{ x: 200, duration: 500 }}
 								>

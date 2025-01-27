@@ -154,21 +154,22 @@
 	</div>
 </Modal>
 
-<div class="h-full w-full" style="overflow-y: auto;">
+<div class="h-full w-full flex flex-col">
 	{#if $totalReservedSeat}
-		<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
-			{$LL.reservation.total_company_reserve()}
-		</p>
-		<p class="text-center my-2 text-[#e1b147] font-bold text-xl mb-6">{$totalReservedSeat}</p>
+		<div class="flex-none p-4">
+			<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
+				{$LL.reservation.total_company_reserve()}
+			</p>
+			<p class="text-center my-2 text-[#e1b147] font-bold text-xl">{$totalReservedSeat}</p>
+		</div>
 	{/if}
+
 	{#if $seatDataLoading}
 		<div class="h-full w-full flex justify-center items-center">
 			<Spinner size={'20'} />
 		</div>
 	{:else}
-		<div class="flex 2xl:hidden w-full p-4 justify-end">
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<div class="flex-none flex 2xl:hidden w-full p-4 justify-end">
 			<div
 				class="p-2 hover:bg-slate-300 rounded-md cursor-pointer"
 				on:click={() => addSelectedSeat(undefined)}
@@ -176,31 +177,34 @@
 				<XMark />
 			</div>
 		</div>
-		<div class="w-full flex flex-col px-10 pb-6 justify-between items-center">
-			<div class="w-full flex flex-col items-center">
-				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
+
+		<div class="flex-1 flex flex-col px-6 overflow-hidden">
+			<div class="flex-none">
+				<p class="text-2xl font-bold mb-2" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.description()}
 				</p>
-				<p class="py-4 text-center">
+				<p class="py-2 text-center">
 					{$selectedSeat?.objectDetail?.description ?? descriptionLanguage() ?? ''}
 				</p>
-				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
+				<p class="text-2xl font-bold mb-2" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.comment()}
 				</p>
 				<Textarea
 					id="textarea-id"
 					placeholder={$LL.reservation.comment_placeholder()}
-					rows="5"
-					class="my-3"
+					rows="3"
+					class="mb-3"
 					bind:value={reserveSeatData.comment}
 				/>
-				<p class="text-3xl font-bold" style="color: var(--lightPrimaryColor);">
+			</div>
+
+			<div class="flex-1 overflow-y-auto min-h-0">
+				<p class="text-2xl font-bold mb-4" style="color: var(--lightPrimaryColor);">
 					{$LL.reservation.services.title()}
 				</p>
-
-				<div class="flex w-full justify-between py-4">
-					<div class="w-full">
-						{#each $selectedPaidSeatServices as paidService}
+				<div class="space-y-4">
+					{#each $selectedPaidSeatServices as paidService}
+						<div class="service-item">
 							<div class="flex justify-start items-center">
 								<img
 									src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${
@@ -299,14 +303,15 @@
 								</div>
 							</div>
 							<div class="border w-full my-5" />
-						{/each}
-					</div>
+						</div>
+					{/each}
 				</div>
 			</div>
-			<div class="w-full">
-				<div class="w-full flex justify-between items-center">
+
+			<div class="flex-none mt-4 border-t pt-4">
+				<div class="w-full flex justify-between items-center mb-4">
 					<h1 class="text-lg">{$LL.reservation.total_price()}</h1>
-					<h1 class="text-2xl my-6 font-bold">{totalPrice} $</h1>
+					<h1 class="text-2xl font-bold">{totalPrice} $</h1>
 				</div>
 				{#if thisObjectReservedByThisCompany && isThisObjectHasAPendingStatusForThisCompany}
 					<p class="text-center leading-8">
@@ -317,8 +322,6 @@
 						{#if isThisObjectHasAPendingStatusForThisCompany}
 							<span>
 								{$LL.reservation.pending.click()}
-								<!-- svelte-ignore a11y-click-events-have-key-events -->
-								<!-- svelte-ignore a11y-no-static-element-interactions -->
 								<span
 									class="text-[#1782ff] cursor-pointer"
 									on:click={() => {
@@ -332,10 +335,35 @@
 						{/if}
 					</p>
 				{:else}
-					<Button class="w-full py-4" on:click={reserveThisSeat}>{$LL.reservation.reserve()}</Button
-					>
+					<Button class="w-full" on:click={reserveThisSeat}>
+						{$LL.reservation.reserve()}
+					</Button>
 				{/if}
 			</div>
 		</div>
 	{/if}
 </div>
+
+<style>
+	.overflow-y-auto {
+		scrollbar-width: thin;
+		scrollbar-color: #e1b168 transparent;
+	}
+
+	.overflow-y-auto::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.overflow-y-auto::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.overflow-y-auto::-webkit-scrollbar-thumb {
+		background-color: #e1b168;
+		border-radius: 3px;
+	}
+
+	.service-item {
+		min-height: fit-content;
+	}
+</style>
