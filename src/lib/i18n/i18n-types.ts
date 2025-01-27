@@ -287,6 +287,10 @@ type RootTranslation = {
 	moreVideos: string
 	reservation: {
 		/**
+		 * C​a​n​c​e​l​ ​R​e​s​e​r​v​a​t​i​o​n
+		 */
+		cancelReservation: string
+		/**
 		 * R​e​j​e​c​t​e​d​ ​B​y​ ​U​s​e​r
 		 */
 		RejectedByUser: string
@@ -1193,6 +1197,10 @@ export type TranslationFunctions = {
 	 */
 	moreVideos: () => LocalizedString
 	reservation: {
+		/**
+		 * Cancel Reservation
+		 */
+		cancelReservation: () => LocalizedString
 		/**
 		 * Rejected By User
 		 */

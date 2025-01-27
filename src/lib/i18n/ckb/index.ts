@@ -79,6 +79,7 @@ const ckb = {
 	MoreInGallery: 'زیاتر لە گەلەری',
 	moreVideos: 'زیاتر لە ڤیدیۆکان',
 	reservation: {
+		cancelReservation: 'پەشیمان بونەوە',
 		RejectedByUser: 'هەڵوەشاندنەوەی لەلایەن بەکارهێنەرەوە',
 		quantity: 'بڕ :',
 		pricePerService: 'نرخی هەر خزمەتگوزارییەک :',

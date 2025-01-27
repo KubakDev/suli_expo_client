@@ -78,6 +78,7 @@ const en = {
 	MoreInGallery: 'More in Gallery',
 	moreVideos: 'More Videos',
 	reservation: {
+		cancelReservation: 'Cancel Reservation',
 		RejectedByUser: 'Rejected By User',
 		quantity: 'Quantity :',
 		pricePerService: 'Price Per Service :',

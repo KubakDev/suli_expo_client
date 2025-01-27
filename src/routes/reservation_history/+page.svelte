@@ -296,34 +296,41 @@
     <div class="flex justify-between w-full">
       <!-- Back Button -->
       <div
-        class="cursor-pointer rounded-lg p-2.5 mt-2 mx-6"
-        style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};"
+        class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-md mx-4"
+        style="background-color: #B27D00;"
         on:click={() => (openEditModal = false)}
       >
         {#if $locale === 'en'}
-          <ChevronLeft />
+          <ChevronLeft class="w-5 h-5 text-white" />
         {:else}
-          <ChevronRight />
+          <ChevronRight class="w-5 h-5 text-white" />
         {/if}
       </div>
 
       <!-- Status and Cancel Button -->
-      <div class="flex items-center px-6">
-        <div class="mx-2 rounded-lg p-2.5 text-gray-100 {selectedReservation.status}">
-        {selectedReservation.status==='accept' 
-		? $LL.reservation.statuses.accept() 
-		: selectedReservation.status==='reject' 
-		? $LL.reservation.statuses.reject() 
-		: $LL.reservation.statuses.pending()}
+      <div class="flex items-center gap-2 px-4">
+        <div 
+            class="px-3 py-1 text-xs rounded-full text-white"
+            style="background-color: {selectedReservation.status === 'accept' 
+                ? 'green' 
+                : selectedReservation.status === 'reject' 
+                ? 'red' 
+                : $currentMainThemeColors.primaryColor};"
+        >
+            {selectedReservation.status==='accept' 
+                ? $LL.reservation.statuses.accept() 
+                : selectedReservation.status==='reject' 
+                ? $LL.reservation.statuses.reject() 
+                : $LL.reservation.statuses.pending()}
         </div>
+
         {#if selectedReservation.status === ReservationStatus.PENDING}
-          <button
-            class="text-center font-medium focus:ring-4 focus:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-red-600 border hover:text-red-700 rounded-lg"
-            on:click={() => (cancelReserveModal = true)}
-          >
-            Cancel Reservation
-			
-          </button>
+            <button
+                class="px-3 py-1 text-xs text-red-500 border border-red-500 hover:bg-red-50 rounded-full focus:outline-none"
+                on:click={() => (cancelReserveModal = true)}
+            >
+                {$LL.reservation.cancelReservation()}
+            </button>
         {/if}
       </div>
     </div>

@@ -78,6 +78,7 @@ const ar = {
 	moreVideos: 'المزيد من الفيديوهات',
 	total_company_reserve: 'إجمالي حجوزات الشركات',
 	reservation: {
+		cancelReservation: 'إلغاء الحجز',
 		RejectedByUser: 'تم رفضه من قبل المستخدم',
 		quantity: 'الكمية :',
 		pricePerService: 'السعر لكل خدمة :',
