@@ -169,7 +169,7 @@
 		/>
 	</div>
 	<div class="w-full flex justify-center items-center">
-		<p class="font-bold">{$LL.reservation.pending.success()}</p>
+		<p class="font-bold">{$LL.reservation.pending.success()} </p>
 	</div>
 </Modal>
 
