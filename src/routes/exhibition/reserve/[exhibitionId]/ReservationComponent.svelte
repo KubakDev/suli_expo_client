@@ -265,14 +265,30 @@
 		const x = obj.left;
 		const y = obj.top;
 		
-		group.append('text')
+		const textGroup = group.append('g')
+			.attr('class', 'seat-container');
+
+		const text = textGroup.append('text')
+			.attr('class', 'seat')
 			.attr('x', x)
-			.attr('y', y + (obj.fontSize || 20)) // Add fontSize to y for proper text alignment
-			.attr('font-size', obj.fontSize || 20)
-			.attr('font-family', obj.fontFamily || 'Times New Roman')
+			.attr('y', y + (obj.fontSize || 10))
+			.attr('font-size', obj.fontSize || 10)
+			.attr('font-family', obj.fontFamily || 'Arial')
 			.attr('fill', obj.fill || '#000')
 			.text(obj.text || '')
-			.attr('transform', obj.angle ? `rotate(${obj.angle}, ${x}, ${y})` : null);
+			.attr('transform', obj.angle ? `rotate(${obj.angle}, ${x}, ${y})` : null)
+			.attr('id', obj.id)
+			.datum(obj);
+
+		// Add event listeners only if text is not reserved
+		if (!obj.objectDetail?.reserve) {
+			text
+				.on('click', (event: any) => handleClick(event, obj))
+				.on('mouseover', (event: any) => handleMouseOver(event, obj))
+				.on('mouseout', (event: any) => handleMouseOut(event, obj));
+		}
+
+		return textGroup;
 	};
 
 	const renderTriangle = (group: any, obj: any) => {

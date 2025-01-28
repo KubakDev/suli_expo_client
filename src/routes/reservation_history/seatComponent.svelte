@@ -85,6 +85,9 @@
 				case 'rect':
 					renderRect(mainGroup, obj);
 					break;
+				case 'circle':
+					renderCircle(mainGroup, obj);
+					break;
 				case 'i-text':
 					renderText(mainGroup, obj);
 					break;
@@ -214,6 +217,21 @@
 			.attr('href', obj.src || '')
 			.attr('preserveAspectRatio', 'none')
 			.attr('transform', obj.angle ? `rotate(${obj.angle}, ${x + width/2}, ${y + height/2})` : null);
+	};
+
+	const renderCircle = (group: any, obj: any) => {
+		const cx = (obj.left || 0) + ((obj.radius || 0) * (obj.scaleX || 1));
+		const cy = (obj.top || 0) + ((obj.radius || 0) * (obj.scaleY || 1));
+		const radius = (obj.radius || 0) * (obj.scaleX || 1);
+
+		group.append('circle')
+			.attr('cx', cx)
+			.attr('cy', cy)
+			.attr('r', radius)
+			.attr('fill', obj.fill || 'transparent')
+			.attr('stroke', obj.stroke || 'none')
+			.attr('stroke-width', obj.strokeWidth || 0)
+			.attr('id', obj.id);
 	};
 </script> 
 
