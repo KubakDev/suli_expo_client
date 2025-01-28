@@ -9,10 +9,21 @@
   import { changeLanguage } from '../../utils/language';
   import { previousPageStore } from '../../stores/navigationStore';
   import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
-  import { ChevronDown, Moon, Sun } from 'svelte-heros-v2';  
+  import { ChevronDown, Moon, Sun } from 'svelte-heros-v2';
   import { currentUser } from '../../stores/currentUser';
   import { goto } from '$app/navigation';
   import { UserSolid } from 'flowbite-svelte-icons';
+  import { 
+    IconX, 
+    IconMenu2, 
+    IconSun, 
+    IconMoon, 
+    IconChevronDown,
+    IconHistory,
+    IconLogout,
+    IconUser,
+    IconBell
+  } from '@tabler/icons-svelte';
 
   export let data: PageData;
 
@@ -343,15 +354,9 @@
           aria-label="Toggle Mobile Menu"
         >
           {#if isMobileMenuOpen}
-            <!-- Close Icon (Direct SVG) -->
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <IconX class="w-5 h-5" />
           {:else}
-            <!-- Hamburger Menu Icon -->
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <IconMenu2 class="w-6 h-6" />
           {/if}
         </button>
       </div>
@@ -370,7 +375,7 @@
                 style="color: {navbarStyles.color};"
               >
                 <span class="ml-2">{translation[navTitle.title]()}</span>
-                <ChevronDown class="w-4 h-4 ml-1" />
+                <IconChevronDown class="w-4 h-4 ml-1" />
               </button>
               {#if dropdownOpen === navTitle.title}
                 <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 rounded-md shadow-lg z-50" 
@@ -379,12 +384,12 @@
                     {#each navTitle.urls as url}
                       <a
                         href={url.url}
-                        class="block px-4 py-2 text-sm "
+                        class="block px-4 py-2 text-sm"
                         on:click={() => toggleDropdown('')}
                         style={
                           activeUrl === url.url
-                            ? `color:${$currentMainThemeColors.primaryColor};`
-                            : `color:${navbarStyles.color};`
+                            ? `color:${$currentMainThemeColors.primaryColor}; text-align: ${data.locale === 'en' ? 'left' : 'right'};`
+                          : `color:${navbarStyles.color}; text-align: ${data.locale === 'en' ? 'left' : 'right'};`
                         }
                       >
                         {translation[url.title]()}
@@ -423,7 +428,7 @@
             aria-expanded={languageDropdownOpen}
           >
             <span class="ml-2">{selectedLang}</span>
-            <ChevronDown class="w-4 h-4 ml-1" />
+            <IconChevronDown class="w-4 h-4 ml-1" />
           </button>
           {#if languageDropdownOpen}
             <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-40 rounded-md shadow-lg z-50" 
@@ -431,19 +436,22 @@
               <div class="py-1">
                 <button
                   on:click={() => langSelect('ckb')}
-                  class="w-full text-center px-4 py-2 text-sm"
+                  class="w-full px-4 py-2 text-sm"
+                  style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                 >
                   کوردی
                 </button>
                 <button
                   on:click={() => langSelect('ar')}
-                  class="w-full text-center px-4 py-2 text-sm"
+                  class="w-full px-4 py-2 text-sm"
+                  style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                 >
                   العربية
                 </button>
                 <button
                   on:click={() => langSelect('en')}
-                  class="w-full text-center px-4 py-2 text-sm"
+                  class="w-full px-4 py-2 text-sm"
+                  style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                 >
                   English
                 </button>
@@ -476,7 +484,7 @@
                {notifications.length}
              </span>
            {/if}
-           <ChevronDown class="w-4 h-4 ml-1" />
+           <IconChevronDown class="w-4 h-4 ml-1" />
          </button>
 
             {#if dropdownOpenProfile}
@@ -493,65 +501,42 @@
            <ul class="py-2 px-1">
                      <li>
                        <button
-                         class="w-full text-left px-3 py-2 text-sm rounded-md"
+                         class="w-full px-3 py-2 text-sm rounded-md"
+                         style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                          on:click={() => {
                            goto(`/exhibition/reserve/register/${$currentUser.uid}`);
                            dropdownOpenProfile = false;
                          }}
                        >
-                         <div class="flex items-center">
-                           <UserSolid class="h-4 w-4 mr-2" />
+                         <div class="flex items-center" style="justify-content: ${data.locale === 'en' ? 'flex-start' : 'flex-end'};">
+                           <IconUser class="h-4 w-4 {data.locale === 'en' ? 'mr-2' : 'ml-2'}" />
                            {$LL.profile.title()}
                          </div>
                        </button>
                      </li>
                      <li>
                        <button
-                         class="w-full text-left px-3 py-2 text-sm rounded-md"
+                         class="w-full px-3 py-2 text-sm rounded-md"
+                         style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                          on:click={() => {
                            goto('/reservation_history');
                            dropdownOpenProfile = false;
                          }}
                        >
-                         <div class="flex items-center">
-                           <svg
-                             xmlns="http://www.w3.org/2000/svg"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke-width="1.5"
-                             stroke="currentColor"
-                             class="w-5 h-5 mr-2"
-                           >
-                             <path
-                               stroke-linecap="round"
-                               stroke-linejoin="round"
-                               d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
-                             />
-                           </svg>
+                         <div class="flex items-center" style="justify-content: ${data.locale === 'en' ? 'flex-start' : 'flex-end'};">
+                           <IconHistory class="w-5 h-5 {data.locale === 'en' ? 'mr-2' : 'ml-2'}" />
                            {$LL.profile.reservation_history()}
                          </div>
                        </button>
                      </li>
                      <li>
                        <button
-                         class="w-full text-left px-3 py-2 text-sm rounded-md"
+                         class="w-full px-3 py-2 text-sm rounded-md"
+                         style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                          on:click={logoutFunction}
                        >
-                         <div class="flex items-center">
-                           <svg
-                             xmlns="http://www.w3.org/2000/svg"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke-width="1.5"
-                             stroke="currentColor"
-                             class="w-5 h-5 mr-2"
-                           >
-                             <path
-                               stroke-linecap="round"
-                               stroke-linejoin="round"
-                               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                             />
-                           </svg>
+                         <div class="flex items-center" style="justify-content: ${data.locale === 'en' ? 'flex-start' : 'flex-end'};">
+                           <IconLogout class="w-5 h-5 {data.locale === 'en' ? 'mr-2' : 'ml-2'}" />
                            {$LL.profile.logout()}
                          </div>
                        </button>
@@ -559,27 +544,15 @@
                      {#if notifications.length > 0}
                        <div class="border-t mt-2">
                          <button
-                           class="w-full text-left px-3 py-2 text-sm rounded-md"
+                           class="w-full px-3 py-2 text-sm rounded-md"
+                           style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                            on:click={() => {
                              goto('/reservation_history');
                              dropdownOpenProfile = false;
                            }}
                          >
-                           <div class="flex items-center">
-                             <svg
-                               xmlns="http://www.w3.org/2000/svg"
-                               fill="none"
-                               viewBox="0 0 24 24"
-                               stroke-width="1.5"
-                               stroke="currentColor"
-                               class="w-4 h-4 mr-2"
-                             >
-                               <path
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round"
-                                 d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                               />
-                             </svg>
+                           <div class="flex items-center" style="justify-content: ${data.locale === 'en' ? 'flex-start' : 'flex-end'};">
+                             <IconBell class="w-4 h-4 {data.locale === 'en' ? 'mr-2' : 'ml-2'}" />
                              <span class="truncate">{$LL.profile.reservation_notification()}</span>
                              <span class="ml-auto text-red-600 font-bold">{notifications.length}</span>
                            </div>
@@ -589,6 +562,7 @@
                          {#each notifications as notificationData}
                            <li 
                              class="px-3 py-2 text-sm hover:bg-opacity-10 hover:bg-gray-200 dark:hover:bg-opacity-10 dark:hover:bg-gray-700 transition-colors duration-200 rounded-md cursor-pointer"
+                             style="text-align: ${data.locale === 'en' ? 'left' : 'right'};"
                              on:click={async () => {
                                // Mark as seen first
                                await markNotificationAsSeen(notificationData.id);
@@ -622,14 +596,15 @@
         <!-- Theme Toggle -->
         <button
           on:click={toggleThemeHandler}
-          class="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 "
+          class="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
           aria-label="Toggle Theme"
         >
           {#if currentTheme === 'light'}
-            <Sun class="w-5 h-5 "/>
+            <IconSun class="w-5 h-5" />
           {:else}
-            <Moon class="w-5 h-5"  
-                 style="color: {$currentMainThemeColors.overlayPrimaryColor};"
+            <IconMoon 
+              class="w-5 h-5" 
+              style="color: {$currentMainThemeColors.overlayPrimaryColor};"
             />
           {/if}
         </button>
@@ -642,117 +617,113 @@
   {#if isMobileMenuOpen}
     <div class="lg:hidden fixed inset-0 z-50 overflow-y-auto"
      style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
-    <div class="px-4 pt-16 pb-6 space-y-4 ">
-  <!-- Close button for mobile menu -->
-  <button
-  on:click={() => isMobileMenuOpen = false}
-  class="absolute top-4 right-4 p-3 rounded-full focus:outline-none"
-  aria-label="Close menu"
-  style="background-color: transparent;"  
->
-  
-  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-</button>
+    <div class="px-4 pt-16 pb-6 space-y-4">
+      <!-- Single Close button for mobile menu -->
+      <button
+        on:click={() => isMobileMenuOpen = false}
+        class="absolute top-4 right-4 p-2 rounded-lg focus:outline-none"
+        aria-label="Close menu"
+      >
+        <IconX class="w-6 h-6" />
+      </button>
 
-   <!-- Menu Items -->
-        {#each navTitles as navTitle}
-          {#if navTitle.urls}
-            <div class="relative mb-4" bind:this={mobileMediaDropdown}>
-              <button
-                on:click={() => toggleMobileDropdown(navTitle.title)}
-                class="flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md focus:outline-none transition-colors duration-200"
-                aria-haspopup="true"
-                aria-expanded={mobileDropdownOpen === navTitle.title}
-                style="color: {navbarStyles.color}; {mobileDropdownOpen === navTitle.title ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
-              >
-                <span>{translation[navTitle.title]()}</span>
-                <ChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileDropdownOpen === navTitle.title ? 'transform rotate-180' : ''}" />
-              </button>
-              {#if mobileDropdownOpen === navTitle.title}
-                <div class="w-full mt-2 rounded-md shadow-lg" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
-                  {#each navTitle.urls as url}
-                    <a
-                      href={url.url}
-                      class="block w-full px-4 py-2 text-sm transition-colors duration-200"
-                      style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
-                        activeUrl === url.url
-                          ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
-                          : `color: ${navbarStyles.color};`
-                      }"
-                      on:click={() => {
-                        toggleMobileDropdown('');
-                        isMobileMenuOpen = false;
-                      }}
-                    >
-                      {translation[url.title]()}
-                    </a>
-                  {/each}
-                </div>
-              {/if}
-            </div>
-          {:else}
-            <a
-              href={navTitle.url}
-              class="block px-4 py-3 text-base font-medium rounded-md transition-colors duration-200 mb-4"
-              on:click={() => {
-                updateActiveUrl(navTitle.url);
-                isMobileMenuOpen = false;
-              }}
-              style={
-                activeUrl === navTitle.url
-                  ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
-                  : `color: ${navbarStyles.color};`
-              }
-            >
-              {translation[navTitle.title]()}
-            </a>
-          {/if}
-        {/each}
-
-        <!-- Mobile Language Dropdown -->
-        {#if !showLanguageModal}
-          <div class="relative mt-4" bind:this={mobileLanguageDropdown}>
+      <!-- Menu Items -->
+      {#each navTitles as navTitle}
+        {#if navTitle.urls}
+          <div class="relative mb-4" bind:this={mobileMediaDropdown}>
             <button
-              on:click={toggleMobileLanguageDropdown}
+              on:click={() => toggleMobileDropdown(navTitle.title)}
               class="flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md focus:outline-none transition-colors duration-200"
               aria-haspopup="true"
-              aria-expanded={mobileLanguageDropdownOpen}
-              style="color: {navbarStyles.color}; {mobileLanguageDropdownOpen ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
+              aria-expanded={mobileDropdownOpen === navTitle.title}
+              style="color: {navbarStyles.color}; {mobileDropdownOpen === navTitle.title ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
             >
-              <span style="text-align: {data.locale === 'en' ? 'left' : 'right'}">{selectedLang}</span>
-              <ChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileLanguageDropdownOpen ? 'transform rotate-180' : ''}" />
+              <span>{translation[navTitle.title]()}</span>
+              <IconChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileDropdownOpen === navTitle.title ? 'transform rotate-180' : ''}" />
             </button>
-            {#if mobileLanguageDropdownOpen}
-              <div 
-                class="w-full rounded-md shadow-lg"
-                style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
-              >
-                <div class="py-1">
-                  {#each ['کوردی', 'العربية', 'English'] as lang}
-                    <button
-                      on:click={() => {
-                        langSelect(lang === 'کوردی' ? 'ckb' : lang === 'العربية' ? 'ar' : 'en');
-                        isMobileMenuOpen = false;
-                      }}
-                      class="block w-full px-4 py-2 text-sm transition-colors duration-200"
-                      style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
-                        selectedLang === lang
-                          ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
-                          : `color: ${navbarStyles.color};`
-                      }"
-                    >
-                      {lang}
-                    </button>
-                  {/each}
-                </div>
+            {#if mobileDropdownOpen === navTitle.title}
+              <div class="w-full mt-2 rounded-md shadow-lg" style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};">
+                {#each navTitle.urls as url}
+                  <a
+                    href={url.url}
+                    class="block w-full px-4 py-2 text-sm transition-colors duration-200"
+                    style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
+                      activeUrl === url.url
+                        ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
+                        : `color: ${navbarStyles.color};`
+                    }"
+                    on:click={() => {
+                      toggleMobileDropdown('');
+                      isMobileMenuOpen = false;
+                    }}
+                  >
+                    {translation[url.title]()}
+                  </a>
+                {/each}
               </div>
             {/if}
           </div>
+        {:else}
+          <a
+            href={navTitle.url}
+            class="block px-4 py-3 text-base font-medium rounded-md transition-colors duration-200 mb-4"
+            on:click={() => {
+              updateActiveUrl(navTitle.url);
+              isMobileMenuOpen = false;
+            }}
+            style={
+              activeUrl === navTitle.url
+                ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
+                : `color: ${navbarStyles.color};`
+            }
+          >
+            {translation[navTitle.title]()}
+          </a>
         {/if}
-      </div>
+      {/each}
+
+      <!-- Mobile Language Dropdown -->
+      {#if !showLanguageModal}
+        <div class="relative mt-4" bind:this={mobileLanguageDropdown}>
+          <button
+            on:click={toggleMobileLanguageDropdown}
+            class="flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md focus:outline-none transition-colors duration-200"
+            aria-haspopup="true"
+            aria-expanded={mobileLanguageDropdownOpen}
+            style="color: {navbarStyles.color}; {mobileLanguageDropdownOpen ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
+          >
+            <span style="text-align: {data.locale === 'en' ? 'left' : 'right'}">{selectedLang}</span>
+            <IconChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileLanguageDropdownOpen ? 'transform rotate-180' : ''}" />
+          </button>
+          {#if mobileLanguageDropdownOpen}
+            <div 
+              class="w-full rounded-md shadow-lg"
+              style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color};"
+            >
+              <div class="py-1">
+                {#each ['کوردی', 'العربية', 'English'] as lang}
+                  <button
+                    on:click={() => {
+                      langSelect(lang === 'کوردی' ? 'ckb' : lang === 'العربية' ? 'ar' : 'en');
+                      isMobileMenuOpen = false;
+                    }}
+                    class="block w-full px-4 py-2 text-sm transition-colors duration-200"
+                    style="text-align: {data.locale === 'en' ? 'left' : 'right'}; {
+                      selectedLang === lang
+                        ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};`
+                        : `color: ${navbarStyles.color};`
+                    }"
+                  >
+                    {lang}
+                  </button>
+                {/each}
+              </div>
+            </div>
+          {/if}
+        </div>
+      {/if}
     </div>
+  </div>
   {/if}
 </nav>
 
