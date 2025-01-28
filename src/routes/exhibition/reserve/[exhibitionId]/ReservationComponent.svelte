@@ -127,7 +127,6 @@
 			.select('*,company(*)')
 			.eq('exhibition_id', +$page.params.exhibitionId);
 			
-		console.log('Seat Reservation Data:', response.data);
 		previousReserveSeatData = response.data || [];
 		addPreviousReserveSeatData(previousReserveSeatData);
 		return previousReserveSeatData; // Return the data for chaining
@@ -276,18 +275,34 @@
 		const width = obj.width * (obj.scaleX || 1);
 		const height = obj.height * (obj.scaleY || 1);
 		
+		const triangleGroup = group.append('g')
+			.attr('class', 'seat-container');
+
 		const points = [
 			`${x},${y + height}`,
 			`${x + width/2},${y}`,
 			`${x + width},${y + height}`
 		].join(' ');
 		
-		group.append('polygon')
+		const triangle = triangleGroup.append('polygon')
+			.attr('class', 'seat')
 			.attr('points', points)
 			.attr('fill', obj.fill || 'transparent')
 			.attr('stroke', obj.stroke || 'none')
 			.attr('stroke-width', obj.strokeWidth || 0)
+			.attr('id', obj.id)
+			.datum(obj)
 			.attr('transform', obj.angle ? `rotate(${obj.angle}, ${x + width/2}, ${y + height/2})` : null);
+
+		// Add event listeners only if seat is not reserved
+		if (!obj.objectDetail?.reserve) {
+			triangle
+				.on('click', (event: any) => handleClick(event, obj))
+				.on('mouseover', (event: any) => handleMouseOver(event, obj))
+				.on('mouseout', (event: any) => handleMouseOut(event, obj));
+		}
+
+		return triangleGroup;
 	};
 
 	const renderGroup = (group: any, obj: any) => {
