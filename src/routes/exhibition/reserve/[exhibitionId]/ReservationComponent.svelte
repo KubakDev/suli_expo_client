@@ -214,6 +214,12 @@
 				case 'triangle':
 					renderTriangle(mainGroup, obj);
 					break;
+				case 'circle':
+					renderCircle(mainGroup, obj);
+					break;
+				case 'line':
+					renderLine(mainGroup, obj);
+					break;
 				case 'image':
 					renderImage(mainGroup, obj);
 					break;
@@ -346,12 +352,79 @@
 				case 'triangle':
 					renderTriangle(groupElement, childObj);
 					break;
+				case 'circle':
+					renderCircle(groupElement, childObj);
+					break;
+				case 'line':
+					renderLine(groupElement, childObj);
+					break;
 				default:
 					console.warn(`Unsupported child object type in group: ${childObj.type}`);
 			}
 		});
 
 		return groupElement;
+	};
+
+	const renderCircle = (group: any, obj: any) => {
+		const x = obj.left || 0;
+		const y = obj.top || 0;
+		const radius = (obj.radius || 20) * (obj.scaleX || 1); // Scale the radius if needed
+
+		const circleGroup = group.append('g')
+			.attr('class', 'seat-container');
+
+		const circle = circleGroup.append('circle')
+			.attr('class', 'seat')
+			.attr('cx', x + radius) // Center x coordinate
+			.attr('cy', y + radius) // Center y coordinate
+			.attr('r', radius)
+			.attr('fill', obj.fill || 'transparent')
+			.attr('stroke', obj.stroke || 'none')
+			.attr('stroke-width', obj.strokeWidth || 0)
+			.attr('id', obj.id)
+			.datum(obj);
+
+		// Add event listeners only if seat is not reserved
+		if (!obj.objectDetail?.reserve) {
+			circle
+				.on('click', (event: any) => handleClick(event, obj))
+				.on('mouseover', (event: any) => handleMouseOver(event, obj))
+				.on('mouseout', (event: any) => handleMouseOut(event, obj));
+		}
+
+		return circleGroup;
+	};
+
+	const renderLine = (group: any, obj: any) => {
+		const x1 = obj.left || 0;
+		const y1 = obj.top || 0;
+		const x2 = x1 + (obj.width || 0) * (obj.scaleX || 1);
+		const y2 = y1 + (obj.height || 0) * (obj.scaleY || 1);
+
+		const lineGroup = group.append('g')
+			.attr('class', 'seat-container');
+
+		const line = lineGroup.append('line')
+			.attr('class', 'seat')
+			.attr('x1', x1)
+			.attr('y1', y1)
+			.attr('x2', x2)
+			.attr('y2', y2)
+			.attr('stroke', obj.stroke || obj.fill || '#000')
+			.attr('stroke-width', obj.strokeWidth || 1)
+			.attr('id', obj.id)
+			.datum(obj);
+
+		// Add event listeners only if seat is not reserved
+		if (!obj.objectDetail?.reserve) {
+			line
+				.on('click', (event: any) => handleClick(event, obj))
+				.on('mouseover', (event: any) => handleMouseOver(event, obj))
+				.on('mouseout', (event: any) => handleMouseOut(event, obj));
+		}
+
+		return lineGroup;
 	};
 
 	const renderImage = (group: any, obj: any) => {
