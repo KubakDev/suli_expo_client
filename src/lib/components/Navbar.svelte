@@ -197,12 +197,27 @@
     if (!$currentUser?.id) return;
     notifications = [];
     const response = await data.supabase
-      .from('notification')
-      .select('*')
-      .eq('company_id', $currentUser.id)
-      .eq('language', data.locale)
-      .neq('seen', true);
+        .from('notification')
+        .select('*')
+        .eq('company_id', $currentUser.id)
+        .eq('language', data.locale)
+        .eq('seen', false)  // Only get unseen notifications
+        .order('created_at', { ascending: false });
     notifications = response.data || [];
+  }
+
+  // Add function to mark notification as seen
+  async function markNotificationAsSeen(notificationId: number) {
+    await data.supabase
+        .from('notification')
+        .update({ seen: true })
+        .eq('id', notificationId)
+        .then(async (response) => {
+            if (!response.error) {
+                // Refresh notifications after marking as seen
+                await getAllNotification();
+            }
+        });
   }
 
   // Logout Function
@@ -561,7 +576,7 @@
                           <button
                             class="w-full text-left px-3 py-2 text-sm rounded-md"
                             on:click={() => {
-                              goto('/notifications');
+                              goto('/reservation_history');
                               dropdownOpenProfile = false;
                             }}
                           >
@@ -587,7 +602,16 @@
                         </div>
                         <ul class="py-2 px-1">
                           {#each notifications as notificationData}
-                            <li class="px-3 py-2 text-sm hover:bg-opacity-10 hover:bg-gray-200 dark:hover:bg-opacity-10 dark:hover:bg-gray-700 transition-colors duration-200 rounded-md">
+                            <li 
+                              class="px-3 py-2 text-sm hover:bg-opacity-10 hover:bg-gray-200 dark:hover:bg-opacity-10 dark:hover:bg-gray-700 transition-colors duration-200 rounded-md cursor-pointer"
+                              on:click={async () => {
+                                // Mark as seen first
+                                await markNotificationAsSeen(notificationData.id);
+                                // Then navigate and close dropdown
+                                goto('/reservation_history');
+                                dropdownOpenProfile = false;
+                              }}
+                            >
                               <div class="flex justify-between items-center">
                                 <span class="truncate flex-grow mr-2">{notificationData.exhibition_name}</span>
                                 <span
