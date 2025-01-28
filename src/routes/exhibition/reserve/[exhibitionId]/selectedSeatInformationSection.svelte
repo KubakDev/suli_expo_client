@@ -154,7 +154,7 @@
 	</div>
 </Modal>
 
-<div class="h-full w-full flex flex-col" dir="ltr">
+<div class="h-full w-full flex flex-col">
 	{#if $totalReservedSeat}
 		<div class="flex-none p-4">
 			<p class="text-center my-2 text-[#e1b147] font-medium text-xl">
@@ -369,10 +369,5 @@
 		.service-item {
 			font-size: 12px;
 		}
-	}
-
-	:global([dir="rtl"]) .flex,
-	:global([dir="rtl"]) .flex-row {
-		direction: ltr;
 	}
 </style>

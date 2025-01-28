@@ -257,7 +257,7 @@
 			{/each}
 		</div>
 	{/if}
-	<div class="seating-container" bind:this={container}>
+	<div class="seating-container" bind:this={container} dir="ltr">
 		<div class="svg-wrapper w-full relative overflow-hidden border-2 rounded">
 			<div class="svg-aspect-ratio" style="padding-top: {(seatLayout?.design?.height / seatLayout?.design?.width) * 100}%">
 				<svg id="seating-chart" class="svg-content"></svg>
