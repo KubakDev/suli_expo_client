@@ -300,35 +300,39 @@
 								class="min-h-3/4 mx-2 rounded-xl w-full max-w-[1500px] my-6"
 								style="background-color: {$currentMainThemeColors.secondaryColor};color: {$currentMainThemeColors.overlaySecondaryColor}"
 							>
-								{#if exhibition?.seat_layout}
-								 	<ReserveByFieldComponent
-										data={exhibition}
-										supabase={data.supabase}
-										locale={$locale}
-										on:reserveSeat={(reserveData) => {
-											defaultModal = true;
-											reserveSeatData = reserveData.detail;
-										}}
-									/>
-								{/if}
-							</div>
+								<div class="flex flex-row">
+									<div class="flex-1">
+										{#if exhibition?.seat_layout}
+											<ReserveByFieldComponent
+												data={exhibition}
+												supabase={data.supabase}
+												locale={$locale}
+												on:reserveSeat={(reserveData) => {
+													defaultModal = true;
+													reserveSeatData = reserveData.detail;
+												}}
+											/>
+										{/if}
+									</div>
 
-							{#if $selectedSeat}
-								<div
-									class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-screen w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
-									in:fly={{ x: -200, duration: 500 }}
-									out:fly={{ x: 200, duration: 500 }}
-								>
-									<SelectedSeatInformationSection
-										supabase={data.supabase}
-										on:reserveSeat={(reserveData) => {
-											defaultModal = true;
-											reserveSeatData = reserveData.detail;
-										}}
-										objectId={$selectedSeat.id}
-									/>
+									{#if $selectedSeat}
+										<div
+											class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-screen w-screen md:w-full lg:w-5/6 right-0 top-0 md:top-auto md:right-auto"
+											in:fly={{ x: 200, duration: 500 }}
+											out:fly={{ x: -200, duration: 500 }}
+										>
+											<SelectedSeatInformationSection
+												supabase={data.supabase}
+												on:reserveSeat={(reserveData) => {
+													defaultModal = true;
+													reserveSeatData = reserveData.detail;
+												}}
+												objectId={$selectedSeat.id}
+											/>
+										</div>
+									{/if}
 								</div>
-							{/if}
+							</div>
 						</div>
 					</div>
 
@@ -419,9 +423,9 @@
 							</div>
 							{#if $selectedSeat}
 								<div
-									class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-[calc(100vh-80px)] w-screen md:w-full lg:w-5/6 left-0 top-0 md:top-auto md:left-auto"
-									in:fly={{ x: -200, duration: 500 }}
-									out:fly={{ x: 200, duration: 500 }}
+									class="pt-20 md:pt-0 2xl:hidden absolute bg-white rounded-xl h-[calc(100vh-80px)] w-screen md:w-full lg:w-5/6 right-0 top-0 md:top-auto md:right-auto"
+									in:fly={{ x: 200, duration: 500 }}
+									out:fly={{ x: -200, duration: 500 }}
 								>
 								  	<SelectedSeatInformationSection
 										supabase={data.supabase}

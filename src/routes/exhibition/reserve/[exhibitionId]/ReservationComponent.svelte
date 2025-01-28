@@ -402,7 +402,7 @@
 	};
 </script>
 
-<div class="seating-container" bind:this={container}>
+<div class="seating-container" bind:this={container} dir="ltr">
 	<!-- SVG container with aspect ratio preservation -->
 	<div class="svg-wrapper w-full relative overflow-hidden border-2 rounded">
 		<div class="svg-aspect-ratio" style="padding-top: {(data[0]?.design?.height / data[0]?.design?.width) * 100}%">
@@ -442,5 +442,10 @@
 			margin: 0 auto;
 			max-width: 100vw;
 		}
+	}
+
+	/* Add these styles to ensure RTL/LTR consistency */
+	:global([dir="rtl"]) .seating-container {
+		direction: ltr;
 	}
 </style>
