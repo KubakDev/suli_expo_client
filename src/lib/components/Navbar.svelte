@@ -9,10 +9,8 @@
   import { changeLanguage } from '../../utils/language';
   import { previousPageStore } from '../../stores/navigationStore';
   import { currentMainThemeColors, themeToggle, toggleTheme } from '../../stores/darkMode';
-  import { ChevronDown, Moon, Sun } from 'svelte-heros-v2';
   import { currentUser } from '../../stores/currentUser';
   import { goto } from '$app/navigation';
-  import { UserSolid } from 'flowbite-svelte-icons';
   import { 
     IconX, 
     IconMenu2, 
@@ -462,7 +460,7 @@
       </div>
 
       <!-- Right Section: Profile and Theme Toggle -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center gap-6">
        <!-- Profile Dropdown -->
        {#if $currentUser && $currentUser.id}
        <div class="relative" bind:this={profileDropdown}>
@@ -594,20 +592,22 @@
       
       
         <!-- Theme Toggle -->
-        <button
-          on:click={toggleThemeHandler}
-          class="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
-          aria-label="Toggle Theme"
-        >
-          {#if currentTheme === 'light'}
-            <IconSun class="w-5 h-5" />
-          {:else}
-            <IconMoon 
-              class="w-5 h-5" 
-              style="color: {$currentMainThemeColors.overlayPrimaryColor};"
-            />
-          {/if}
-        </button>
+        <div class="flex-shrink-0">
+          <button
+            on:click={toggleThemeHandler}
+            class="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
+            aria-label="Toggle Theme"
+          >
+            {#if currentTheme === 'light'}
+              <IconSun class="w-5 h-5" />
+            {:else}
+              <IconMoon 
+                class="w-5 h-5" 
+                style="color: {$currentMainThemeColors.overlayPrimaryColor};"
+              />
+            {/if}
+          </button>
+        </div>
 
        </div>
     </div>
