@@ -1,20 +1,19 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
-	import Constants from '../../utils/constants';
-
-	// event
+	import { createEventDispatcher } from 'svelte';
+	import { IconChevronLeft, IconChevronRight } from '@tabler/icons-svelte';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let page = 1;
-	export let total: number; // remove this line
+	export let total: number;  
 
 	const dispatch = createEventDispatcher();
 	function handleClick(page: number) {
-		if (page < 1 || page > total) return; // use $newsStore.pages here
+		if (page < 1 || page > total) return;  
 		dispatch('changePage', { page: page });
 	}
 
 	// computed variable
-	$: pagesToShow = getPagesToShow(page, total); // use $newsStore.pages here
+	$: pagesToShow = getPagesToShow(page, total);  
 
 	// helper function
 	function getPagesToShow(current: number, total: number) {
@@ -49,21 +48,10 @@
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<li on:click={() => handleClick(page - 1)} class="h-full cursor-pointer">
 			<a
-				class="flex justify-center text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor bg-lightOverlayBackgroundColor dark:bg-darkOverlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
+				 style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-l-lg"
 			>
-				<span class="sr-only">Previous</span>
-				<svg
-					aria-hidden="true"
-					class="w-5 h-5"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						fill-rule="evenodd"
-						d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-						clip-rule="evenodd"
-					/></svg
-				>
+				<IconChevronLeft class="w-5 h-5" />
 			</a>
 		</li>
 		{#each pagesToShow as pageNumber}
@@ -72,14 +60,16 @@
 				<!-- svelte-ignore a11y-missing-attribute -->
 				{#if page === pageNumber}
 					<a
+							 style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						aria-current="page"
-						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentSecondaryColor dark:bg-darkTransparentSecondaryColor text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor font-bold hover:no-underline"
+						class="flex justify-center items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 font-bold hover:no-underline"
 						>{pageNumber}</a
 					>
 				{:else}
-					<a
+					<a 
+  	            style="color:{$currentMainThemeColors.overlayBackgroundColor};"
 						aria-current="page"
-						class="flex justify-center font-light hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300 bg-lightTransparentOverlayPrimaryColor dark:bg-darkTransparentOverlayPrimaryColor text-lightSecondaryColor dark:text-darkSecondaryColor hover:text-lightOverlaySecondaryColor dark:hover:text-darkOverlaySecondaryColor hover:no-underline hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
+						class="flex justify-center font-light hover:cursor-pointer items-center h-full z-10 px-3 py-2 leading-tight border border-gray-300"
 						>{pageNumber}</a
 					>
 				{/if}
@@ -98,21 +88,10 @@
 			class="h-full cursor-pointer"
 		>
 			<a
-				class="flex justify-center text-lightOverlaySecondaryColor dark:text-darkOverlaySecondaryColor bg-lightOverlayBackgroundColor dark:bg-darkOverlayBackgroundColor items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-r-lg hover:bg-lightTransparentSecondaryColor dark:hover:bg-darkTransparentSecondaryColor"
+				 style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				class="flex justify-center items-center h-full px-3 py-2 ml-0 leading-tight border border-gray-300 rounded-r-lg"
 			>
-				<span class="sr-only">Next</span>
-				<svg
-					aria-hidden="true"
-					class="w-5 h-5"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						fill-rule="evenodd"
-						d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-						clip-rule="evenodd"
-					/></svg
-				>
+				<IconChevronRight class="w-5 h-5" />
 			</a>
 		</li>
 	</ul>
