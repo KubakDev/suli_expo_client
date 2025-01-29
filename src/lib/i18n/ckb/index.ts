@@ -69,7 +69,7 @@ const ckb = {
 	our: 'ئێمە',
 	mission: 'ئەرکی',
 	commitment: 'پابەند بوونی',
-	resentNews: 'هەواڵەکانی نوێ',
+	recentNews: 'نوێترین هەواڵەکان	',
 	address: 'ناونیشان',
 	media: 'میدیا',
 	publishing: 'چاپکردن',

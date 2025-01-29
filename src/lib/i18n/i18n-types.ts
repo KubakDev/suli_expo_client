@@ -252,7 +252,7 @@ type RootTranslation = {
 	/**
 	 * R​e​c​e​n​t​ ​N​e​w​s
 	 */
-	resentNews: string
+	recentNews: string
 	/**
 	 * A​d​d​r​e​s​s
 	 */
@@ -1163,7 +1163,7 @@ export type TranslationFunctions = {
 	/**
 	 * Recent News
 	 */
-	resentNews: () => LocalizedString
+	recentNews: () => LocalizedString
 	/**
 	 * Address
 	 */

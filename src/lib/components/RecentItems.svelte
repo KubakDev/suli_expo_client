@@ -30,7 +30,7 @@
 <div
 	class="flex flex-col justify-start mb-10 lg:mt-10 mt-5 rounded-lg {Constants.page_max_width} mx-auto"
 >
-	<h1 class="text-2xl py-4 font-bold text-center">Recent {title}</h1>
+	<h1 class="text-2xl py-4 font-bold text-center">{title}</h1>
 	{#each items as item, index}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->

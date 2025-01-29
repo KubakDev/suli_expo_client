@@ -68,7 +68,7 @@ const en = {
 	our: 'Our',
 	mission: 'Mission',
 	commitment: 'Commitment',
-	resentNews: 'Recent News',
+	recentNews: 'Recent News',
 	address: 'Address',
 	media: 'Media',
 	publishing: 'Publishing',

@@ -67,7 +67,7 @@ const ar = {
 	our: 'لدينا',
 	mission: 'المهمة',
 	commitment: 'التزام',
-	resentNews: 'أخبار حديثة',
+	recentNews: 'أخبار حديثة',
 	address: 'العنوان',
 	media: 'وسائل الإعلام',
 	publishing: 'النشر',
