@@ -25,6 +25,32 @@
 	let isLoadingForm = false;
 	let showDialog = false;
 	let dialogMessage = '';
+	
+	// Field visibility configuration
+	let formFieldsConfig = {
+		name: true,
+		companyName: true,
+		fieldWork: true,
+		jobGrade: true,
+		phoneNumber: true,
+		email: true,
+		country: true,
+		city: true,
+		hotelBooking: true
+	};
+	
+	// Field requirement configuration (true = required)
+	let fieldRequiredConfig = {
+		name: true,
+		companyName: true,
+		fieldWork: true,
+		jobGrade: true,
+		phoneNumber: true,
+		email: true,
+		country: true,
+		city: true,
+		hotelBooking: true
+	};
 
 	export let data: PageData;
 	const userPageUrl: string = import.meta.env.VITE_BASE_URL;
@@ -44,7 +70,7 @@ async function handleSubmit() {
     isLoading = true;
     isLoadingForm = true;
 
-    if (!isValidEmail(email)) {
+    if (formFieldsConfig.email && fieldRequiredConfig.email && !isValidEmail(email)) {
         dialogMessage = `${$LL.registrationForm.invalidEmail()}`;
         showDialog = true;
         isLoading = false;
@@ -54,36 +80,40 @@ async function handleSubmit() {
 
     try {
         // Check if the email already exists in the database
-        const emailCheckResponse = await data.supabase
-            .from('UserRegistration')
-            .select('*')
-            .eq('email', email);
+        if (formFieldsConfig.email) {
+            const emailCheckResponse = await data.supabase
+                .from('UserRegistration')
+                .select('*')
+                .eq('email', email);
 
-        if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
-            // Email already exists
-            dialogMessage = `${$LL.registrationForm.existEmail()}`;
-            showDialog = true;
-            isLoading = false;
-            isLoadingForm = false;
-            return;
+            if (emailCheckResponse.data && emailCheckResponse.data.length > 0) {
+                // Email already exists
+                dialogMessage = `${$LL.registrationForm.existEmail()}`;
+                showDialog = true;
+                isLoading = false;
+                isLoadingForm = false;
+                return;
+            }
         }
 
         // Generate a complex numeric ID
         const uniqueId = generateComplexNumericId();
 
+        // Create an object with only the fields that are configured to show
+        const formData: any = { id: uniqueId };
+        
+        if (formFieldsConfig.name) formData.name = name;
+        if (formFieldsConfig.companyName) formData.companyName = companyName;
+        if (formFieldsConfig.fieldWork) formData.fieldWork = fieldWork;
+        if (formFieldsConfig.jobGrade) formData.jobGrade = jobGrade;
+        if (formFieldsConfig.phoneNumber) formData.phoneNumber = phoneNumber;
+        if (formFieldsConfig.email) formData.email = email;
+        if (formFieldsConfig.country) formData.country = country;
+        if (formFieldsConfig.city) formData.city = city;
+        if (formFieldsConfig.hotelBooking) formData.hotelBooking = hotelBooking;
+
         // Inserting data
-        const insertResponse = await data.supabase.from('UserRegistration').insert({
-            id: uniqueId,
-            name,
-            companyName,
-            fieldWork,
-            jobGrade,
-            phoneNumber,
-            email,
-            country,
-            city,
-            hotelBooking
-        });
+        const insertResponse = await data.supabase.from('UserRegistration').insert(formData);
 
         if (insertResponse.error) {
             throw new Error(`Insert operation failed: ${insertResponse.error.message}`);
@@ -111,7 +141,7 @@ async function handleSubmit() {
         const { publicUrl } = data.supabase.storage.from('image').getPublicUrl(fileName).data;
 
         // Sending email
-        const emailSent = await sendEmailWithQRCode(email, publicUrl);
+        const emailSent = formFieldsConfig.email ? await sendEmailWithQRCode(email, publicUrl) : true;
 
         if (emailSent) {
             dialogMessage = `${$LL.registrationForm.insertData()}`;
@@ -162,15 +192,15 @@ async function handleSubmit() {
 	}
 
 	function resetForm() {
-		name = '';
-		companyName = '';
-		fieldWork = '';
-		jobGrade = '';
-		phoneNumber = '';
-		email = '';
-		country = '';
-		city = '';
-		hotelBooking = 'No';
+		if (formFieldsConfig.name) name = '';
+		if (formFieldsConfig.companyName) companyName = '';
+		if (formFieldsConfig.fieldWork) fieldWork = '';
+		if (formFieldsConfig.jobGrade) jobGrade = '';
+		if (formFieldsConfig.phoneNumber) phoneNumber = '';
+		if (formFieldsConfig.email) email = '';
+		if (formFieldsConfig.country) country = '';
+		if (formFieldsConfig.city) city = '';
+		if (formFieldsConfig.hotelBooking) hotelBooking = 'No';
 	}
 
 	let direction = 'ltr';
@@ -183,6 +213,32 @@ async function handleSubmit() {
 		const userData = await profileStore.get(data.supabase);
 		if (userData) {
 			profiles = userData;
+			
+			// Parse the showFields configuration if available
+			if (profiles[0]?.showFields) {
+				try {
+					const showFieldsConfig = JSON.parse(profiles[0].showFields);
+					formFieldsConfig = { ...formFieldsConfig, ...showFieldsConfig };
+				} catch (error) {
+					console.error('Error parsing showFields:', error);
+				}
+			}
+			
+			// Extract field requirement values
+			if (profiles[0]) {
+				const profile = profiles[0];
+				fieldRequiredConfig = {
+					name: profile.name === "true",
+					companyName: profile.companyName === "true",
+					fieldWork: profile.fieldWork === "true",
+					jobGrade: profile.jobGrade === "true",
+					phoneNumber: profile.phoneNumber === "true",
+					email: profile.email === "true",
+					country: profile.country === "true",
+					city: profile.city === "true",
+					hotelBooking: profile.hotelBooking === "true"
+				};
+			}
 		}
 	});
 
@@ -231,101 +287,123 @@ async function handleSubmit() {
 					dir="ltr"
 					on:submit|preventDefault={handleSubmit}
 				>
+					{#if formFieldsConfig.name}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="name" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.userName()}
+							{$LL.registrationForm.userName()} {fieldRequiredConfig.name ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="name"
 							bind:value={name}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.name}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.email}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="email" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.email()}
+							{$LL.registrationForm.email()} {fieldRequiredConfig.email ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="email"
 							bind:value={email}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.email}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.companyName}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="companyName" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.companyName()}
+							{$LL.registrationForm.companyName()} {fieldRequiredConfig.companyName ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="companyName"
 							bind:value={companyName}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.companyName}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.fieldWork}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="fieldWork" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.fieldWork()}
+							{$LL.registrationForm.fieldWork()} {fieldRequiredConfig.fieldWork ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="fieldWork"
 							bind:value={fieldWork}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.fieldWork}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.jobGrade}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="jobGrade" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.jobGrade()}
+							{$LL.registrationForm.jobGrade()} {fieldRequiredConfig.jobGrade ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="jobGrade"
 							bind:value={jobGrade}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.jobGrade}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.phoneNumber}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="phoneNumber" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.phoneNumber()}
+							{$LL.registrationForm.phoneNumber()} {fieldRequiredConfig.phoneNumber ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="phoneNumber"
 							bind:value={phoneNumber}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.phoneNumber}
 						/>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.hotelBooking}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="hotelBooking" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.hotelBooking()}
+							{$LL.registrationForm.hotelBooking()} {fieldRequiredConfig.hotelBooking ? '*' : ''}
 						</label>
 						<select
 							id="hotelBooking"
 							bind:value={hotelBooking}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.hotelBooking}
 						>
 							<option value="No">No</option>
 							<option value="Yes">Yes</option>
 						</select>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.country}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="country" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.country()}
+							{$LL.registrationForm.country()} {fieldRequiredConfig.country ? '*' : ''}
 						</label>
 						<select
 							id="country"
 							bind:value={country}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.country}
 						>
 							<option value="" disabled>Select your country</option>
 							{#each countries as country}
@@ -333,18 +411,23 @@ async function handleSubmit() {
 							{/each}
 						</select>
 					</div>
+					{/if}
+					
+					{#if formFieldsConfig.city}
 					<div class="col-span-6 md:col-span-3" style="direction: {direction};">
 						<label for="city" class="block text-sm font-medium text-gray-700">
-							{$LL.registrationForm.city()}
+							{$LL.registrationForm.city()} {fieldRequiredConfig.city ? '*' : ''}
 						</label>
 						<input
 							type="text"
 							id="city"
 							bind:value={city}
 							class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-							required
+							required={fieldRequiredConfig.city}
 						/>
 					</div>
+					{/if}
+					
 					<div
 						class="col-span-6 flex justify-end items-center w-full gap-4"
 						style="direction: {direction};"
