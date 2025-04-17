@@ -11,7 +11,6 @@
 	import { onMount } from 'svelte';
 	import { profileStore } from '../../stores/userStore';
  
-	
 	let name = '';
 	let companyName = '';
 	let fieldWork = '';
