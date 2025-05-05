@@ -24,7 +24,7 @@
 
 {#if $aboutSectionStore}
 	<section
-		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding} mb-96"
+		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding} mb-20"
 	>
 		<div class="flex justify-center items-center aboutTitle">
 			<TitleUi
