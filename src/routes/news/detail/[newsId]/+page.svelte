@@ -46,19 +46,13 @@
 		loadedImages = 0;
 		imagesLoading = true;
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
-		console.log('News data loaded:', news);
-		if (news?.imagesCarousel) {
-			console.log('Images carousel data:', news.imagesCarousel);
-			console.log('Number of images:', news.imagesCarousel.length);
-		}
+	 
 		newsStore.get($locale, data.supabase, '1', 5);
 	}
 
 	function handleImageLoad(event: Event) {
 		const img = event.target as HTMLImageElement;
-		console.log('Image loaded:', img.src);
 		loadedImages++;
-		console.log(`Loaded ${loadedImages} of ${news?.imagesCarousel?.length || 0} images`);
 	}
 
 	onMount(() => {
