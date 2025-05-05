@@ -111,70 +111,70 @@
 			</div>
 			{#if SocialMedia}
 				<div class="w-full flex justify-center py-2">
-					<div class="justify-evenly flex sm:w-[40%]">
+					<div class="flex gap-2 sm:w-[35%] justify-center">
 						<a
 							href="https:\\{SocialMedia.twitter_link}"
 							target="_blank"
-							class="cursor-pointer mx-1"
+							class="cursor-pointer transform transition-transform duration-300 hover:scale-110 rounded-full hover:shadow-md"
 						>
 							<SocialIcons
 								network="twitter"
 								fgColor={$currentMainThemeColors.overlayPrimaryColor}
 								bgColor={$currentMainThemeColors.primaryColor}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 							/>
 						</a>
 						<a
 							href="https:\\{SocialMedia.instagram_link}"
 							target="_blank"
-							class="cursor-pointer mx-1"
+							class="cursor-pointer transform transition-transform duration-300 hover:scale-110 rounded-full hover:shadow-md"
 						>
 							<SocialIcons
 								network="instagram"
 								fgColor={$currentMainThemeColors.overlayPrimaryColor}
 								bgColor={$currentMainThemeColors.primaryColor}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 							/>
 						</a>
 						<a
 							href="https:\\{SocialMedia.facebook_link}"
 							target="_blank"
-							class="cursor-pointer mx-1"
+							class="cursor-pointer transform transition-transform duration-300 hover:scale-110 rounded-full hover:shadow-md"
 						>
 							<SocialIcons
 								network="facebook"
 								fgColor={$currentMainThemeColors.overlayPrimaryColor}
 								bgColor={$currentMainThemeColors.primaryColor}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 							/>
 						</a>
 						<a
 							href="https:\\{SocialMedia.linkedIn_link}"
 							target="_blank"
-							class="cursor-pointer mx-1"
+							class="cursor-pointer transform transition-transform duration-300 hover:scale-110 rounded-full hover:shadow-md"
 						>
 							<SocialIcons
 								network="linkedin"
 								fgColor={$currentMainThemeColors.overlayPrimaryColor}
 								bgColor={$currentMainThemeColors.primaryColor}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 							/>
 						</a>
 						<a
 							href="https:\\{SocialMedia.youtube_link}"
 							target="_blank"
-							class="cursor-pointer mx-1"
+							class="cursor-pointer transform transition-transform duration-300 hover:scale-110 rounded-full hover:shadow-md"
 						>
 							<SocialIcons
 								network="youtube"
 								fgColor={$currentMainThemeColors.overlayPrimaryColor}
 								bgColor={$currentMainThemeColors.primaryColor}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 							/>
 						</a>
 					</div>
