@@ -47,7 +47,7 @@
 		imagesLoading = true;
 		news = await newsStore.getSingle($locale, data.supabase, $page.params.newsId);
 	 
-		newsStore.get($locale, data.supabase, '1', 5);
+		newsStore.get($locale, data.supabase, '1', 7);
 	}
 
 	function handleImageLoad(event: Event) {
