@@ -114,8 +114,8 @@ const en = {
 		logged_in_description:
 			'To reserve a seat and get information about each one , click goto reservation page',
 		not_logged_in_description: 'To book your booth and get more information, Please login before ',
-		logged_in_button: 'goto reservation page',
-		not_logged_in_button: 'goto login page',
+		logged_in_button: 'Goto reservation page',
+		not_logged_in_button: 'Goto login page',
 		description: 'Description',
 		comment: 'Comment',
 		comment_placeholder: 'Please write your comment',
