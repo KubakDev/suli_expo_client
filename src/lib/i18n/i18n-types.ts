@@ -80,6 +80,18 @@ type RootTranslation = {
 	 */
 	contact: string
 	/**
+	 * L​o​c​a​t​i​o​n
+	 */
+	location: string
+	/**
+	 * E​m​a​i​l
+	 */
+	email: string
+	/**
+	 * P​h​o​n​e
+	 */
+	phone: string
+	/**
 	 * N​e​w​s
 	 */
 	news: string
@@ -998,6 +1010,18 @@ export type TranslationFunctions = {
 	 * Contact
 	 */
 	contact: () => LocalizedString
+	/**
+	 * Location
+	 */
+	location: () => LocalizedString
+	/**
+	 * Email
+	 */
+	email: () => LocalizedString
+	/**
+	 * Phone
+	 */
+	phone: () => LocalizedString
 	/**
 	 * News
 	 */

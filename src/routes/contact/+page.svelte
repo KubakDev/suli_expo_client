@@ -2,7 +2,6 @@
 	import { contactInfoSectionStore } from '../../stores/contactInfo';
 	import { LL, locale } from '$lib/i18n/i18n-svelte';
 	import TitleUi from '$lib/components/TitleUi.svelte';
-	import ContactInfo from '$lib/components/ContactInfo.svelte';
 	import Contact from '$lib/components/Contact.svelte';
 	import Constants from '../../utils/constants';
 	import { currentMainThemeColors } from '../../stores/darkMode';
@@ -30,16 +29,6 @@
 			/>
 		</div>
 
-		<div
-			class=" grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 font-normal shadow"
-			style="background-color: {$currentMainThemeColors.secondaryColor};color:{$currentMainThemeColors.overlaySecondaryColor}"
-		>
-			{#if $contactInfoSectionStore}
-				{#each $contactInfoSectionStore as contactInfoSection}
-					<ContactInfo {contactInfoSection} />{/each}
-			{/if}
-		</div>
-
-		<Contact />
+		<Contact contactInfoData={$contactInfoSectionStore} />
 	</div>
 </section>
