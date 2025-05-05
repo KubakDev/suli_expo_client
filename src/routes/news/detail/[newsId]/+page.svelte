@@ -136,7 +136,7 @@
 			<div
 				class="grid 3xl:grid-cols-3 xl:grid-cols-3 grid-cols-1 my-2 rounded-lg justify-center items-start content-center w-full gap-6 px-4 py-8"
 			>
-				<div class="flex-1 my-10 mt-auto xl:col-span-2 col-span-1 w-full h-full z-0">
+				<div class="flex-1 xl:col-span-2 col-span-1 w-full h-full z-0 xl:mt-10">
 					<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
 						<!-- News Gallery Carousel -->
 						<div class="relative">
@@ -214,11 +214,13 @@
 				</div>
 				
 				{#if $newsStore && $newsStore.data.length > 0}
-					<div class="xl:col-span-1 col-span-1 xl:p-2 w-full h-full">
-						<div class="sticky top-4">
+					<div class="xl:col-span-1 col-span-1 xl:p-2 w-full h-full xl:mt-10">
+						<div class="sticky top-4 w-full">
 							<RecentItems
 								title={$LL.recentNews()}
-								items={$newsStore.data.map((news) => modelToItemModel(news))}
+								items={$newsStore.data
+									.filter(item => item.id?.toString() !== $page.params.newsId)
+									.map((news) => modelToItemModel(news))}
 								pageType={'news'}
 							/>
 						</div>

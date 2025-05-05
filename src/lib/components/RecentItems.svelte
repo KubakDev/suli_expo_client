@@ -9,69 +9,51 @@
 
 	export let title: string;
 	export let pageType: string;
-	export let items: ItemModel[];
+	export let items: ItemModel[] = [];
 	export let youtubeThumbnail: string[] = [];
 
-	interface $$props extends HTMLAnchorAttributes {
-		title: string;
-		thumbnail: string;
-		short_description?: string;
-		pageType: string;
-	}
-
-	//  //('test ', newsSection);
-
 	function DetailsPage(itemId: number) {
-		//  //(itemId);
 		goto(`/${pageType}/detail/${itemId}`);
 	}
 </script>
+ 
+<div class="flex flex-col mb-10 rounded-lg {Constants.page_max_width} mx-auto">
+	<h2 class="text-xl font-bold text-center mb-5">{title}</h2>
 
-<div
-	class="flex flex-col justify-start mb-10 lg:mt-10 mt-5 rounded-lg {Constants.page_max_width} mx-auto"
->
-	<h1 class="text-2xl py-4 font-bold text-center">{title}</h1>
-	{#each items as item, index}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<div
-			onmouseover="this.style.backgroundColor='{$currentMainThemeColors.primaryColor}'; this.style.color='{$currentMainThemeColors.overlayPrimaryColor}';"
-			onmouseout="this.style.backgroundColor=''; this.style.color='';"
-			class="flex md:flex-row flex-col items-start cursor-pointer bg-opacity-20 dark:bg-opacity-40 rounded-xl transition-all"
-			on:click={() => DetailsPage(item.id)}
-		>
-			<div class="lg:w-2/4 md:w-1/2 w-full mb-4 md:mb-0 h-60 3xl:h-36 p-2">
-				<img
-					class="object-cover w-full h-full rounded-lg"
-					alt="hero"
-					src={item.thumbnail ?? youtubeThumbnail[index]}
-				/>
-			</div>
+	<div class="space-y-4">
+		{#each items as item, index}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
-				class="text-{getNameRegex(
-					$page.url.pathname
-				)}SecondaryColor lg:flex-grow lg:w-3/4 md:w-1/2 lg:px-5 md:pl-4 flex flex-col md:items-start md:text-left items-center text-start mt-2"
+				class="group flex items-center gap-4 p-3 rounded-lg transition cursor-pointer border-b border-gray-200 dark:border-gray-700"
+				on:click={() => DetailsPage(item.id)}
+				on:mouseenter={(e) => {
+					e.currentTarget.style.backgroundColor = $currentMainThemeColors.primaryColor || '';
+					e.currentTarget.style.color = $currentMainThemeColors.overlayPrimaryColor || '';
+				}}
+				on:mouseleave={(e) => {
+					e.currentTarget.style.backgroundColor = '';
+					e.currentTarget.style.color = '';
+				}}
 			>
-				{#if item.title.length > 19}
-					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">
-						{item.title.slice(0, 20)}...
-					</h1>
-				{:else}
-					<h1 class="title-font text-base mb-2 font-bold tracking-wider text-start">
-						{item.title}
-					</h1>
-				{/if}
-
-				{#if (item.short_description ?? '').length > 79}
-					<p class="leading-relaxed text-justify text-sm">
-						{item.short_description?.slice(0, 80)}...
+				<div class="w-24 h-20 shrink-0">
+					<img
+						src={item.thumbnail ?? youtubeThumbnail[index]}
+						alt="thumbnail"
+						class="w-full h-full object-cover rounded-md"
+					/>
+				</div>
+				<div class="flex flex-col flex-1 overflow-hidden">
+					<h3 class="font-semibold text-sm truncate">
+						{item.title.length > 40 ? `${item.title.slice(0, 40)}...` : item.title}
+					</h3>
+					<p class="text-xs mt-1 text-gray-600 line-clamp-2">
+						{item.short_description && item.short_description.length > 100
+							? `${item.short_description.slice(0, 100)}...`
+							: item.short_description}
 					</p>
-				{:else}
-					<p class="leading-relaxed text-justify text-sm">
-						{item.short_description}
-					</p>
-				{/if}
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	</div>
 </div>
