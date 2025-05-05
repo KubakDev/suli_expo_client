@@ -1,9 +1,15 @@
 <script lang="ts">
-	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
 	import LL, { locale } from '$lib/i18n/i18n-svelte';
-	import { Checkbox, Dropdown } from 'flowbite-svelte';
-
-	import { ArrowDown, ArrowUp, ChevronDown } from 'svelte-heros-v2';
+	import DateRangePicker from 'svelte-daterangepicker/dist/components/DatePicker.svelte';
+	import { Checkbox, Spinner } from 'flowbite-svelte';
+	import { 
+		IconArrowDown, 
+		IconArrowUp, 
+		IconChevronDown, 
+		IconX,
+		IconFilter,
+		IconCalendar
+	} from '@tabler/icons-svelte';
 	import Constants from '../../utils/constants';
 	import { newsStore } from '../../stores/newsStore';
 	import type { SupabaseClient } from '@supabase/supabase-js';
@@ -12,122 +18,178 @@
 	let asc: boolean = false;
 	export let supabase: SupabaseClient;
 	export let page: string = '1';
-	export let selectedExhibition: number[] = [];
+	export let selectedExhibition: string[] = [];
 	export let exhibitionData: ExhibitionModel[] = [];
-	let calendarDate: {
-		$D: number;
-		$H: number;
-		$L: string;
-		$M: number;
-		$W: number;
-		$d: Date;
-		$m: number;
-		$ms: number;
-		$s: number;
-		$x: {};
-		$y: number;
-	}[] = [];
+	let calendarDate: any[] = [];
+	let isDropdownOpen: boolean = false;
+
+	let isLoading = true;
+	let isFilterLoading = false;
+
+	$: isLoading = exhibitionData.length === 0;
+	$: console.log("Selected exhibitions:", selectedExhibition);
 
 	async function changeOrder() {
+		isFilterLoading = true;
 		asc = !asc;
-		newsStore.get($locale, supabase, page, undefined, asc, selectedExhibition);
+		await newsStore.get($locale, supabase, page, undefined, asc, selectedExhibition);
+		isFilterLoading = false;
 	}
-	async function filterByExhibition() {
-		newsStore.get($locale, supabase, page, undefined, asc, selectedExhibition);
-	}
-	const filterByDate = function () {
-		let startDate = calendarDate[0].$d;
-		let endDate = calendarDate[1].$d;
 
-		newsStore.get(
-			$locale,
-			supabase,
-			page,
-			undefined,
-			asc,
-			selectedExhibition,
-			startDate.toISOString(),
-			endDate.toISOString()
-		);
+	async function filterByExhibition() {
+		isFilterLoading = true;
+		console.log("Filtering by exhibitions:", selectedExhibition);
+		await newsStore.get($locale, supabase, page, undefined, asc, selectedExhibition);
+		isFilterLoading = false;
+	}
+
+	function toggleDropdown() {
+		isDropdownOpen = !isDropdownOpen;
+	}
+
+	const filterByDate = async () => {
+		if (calendarDate.length === 2) {
+			isFilterLoading = true;
+			let startDate = calendarDate[0].$d;
+			let endDate = calendarDate[1].$d;
+
+			await newsStore.get(
+				$locale,
+				supabase,
+				page,
+				undefined,
+				asc,
+				selectedExhibition,
+				startDate.toISOString(),
+				endDate.toISOString()
+			);
+			isFilterLoading = false;
+		}
+	};
+
+	const clearFilters = async () => {
+		isFilterLoading = true;
+		selectedExhibition = [];
+		calendarDate = [];
+		await newsStore.get($locale, supabase, page);
+		isFilterLoading = false;
 	};
 </script>
 
-<div class="flex lg:flex-row flex-col w-full justify-center items-center mb-10 gap-4" dir="ltr">
-	<div class="py-2 text-center w-full">
-		{#if asc}
-			<button
-				on:click={changeOrder}
-				class="btn-three flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
-			>
-				<ArrowUp
-					size="15"
-					class="transition-all hover:animate-pulse text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
-				/>
+<!-- Filter UI -->
+<div class="flex mb-10 gap-2 justify-between" dir="ltr">
 
-				<span
-					class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
-					>{$LL.ascending()}</span
-				>
-			</button>
+	<!-- Sort Button -->
+	<button
+		on:click={changeOrder}
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all flex-1
+			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
+			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
+			hover:bg-gray-100 dark:hover:bg-gray-800"
+		title={asc ? $LL.ascending() : $LL.descending()}
+		disabled={isFilterLoading}
+	>
+		{#if isFilterLoading}
+			<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+		{:else if asc}
+			<IconArrowUp size={16} />
 		{:else}
-			<button
-				on:click={changeOrder}
-				class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
-			>
-				<ArrowDown
-					size="15"
-					class="transition-all hover:animate-pulse text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
-				/>
-				<span
-					class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
-					>{$LL.descending()}</span
-				>
-			</button>
+			<IconArrowDown size={16} />
+		{/if}
+		<span>{$LL.sort()}</span>
+	</button>
+
+	<!-- Filter by Exhibition -->
+	<div class="relative flex-1">
+		<button
+			on:click={toggleDropdown}
+			class="flex items-center justify-between gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
+			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
+			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
+			hover:bg-gray-100 dark:hover:bg-gray-800"
+			disabled={isFilterLoading}
+		>
+			<span class="truncate flex-1 text-left">{$LL.filterByExhibition()}</span>
+			<div class="flex items-center gap-1">
+				{#if isFilterLoading}
+					<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+				{:else}
+					<IconFilter size={16} />
+				{/if}
+				<IconChevronDown size={16} />
+			</div>
+		</button>
+
+		<!-- Dropdown Panel -->
+		{#if isDropdownOpen}
+		<div class="absolute z-10 mt-2 w-full max-h-64 overflow-y-auto bg-white dark:bg-darkBackgroundColor border rounded-md shadow-lg p-2 space-y-1 text-sm">
+			{#if isLoading}
+				<div class="flex justify-center items-center h-20">
+					<Spinner size="6" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+				</div>
+			{:else}
+				{#each exhibitionData as exhibition}
+					{#if exhibition.id !== undefined && exhibition.id !== null}
+						<label class="flex items-center gap-2 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+							<input 
+								type="checkbox"
+								on:change={filterByExhibition}
+								bind:group={selectedExhibition}
+								value={exhibition.id.toString()}
+								disabled={isFilterLoading}
+								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+							/>
+							<span>{exhibition.title}</span>
+						</label>
+					{/if}
+				{/each}
+			{/if}
+		</div>
 		{/if}
 	</div>
-	<div class="w-full z-10">
-		<button
-			class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
-		>
-			<span
-				class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor flex flex-row items-center w-full"
-				>
-				<span class="flex-grow text-center pr-4">{$LL.filterByExhibition()}</span>
-				<ChevronDown />
-			</span>
-		</button>
-		<Dropdown class="w-80 text-sm bg-lightBackgroundColor dark:bg-darkBackgroundColor rounded-lg">
-			<div class="max-h-64 overflow-y-auto p-2 rounded-sm {Constants.scrollbar_layout}">
-				{#each exhibitionData as exhibition}
-					<li>
-						<Checkbox
-							on:change={filterByExhibition}
-							bind:group={selectedExhibition}
-							value={exhibition.id}
-							class="border-b border-solid border-gray-300 w-full flex justify-start p-1 text-xs min-h-[50px] hover:bg-lightTransparentPrimaryColor hover:text-lightOverlayPrimaryColor rounded-md transition-all dark:hover:bg-darkTransparentPrimaryColor dark:hover:text-darkOverlayPrimaryColor dark:bg-darkPrimaryColor dark:text-darkOverlayPrimaryColor"
-							>{exhibition.title}</Checkbox
-						>
-					</li>
-				{/each}
-			</div>
-		</Dropdown>
-	</div>
-	<div class="w-full">
+
+	<!-- Date Picker -->
+	<div class="flex-1">
 		<DateRangePicker
 			bind:selected={calendarDate}
 			range={true}
 			format="DD-MM-YYYY"
-			on:change={() => {
-				filterByDate();
-			}}
+			on:change={() => filterByDate()}
 		>
 			<button
-				class="flex w-full flex-row items-center justify-center p-2 rounded-lg bg-newsLightPrimaryColor dark:bg-newsDarkPrimaryColor"
-				><span
-					class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1 text-newsLightBackgroundColor dark:text-newsDarkBackgroundColor"
-					>{$LL.filterByDate()}</span
-				></button
+				class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
+					text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
+					border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
+					hover:bg-gray-100 dark:hover:bg-gray-800"
+				disabled={isFilterLoading}
 			>
+				{#if isFilterLoading}
+					<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+				{:else}
+					<IconCalendar size={16} />
+				{/if}
+				<span>{$LL.filterByDate()}</span>
+			</button>
 		</DateRangePicker>
 	</div>
+
+	<!-- Clear Filters -->
+	<button
+		on:click={clearFilters}
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all flex-1
+			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
+			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
+			hover:bg-gray-100 dark:hover:bg-gray-800"
+		title="Clear Filters"
+		disabled={isFilterLoading}
+	>
+		{#if isFilterLoading}
+			<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+		{:else}
+			<IconX size={16} />
+		{/if}
+		<span>{$LL.clearFilters()}</span>
+	</button>
 </div>
+
+ 

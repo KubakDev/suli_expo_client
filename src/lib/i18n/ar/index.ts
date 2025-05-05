@@ -46,6 +46,8 @@ const ar = {
 	promo: 'العروض',
 	filterByExhibition: 'تصفية حسب المعرض',
 	filterByDate: 'تصفية حسب التاريخ',
+	clearFilters: 'مسح التصفية',
+	sort: 'ترتيب',
 	ascending: 'من القديم - الجديد',
 	descending: 'من الجديد - القديم',
 	seeAll: 'عرض الكل',

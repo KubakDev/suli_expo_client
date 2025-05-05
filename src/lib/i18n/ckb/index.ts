@@ -48,6 +48,8 @@ const ckb = {
 	promo: 'پرۆمۆ',
 	filterByExhibition: 'فیلتەر بەپێی پێشانگا',
 	filterByDate: 'فیلتەر بەپێی بەروار',
+	clearFilters: 'لابردنی فیلترەکان',
+	sort: 'ڕیزکردن',
 	ascending: 'کۆن - نوێ',
 	descending: 'نوێ - کۆن',
 	seeAll: 'هەموو ببینە',

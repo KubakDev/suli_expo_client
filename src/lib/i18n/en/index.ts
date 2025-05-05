@@ -47,6 +47,8 @@ const en = {
 	promo: 'Promo',
 	filterByExhibition: 'Filter By Exhibition',
 	filterByDate: 'Filter By Date',
+	clearFilters: 'Clear Filters',
+	sort: 'Sort',
 	ascending: 'Old - New',
 	descending: 'New - Old',
 	seeAll: 'See all',

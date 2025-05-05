@@ -18,12 +18,16 @@
 	import { newsCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 	import NewsFilters from '$lib/components/NewsFilters.svelte';
 	import { incrementNewsViewer, viewAdded_news } from '../../../stores/viewersStore';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data;
 	let CardComponent: any;
+	let isLoading = true;
 
 	let asc: boolean = false;
-	let selectedExhibition: number[];
+	let selectedExhibition: string[] = [];
+
+	$: console.log("[Page] Selected exhibitions:", selectedExhibition);
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -39,14 +43,22 @@
 
 	$: {
 		if ($locale || asc) {
+			isLoading = true;
 			const currentPage = $page.params.page;
-			newsStore.get($locale, data.supabase, currentPage, undefined, asc, selectedExhibition);
+			console.log("[Page] Calling newsStore with exhibitions:", selectedExhibition);
+			newsStore.get($locale, data.supabase, currentPage, undefined, asc, selectedExhibition)
+				.then(() => {
+					isLoading = false;
+				});
 
 			exhibitionStore.get($locale, data.supabase);
 		}
 	}
 
+	$: isLoading = !$newsStore || isLoading;
+
 	onMount(async () => {
+		isLoading = true;
 		exhibitionStore.get($locale, data.supabase);
 		let pageType = getNameRegex($page.url.pathname);
 		let newsUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
@@ -55,10 +67,14 @@
 			newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition);
+		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition)
+			.then(() => {
+				isLoading = false;
+			});
 	});
  
 	function changePage(page: number) {
+		isLoading = true;
 		goto(`/news/${page}`);
 	}
 
@@ -72,25 +88,29 @@
 
 <div class="w-full" style=" background-color: {$newsCurrentThemeColors.backgroundColor};">
 	<section class=" py-12 {Constants.page_max_width} w-full mx-auto" id="newsSection">
-		{#if $newsStore}
-			<div class="flex justify-between items-center mb-12 w-full">
-				<div class="justify-end flex z-10 w-full" />
-				<div class="flex justify-center w-full px-2">
-					<TitleUi
-						text={$LL.news()}
-						borderColor={$newsCurrentThemeColors.primaryColor}
-						textColor={$newsCurrentThemeColors.overlayBackgroundColor}
-					/> 
-				</div>
-				<div class="justify-end flex z-10 w-full" />
+		<div class="flex justify-between items-center mb-12 w-full">
+			<div class="justify-end flex z-10 w-full" />
+			<div class="flex justify-center w-full px-2">
+				<TitleUi
+					text={$LL.news()}
+					borderColor={$newsCurrentThemeColors.primaryColor}
+					textColor={$newsCurrentThemeColors.overlayBackgroundColor}
+				/> 
 			</div>
-			<NewsFilters
-				supabase={data.supabase}
-				page={$page.params.page}
-				{selectedExhibition}
-				exhibitionData={$exhibitionStore}
-			/> 
+			<div class="justify-end flex z-10 w-full" />
+		</div>
+		<NewsFilters
+			supabase={data.supabase}
+			page={$page.params.page}
+			bind:selectedExhibition
+			exhibitionData={$exhibitionStore}
+		/> 
 
+		{#if isLoading}
+			<div class="flex justify-center items-center h-64">
+				<Spinner color="primary" size="12" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+			</div>
+		{:else if $newsStore && $newsStore.data}
 			<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{#each $newsStore.data as item, i}
 					<button

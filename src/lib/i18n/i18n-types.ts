@@ -166,6 +166,14 @@ type RootTranslation = {
 	 */
 	filterByDate: string
 	/**
+	 * C​l​e​a​r​ ​F​i​l​t​e​r​s
+	 */
+	clearFilters: string
+	/**
+	 * S​o​r​t
+	 */
+	sort: string
+	/**
 	 * O​l​d​ ​-​ ​N​e​w
 	 */
 	ascending: string
@@ -1076,6 +1084,14 @@ export type TranslationFunctions = {
 	 * Filter By Date
 	 */
 	filterByDate: () => LocalizedString
+	/**
+	 * Clear Filters
+	 */
+	clearFilters: () => LocalizedString
+	/**
+	 * Sort
+	 */
+	sort: () => LocalizedString
 	/**
 	 * Old - New
 	 */
