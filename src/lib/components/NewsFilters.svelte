@@ -27,7 +27,6 @@
 	let isFilterLoading = false;
 
 	$: isLoading = exhibitionData.length === 0;
-	$: console.log("Selected exhibitions:", selectedExhibition);
 
 	async function changeOrder() {
 		isFilterLoading = true;
@@ -38,7 +37,6 @@
 
 	async function filterByExhibition() {
 		isFilterLoading = true;
-		console.log("Filtering by exhibitions:", selectedExhibition);
 		await newsStore.get($locale, supabase, page, undefined, asc, selectedExhibition);
 		isFilterLoading = false;
 	}

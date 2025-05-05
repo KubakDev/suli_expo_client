@@ -23,7 +23,6 @@ const createNewsStore = () => {
 			startDate?: string,
 			endDate?: string
 		) => {
-			console.log("Filters received:", filters);
 			let query = supabase
 				.from('news')
 				.select('*,languages:news_languages!inner(*)', { count: 'exact' })
@@ -35,12 +34,10 @@ const createNewsStore = () => {
 			}
 
 			if (filters && filters.length > 0) {
-				console.log("Applying exhibition filters:", filters);
 				page = '1';
 				
 				// Convert string IDs to numbers if needed (Supabase might expect numbers)
 				const numericFilters = filters.map(id => parseInt(id)).filter(id => !isNaN(id));
-				console.log("Converted exhibition IDs:", numericFilters);
 				
 				query = query.in('exhibition_id', numericFilters);
 			}
@@ -52,12 +49,11 @@ const createNewsStore = () => {
 				)
 				.limit(limit || Constants.page_limit);
 
-			console.log("Final query:", query);
 			
 			const result = await query;
 
 			if (result.error) {
-				console.error("Query error:", result.error);
+				// console.error("Query error:", result.error);
 				return null;
 			} else {
 				// replace the language created_at by created_at of news

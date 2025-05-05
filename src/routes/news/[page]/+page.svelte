@@ -8,7 +8,6 @@
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { page } from '$app/stores';
 	import { newsStore } from '../../../stores/newsStore';
-	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { exhibitionStore } from '../../../stores/exhibtionStore';
 	import { CardType, ExpoCard } from 'kubak-svelte-component';
 	import type { UiModel } from '../../../models/uiModel';
@@ -27,7 +26,6 @@
 	let asc: boolean = false;
 	let selectedExhibition: string[] = [];
 
-	$: console.log("[Page] Selected exhibitions:", selectedExhibition);
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -45,7 +43,6 @@
 		if ($locale || asc) {
 			isLoading = true;
 			const currentPage = $page.params.page;
-			console.log("[Page] Calling newsStore with exhibitions:", selectedExhibition);
 			newsStore.get($locale, data.supabase, currentPage, undefined, asc, selectedExhibition)
 				.then(() => {
 					isLoading = false;
