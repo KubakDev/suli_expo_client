@@ -21,6 +21,7 @@
 	import { ascStore } from '../../../stores/ascStore.js';
 	import { incrementExhibitionViewer, viewAdded_exhibition } from '../../../stores/viewersStore';
 	import ExhibitionFilter from '$lib/components/ExhibitionFilter.svelte';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
 	let CardComponent: any;
@@ -63,20 +64,20 @@
 	}
  
 	async function getExhibitions() {
-	loading = true;
-	exhibitions = (await exhibitionStore.getPaginated(
-		$locale,
-		data?.supabase,
-		$page.params.page,
-		undefined,
-		orderAsc
-	)) as ExhibitionPaginatedModel;
+		loading = true;
+		exhibitions = (await exhibitionStore.getPaginated(
+			$locale,
+			data?.supabase,
+			$page.params.page,
+			undefined,
+			orderAsc
+		)) as ExhibitionPaginatedModel;
 
-	loading = false;
-	return exhibitions;
-}
+		loading = false;
+		return exhibitions;
+	}
 
- // count viewers
+	// count viewers
 	onMount(() => {
 		if (!$viewAdded_exhibition) {
 			incrementExhibitionViewer(data.supabase);
@@ -84,14 +85,15 @@
 	});
 
  
-// Add a new reactive variable to manage the order
-let orderAsc = true;  
+	// Add a new reactive variable to manage the order
+	let orderAsc = true;  
 
-// Function to toggle the order
-function toggleOrder() {
-	orderAsc = !orderAsc;
-	getExhibitions(); 
-}
+	// Function to toggle the order
+	function toggleOrder() {
+		loading = true; // Set loading to true when toggling order
+		orderAsc = !orderAsc;
+		getExhibitions(); 
+	}
 
 </script>
 
@@ -100,71 +102,68 @@ function toggleOrder() {
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-{#if loading}
-	<div class="spinner" />
-{:else if exhibitions?.data && exhibitions.data.length > 0}
-	<div
-		class="w-full"
-		style="background-color: {$exhibitionCurrentMainThemeColors.backgroundColor};"
-	>
-		<section class="py-12 {Constants.page_max_width} mx-auto w-full">
-			<div class="flex justify-between items-center mb-12 w-full">
-				  <ExhibitionFilter orderAsc={orderAsc} onToggle={toggleOrder} />
+<div class="w-full" style="background-color: {$exhibitionCurrentMainThemeColors.backgroundColor};">
+	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
+		<!-- Centered title at the top of the page -->
+		<div class="w-full flex justify-center items-center mb-12"
+			in:fade={{ duration: 800 }}
+			out:fade={{ duration: 400 }}
+		>
+			<TitleUi
+				text={$LL.exhibition()}
+				borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
+				textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
+			/>
+		</div>
+				
+		<!-- Add filters grid similar to NewsFilters design -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-0" dir="ltr">
+			<ExhibitionFilter orderAsc={orderAsc} onToggle={toggleOrder} isLoading={loading} />
+		</div>
 
-				<div
-					in:fade={{ duration: 800 }}
-					out:fade={{ duration: 400 }}
-					class="flex justify-center w-full px-2"
-				>
-					<TitleUi
-						text={$LL.exhibition()}
-						borderColor={$exhibitionCurrentMainThemeColors.primaryColor}
-						textColor={$exhibitionCurrentMainThemeColors.overlayBackgroundColor}
-					/>
-				</div>
-				<div class="justify-end flex z-10 w-full" />
+		{#if loading}
+			<div class="flex justify-center items-center h-64">
+				<Spinner color="primary" size="12" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
 			</div>
-
-			
+		{:else if exhibitions?.data && exhibitions.data.length > 0}
 			<div
 				class="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-center items-center {constants.section_margin_top}"
 			>
 			{#each exhibitions.data as exhibition, i}
-	     <button
-		class="relative w-full"
-		on:click={() => {
-			openExhibition(exhibition.id || 0);
-		}}
-	>
-		{#if CardComponent}
-			{#if exhibition.is_active} 
-				<!-- Active Badge with nicer design -->
-				<div  
-					class="absolute top-0 right-0 text-sm font-bold px-3 py-1 rounded-bl-lg"
-					style="transform: translate(10%, -10%); z-index: 10;background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+				<button
+					class="relative w-full"
+					on:click={() => {
+						openExhibition(exhibition.id || 0);
+					}}
 				>
-			       {$LL.exhibition_data.active()}
-				</div>
-			{/if}
-			
-			
-			<!-- Card Content -->
-			<ExpoCard
-				primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ?? Constants.main_theme.lightPrimary}
-				overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ?? Constants.main_theme.lightOverlayPrimary}
-				title={exhibition.title}
-				thumbnail={exhibition.thumbnail}
-				short_description={exhibition.description}
-				startDate={exhibition.start_date}
-				endDate={exhibition.end_date}
-				cardType={CardComponent || CardType.Simple}
-			/>
-        
-	 {/if}
-		
-	</button>
-{/each}
-
+					{#if CardComponent}
+						{#if exhibition.is_active} 
+							<!-- Active Badge with nicer design -->
+							<div  
+								class="absolute top-0 right-0 text-sm font-bold px-3 py-1 rounded-bl-lg"
+								style="transform: translate(10%, -10%); z-index: 10;background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							>
+							{$LL.exhibition_data.active()}
+							</div>
+						{/if}
+						
+						
+						<!-- Card Content -->
+						<ExpoCard
+							primaryColor={$exhibitionCurrentMainThemeColors.secondaryColor ?? Constants.main_theme.lightPrimary}
+							overlayPrimaryColor={$exhibitionCurrentMainThemeColors.overlaySecondaryColor ?? Constants.main_theme.lightOverlayPrimary}
+							title={exhibition.title}
+							thumbnail={exhibition.thumbnail}
+							short_description={exhibition.description}
+							startDate={exhibition.start_date}
+							endDate={exhibition.end_date}
+							cardType={CardComponent || CardType.Simple}
+						/>
+					
+				{/if}
+					
+				</button>
+			{/each}
 			</div>
 			<div dir="ltr" class="flex justify-center my-10">
 				{#if exhibitions.count > 10}
@@ -175,20 +174,19 @@ function toggleOrder() {
 					/>
 				{/if}
 			</div>
-		</section>
-	</div>
-{:else}
-	<section class="py-12 {Constants.page_max_width} mx-auto w-full">
-		<div
-			in:fade={{ duration: 800 }}
-			out:fade={{ duration: 400 }}
-			class="flex justify-center items-center mb-12"
-		>
-			<TitleUi text={$LL.exhibition()} />
-		</div>
+		{:else}
+			<section class="py-12 {Constants.page_max_width} mx-auto w-full">
+				<div
+					in:fade={{ duration: 800 }}
+					out:fade={{ duration: 400 }}
+					class="flex justify-center items-center mb-12"
+				>
+					<TitleUi text={$LL.exhibition()} />
+				</div>
+			</section>
+		{/if}
 	</section>
-{/if}
-
+</div>
 
 <style>
 	.relative {

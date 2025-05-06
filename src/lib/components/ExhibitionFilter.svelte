@@ -1,30 +1,29 @@
 <script lang="ts">
-	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
+	import { Spinner } from 'flowbite-svelte';
+	import { IconArrowDown, IconArrowUp } from '@tabler/icons-svelte';
     import LL from '$lib/i18n/i18n-svelte';
-	import { currentMainThemeColors } from '../../stores/darkMode';
+	import { exhibitionCurrentMainThemeColors } from '../../stores/darkMode';
 
 	export let orderAsc: boolean;
 	export let onToggle: () => void;
-
-	// Add a function to toggle the order
-	function toggleOrder() {
-		orderAsc = !orderAsc; 
-		onToggle(); 
-	}
+	export let isLoading: boolean = false;
 </script>
 
-
-<div class="p-2 text-center w-full">
-	<button 
-		style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor};" 
-		on:click={toggleOrder}  
-		class="flex flex-row items-center justify-center p-2 rounded-full order-button"
-	>
-		{#if orderAsc}
-			<ArrowDown size="15" class="transition-all hover:animate-pulse" />
-		{:else}
-			<ArrowUp size="15" class="transition-all hover:animate-pulse" />
-		{/if}
-		<span class="uppercase sm:text-xs text-[10px] font-bold pl-2 pr-1">{$LL.orderAsc ? $LL.descending() : $LL.ascending()}</span>
-	</button>
-</div>
+<button
+	on:click={onToggle}
+	class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all
+		text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
+		border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
+		hover:bg-gray-100 dark:hover:bg-gray-800"
+	title={orderAsc ? $LL.ascending() : $LL.descending()}
+	disabled={isLoading}
+>
+	{#if isLoading}
+		<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+	{:else if orderAsc}
+		<IconArrowUp size={16} />
+	{:else}
+		<IconArrowDown size={16} />
+	{/if}
+	<span>{$LL.sort()}</span>
+</button>
