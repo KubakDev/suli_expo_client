@@ -166,7 +166,7 @@
 	</div>
 	
 	<!-- Add filters grid similar to exhibition page -->
-	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir="ltr">
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir={$locale === 'ckb' || $locale === 'ar' ? 'rtl' : 'ltr'}>
 		<OrderFilter pageType="video" isLoading={isLoading} />
 	</div>
 
