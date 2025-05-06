@@ -1,12 +1,8 @@
 <script lang="ts">
-	// import { exhibitionCurrentMainThemeColors } from "../../stores/darkMode";
-
 	export let images: string[];
-	// let backgroundColor = $exhibitionCurrentMainThemeColors.backgroundColor;
 
-	// Calculate optimal number of duplicates based on viewport width
 	let duplicatedImages: string[];
-	
+
 	$: {
 		const sets = Math.ceil(window.innerWidth / (images.length * 200)) + 2;
 		duplicatedImages = Array(sets).fill(images).flat();
@@ -15,125 +11,93 @@
 
 <section>
 	<div class="slider">
-		<div class="gradient-overlay left" />
+		<!-- Removed gradient overlays -->
 		<div class="slider-items">
-				{#each duplicatedImages as image}
-					<div class="image-wrapper">
-						<img 
-							src={image} 
-							alt="Sponsor logo"
-							loading="lazy"
-						/>
-					</div>
-				{/each}
+			{#each duplicatedImages as image}
+				<div class="image-wrapper">
+					<img 
+						src={image} 
+						alt="Sponsor logo"
+						loading="lazy"
+					/>
+				</div>
+			{/each}
 		</div>
-		<div class="gradient-overlay right" />
 	</div>
 </section>
 
 <style>
 	section {
-		display: grid;
-		place-items: center;
 		width: 100%;
-		padding: 3rem 0;
-		position: relative;
-	}
-
-	.title {
-		font-size: 2.5rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		position: relative;
-		padding-bottom: 1rem;
-	}
-
-	.title::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 100%;
-		height: 2px;
-		background: currentColor;
-	}
-
-	.slider {
+		padding: 4rem 0;
+		background: var(--background-color);
+		border-radius: 1.5rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 100%;
-		width: 90%;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+		backdrop-filter: blur(12px);
+	}
+
+	.slider {
+		position: relative;
+		width: 100%;
 		max-width: 1400px;
 		overflow: hidden;
-		border-radius: 20px;
-		box-shadow: 
-			0 4px 30px rgba(0, 0, 0, 0.1),
-			0 10px 40px rgba(0, 0, 0, 0.05);
-		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		position: relative;
-		padding: 2rem 0;
 	}
 
 	.slider-items {
 		display: flex;
 		align-items: center;
-		gap: 4rem;
-		animation: scroll 40s linear infinite; /* Increased duration for smoother effect */
-		will-change: transform;
+		gap: 3rem;
+		padding: 0 3rem;
+		animation: scroll 40s linear infinite;
 	}
 
-	.slider-items img {
+	.image-wrapper {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.3s ease;
+	}
+
+	img {
 		height: 80px;
-		width: auto;
 		max-width: 200px;
 		object-fit: contain;
-		transition: all 0.3s ease;
+		transition: transform 0.3s ease, filter 0.3s ease;
+		filter: grayscale(60%);
 	}
 
-	.slider-items img:hover {
+	img:hover {
 		transform: scale(1.1);
+		filter: grayscale(0%);
 	}
 
-	/* Hide duplicate images from screen readers */
-	.duplicate {
-		opacity: 0;
-		animation: fadeIn 0.5s forwards;
-	}
- 	@keyframes scroll {
+	/* Removed .gradient-overlay styles */
+
+	@keyframes scroll {
 		0% {
 			transform: translateX(0);
 		}
 		100% {
-			/* Adjust the transform to match the number of sets */
-			transform: translateX(calc(-33.333%)); /* For 3 sets */
-		}
-	}
-
-	@keyframes fadeIn {
-		to {
-			opacity: 1;
+			transform: translateX(-33.333%);
 		}
 	}
 
 	@media (max-width: 768px) {
 		.slider {
-			width: 95%;
-			padding: 1.5rem;
+			padding: 1.5rem 0;
 		}
 
 		.slider-items {
-			gap: 3rem;
+			gap: 2rem;
+			padding: 0 1.5rem;
 		}
 
-		.slider-items img {
+		img {
 			height: 60px;
-		}
-
-		.title {
-			font-size: 2rem;
 		}
 	}
 </style>
