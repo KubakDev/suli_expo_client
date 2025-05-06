@@ -13,11 +13,11 @@
 	import { UiStore } from '../../../stores/ui/Ui';
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
-	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle, videoCurrentThemeColors } from '../../../stores/darkMode';
 	import { ascStore } from '../../../stores/ascStore';
-	import Filters from '$lib/components/Filters.svelte';
+	import OrderFilter from '$lib/components/OrderFilter.svelte';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
 	let CardComponent: any;
@@ -40,20 +40,11 @@
 		}
 	}
 
-	$: {
-		if ($locale) {
-			const currentPage = $page.params.page;
-			videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
-			thumbnailChanging();
-		}
-	}
-
-	$: {
-		if (asc) {
-			const currentPage = $page.params.page;
-			videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
-			thumbnailChanging();
-		}
+	// Consolidated reactive block that watches both locale and asc
+	$: if ($locale && $page.params.page) {
+		const currentPage = $page.params.page;
+		videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
+		thumbnailChanging();
 	}
 
 	$: {
@@ -87,7 +78,6 @@
 	// Navigate to newsDetail page
 	function DetailsPage(itemId: number) {
 		goto(`/video/detail/${itemId}`);
-		//('news :', itemId);
 	}
 
 	function changePage(page: number) {
@@ -102,25 +92,31 @@
 </script>
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
-	<div class="flex justify-center items-center mb-12">
-		<Filters />
-		<div
-			class="flex justify-center w-full px-2"
-			in:fade={{ duration: 800 }}
-			out:fade={{ duration: 400 }}
-		>
-			<TitleUi
-				text={$LL.videos()}
-				borderColor={$videoCurrentThemeColors.primaryColor}
-				textColor={$videoCurrentThemeColors.overlayBackgroundColor}
-			/>
-		</div>
-		<div class="justify-end flex z-10 w-full" />
+	<div
+		class="flex justify-center items-center mb-12"
+		in:fade={{ duration: 800 }}
+		out:fade={{ duration: 400 }}
+	>
+		<TitleUi
+			text={$LL.videos()}
+			borderColor={$videoCurrentThemeColors.primaryColor}
+			textColor={$videoCurrentThemeColors.overlayBackgroundColor}
+		/>
 	</div>
-	{#if $videoStore}
+	
+	<!-- Add filters grid similar to exhibition page -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir="ltr">
+		<OrderFilter pageType="video" isLoading={isLoading} />
+	</div>
+
+	{#if isLoading}
+		<div class="flex justify-center items-center h-64">
+			<Spinner color="primary" size="12" class="text-videoLightPrimaryColor dark:text-videoDarkPrimaryColor" />
+		</div>
+	{:else if $videoStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $videoStore.data as item, index}
-				{#if CardComponent && !isLoading}
+				{#if CardComponent}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div on:click={() => DetailsPage(item.id ?? 1)}>

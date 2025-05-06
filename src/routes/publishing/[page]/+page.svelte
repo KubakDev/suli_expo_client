@@ -15,12 +15,15 @@
 	import type { UiModel } from '../../../models/uiModel';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { themeToggle, publishingCurrentThemeColors } from '../../../stores/darkMode';
-	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore';
+	import OrderFilter from '$lib/components/OrderFilter.svelte';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
+	let isLoading = true;
+    
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
 
@@ -33,21 +36,14 @@
 		}
 	}
 
-	$: {
-		if ($locale) {
-			const currentPage = $page.params.page;
-			publishingStore.get($locale, data.supabase, currentPage, undefined, $asc);
-		}
-	}
-
-	$: {
-		if (asc) {
-			const currentPage = $page.params.page;
-			publishingStore.get($locale, data.supabase, currentPage, undefined, $asc);
-		}
+	// Consolidated reactive block that watches both locale and asc
+	$: if ($locale && $page.params.page) {
+		const currentPage = $page.params.page;
+		publishingStore.get($locale, data.supabase, currentPage, undefined, $asc);
 	}
 
 	onMount(async () => {
+		isLoading = true;
 		let pageType = getNameRegex($page.url.pathname);
 		let publishingUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
@@ -56,6 +52,7 @@
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		await publishingStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
+		isLoading = false;
 	});
 
 	// Navigate to newsDetail page
@@ -69,22 +66,28 @@
 </script>
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
-	<div class="flex justify-center items-center mb-12">
-		<Filters />
-		<div
-			in:fade={{ duration: 800 }}
-			out:fade={{ duration: 400 }}
-			class="flex justify-center w-full px-2"
-		>
-			<TitleUi
-				text={$LL.publishing()}
-				borderColor={$publishingCurrentThemeColors.primaryColor}
-				textColor={$publishingCurrentThemeColors.overlayBackgroundColor}
-			/>
-		</div>
-		<div class="justify-end flex z-10 w-full" />
+	<div
+		class="flex justify-center items-center mb-12"
+		in:fade={{ duration: 800 }}
+		out:fade={{ duration: 400 }}
+	>
+		<TitleUi
+			text={$LL.publishing()}
+			borderColor={$publishingCurrentThemeColors.primaryColor}
+			textColor={$publishingCurrentThemeColors.overlayBackgroundColor}
+		/>
 	</div>
-	{#if $publishingStore}
+	
+	<!-- Add filters grid -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir="ltr">
+		<OrderFilter pageType="publishing" isLoading={isLoading} />
+	</div>
+
+	{#if isLoading}
+		<div class="flex justify-center items-center h-64">
+			<Spinner color="primary" size="12" class="text-publishingLightPrimaryColor dark:text-publishingDarkPrimaryColor" />
+		</div>
+	{:else if $publishingStore}
 		<div class="grid justify-around grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each $publishingStore.data as item, i}
 				{#if CardComponent}

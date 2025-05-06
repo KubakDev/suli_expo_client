@@ -17,10 +17,9 @@
 	import type { ExhibitionPaginatedModel } from '../../../models/exhibitionModel.js';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
 	import { currentMainThemeColors, exhibitionCurrentMainThemeColors, themeToggle } from '../../../stores/darkMode.js';
-	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore.js';
 	import { incrementExhibitionViewer, viewAdded_exhibition } from '../../../stores/viewersStore';
-	import ExhibitionFilter from '$lib/components/ExhibitionFilter.svelte';
+	import OrderFilter from '$lib/components/OrderFilter.svelte';
 	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
@@ -70,7 +69,7 @@
 			data?.supabase,
 			$page.params.page,
 			undefined,
-			orderAsc
+			$asc
 		)) as ExhibitionPaginatedModel;
 
 		loading = false;
@@ -83,16 +82,11 @@
 			incrementExhibitionViewer(data.supabase);
 		}
 	});
-
  
-	// Add a new reactive variable to manage the order
-	let orderAsc = true;  
-
-	// Function to toggle the order
-	function toggleOrder() {
-		loading = true; // Set loading to true when toggling order
-		orderAsc = !orderAsc;
-		getExhibitions(); 
+	$: {
+		if ($asc !== undefined) {
+			getExhibitions();
+		}
 	}
 
 </script>
@@ -116,14 +110,14 @@
 			/>
 		</div>
 				
-		<!-- Add filters grid similar to NewsFilters design -->
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-0" dir="ltr">
-			<ExhibitionFilter orderAsc={orderAsc} onToggle={toggleOrder} isLoading={loading} />
+		<!-- Add filters grid -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir="ltr">
+			<OrderFilter pageType="exhibition" isLoading={loading} />
 		</div>
 
 		{#if loading}
 			<div class="flex justify-center items-center h-64">
-				<Spinner color="primary" size="12" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+				<Spinner color="primary" size="12" class="text-exhibitionLightPrimaryColor dark:text-exhibitionDarkPrimaryColor" />
 			</div>
 		{:else if exhibitions?.data && exhibitions.data.length > 0}
 			<div

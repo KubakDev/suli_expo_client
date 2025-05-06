@@ -13,15 +13,16 @@
 	import { getPageType } from '../../../utils/pageType';
 	import type { UiModel } from '../../../models/uiModel';
 	import PaginationComponent from '$lib/components/PaginationComponent.svelte';
-	import { ArrowDown, ArrowUp } from 'svelte-heros-v2';
 	import { fade } from 'svelte/transition';
 	import { themeToggle, magazineCurrentThemeColors } from '../../../stores/darkMode';
-	import Filters from '$lib/components/Filters.svelte';
 	import { ascStore } from '../../../stores/ascStore';
+	import OrderFilter from '$lib/components/OrderFilter.svelte';
+	import { Spinner } from 'flowbite-svelte';
 
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
+	let isLoading = true;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -35,20 +36,14 @@
 		}
 	}
 
-	$: {
-		if ($locale) {
-			const currentPage = $page.params.page;
-			magazineStore.get($locale, data.supabase, currentPage, undefined, $asc);
-		}
+	// Consolidated reactive block that watches both locale and asc
+	$: if ($locale && $page.params.page) {
+		const currentPage = $page.params.page;
+		magazineStore.get($locale, data.supabase, currentPage, undefined, $asc);
 	}
-
-	$: {
-		if (asc) {
-			const currentPage = $page.params.page;
-			magazineStore.get($locale, data.supabase, currentPage, undefined, $asc);
-		}
-	}
+	
 	onMount(async function () {
+		isLoading = true;
 		let pageType = getNameRegex($page.url.pathname);
 		let magazineUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
@@ -57,6 +52,7 @@
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
 		await magazineStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
+		isLoading = false;
 	});
 
 	// Navigate to newsDetail page
@@ -70,25 +66,30 @@
 </script>
 
 <section class="py-12 {Constants.page_max_width} mx-auto flex-1 w-full h-full">
-	<div class="flex justify-center items-center mb-12">
-		<Filters />
-		<div
-			in:fade={{ duration: 800 }}
-			out:fade={{ duration: 400 }}
-			class="flex justify-center w-full px-2"
-		>
-			<TitleUi
-				text={$LL.magazine()}
-				borderColor={$magazineCurrentThemeColors.primaryColor}
-				textColor={$magazineCurrentThemeColors.overlayBackgroundColor}
-			/>
-		</div>
-		<div class="justify-end flex z-10 w-full" />
+	<div
+		class="flex justify-center items-center mb-12"
+		in:fade={{ duration: 800 }}
+		out:fade={{ duration: 400 }}
+	>
+		<TitleUi
+			text={$LL.magazine()}
+			borderColor={$magazineCurrentThemeColors.primaryColor}
+			textColor={$magazineCurrentThemeColors.overlayBackgroundColor}
+		/>
 	</div>
-	{#if $magazineStore}
+	
+	<!-- Add filters grid -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6" dir="ltr">
+		<OrderFilter pageType="magazine" isLoading={isLoading} />
+	</div>
+
+	{#if isLoading}
+		<div class="flex justify-center items-center h-64">
+			<Spinner color="primary" size="12" class="text-magazineLightPrimaryColor dark:text-magazineDarkPrimaryColor" />
+		</div>
+	{:else if $magazineStore}
 		<div class="grid justify-around grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
 			{#each $magazineStore.data as item, i}
-				<!-- {#if CardComponent} -->
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div on:click={() => DetailsPage(item.id)}>
@@ -104,7 +105,6 @@
 						/>
 					{/if}
 				</div>
-				<!-- {/if} -->
 			{/each}
 		</div>
 		<div dir="ltr" class="flex justify-center my-10">

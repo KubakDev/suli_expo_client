@@ -14,6 +14,7 @@
 	import { newsStore } from '../../stores/newsStore';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
+	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	let asc: boolean = false;
 	export let supabase: SupabaseClient;
@@ -25,8 +26,23 @@
 
 	let isLoading = true;
 	let isFilterLoading = false;
+	
+	// Hover states for each button
+	let sortHovered = false;
+	let filterHovered = false;
+	let dateHovered = false;
+	let clearHovered = false;
 
 	$: isLoading = exhibitionData.length === 0;
+
+	let datePickerButtonClass = "flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all";
+	$: datePickerButtonStyle = `
+		--btn-hover-color: ${$currentMainThemeColors.primaryColor};
+		color: ${$currentMainThemeColors.primaryColor}; 
+		border-color: ${$currentMainThemeColors.primaryColor};
+		background-color: transparent;
+	`;
+	$: datePickerSpinnerStyle = `color: ${$currentMainThemeColors.primaryColor};`;
 
 	async function changeOrder() {
 		isFilterLoading = true;
@@ -74,21 +90,36 @@
 	};
 </script>
 
+<style>
+	/* Custom hover style for date picker button */
+	:global(.date-picker-btn:hover) {
+		background-color: var(--btn-hover-color, var(--newsLightPrimaryColor)) !important;
+		color: white !important;
+	}
+	:global(.date-picker-btn:hover svg), :global(.date-picker-btn:hover span) {
+		color: white !important;
+	}
+</style>
+
 <!-- Filter UI -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-10" dir="ltr">
 
 	<!-- Sort Button -->
 	<button
 		on:click={changeOrder}
-		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all
-			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
-			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
-			hover:bg-gray-100 dark:hover:bg-gray-800"
+		on:mouseenter={() => sortHovered = true}
+    	on:mouseleave={() => sortHovered = false}
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+		style="
+        	color: {sortHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+        	border-color: {$currentMainThemeColors.primaryColor};
+        	background-color: {sortHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+    	"
 		title={asc ? $LL.ascending() : $LL.descending()}
 		disabled={isFilterLoading}
 	>
 		{#if isFilterLoading}
-			<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+			<Spinner size="4" style="color: {sortHovered ? '#fff' : $currentMainThemeColors.primaryColor};" />
 		{:else if asc}
 			<IconArrowUp size={16} />
 		{:else}
@@ -101,14 +132,18 @@
 	<div class="relative">
 		<button
 			on:click={toggleDropdown}
-			class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
-			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
-			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
-			hover:bg-gray-100 dark:hover:bg-gray-800"
+			on:mouseenter={() => filterHovered = true}
+    		on:mouseleave={() => filterHovered = false}
+			class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+			style="
+				color: {filterHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+				border-color: {$currentMainThemeColors.primaryColor};
+				background-color: {filterHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+			"
 			disabled={isFilterLoading}
 		>
 			{#if isFilterLoading}
-				<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+				<Spinner size="4" style="color: {filterHovered ? '#fff' : $currentMainThemeColors.primaryColor};" />
 			{:else}
 				<IconFilter size={16} />
 			{/if}
@@ -153,14 +188,12 @@
 			on:change={() => filterByDate()}
 		>
 			<button
-				class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
-					text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
-					border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
-					hover:bg-gray-100 dark:hover:bg-gray-800"
+				class="{datePickerButtonClass} date-picker-btn"
+				style={datePickerButtonStyle}
 				disabled={isFilterLoading}
 			>
 				{#if isFilterLoading}
-					<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+					<Spinner size="4" style={datePickerSpinnerStyle} />
 				{:else}
 					<IconCalendar size={16} />
 				{/if}
@@ -172,15 +205,19 @@
 	<!-- Clear Filters -->
 	<button
 		on:click={clearFilters}
-		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all
-			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
-			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
-			hover:bg-gray-100 dark:hover:bg-gray-800"
+		on:mouseenter={() => clearHovered = true}
+    	on:mouseleave={() => clearHovered = false}
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+		style="
+			color: {clearHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+			border-color: {$currentMainThemeColors.primaryColor};
+			background-color: {clearHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+		"
 		title="Clear Filters"
 		disabled={isFilterLoading}
 	>
 		{#if isFilterLoading}
-			<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+			<Spinner size="4" style="color: {clearHovered ? '#fff' : $currentMainThemeColors.primaryColor};" />
 		{:else}
 			<IconX size={16} />
 		{/if}
