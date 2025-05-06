@@ -17,10 +17,7 @@
 			serviceSectionStore.get($locale, data.supabase);
 		}
 	}
-
-	onMount(async () => {
-		await serviceSectionStore.get($locale, data?.supabase);
-	});
+ 
 </script>
 
 <svelte:head>
