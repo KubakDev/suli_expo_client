@@ -20,7 +20,8 @@
     IconHistory,
     IconLogout,
     IconUser,
-    IconBell
+    IconBell,
+    IconLanguage
   } from '@tabler/icons-svelte';
 
   export let data: PageData;
@@ -425,6 +426,7 @@
             aria-haspopup="true"
             aria-expanded={languageDropdownOpen}
           >
+            <IconLanguage class="w-4 h-4 mx-1" />
             <span class="ml-2">{selectedLang}</span>
             <IconChevronDown class="w-4 h-4 ml-1" />
           </button>
@@ -692,7 +694,10 @@
               aria-expanded={mobileLanguageDropdownOpen}
               style="color: {navbarStyles.color}; {mobileLanguageDropdownOpen ? `background-color: ${$currentMainThemeColors.primaryColor}; color: ${$currentMainThemeColors.overlayPrimaryColor};` : ''}"
             >
-              <span style="text-align: {data.locale === 'en' ? 'left' : 'right'}">{selectedLang}</span>
+              <div class="flex items-center">
+                <IconLanguage class="w-5 h-5 mx-1" />
+                <span style="text-align: {data.locale === 'en' ? 'left' : 'right'}">{selectedLang}</span>
+              </div>
               <IconChevronDown class="w-5 h-5 ml-2 transition-transform duration-200 {mobileLanguageDropdownOpen ? 'transform rotate-180' : ''}" />
             </button>
             {#if mobileLanguageDropdownOpen}
