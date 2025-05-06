@@ -75,12 +75,12 @@
 </script>
 
 <!-- Filter UI -->
-<div class="flex mb-10 gap-2 justify-between" dir="ltr">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-10" dir="ltr">
 
 	<!-- Sort Button -->
 	<button
 		on:click={changeOrder}
-		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all flex-1
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all
 			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
 			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
 			hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -98,24 +98,22 @@
 	</button>
 
 	<!-- Filter by Exhibition -->
-	<div class="relative flex-1">
+	<div class="relative">
 		<button
 			on:click={toggleDropdown}
-			class="flex items-center justify-between gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
+			class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all
 			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
 			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
 			hover:bg-gray-100 dark:hover:bg-gray-800"
 			disabled={isFilterLoading}
 		>
-			<span class="truncate flex-1 text-left">{$LL.filterByExhibition()}</span>
-			<div class="flex items-center gap-1">
-				{#if isFilterLoading}
-					<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
-				{:else}
-					<IconFilter size={16} />
-				{/if}
-				<IconChevronDown size={16} />
-			</div>
+			{#if isFilterLoading}
+				<Spinner size="4" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
+			{:else}
+				<IconFilter size={16} />
+			{/if}
+			<span>{$LL.filterByExhibition()}</span>
+			<IconChevronDown size={16} />
 		</button>
 
 		<!-- Dropdown Panel -->
@@ -147,7 +145,7 @@
 	</div>
 
 	<!-- Date Picker -->
-	<div class="flex-1">
+	<div>
 		<DateRangePicker
 			bind:selected={calendarDate}
 			range={true}
@@ -174,7 +172,7 @@
 	<!-- Clear Filters -->
 	<button
 		on:click={clearFilters}
-		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all flex-1
+		class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all
 			text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor
 			border-newsLightPrimaryColor dark:border-newsDarkPrimaryColor
 			hover:bg-gray-100 dark:hover:bg-gray-800"
