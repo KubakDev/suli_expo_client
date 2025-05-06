@@ -107,7 +107,7 @@
 						<div class="flex h-20 items-center my-1">
 							<div
 								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
-								class="flex rounded-full justify-center items-center h-20 w-20"
+								class="flex rounded-full justify-center items-center h-20 w-20 transition-all duration-300 hover:scale-110 cursor-pointer"
 							>
 								<GlobeAsiaAustralia size="50" />
 							</div>
@@ -118,7 +118,7 @@
 										style="color: {$currentMainThemeColors.overlayPrimaryColor}"
 										class="text-2xl font-bold"
 									>
-										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} />
+										<NumberAnimationIncrement value={exhibition.country_number} duration={3000} className="cursor-pointer" />
 									</h2>
 								{/if}
 								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class="text-lg">
@@ -129,7 +129,7 @@
 						<div class="flex h-20 items-center my-1">
 							<div
 								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
-								class="flex rounded-full h-20 w-20 justify-center items-center"
+								class="flex rounded-full h-20 w-20 justify-center items-center transition-all duration-300 hover:scale-110 cursor-pointer"
 							>
 								<BuildingOffice2 size="50" />
 							</div>
@@ -140,7 +140,7 @@
 									class=" text-2xl font-bold"
 								>
 									{#if exhibition}
-										<NumberAnimationIncrement value={exhibition?.company_number} duration={1000} />
+										<NumberAnimationIncrement value={exhibition?.company_number} duration={3000} className="cursor-pointer" />
 									{/if}
 								</h2>
 								<p style="color: {$currentMainThemeColors.overlayPrimaryColor}" class=" text-lg">
@@ -152,7 +152,7 @@
 						<div class="flex h-20 items-center my-1">
 							<div
 								style="background-color :{$currentMainThemeColors.primaryColor};color: {$currentMainThemeColors.overlayPrimaryColor}"
-								class="flex rounded-full h-20 w-20 justify-center items-center"
+								class="flex rounded-full h-20 w-20 justify-center items-center transition-all duration-300 hover:scale-110 cursor-pointer"
 							>
 								<MapPin size="50" />
 							</div>

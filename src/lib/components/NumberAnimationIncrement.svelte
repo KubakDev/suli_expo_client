@@ -6,12 +6,12 @@
 	export let duration = 1000;
 	export let className = '';
 	let result = 0;
+	let hovered = false;
 
 	onMount(() => {
 		const amountToIncrement = (value / duration) * 50;
 		const interval = setInterval(() => {
 			// increment value from 0 to the value passed in the component with the duration passed in the component
-
 			result = result + amountToIncrement;
 
 			if (result >= value) {
@@ -28,10 +28,14 @@
 	}
 
 	function formatResult(value: number): string {
-		return value.toFixed(0).padStart(2, '0');
+		return Math.floor(value).toString();
 	}
 </script>
 
-<div class={className}>
+<div 
+	class={`transition-all duration-300 ${hovered ? 'scale-110' : ''} ${className}`}
+	on:mouseenter={() => hovered = true}
+	on:mouseleave={() => hovered = false}
+>
 	{formatResult(result)}
 </div>
