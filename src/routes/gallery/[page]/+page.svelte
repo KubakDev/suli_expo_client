@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
 	import { UiStore } from '../../../stores/ui/Ui';
@@ -18,11 +18,23 @@
 	import { galleryCurrentThemeColors, themeToggle } from '../../../stores/darkMode';
 	import OrderFilter from '$lib/components/OrderFilter.svelte';
 	import { Spinner } from 'flowbite-svelte';
+	import type { Locales } from '$lib/i18n/i18n-types';
 
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
 	let isLoading = true;
+	let requestCounter = 0; // Counter to track number of API requests
+	let isNavigating = false; // Flag to prevent duplicate requests during navigation
+	let isInitializing = true; // Flag to prevent reactive statement firing during initialization
+	let navigationTimeout: ReturnType<typeof setTimeout> | null = null;
+	
+	// Keep track of the request parameters to avoid duplicate fetches
+	let currentParameters = {
+		page: '',
+		locale: '',
+		asc: false
+	};
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -36,24 +48,65 @@
 		}
 	}
 
-	// Consolidated reactive block that watches both locale and asc
-	$: if ($locale && $page.params.page) {
-		const currentPage = $page.params.page;
-		galleryStore.get($locale, data.supabase, currentPage, undefined, $asc);
+	// Single reactive statement to handle all fetch trigger cases
+	$: if ($locale && $page.params.page && !isNavigating && !isInitializing) {
+		// Only fetch if parameters have changed
+		if (
+			$page.params.page !== currentParameters.page ||
+			$locale !== currentParameters.locale ||
+			$asc !== currentParameters.asc
+		) {
+			requestCounter++;
+			console.log(`API request #${requestCounter} - Page: ${$page.params.page}, Locale: ${$locale}, Asc: ${$asc}`);
+			
+			// Update current parameters BEFORE making the request
+			currentParameters = {
+				page: $page.params.page,
+				locale: $locale,
+				asc: $asc
+			};
+			
+			// Make the request
+			galleryStore.get($locale as Locales, data.supabase, $page.params.page, undefined, $asc);
+		}
 	}
 
 	onMount(async () => {
 		isLoading = true;
+		
+		// Set initial parameters BEFORE any requests
+		currentParameters = {
+			page: $page.params.page,
+			locale: $locale,
+			asc: $asc
+		};
+		
+		// Initial UI setup
 		let pageType = getNameRegex($page.url.pathname);
-
 		let galleryUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
 			galleryUi?.component_type?.type?.charAt(0).toUpperCase() +
 			galleryUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		await galleryStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
+		// Single explicit initial request
+		requestCounter++;
+		console.log(`Initial API request #${requestCounter} - Page: ${$page.params.page}, Locale: ${$locale}, Asc: ${$asc}`);
+		await galleryStore.get($locale as Locales, data.supabase, $page.params.page, undefined, $asc);
+		
 		isLoading = false;
+		
+		// Allow reactive statements to work for subsequent changes
+		setTimeout(() => {
+			isInitializing = false;
+		}, 100);
+	});
+	
+	onDestroy(() => {
+		// Clean up timeout if component is destroyed
+		if (navigationTimeout) {
+			clearTimeout(navigationTimeout);
+		}
 	});
 
 	// Navigate to newsDetail page
@@ -62,7 +115,19 @@
 	}
 
 	function changePage(page: number) {
+		console.log(`Pagination changed to page: ${page}`);
+		
+		// Set navigating flag to prevent duplicate requests
+		isNavigating = true;
+		
+		// Navigate to the new page
 		goto(`/gallery/${page}`);
+		
+		// Reset the flag after navigation is complete
+		// This timeout gives the router time to complete the navigation
+		navigationTimeout = setTimeout(() => {
+			isNavigating = false;
+		}, 100);
 	}
 </script>
 

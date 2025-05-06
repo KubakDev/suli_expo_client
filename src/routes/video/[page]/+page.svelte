@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
 	import TitleUi from '$lib/components/TitleUi.svelte';
@@ -18,12 +18,24 @@
 	import { ascStore } from '../../../stores/ascStore';
 	import OrderFilter from '$lib/components/OrderFilter.svelte';
 	import { Spinner } from 'flowbite-svelte';
+	import type { Locales } from '$lib/i18n/i18n-types';
 
 	export let data: any;
 	let CardComponent: any;
 	let asc = ascStore;
-	let thumbnailUrl: string[];
+	let thumbnailUrl: string[] = [];
 	let isLoading = true;
+	let requestCounter = 0; // Counter to track number of API requests
+	let isNavigating = false; // Flag to prevent duplicate requests during navigation
+	let isInitializing = true; // Flag to prevent reactive statement firing during initialization
+	let navigationTimeout: ReturnType<typeof setTimeout> | null = null;
+	
+	// Keep track of the request parameters to avoid duplicate fetches
+	let currentParameters = {
+		page: '',
+		locale: '',
+		asc: false
+	};
 
 	const youtubeRegex =
 		/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -40,31 +52,68 @@
 		}
 	}
 
-	// Consolidated reactive block that watches both locale and asc
-	$: if ($locale && $page.params.page) {
-		const currentPage = $page.params.page;
-		videoStore.get($locale, data.supabase, currentPage, undefined, $asc);
-		thumbnailChanging();
-	}
-
-	$: {
-		if ($videoStore?.data) {
-			thumbnailChanging();
+	// Single reactive statement to handle all fetch trigger cases
+	$: if ($locale && $page.params.page && !isNavigating && !isInitializing) {
+		// Only fetch if parameters have changed
+		if (
+			$page.params.page !== currentParameters.page ||
+			$locale !== currentParameters.locale ||
+			$asc !== currentParameters.asc
+		) {
+			requestCounter++;
+			console.log(`API request #${requestCounter} - Page: ${$page.params.page}, Locale: ${$locale}, Asc: ${$asc}`);
+			
+			// Update current parameters BEFORE making the request
+			currentParameters = {
+				page: $page.params.page,
+				locale: $locale,
+				asc: $asc
+			};
+			
+			// Make the request
+			videoStore.get($locale as Locales, data.supabase, $page.params.page, undefined, $asc);
 		}
 	}
 
-	onMount(async () => {
-		videoStore.get($locale, data.supabase, $page.params.page, undefined, $asc);
+	$: if ($videoStore?.data) {
+		thumbnailChanging();
+	}
 
+	onMount(async () => {
+		// Set initial parameters BEFORE any requests
+		currentParameters = {
+			page: $page.params.page,
+			locale: $locale,
+			asc: $asc
+		};
+		
+		// Initial UI setup
 		let pageType = getNameRegex($page.url.pathname);
 		let videoUi = (await UiStore.get(data.supabase, getPageType(pageType))) as UiModel;
 		let cardType =
 			videoUi?.component_type?.type?.charAt(0).toUpperCase() +
 			videoUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
-
+		
+		// Single explicit initial request
+		requestCounter++;
+		console.log(`Initial API request #${requestCounter} - Page: ${$page.params.page}, Locale: ${$locale}, Asc: ${$asc}`);
+		await videoStore.get($locale as Locales, data.supabase, $page.params.page, undefined, $asc);
+		
 		thumbnailChanging();
 		isLoading = false;
+		
+		// Allow reactive statements to work for subsequent changes
+		setTimeout(() => {
+			isInitializing = false;
+		}, 100);
+	});
+	
+	onDestroy(() => {
+		// Clean up timeout if component is destroyed
+		if (navigationTimeout) {
+			clearTimeout(navigationTimeout);
+		}
 	});
 
 	function thumbnailChanging() {
@@ -81,12 +130,24 @@
 	}
 
 	function changePage(page: number) {
+		console.log(`Pagination changed to page: ${page}`);
+		
+		// Set navigating flag to prevent duplicate requests
+		isNavigating = true;
+		
+		// Navigate to the new page
 		goto(`/video/${page}`);
+		
+		// Reset the flag after navigation is complete
+		// This timeout gives the router time to complete the navigation
+		navigationTimeout = setTimeout(() => {
+			isNavigating = false;
+		}, 100);
 	}
+	
 	// get the YouTube ID from the URL
 	function getYouTubeId(url: string): string | null {
 		const match = youtubeRegex.exec(url);
-
 		return match ? match[1] : null;
 	}
 </script>
