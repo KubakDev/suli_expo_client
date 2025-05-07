@@ -280,7 +280,8 @@ const en = {
 		createdAt: 'Date created'
 	},
 	You_have_to_select_at_least_one_area: 'You have to select at least one area',
-	Please_upload_excel_file: 'Please upload excel file'
+	Please_upload_excel_file: 'Please upload excel file',
+	noDataMessage: 'We have no {type} related content at the moment.'
 } satisfies BaseTranslation;
 
 export default en;

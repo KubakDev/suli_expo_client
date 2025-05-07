@@ -945,6 +945,11 @@ type RootTranslation = {
 	 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​e​x​c​e​l​ ​f​i​l​e
 	 */
 	Please_upload_excel_file: string
+	/**
+	 * W​e​ ​h​a​v​e​ ​n​o​ ​{​t​y​p​e​}​ ​r​e​l​a​t​e​d​ ​c​o​n​t​e​n​t​ ​a​t​ ​t​h​e​ ​m​o​m​e​n​t​.
+	 * @param {unknown} type
+	 */
+	noDataMessage: RequiredParams<'type'>
 }
 
 export type TranslationFunctions = {
@@ -1875,6 +1880,10 @@ export type TranslationFunctions = {
 	 * Please upload excel file
 	 */
 	Please_upload_excel_file: () => LocalizedString
+	/**
+	 * We have no {type} related content at the moment.
+	 */
+	noDataMessage: (arg: { type: unknown }) => LocalizedString
 }
 
 export type Formatters = {}

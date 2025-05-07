@@ -277,6 +277,7 @@ const ar = {
 		createdAt: 'تاريخ الإنشاء'
 	},
 	You_have_to_select_at_least_one_area: 'بالإضافة إلى ذلك، يجب عليك تحديد بند واحد على الأقل',
-	Please_upload_excel_file: 'يرجى تحميل ملف إكسل'
+	Please_upload_excel_file: 'يرجى تحميل ملف إكسل',
+	noDataMessage: 'لا يوجد محتوى {type} متاح حاليًا.'
 } satisfies BaseTranslation;
 export default ar;

@@ -103,7 +103,9 @@
 						<div class="sticky top-4 w-full">
 							<RecentItems
 								title={$LL.magazine()}
-								items={$magazineStore.data.map((magazine) => modelToItemModel(magazine))}
+								items={$magazineStore.data
+									.filter(item => item.id?.toString() !== $page.params.magazineId)
+									.map((magazine) => modelToItemModel(magazine))}
 								pageType={'magazine'}
 							/>
 						</div>

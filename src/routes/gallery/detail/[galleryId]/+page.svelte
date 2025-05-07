@@ -61,7 +61,9 @@
 						<div class="sticky top-4 w-full">
 							<RecentItems
 								title={$LL.gallery()}
-								items={$galleryStore?.data.map((gallery) => modelToItemModel(gallery))}
+								items={$galleryStore?.data
+									.filter(item => item.id?.toString() !== $page.params.galleryId)
+									.map((gallery) => modelToItemModel(gallery))}
 								pageType={'gallery'}
 							/>
 						</div>

@@ -55,7 +55,9 @@
 						<div class="sticky top-4 w-full">
 							<RecentItems
 								title={$LL.publishing()}
-								items={$publishingStore.data.map((publishing) => modelToItemModel(publishing))}
+								items={$publishingStore.data
+									.filter(item => item.id?.toString() !== $page.params.publishingId)
+									.map((publishing) => modelToItemModel(publishing))}
 								pageType={'publishing'}
 							/>
 						</div>
