@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import Constants from '../../utils/constants';
 	import type { ItemModel } from '../../models/covertModel';
-	import { getNameRegex } from '../../utils/urlRegexName';
-	import { page } from '$app/stores';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 
 	export let title: string;
@@ -25,7 +22,8 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
-				class="group flex items-center gap-4 p-3 rounded-lg transition cursor-pointer border-b border-gray-200 dark:border-gray-700"
+				class="group flex items-center gap-4 p-3 transition cursor-pointer"
+				style="border-bottom: 1px solid {$currentMainThemeColors.primaryColor}"
 				on:click={() => DetailsPage(item.id)}
 				on:mouseenter={(e) => {
 					e.currentTarget.style.backgroundColor = $currentMainThemeColors.primaryColor || '';
