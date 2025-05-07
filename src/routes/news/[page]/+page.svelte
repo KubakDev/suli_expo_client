@@ -21,11 +21,12 @@
 
 	export let data;
 	let CardComponent: any;
+	let requestCount = 0;
 	let isLoading = true;
-
 	let asc: boolean = false;
 	let selectedExhibition: string[] = [];
-
+	let lastRequestedPage: string | null = null;
+	let isInitialLoad = true;
 
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
@@ -40,19 +41,18 @@
 	}
 
 	$: {
-		if ($locale || asc) {
+		const currentPage = $page.params.page;
+		// Only make request if page changed or it's the first load
+		if (currentPage !== lastRequestedPage) {
+			lastRequestedPage = currentPage;
 			isLoading = true;
-			const currentPage = $page.params.page;
+			console.log(`Request #${++requestCount} - Loading news. Page: ${currentPage}`);
 			newsStore.get($locale, data.supabase, currentPage, undefined, asc, selectedExhibition)
 				.then(() => {
 					isLoading = false;
 				});
-
-			exhibitionStore.get($locale, data.supabase);
 		}
 	}
-
-	$: isLoading = !$newsStore || isLoading;
 
 	onMount(async () => {
 		isLoading = true;
@@ -64,14 +64,10 @@
 			newsUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		newsStore.get($locale, data.supabase, $page.params.page, undefined, asc, selectedExhibition)
-			.then(() => {
-				isLoading = false;
-			});
+		isInitialLoad = false;
 	});
  
 	function changePage(page: number) {
-		isLoading = true;
 		goto(`/news/${page}`);
 	}
 
