@@ -489,7 +489,7 @@
 
             {#if dropdownOpenProfile}
      <div
-       class="absolute {dropdownPosition} mt-2 {dropdownWidth} rounded-lg shadow-lg z-50 overflow-hidden"
+       class="absolute {dropdownPosition} mt-2 {dropdownWidth} shadow-lg z-50 overflow-hidden rounded-b-lg"
        style="background-color: {navbarStyles.backgroundColor}; color: {navbarStyles.color}; top: 100%; max-width: calc(100vw - 2rem); transition: all 0.3s ease-in-out; {maxDropdownHeight};" 
        on:click|stopPropagation
        on:keydown|stopPropagation
