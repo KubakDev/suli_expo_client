@@ -21,6 +21,7 @@
 	//@ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import SuccessLottieAnimation from './successLottie.json';
+	import { IconChevronRight, IconChevronLeft } from '@tabler/icons-svelte';
 
 	export let supabase: SupabaseClient;
 	export let objectId: number;
@@ -48,6 +49,7 @@
 	let cancelReserveModal = false;
 	let successModal = false;
 	let objectReservedByThisCompanyData: any = undefined;
+	let buttonHovered = false;
 	$: {
 		thisObjectReservedByThisCompany = false;
 		if (objectId && selectedSeatObjectId != objectId) {
@@ -332,9 +334,24 @@
 						{/if}
 					</p>
 				{:else}
-					<Button class="w-full" on:click={reserveThisSeat}>
+					<button
+						on:click={reserveThisSeat}
+						on:mouseenter={() => buttonHovered = true}
+						on:mouseleave={() => buttonHovered = false}
+						class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full"
+						style="
+							color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
+							border-color: var(--lightPrimaryColor);
+							background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
+						"
+					>
 						{$LL.reservation.reserve()}
-					</Button>
+						{#if $locale === 'en'}
+							<IconChevronRight size={16} />
+						{:else}
+							<IconChevronLeft size={16} />
+						{/if}
+					</button>
 				{/if}
 			</div>
 		</div>

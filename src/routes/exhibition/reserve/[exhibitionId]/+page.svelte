@@ -23,6 +23,7 @@
 	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
 	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { IconChevronRight, IconChevronLeft } from '@tabler/icons-svelte';
 
 	export let data: any;
 
@@ -35,6 +36,7 @@
 	let loaded = false;
 	let excelFileName: string | undefined = '';
 	let showNotification = false;
+	let buttonHovered = false;
 
 	async function getExhibition() {
 		const response = await data.supabase
@@ -374,17 +376,49 @@
 						<svelte:fragment slot="footer">
 							{#if seatReserved}
 								<div class=" w-full flex justify-end items-center">
-									<Button
+									<button
 										on:click={() => {
 											goto('/exhibition/1');
-										}}>Ok</Button
+										}}
+										on:mouseenter={() => buttonHovered = true}
+										on:mouseleave={() => buttonHovered = false}
+										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+										style="
+											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
+											border-color: var(--lightPrimaryColor);
+											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
+										"
 									>
+										Ok
+										{#if $locale === 'en'}
+											<IconChevronRight size={16} />
+										{:else}
+											<IconChevronLeft size={16} />
+										{/if}
+									</button>
 								</div>
 							{:else}
 								<div class=" w-full flex justify-end items-center">
-									<Button on:click={reserveSeat} disabled={!acceptedPrivacyPolicy}
-										>{$LL.reservation.privacy_policy.accept()}</Button
+									<button
+										on:click={reserveSeat}
+										disabled={!acceptedPrivacyPolicy}
+										on:mouseenter={() => buttonHovered = true}
+										on:mouseleave={() => buttonHovered = false}
+										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+										style="
+											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
+											border-color: var(--lightPrimaryColor);
+											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
+											opacity: {!acceptedPrivacyPolicy ? '0.5' : '1'};
+										"
 									>
+										{$LL.reservation.privacy_policy.accept()}
+										{#if $locale === 'en'}
+											<IconChevronRight size={16} />
+										{:else}
+											<IconChevronLeft size={16} />
+										{/if}
+									</button>
 									<div class="w-[2px]" />
 								</div>
 							{/if}
@@ -526,17 +560,49 @@
 						<svelte:fragment slot="footer">
 							{#if seatReserved}
 								<div class=" w-full flex justify-end items-center">
-									<Button
+									<button
 										on:click={() => {
 											goto('/exhibition/1');
-										}}>Ok</Button
+										}}
+										on:mouseenter={() => buttonHovered = true}
+										on:mouseleave={() => buttonHovered = false}
+										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+										style="
+											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
+											border-color: var(--lightPrimaryColor);
+											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
+										"
 									>
+										Ok
+										{#if $locale === 'en'}
+											<IconChevronRight size={16} />
+										{:else}
+											<IconChevronLeft size={16} />
+										{/if}
+									</button>
 								</div>
 							{:else}
 								<div class=" w-full flex justify-end items-center">
-									<Button on:click={reserveSeat} disabled={!acceptedPrivacyPolicy}
-										>{$LL.reservation.privacy_policy.accept()}</Button
+									<button
+										on:click={reserveSeat}
+										disabled={!acceptedPrivacyPolicy}
+										on:mouseenter={() => buttonHovered = true}
+										on:mouseleave={() => buttonHovered = false}
+										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+										style="
+											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
+											border-color: var(--lightPrimaryColor);
+											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
+											opacity: {!acceptedPrivacyPolicy ? '0.5' : '1'};
+										"
 									>
+										{$LL.reservation.privacy_policy.accept()}
+										{#if $locale === 'en'}
+											<IconChevronRight size={16} />
+										{:else}
+											<IconChevronLeft size={16} />
+										{/if}
+									</button>
 									<div class="w-[2px]" />
 								</div>
 							{/if}
