@@ -28,10 +28,12 @@
 				on:mouseenter={(e) => {
 					e.currentTarget.style.backgroundColor = $currentMainThemeColors.primaryColor || '';
 					e.currentTarget.style.color = $currentMainThemeColors.overlayPrimaryColor || '';
+					e.currentTarget.style.borderRadius = '0.5rem';
 				}}
 				on:mouseleave={(e) => {
 					e.currentTarget.style.backgroundColor = '';
 					e.currentTarget.style.color = '';
+					e.currentTarget.style.borderRadius = '';
 				}}
 			>
 				<div class="w-24 h-20 shrink-0">

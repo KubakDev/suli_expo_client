@@ -9,6 +9,7 @@
 	import { newsStore } from '../../../../stores/newsStore';
 	import { Spinner } from 'flowbite-svelte';
 	import { newsCurrentThemeColors } from '../../../../stores/darkMode';
+	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
 	
 	// Import Swiper and modules
 	import Swiper from 'swiper';
@@ -135,63 +136,14 @@
 						<!-- News Gallery Carousel -->
 						<div class="relative">
 							{#if news.imagesCarousel && news.imagesCarousel.length > 0}
-								<!-- Loading Spinner -->
-								{#if imagesLoading}
-									<div class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
-										<Spinner color="primary" size="12" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
-									</div>
-								{/if}
-								
-								<div class="swiper news-carousel" use:initMainSwiper>
-									<div class="swiper-wrapper">
-										{#each news.imagesCarousel as image, index}
-											<div class="swiper-slide">
-												<div class="swiper-zoom-container">
-													<div class="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
-														<img 
-															src={image.imgurl} 
-															alt={image.name} 
-															class="w-full h-full object-cover cursor-zoom-in"
-															on:load={handleImageLoad}
-														/>
-														{#if image.attribution}
-															<div class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm rounded-tl-md">
-																{image.attribution}
-															</div>
-														{/if}
-														<div class="absolute top-0 left-0 bg-black bg-opacity-50 text-white p-2 text-sm rounded-br-md">
-															{index + 1}/{news.imagesCarousel.length}
-														</div>
-													</div>
-												</div>
-											</div>
-										{/each}
-									</div>
-									<div class="swiper-button-next"></div>
-									<div class="swiper-button-prev"></div>
-									<div class="swiper-pagination"></div>
-								</div>
-								
-								<!-- Thumbnails -->
-								{#if news.imagesCarousel.length > 1}
-									<div class="mt-4 px-3">
-										<div class="swiper thumbs-carousel" use:initThumbsSwiper>
-											<div class="swiper-wrapper">
-												{#each news.imagesCarousel as image}
-													<div class="swiper-slide">
-														<div class="cursor-pointer h-[60px] md:h-[80px] overflow-hidden rounded-md border-2 border-transparent hover:border-blue-500 transition-all duration-200">
-															<img 
-																src={image.imgurl}
-																alt={image.name}
-																class="w-full h-full object-cover"
-															/>
-														</div>
-													</div>
-												{/each}
-											</div>
-										</div>
-									</div>
-								{/if}
+								<ImageCarousel 
+									images={news.imagesCarousel}
+									height="600px"
+									showThumbs={true}
+									autoplay={true}
+									effect="fade"
+									zoom={true}
+								/>
 							{/if}
 						</div>
 

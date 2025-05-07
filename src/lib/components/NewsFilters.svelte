@@ -10,7 +10,6 @@
 		IconFilter,
 		IconCalendar
 	} from '@tabler/icons-svelte';
-	import Constants from '../../utils/constants';
 	import { newsStore } from '../../stores/newsStore';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
@@ -90,16 +89,6 @@
 	};
 </script>
 
-<style>
-	/* Custom hover style for date picker button */
-	:global(.date-picker-btn:hover) {
-		background-color: var(--btn-hover-color, var(--newsLightPrimaryColor)) !important;
-		color: white !important;
-	}
-	:global(.date-picker-btn:hover svg), :global(.date-picker-btn:hover span) {
-		color: white !important;
-	}
-</style>
 
 <!-- Filter UI -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-10" dir="ltr">
@@ -225,4 +214,13 @@
 	</button>
 </div>
 
- 
+ <style>
+	/* Custom hover style for date picker button */
+	:global(.date-picker-btn:hover) {
+		background-color: var(--btn-hover-color, var(--newsLightPrimaryColor)) !important;
+		color: white !important;
+	}
+	:global(.date-picker-btn:hover svg), :global(.date-picker-btn:hover span) {
+		color: white !important;
+	}
+</style>
