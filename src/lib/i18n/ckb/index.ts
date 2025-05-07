@@ -65,6 +65,8 @@ const ckb = {
 	successMessage: 'سەرکەوتوبوو! پەیامی نێردراوە!',
 	successTeam: 'تیمی سەرکەوتنمان',
 	unmatchedServices: 'خزمەتگوزاری بێ هاوتا',
+	name: 'ناو',
+	message: 'پەیام',
 	specific: 'تایبەت',
 	experience: 'ئەزموون',
 	technology: 'تەکنەلۆجیا',

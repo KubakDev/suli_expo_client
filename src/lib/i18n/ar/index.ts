@@ -61,6 +61,8 @@ const ar = {
 	feedback: 'التعليقات',
 	send: 'إرسال',
 	successMessage: 'بنجاح! تم إرسال الرسالة!',
+	name: 'الاسم',
+	message: 'الرسالة',
 	successTeam: 'فريق النجاح لدينا',
 	unmatchedServices: 'خدمة لا مثيل لها',
 	specific: 'محدد',

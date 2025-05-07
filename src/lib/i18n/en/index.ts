@@ -62,6 +62,8 @@ const en = {
 	feedback: 'Feedback',
 	send: 'Send',
 	successMessage: 'Success! Sent Message!',
+	name: 'Name',
+	message: 'Message',
 	successTeam: 'Our Success Team',
 	unmatchedServices: 'Unmatched Service',
 	specific: 'Specific',

@@ -92,8 +92,11 @@
 					{$LL.feedback() || "Feedback"}
 				</h2>
 
-				<Form dir="ltr" class="form" {schema} {fields} submitHandler={formSubmit} {submitted}>
+				<Form dir={$locale === 'en' ? 'ltr' : 'rtl'} class="form" {schema} {fields} submitHandler={formSubmit} {submitted}>
 					<div class="relative mb-4">
+						<label for="name" class="block text-sm font-medium mb-1">
+							{$LL.name() || "Name"} <span class="text-red-500">*</span>
+						</label>
 						<input
 							bind:value={fields.name}
 							placeholder="Your Name"
@@ -104,6 +107,9 @@
 						/><Message name="name" />
 					</div>
 					<div class="relative mb-4">
+						<label for="email" class="block text-sm font-medium mb-1">
+							{$LL.email() || "Email"} <span class="text-red-500">*</span>
+						</label>
 						<input
 							bind:value={fields.email}
 							placeholder="Your Email"
@@ -114,6 +120,9 @@
 						/><Message name="email" />
 					</div>
 					<div class="relative mb-4">
+						<label for="message" class="block text-sm font-medium mb-1">
+							{$LL.message() || "Message"} <span class="text-red-500">*</span>
+						</label>
 						<textarea
 							bind:value={fields.message}
 							placeholder="Please Enter Your Message Here..."
@@ -122,7 +131,7 @@
 							class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
 						/><Message name="message" />
 					</div>
-					<div>
+					<div class="flex justify-end">
 						<SulyButton onBtnClick={formSubmit}>
 							{$LL.send() || "Send"}
 						</SulyButton>

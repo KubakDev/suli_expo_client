@@ -226,6 +226,14 @@ type RootTranslation = {
 	 */
 	successMessage: string
 	/**
+	 * N​a​m​e
+	 */
+	name: string
+	/**
+	 * M​e​s​s​a​g​e
+	 */
+	message: string
+	/**
 	 * O​u​r​ ​S​u​c​c​e​s​s​ ​T​e​a​m
 	 */
 	successTeam: string
@@ -1161,6 +1169,14 @@ export type TranslationFunctions = {
 	 * Success! Sent Message!
 	 */
 	successMessage: () => LocalizedString
+	/**
+	 * Name
+	 */
+	name: () => LocalizedString
+	/**
+	 * Message
+	 */
+	message: () => LocalizedString
 	/**
 	 * Our Success Team
 	 */
