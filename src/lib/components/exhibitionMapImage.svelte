@@ -1,13 +1,16 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
 	import { currentUser } from '../../stores/currentUser';
 	import { goto } from '$app/navigation';
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { onMount } from 'svelte';
 	import type { ExhibitionModel } from '../../models/exhibitionModel';
 	import { exhibitionCurrentMainThemeColors, currentMainThemeColors } from '../../stores/darkMode';
+	import { IconChevronRight, IconChevronLeft } from '@tabler/icons-svelte';
 
 	export let exhibition: ExhibitionModel;
+	let buttonHovered = false;
+	let contractButtonHovered = false;
+	let loginButtonHovered = false;
 
 	function gotoLogin() {
 		localStorage.setItem('redirect', '/exhibition/reserve/' + exhibition.id);
@@ -54,21 +57,34 @@
 							{$LL.reservation.logged_in_description()}
 						</p>
 						{#if exhibition?.seat_layout.length == 0}
-							<Button
-								style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+							<button
+								class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+								style="
+									color: {$currentMainThemeColors.primaryColor}; 
+									border-color: {$currentMainThemeColors.primaryColor};
+									background-color: transparent;
+									opacity: 0.5;
+								"
 								disabled
 							>
 								{$LL.reservation.logged_in_button()}
-							</Button>
+							</button>
 						{:else}
-							<Button
-								style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+							<button
+								on:mouseenter={() => buttonHovered = true}
+								on:mouseleave={() => buttonHovered = false}
+								class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+								style="
+									color: {buttonHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+									border-color: {$currentMainThemeColors.primaryColor};
+									background-color: {buttonHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+								"
 								on:click={() => {
 									goto('/exhibition/reserve/' + exhibition.id);
 								}}
 							>
 								{$LL.reservation.logged_in_button()}
-							</Button>
+							</button>
 						{/if}
 					{:else}
 						<h2
@@ -78,29 +94,49 @@
 							{$LL.reservation.not_logged_in_description()}
 						</h2>
 
-						<Button
-							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
-							on:click={gotoLogin}>{$LL.reservation.not_logged_in_button()}</Button
+						<button
+							on:mouseenter={() => loginButtonHovered = true}
+							on:mouseleave={() => loginButtonHovered = false}
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+							style="
+								color: {loginButtonHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+								border-color: {$currentMainThemeColors.primaryColor};
+								background-color: {loginButtonHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+							"
+							on:click={gotoLogin}
 						>
+							{$LL.reservation.not_logged_in_button()}
+						</button>
 					{/if}
 					{#if exhibition.contract_file}
-						<Button
-							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
-							class="mt-5"
+						<button
+							on:mouseenter={() => contractButtonHovered = true}
+							on:mouseleave={() => contractButtonHovered = false}
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all mt-5"
+							style="
+								color: {contractButtonHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+								border-color: {$currentMainThemeColors.primaryColor};
+								background-color: {contractButtonHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+							"
 							on:click={() => {
 								openPdfFile(exhibition?.contract_file);
 							}}
 						>
 							{$LL.reservation.contract()}
-						</Button>
+						</button>
 					{:else}
-						<Button
-							style="background-color: {$currentMainThemeColors.primaryColor}; color: {$currentMainThemeColors.overlayPrimaryColor}"
+						<button
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all mt-5"
+							style="
+								color: {$currentMainThemeColors.primaryColor}; 
+								border-color: {$currentMainThemeColors.primaryColor};
+								background-color: transparent;
+								opacity: 0.5;
+							"
 							disabled
-							class="mt-5"
 						>
 							{$LL.reservation.contract()}
-						</Button>
+						</button>
 					{/if}
 				</div>
 			</div>
@@ -121,7 +157,7 @@
 	.scene-2 {
 		position: absolute;
 		inset: 0;
-		background-size: cover; /* <------ */
+		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center center;
 	}

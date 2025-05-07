@@ -429,7 +429,7 @@ type RootTranslation = {
 		 */
 		not_logged_in_description: string
 		/**
-		 * G​o​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
+		 * G​o​ ​t​o​ ​r​e​s​e​r​v​a​t​i​o​n​ ​p​a​g​e
 		 */
 		logged_in_button: string
 		/**
@@ -1365,7 +1365,7 @@ export type TranslationFunctions = {
 		 */
 		not_logged_in_description: () => LocalizedString
 		/**
-		 * Goto reservation page
+		 * Go to reservation page
 		 */
 		logged_in_button: () => LocalizedString
 		/**
