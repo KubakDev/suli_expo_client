@@ -378,6 +378,13 @@
 			: data.seat_layout[0]?.discounted_price;
 		calculateTotalPrice();
 	}
+
+	// Add button hover states
+	let addServiceBtnHovered = false;
+	let uploadFileBtnHovered = false;
+	let reserveBtnHovered = false;
+	let addFileBtnHovered = false;
+	let cancelFileBtnHovered = false;
 </script>
   
 <!-- comment  -->
@@ -547,14 +554,19 @@
 	{/if}
 	<div class="block md:flex justify-end w-full mt-8">
 		<div class="mx-2">
-			<!-- showing modal  -->
-			<Button
-				style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+			<button
 				on:click={() => openServicesModal()}
-			   class="w-full md:w-auto md:my-0 my-1"
-				>
+				on:mouseenter={() => addServiceBtnHovered = true}
+				on:mouseleave={() => addServiceBtnHovered = false}
+				class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:my-0 my-1"
+				style="
+					color: {addServiceBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+					border-color: {$currentMainThemeColors.primaryColor};
+					background-color: {addServiceBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+				"
+			>
 				{$LL.reservation.addService()}
-			</Button>
+			</button>
 			{#if showModal}
 				<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
 					<p class="text-gray-400">
@@ -633,12 +645,19 @@
 		</div>
 
 		<div class="w-full md:w-auto">
-			<Button
+			<button
 				on:click={() => (defaultModal = true)}
-				class="w-full md:w-auto md:my-0 my-1"
-				style="background-color: {$currentMainThemeColors.primaryColor};"
-				>{$LL.reservation.upload_file()}</Button
+				on:mouseenter={() => uploadFileBtnHovered = true}
+				on:mouseleave={() => uploadFileBtnHovered = false}
+				class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:my-0 my-1"
+				style="
+					color: {uploadFileBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+					border-color: {$currentMainThemeColors.primaryColor};
+					background-color: {uploadFileBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+				"
 			>
+				{$LL.reservation.upload_file()}
+			</button>
 			<Modal title={$LL.reservation.upload_file()} bind:open={defaultModal} autoclose>
 				{#if preview_url}
 					<div class="flex justify-center items-center">
@@ -693,26 +712,51 @@
 
 				<svelte:fragment slot="footer">
 					<div class="flex gap-2">
-						<Button
+						<button
 							on:click={handleAddClick}
 							disabled={!validFile}
-							style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+							on:mouseenter={() => addFileBtnHovered = true}
+							on:mouseleave={() => addFileBtnHovered = false}
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+							style="
+								color: {addFileBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+								border-color: {$currentMainThemeColors.primaryColor};
+								background-color: {addFileBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+							"
 						>
 							{$LL.reservation.add_file()}
-						</Button>
-						<Button color="alternative">{$LL.reservation.cancel_file()}</Button>
+						</button>
+						<button
+							on:click={() => defaultModal = false}
+							on:mouseenter={() => cancelFileBtnHovered = true}
+							on:mouseleave={() => cancelFileBtnHovered = false}
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
+							style="
+								color: {cancelFileBtnHovered ? '#fff' : '#6B7280'}; 
+								border-color: #6B7280;
+								background-color: {cancelFileBtnHovered ? '#6B7280' : 'transparent'};
+							"
+						>
+							{$LL.reservation.cancel_file()}
+						</button>
 					</div>
 				</svelte:fragment>
 			</Modal>
 		</div>
 
-		<Button
+		<button
 			on:click={reserveSeat}
-			class="w-full md:w-auto md:mx-2 md:my-0 my-1"
-			style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+			on:mouseenter={() => reserveBtnHovered = true}
+			on:mouseleave={() => reserveBtnHovered = false}
+			class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:mx-2 md:my-0 my-1"
+			style="
+				color: {reserveBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+				border-color: {$currentMainThemeColors.primaryColor};
+				background-color: {reserveBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+			"
 		>
 			{$LL.reservation.reserve()}
-		</Button>
+		</button>
 
 		<!--require upload file -->
 		<!-- <Button
