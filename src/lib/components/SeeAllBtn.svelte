@@ -5,6 +5,7 @@
 	import { page } from '$app/stores';
 	import { getNameRegex } from '../../utils/urlRegexName';
 	import { themeToggle } from '../../stores/darkMode';
+	import { IconChevronRight, IconChevronLeft } from '@tabler/icons-svelte';
 
 	export let onBtnClick: any;
 	export let color: {
@@ -16,6 +17,7 @@
 	};
 	const routeRegex = /\/(news|exhibition|gallery|magazine|publishing|video)/;
 	let tailVar: string = 'light';
+	let buttonHovered = false;
 
 	$: {
 		if (routeRegex.test($page.url.pathname)) {
@@ -27,9 +29,21 @@
 	}
 </script>
 
-<Button
+<button
 	on:click={onBtnClick}
-	color="primary"
-	style="color: {color.textColor}; border-color: {color.backgroundColor}; background-color: {color.backgroundColor}"
-	class=" sm:w-32 rounded-md font-bold  w-20 px-[0px] sm:px-4   ">{$LL.seeAll()}</Button
+	on:mouseenter={() => buttonHovered = true}
+	on:mouseleave={() => buttonHovered = false}
+	class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all sm:w-32 w-20"
+	style="
+		color: {buttonHovered ? '#fff' : color.backgroundColor}; 
+		border-color: {color.backgroundColor};
+		background-color: {buttonHovered ? color.backgroundColor : 'transparent'};
+	"
 >
+	{$LL.seeAll()}
+	{#if $locale === 'en'}
+		<IconChevronRight size={16} />
+	{:else}
+		<IconChevronLeft size={16} />
+	{/if}
+</button>
