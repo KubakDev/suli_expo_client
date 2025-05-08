@@ -50,8 +50,8 @@
 			exhibitionUi?.component_type?.type?.slice(1);
 		CardComponent = stringToEnum(cardType, CardType) ?? CardType.Main;
 
-		loading = true;
-		getExhibitions();
+		// The getExhibitions() call has been removed from here to avoid duplication
+		// It will be called by the reactive statement at the bottom
 	});
 
 	function openExhibition(id: number) {

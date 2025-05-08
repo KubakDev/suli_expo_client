@@ -84,7 +84,7 @@ const createExhibitionStore = () => {
 				)
 				.is('deleted_status', null)
 				.eq('languages.language', locale ?? 'en')
-				.order('position', { ascending: asc ?? false }); 
+				.order('position', { ascending: asc ?? true }); 
 
 			query = query.range((parseInt(page) - 1) * 10, parseInt(page) * 10 - 1).limit(limit || 10);
 
