@@ -31,16 +31,18 @@
 	on:click={onBtnClick}
 	on:mouseenter={() => buttonHovered = true}
 	on:mouseleave={() => buttonHovered = false}
-	class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all sm:w-32 w-20"
+	class="flex items-center justify-center gap-1 px-3 py-1 sm:px-4 sm:py-2 text-sm font-semibold border rounded-md transition-all min-w-16 sm:min-w-24"
 	style="
 		color: {buttonHovered ? '#fff' : color.backgroundColor}; 
 		border-color: {color.backgroundColor};
 		background-color: {buttonHovered ? color.backgroundColor : 'transparent'};
 	"
 >
-	{$LL.seeAll()}
+	<span class="whitespace-nowrap">{$LL.seeAll()}</span>
 	{#if $locale === 'en'}
 		<IconChevronRight size={16} />
+	{:else if $locale === 'ckb'}
+		<IconChevronLeft size={16} />
 	{:else}
 		<IconChevronLeft size={16} />
 	{/if}

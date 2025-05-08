@@ -65,25 +65,26 @@
 
 {#if $newsSectionStore && $newsSectionStore.length >= 0}
 	<section class="w-full {Constants.page_max_width} mx-auto py-12 px-4 md:px-0}">
-		<div class="flex justify-between items-center">
-			<div class="h-10 w-32" />
-			<div class="">
+		<div class="flex flex-col items-center">
+			<div>
 				<TitleUi
 					text={$LL.news()}
 					borderColor={$newsCurrentThemeColors.primaryColor}
 					textColor={$newsCurrentThemeColors.overlayBackgroundColor}
 				/>
 			</div>
-			<div class="flex justify-end w-32">
-				<SeeAllBtn
-					onBtnClick={openNews}
-					color={{
-						backgroundColor: $newsCurrentThemeColors.primaryColor ?? '',
-						textColor: $newsCurrentThemeColors.overlayPrimaryColor ?? ''
-					}}
-				/>
-			</div>
 		</div>
+		
+		<div class="flex justify-end mb-4 mt-8">
+			<SeeAllBtn
+				onBtnClick={openNews}
+				color={{
+					backgroundColor: $newsCurrentThemeColors.primaryColor ?? '',
+					textColor: $newsCurrentThemeColors.overlayPrimaryColor ?? ''
+				}}
+			/>
+		</div>
+		
 		{#if $newsSectionStore.length === 0}
 			<div class="flex justify-center items-center"
 			 style="color:{$currentMainThemeColors.overlayBackgroundColor}">
@@ -93,7 +94,7 @@
 			</div>
 		{:else}
 			<div
-				class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
+				class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center"
 			>
 				{#each $newsSectionStore as n, i}
 					<button on:click={() => DetailsPage(n.id)} class="w-full a-tag">

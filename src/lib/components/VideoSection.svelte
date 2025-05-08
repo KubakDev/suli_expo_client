@@ -37,17 +37,18 @@
 	<section
 		class="{constants.section_padding_y} {constants.page_max_width} m-auto {constants.horizontal_padding}"
 	>
-		<div class="flex justify-between items-center">
-			<div class="h-10 w-32" />
-			<div class="">
-				<TitleUi customClass=" text-white dark:text-white " text={$LL.news()} />
-			</div>
-			<div class="flex justify-end w-32">
-				<SeeAllBtn onBtnClick={openNews} />
+		<div class="flex flex-col items-center">
+			<div>
+				<TitleUi text={$LL.news()} />
 			</div>
 		</div>
+		
+		<div class="flex justify-end mb-4 mt-8">
+			<SeeAllBtn onBtnClick={openNews} />
+		</div>
+		
 		<div
-			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center {constants.section_margin_top}"
+			class="grid grid-cols-1 md:grid-cols-3 gap-5 justify-items-center items-center"
 		>
 			{#each $videoExhibitionStore as n, i}
 				<a href="news/detail/{n.id}" class="w-full a-tag">
