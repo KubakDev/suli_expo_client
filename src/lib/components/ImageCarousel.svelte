@@ -28,6 +28,7 @@
 	let mainSwiper: Swiper | null = null;
 	let loadedImages = 0;
 	let imagesLoading = true;
+	let containerHeight = height;
 
 	$: primaryColor = Constants.page_theme[theme].lightPrimary;
 
@@ -104,9 +105,29 @@
 			}
 		};
 	}
+
+	// Responsive height adjustment
+	function updateContainerHeight() {
+		const screenWidth = window.innerWidth;
+		if (screenWidth < 640) {
+			containerHeight = '250px';
+		} else if (screenWidth < 768) {
+			containerHeight = '300px';
+		} else {
+			containerHeight = height;
+		}
+	}
+
+	onMount(() => {
+		updateContainerHeight();
+		window.addEventListener('resize', updateContainerHeight);
+		return () => {
+			window.removeEventListener('resize', updateContainerHeight);
+		};
+	});
 </script>
 
-<div class="relative">
+<div class="relative w-full" style="background-color: {$currentMainThemeColors.secondaryColor};">
 	{#if images && images.length > 0}
 		<!-- Loading Spinner -->
 		{#if imagesLoading}
@@ -122,19 +143,19 @@
 				{#each images as image, index}
 					<div class="swiper-slide">
 						<div class="swiper-zoom-container">
-							<div class="relative w-full" style="height: {height};">
+							<div class="relative w-full h-full" style="height: {containerHeight};">
 								<img 
 									src={image.imgurl} 
 									alt={image.name} 
-									class="w-full h-full object-cover cursor-zoom-in"
+									class="w-full h-full object-contain md:object-cover cursor-zoom-in"
 									on:load={handleImageLoad}
 								/>
 								{#if image.attribution}
-									<div class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm rounded-tl-md">
-									fgd	{image.attribution}
+									<div class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white p-1 md:p-2 text-xs md:text-sm rounded-tl-md">
+										{image.attribution}
 									</div>
 								{/if}
-								<div class="absolute top-0 left-0 bg-black bg-opacity-50 text-white p-2 text-sm rounded-br-md">
+								<div class="absolute top-0 left-0 bg-black bg-opacity-50 text-white p-1 md:p-2 text-xs md:text-sm rounded-br-md">
 									{index + 1}/{images.length}
 								</div>
 							</div>
@@ -149,12 +170,12 @@
 		
 		<!-- Thumbnails -->
 		{#if showThumbs && images.length > 1}
-			<div class="mt-4 px-3">
+			<div class="mt-2 md:mt-4 px-2 md:px-3">
 				<div class="swiper thumbs-carousel" use:initThumbsSwiper>
 					<div class="swiper-wrapper">
 						{#each images as image}
 							<div class="swiper-slide">
-								<div class="cursor-pointer h-[60px] md:h-[80px] overflow-hidden rounded-md border-2 border-transparent hover:border-[{primaryColor}] transition-all duration-200">
+								<div class="cursor-pointer h-[40px] sm:h-[60px] md:h-[80px] overflow-hidden rounded-md border-2 border-transparent hover:border-[{primaryColor}] transition-all duration-200">
 									<img 
 										src={image.imgurl}
 										alt={image.name}
@@ -176,14 +197,22 @@
 	:global(.main-carousel .swiper-button-prev) {
 		color: white;
 		background-color: var(--newsLightPrimaryColor);
-		width: 44px;
-		height: 44px;
+		width: 30px;
+		height: 30px;
 		border-radius: 50%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		transition: all 0.3s ease;
 		opacity: 0.7;
+	}
+	
+	@media (min-width: 640px) {
+		:global(.main-carousel .swiper-button-next),
+		:global(.main-carousel .swiper-button-prev) {
+			width: 44px;
+			height: 44px;
+		}
 	}
 	
 	:global(.main-carousel .swiper-button-next:hover),
@@ -195,22 +224,43 @@
 
 	:global(.main-carousel .swiper-button-next::after),
 	:global(.main-carousel .swiper-button-prev::after) {
-		font-size: 18px;
+		font-size: 12px;
+	}
+	
+	@media (min-width: 640px) {
+		:global(.main-carousel .swiper-button-next::after),
+		:global(.main-carousel .swiper-button-prev::after) {
+			font-size: 18px;
+		}
 	}
 
 	:global(.main-carousel .swiper-pagination-bullet) {
 		background-color: white;
 		opacity: 0.7;
-		width: 10px;
-		height: 10px;
+		width: 8px;
+		height: 8px;
 		transition: all 0.3s ease;
+	}
+	
+	@media (min-width: 640px) {
+		:global(.main-carousel .swiper-pagination-bullet) {
+			width: 10px;
+			height: 10px;
+		}
 	}
 
 	:global(.main-carousel .swiper-pagination-bullet-active) {
 		background-color: white;
 		opacity: 1;
-		width: 12px;
-		height: 12px;
+		width: 10px;
+		height: 10px;
+	}
+	
+	@media (min-width: 640px) {
+		:global(.main-carousel .swiper-pagination-bullet-active) {
+			width: 12px;
+			height: 12px;
+		}
 	}
 	
 	:global(.thumbs-carousel .swiper-slide-thumb-active div) {

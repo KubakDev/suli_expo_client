@@ -60,66 +60,7 @@
 		getNews();
 	});
 	
-	function initMainSwiper(node: HTMLElement) {
-		if (news?.imagesCarousel?.length) {
-			mainSwiper = new Swiper(node, {
-				modules: [Navigation, Pagination, Autoplay, EffectFade, Thumbs, Zoom],
-				spaceBetween: 0,
-				slidesPerView: 1,
-				navigation: {
-					nextEl: '.swiper-button-next',
-					prevEl: '.swiper-button-prev',
-				},
-				pagination: { 
-					el: '.swiper-pagination',
-					clickable: true,
-					dynamicBullets: true
-				},
-				autoplay: { delay: 5000, disableOnInteraction: false },
-				effect: 'fade',
-				loop: true,
-				thumbs: { swiper: thumbsSwiper },
-				zoom: {
-					maxRatio: 3,
-					minRatio: 1
-				}
-			});
-		}
-		
-		return {
-			destroy() {
-				if (mainSwiper) {
-					mainSwiper.destroy();
-					mainSwiper = null;
-				}
-			}
-		};
-	}
-	
-	function initThumbsSwiper(node: HTMLElement) {
-		if (news?.imagesCarousel?.length && news.imagesCarousel.length > 1) {
-			thumbsSwiper = new Swiper(node, {
-				modules: [Thumbs],
-				watchSlidesProgress: true,
-				slidesPerView: 4,
-				spaceBetween: 10,
-				breakpoints: {
-					640: { slidesPerView: 5 },
-					768: { slidesPerView: 6 },
-					1024: { slidesPerView: 8 }
-				}
-			});
-		}
-		
-		return {
-			destroy() {
-				if (thumbsSwiper) {
-					thumbsSwiper.destroy();
-					thumbsSwiper = null;
-				}
-			}
-		};
-	}
+  
 </script>
 
 <section
