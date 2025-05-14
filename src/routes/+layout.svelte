@@ -19,6 +19,7 @@
 	import { currentUser } from '../stores/currentUser';
 	import { invalidateAll } from '$app/navigation';
 	import { currentMainThemeColors } from '../stores/darkMode';
+	import BackToTop from '$lib/components/BackToTop.svelte';
  
 	register();
 	export let data;
@@ -173,6 +174,7 @@
 			<div>
 				<Footer {data} />
 			</div>
+			<BackToTop />
 		</div>
 	{/if}
 {/if}
