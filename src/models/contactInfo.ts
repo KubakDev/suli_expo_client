@@ -7,6 +7,7 @@ export interface ContactInfoModel {
 	phoneNumber_Technical?: string;
 	phoneNumber_Administration?: string;
 	created_at?: Date;
+	
 }
 
 
