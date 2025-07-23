@@ -8,3 +8,5 @@ export interface ContactInfoModel {
 	phoneNumber_Administration?: string;
 	created_at?: Date;
 }
+
+
