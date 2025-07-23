@@ -13,18 +13,23 @@
 	import { convertNumberToWord } from '../../utils/numberToWordLang';
 	import { currentMainThemeColors } from '../../stores/darkMode';
 	import SeatComponent from './seatComponent.svelte';
-	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	export let reservationData: Reservation;
+	let updateBtnHovered = false;
+	let excelBtnHovered = false;
+	let serviceBtnHovered = false;
 
 	let totalRawPrice = 0;
 
 	const dispatch = createEventDispatcher();
 	let defaultModal = false;
 	let showToast = false;
+	let showWarningModal = false;
+	let warningMessage = '';
 	let areas: {
 		area: string;
 		quantity: number;
@@ -340,6 +345,15 @@ $: {
 			return;
 		}
 
+		// Check if file is required and validate file upload
+		if (currentActiveSeat?.is_excel_required) {
+			if (!reservationData.file_url && !imageFile_excel) {
+				warningMessage = $LL.Please_upload_excel_file();
+				showWarningModal = true;
+				return;
+			}
+		}
+
 		showToast = false;
 
 		confirmServiceSelection();
@@ -578,7 +592,7 @@ $: {
 				style="color: {$currentMainThemeColors.primaryColor}"
 			>
 				<div class="w-full lg:w-8/12">
-				  {description_seat}	 
+				  {description_seat == null ? '' : description_seat} 
 				</div>
 			</div>
 
@@ -706,17 +720,23 @@ $: {
 				bind:value={reservedSeatData.comment}
 			/>
 			<div class="block md:flex justify-end w-full mt-8">
-				<div class="mx-2">
-					<!-- show modal -->
-					<Button
-						class="w-full md:w-auto md:mx-2 md:my-0 my-1"
-						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
-						on:click={() => openServicesModal()}
-						disabled={reservationData.status != ReservationStatus.PENDING}
-					>
-
-						{$LL.reservation.addService()}
-					</Button>
+			
+				{#if currentActiveSeat?.services && JSON.parse(currentActiveSeat.services).length > 0}
+					<div class="mx-2">
+						<!-- show modal -->
+						<Button
+							on:mouseenter={() => serviceBtnHovered = true}
+							on:mouseleave={() => serviceBtnHovered = false}
+							class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:mx-2 md:my-0 my-1"
+		              	style="
+		       	color: {serviceBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+				border-color: {$currentMainThemeColors.primaryColor};
+				background-color: {serviceBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+		     	"on:click={() => openServicesModal()}
+							disabled={reservationData.status != ReservationStatus.PENDING}
+						>
+							{$LL.reservation.addService()}
+						</Button>
 					{#if showModal}
 						<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
 							<p class="text-gray-400">
@@ -793,13 +813,20 @@ $: {
 							</ul>
 						</Modal>
 					{/if}
-				</div>
+					</div>
+				{/if}
 
 				<div class="w-full md:w-auto">
 					<Button
-						class="w-full md:w-auto md:my-0 my-1"
+						on:mouseenter={() => excelBtnHovered = true}
+						on:mouseleave={() => excelBtnHovered = false}
+						class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:mx-2 md:my-0 my-1"
+			style="
+				color: {excelBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+				border-color: {$currentMainThemeColors.primaryColor};
+				background-color: {excelBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+			"
 						on:click={() => (defaultModal = true)}
-						style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
 						disabled={reservationData.status != ReservationStatus.PENDING}
 						>{$LL.reservation.upload_file()}</Button
 					>
@@ -898,9 +925,15 @@ $: {
 				</div>
 
 				<Button
+					on:mouseenter={() => updateBtnHovered = true}
+					on:mouseleave={() => updateBtnHovered = false}
 					on:click={reserveSeat}
-					class="w-full md:w-auto md:mx-2 md:my-0 my-1"
-					style="background-color: {$currentMainThemeColors.primaryColor};color:{$currentMainThemeColors.overlayPrimaryColor}"
+					class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:mx-2 md:my-0 my-1"
+			    style="
+				color: {updateBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+				border-color: {$currentMainThemeColors.primaryColor};
+				background-color: {updateBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+			"
 					disabled={reservationData.status != ReservationStatus.PENDING}
 				>
 					{$LL.buttons.update()}
@@ -924,6 +957,20 @@ $: {
 			<InfoCircleSolid slot="icon" class="w-4 h-4" />
 			{$LL.reservation.messageToValidationBeforeReserve()}
 		</Alert>
+	{/if}
+
+	{#if showWarningModal}
+		<Modal bind:open={showWarningModal} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{warningMessage}
+				</h3>
+				<Button color="alternative" on:click={() => showWarningModal = false}>
+					Ok
+				</Button>
+			</div>
+		</Modal>
 	{/if}
 {/if}
 

@@ -22,7 +22,7 @@
 	import { setExhibitionID, setRequiredFields } from '../../../../stores/requiredFieldStore';
 	import { getRandomTextNumber } from '../../../../utils/getRandomText';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
-	import { CloseCircleSolid } from 'flowbite-svelte-icons';
+	import { CloseCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { IconChevronRight, IconChevronLeft } from '@tabler/icons-svelte';
 
 	export let data: any;
@@ -35,8 +35,15 @@
 	let seatReserved = false;
 	let loaded = false;
 	let excelFileName: string | undefined = '';
-	let showNotification = false;
 	let buttonHovered = false;
+	let showWarningModal = false;
+	let warningMessage = '';
+
+	// Computed property to check if reserve button should be disabled
+	$: isReserveButtonDisabled = !acceptedPrivacyPolicy || 
+		(exhibition?.seat_layout[0]?.is_excel_required && (!reserveSeatData?.file || reserveSeatData?.file?.size === 0));
+	
+
 
 	async function getExhibition() {
 		const response = await data.supabase
@@ -68,13 +75,18 @@
 
 	async function reserveSeat() {
 		let fileUrl = '';
-		showNotification = false;
 		defaultModal = false;
 
-		// if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
-		// 	showNotification = true;
-		// 	return;
-		// }
+
+
+		// Check if file is required and validate file upload
+		if (exhibition?.seat_layout[0]?.is_excel_required) {
+			if (!reserveSeatData.file || reserveSeatData.file.size === 0) {
+				warningMessage = $LL.Please_upload_excel_file();
+				showWarningModal = true;
+				return;
+			}
+		}
 
 		let extension;
 		if (reserveSeatData.file && reserveSeatData.file.size > 0) {
@@ -289,7 +301,6 @@
 		}
 	}
 </script>
-    
 {#if loaded}
 	{#if exhibition && exhibition.seat_layout[0]}
 		{#if allFieldsPresent}
@@ -312,6 +323,10 @@
 												on:reserveSeat={(reserveData) => {
 													defaultModal = true;
 													reserveSeatData = reserveData.detail;
+												}}
+												on:showWarning={(warningData) => {
+													warningMessage = warningData.detail.message;
+													showWarningModal = true;
 												}}
 											/>
 										{/if}
@@ -401,7 +416,7 @@
 								<div class=" w-full flex justify-end items-center">
 									<button
 										on:click={reserveSeat}
-										disabled={!acceptedPrivacyPolicy}
+										disabled={isReserveButtonDisabled}
 										on:mouseenter={() => buttonHovered = true}
 										on:mouseleave={() => buttonHovered = false}
 										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
@@ -409,7 +424,7 @@
 											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
 											border-color: var(--lightPrimaryColor);
 											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
-											opacity: {!acceptedPrivacyPolicy ? '0.5' : '1'};
+											opacity: {isReserveButtonDisabled ? '0.5' : '1'};
 										"
 									>
 										{$LL.reservation.privacy_policy.accept()}
@@ -585,7 +600,7 @@
 								<div class=" w-full flex justify-end items-center">
 									<button
 										on:click={reserveSeat}
-										disabled={!acceptedPrivacyPolicy}
+										disabled={isReserveButtonDisabled}
 										on:mouseenter={() => buttonHovered = true}
 										on:mouseleave={() => buttonHovered = false}
 										class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all"
@@ -593,7 +608,7 @@
 											color: {buttonHovered ? '#fff' : 'var(--lightPrimaryColor)'}; 
 											border-color: var(--lightPrimaryColor);
 											background-color: {buttonHovered ? 'var(--lightPrimaryColor)' : 'transparent'};
-											opacity: {!acceptedPrivacyPolicy ? '0.5' : '1'};
+											opacity: {isReserveButtonDisabled ? '0.5' : '1'};
 										"
 									>
 										{$LL.reservation.privacy_policy.accept()}
@@ -645,19 +660,18 @@
 	</div>
 {/if}
 
-{#if showNotification}
-	<Toast
-		color="red"
-		class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-5"
-		transition={fly}
-	>
-		<svelte:fragment slot="icon">
-			<CloseCircleSolid class="w-5 h-5" />
-			<span class="sr-only">Error icon</span>
-		</svelte:fragment>
-
-		{$LL.reservation.warning_message()}
-	</Toast>
+{#if showWarningModal}
+	<Modal bind:open={showWarningModal} size="xs" autoclose>
+		<div class="text-center">
+			<ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				{warningMessage}
+			</h3>
+			<Button color="alternative" on:click={() => showWarningModal = false}>
+				Ok
+			</Button>
+		</div>
+	</Modal>
 {/if}
 <div />
 

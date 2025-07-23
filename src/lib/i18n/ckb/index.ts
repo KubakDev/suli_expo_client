@@ -285,7 +285,7 @@ const ckb = {
 		createdAt: 'بەرواری دروستکردن'
 	},
 	You_have_to_select_at_least_one_area: 'پێویستە بەلایەنی کەم شوێنێک دیاری بکەیت',
-	Please_upload_excel_file: 'تکایە فایلی ئێکزڵ باربکە',
+	Please_upload_excel_file: 'تکایە فایلی ئێکزڵ زیاد بکە',
 	noDataMessage: 'لە ئێستادا هیچ ناوەڕۆکی {type}مان نییە.'
 } satisfies Translation;
 export default ckb;

@@ -5,14 +5,13 @@
 	import { LL } from '$lib/i18n/i18n-svelte';
 	import { Textarea, Button, Modal, Checkbox, Input } from 'flowbite-svelte';
 	import { currentMainThemeColors } from '../../../../stores/darkMode';
-	import { Alert } from 'flowbite-svelte';
-	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+
 
 	export let data: any;
 	export let supabase: SupabaseClient;
 	export let locale: string;
 	const dispatch = createEventDispatcher();
-	let showToast = false;
+
 	let showNotification = false;
 	let defaultModal = false;
 	let areas: {
@@ -166,7 +165,6 @@
 
 			isValidQuantity = false;
 		} else {
-			showToast = false;
 			isValidQuantity = true;
 			quantityExceededMessages[serviceId] = '';
 			if (selectedServices[serviceId]) {
@@ -241,13 +239,9 @@
 	function reserveSeat() {
 		errorMessage = '';
 		if (!isValidQuantity) {
-			setTimeout(() => {
-				showToast = true;
-			}, 1000);
+			dispatch('showWarning', { message: $LL.reservation.messageToValidationBeforeReserve() });
 			return;
 		}
-
-		showToast = false;
 		//find total_price
 		reservedSeatData.total_price = totalPrice + totalPriceForServices;
 
@@ -263,12 +257,12 @@
 		customAreaQuantity = 0;
 		customAreaMeter = 0;
 		if (reservedSeatData.area.length < 1) {
-			errorMessage = $LL.You_have_to_select_at_least_one_area();
+			dispatch('showWarning', { message: $LL.You_have_to_select_at_least_one_area() });
 			return;
 		}
 
 		if (isExcelRequired && !reservedSeatData.file) {
-			errorMessage = $LL.Please_upload_excel_file();
+			dispatch('showWarning', { message: $LL.Please_upload_excel_file() });
 			return;
 		}
 
@@ -400,7 +394,7 @@
 		style="color: {$currentMainThemeColors.primaryColor}"
 	>
 		<div class="w-full lg:w-8/12">
-			{description_seat}
+			{description_seat == null ? '' : description_seat}
 		</div>
 	</div>
 
@@ -553,96 +547,99 @@
 		</div>
 	{/if}
 	<div class="block md:flex justify-end w-full mt-8">
-		<div class="mx-2">
-			<button
-				on:click={() => openServicesModal()}
-				on:mouseenter={() => addServiceBtnHovered = true}
-				on:mouseleave={() => addServiceBtnHovered = false}
-				class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:my-0 my-1"
-				style="
-					color: {addServiceBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
-					border-color: {$currentMainThemeColors.primaryColor};
-					background-color: {addServiceBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
-				"
-			>
-				{$LL.reservation.addService()}
-			</button>
-			{#if showModal}
-				<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
-					<p class="text-gray-400">
-						{$LL.reservation.modalInfo()}
-					</p>
+		{#if existServices && existServices.length > 0}
+			<div class="mx-2">
+				<button
+					on:click={() => openServicesModal()}
+					on:mouseenter={() => addServiceBtnHovered = true}
+					on:mouseleave={() => addServiceBtnHovered = false}
+					class="flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-md transition-all w-full md:w-auto md:my-0 my-1"
+					style="
+						color: {addServiceBtnHovered ? '#fff' : $currentMainThemeColors.primaryColor}; 
+						border-color: {$currentMainThemeColors.primaryColor};
+						background-color: {addServiceBtnHovered ? $currentMainThemeColors.primaryColor : 'transparent'};
+					"
+				>
+					{$LL.reservation.addService()}
+				</button>
+			</div>
+		{/if}
 
-					<ul>
-						{#each detailedServices as item}
-							<li
-								class="grid grid-cols-12 pt-5 items-center border-b border-b-0.1 pb-2 border-gray-500"
+		{#if showModal}
+			<Modal size="lg" title={$LL.reservation.modalTitle()} bind:open={showModal} autoclose>
+				<p class="text-gray-400">
+					{$LL.reservation.modalInfo()}
+				</p>
+
+				<ul>
+					{#each detailedServices as item}
+						<li
+							class="grid grid-cols-12 pt-5 items-center border-b border-b-0.1 pb-2 border-gray-500"
+						>
+							<Checkbox
+								checked={!!selectedServices[item.id]}
+								on:change={(e) => handleServiceSelection(item.id, e)}
+							/>
+							<span class="col-span-1">
+								<img
+									class="w-12 h-12 object-cover rounded-lg"
+									src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
+									alt="icon"
+								/></span
 							>
-								<Checkbox
-									checked={!!selectedServices[item.id]}
-									on:change={(e) => handleServiceSelection(item.id, e)}
+							<span class="mx-2 text-sm col-span-6">{item.languages[0].title}</span>
+							<span class="col-span-2">
+								<Input
+									class="w-16"
+									type="number"
+									size="sm"
+									placeholder="quantity"
+									value={selectedServices[item.id]?.quantity || 0}
+									on:input={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 0)}
+									min="0"
+									disabled={!selectedServices[item.id]}
 								/>
-								<span class="col-span-1">
-									<img
-										class="w-12 h-12 object-cover rounded-lg"
-										src={`${import.meta.env.VITE_PUBLIC_SUPABASE_STORAGE_URL}/${item.icon}`}
-										alt="icon"
-									/></span
-								>
-								<span class="mx-2 text-sm col-span-6">{item.languages[0].title}</span>
-								<span class="col-span-2">
-									<Input
-										class="w-16"
-										type="number"
-										size="sm"
-										placeholder="quantity"
-										value={selectedServices[item.id]?.quantity || 0}
-										on:input={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 0)}
-										min="0"
-										disabled={!selectedServices[item.id]}
-									/>
-								</span>
-								<span class="col-span-2">
-									{#each existServices as service}
-										{#if service.serviceId === item.id}
-											<div class="mx-2 flex justify-center items-center">
-												{#if !service.unlimitedFree}
-													<span class="mx-2">
-														{$LL.reservation.priceSeat()}
-														<span
-															class="font-bold p-2"
-															style="color :{$currentMainThemeColors.primaryColor}"
-														>
-															{calculatePrice(
-																item.price,
-																item.discount,
-																service.maxFreeCount,
-																selectedServices[item.id]?.quantity || 0
-															)}
-															{price_sign}
-														</span>
-													</span>
-												{:else}
+							</span>
+							<span class="col-span-2">
+								{#each existServices as service}
+									{#if service.serviceId === item.id}
+										<div class="mx-2 flex justify-center items-center">
+											{#if !service.unlimitedFree}
+												<span class="mx-2">
+													{$LL.reservation.priceSeat()}
 													<span
-														class="font-bold"
-														style="color :{$currentMainThemeColors.primaryColor}">Free</span
+														class="font-bold p-2"
+														style="color :{$currentMainThemeColors.primaryColor}"
 													>
-												{/if}
-											</div>
-										{/if}
-									{/each}
-								</span>
-							</li>
-							<p class="text-red-500">
-								{#if quantityExceededMessages[item.id]}
-									<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
-								{/if}
-							</p>
-						{/each}
-					</ul>
-				</Modal>
-			{/if}
-		</div>
+														{calculatePrice(
+															item.price,
+															item.discount,
+															service.maxFreeCount,
+															selectedServices[item.id]?.quantity || 0
+														)}
+														{price_sign}
+													</span>
+												</span>
+											{:else}
+												<span
+													class="font-bold"
+													style="color :{$currentMainThemeColors.primaryColor}">Free</span
+												>
+											{/if}
+										</div>
+									{/if}
+								{/each}
+							</span>
+						</li>
+						<p class="text-red-500">
+							{#if quantityExceededMessages[item.id]}
+								<p class="text-red-500">{quantityExceededMessages[item.id]}</p>
+							{/if}
+						</p>
+					{/each}
+				</ul>
+			</Modal>
+		{/if}
 
 		<div class="w-full md:w-auto">
 			<button
@@ -781,14 +778,7 @@
 	</div>
 </div>
 
-<!-- check the quantity if it is not valid -->
 
-{#if showToast}
-	<Alert color="red" rounded={false} class="border-y-4">
-		<InfoCircleSolid slot="icon" class="w-4 h-4" />
-		{$LL.reservation.messageToValidationBeforeReserve()}
-	</Alert>
-{/if}
 
 <style>
 	.file-input__input {
