@@ -78,10 +78,15 @@
 			frameborder="0"
 			marginheight="0"
 			marginwidth="0"
+			style="border:0;"
+			loading="lazy"
+			referrerpolicy="no-referrer-when-downgrade"
 			title="map"
 			scrolling="no"
-			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103892.0992834688!2d45.2428573810063!3d35.538186962228814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x400037fb3aa6d36b%3A0x487f3331ed074305!2sSulaimaniyah%20International%20Fair!5e0!3m2!1sen!2siq!4v1685172583943!5m2!1sen!2siq"
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d87324.84359520768!2d45.29994838274605!3d35.572741274529555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40003781c183e413%3A0x6362e502722f5bb2!2sInternational%20suly%20Expo!5e0!3m2!1sen!2siq!4v1753336397722!5m2!1sen!2siq"
 		/>
+		 
+ 
 	</div>
 
 	<div class="container mx-auto">
