@@ -32,6 +32,10 @@
 	let dateHovered = false;
 	let clearHovered = false;
 
+	// Language-dependent direction
+	let isRtl = false;
+	$: isRtl = $locale === 'ar' || $locale === 'ckb';
+
 	$: isLoading = exhibitionData.length === 0;
 
 	let datePickerButtonClass = "flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold border rounded-md transition-all";
@@ -91,7 +95,7 @@
 
 
 <!-- Filter UI -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-10" dir="ltr">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-10" dir={isRtl ? 'rtl' : 'ltr'}>
 
 	<!-- Sort Button -->
 	<button
@@ -142,7 +146,7 @@
 
 		<!-- Dropdown Panel -->
 		{#if isDropdownOpen}
-		<div class="absolute z-10 mt-2 w-full max-h-64 overflow-y-auto bg-white dark:bg-darkBackgroundColor border rounded-md shadow-lg p-2 space-y-1 text-sm">
+		<div class="absolute z-10 mt-2 w-full max-h-64 overflow-y-auto bg-white dark:bg-darkBackgroundColor border rounded-md shadow-lg p-2 space-y-1 text-sm" style="text-align: {isRtl ? 'right' : 'left'};">
 			{#if isLoading}
 				<div class="flex justify-center items-center h-20">
 					<Spinner size="6" class="text-newsLightPrimaryColor dark:text-newsDarkPrimaryColor" />
@@ -150,7 +154,7 @@
 			{:else}
 				{#each exhibitionData as exhibition}
 					{#if exhibition.id !== undefined && exhibition.id !== null}
-						<label class="flex items-center gap-2 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+						<label class="flex items-center gap-2 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800" style="flex-direction: {isRtl ? 'row-reverse' : 'row'};">
 							<input 
 								type="checkbox"
 								on:change={filterByExhibition}
